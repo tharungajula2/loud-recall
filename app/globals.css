@@ -317,3 +317,12 @@ html::-webkit-scrollbar, body::-webkit-scrollbar {
     width: 24% !important; /* First column ratio */
   }
 }
+
+/* Mobile-safe SVG rendering inside article */
+article svg {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
