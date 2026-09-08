@@ -9,8 +9,6 @@ updated: 2026-09-08
 verified: false
 ---
 
-# Credit Risk, Capital and Regulatory Reporting
-
 A single continuous pass over the domain: how a bank measures credit risk, what accounting does with that measurement, what prudential regulation does with the same measurement, how liquidity sits beside both, what data infrastructure holds it all up, and what the modelling and technology layers underneath look like.
 
 The order is the argument. Each part earns the next.
@@ -119,6 +117,37 @@ Two ratings, two purposes:
 - **Facility rating** → drives LGD. It is about the structure — collateral, seniority, covenants.
 
 Scorecards are the retail equivalent: application scorecards at origination, behavioural scorecards for existing accounts, collections scorecards for recovery prioritisation. Rating philosophy, calibration to a long-run default rate, and override rates are the governance points.
+
+### Rating migration
+
+A one-year transition matrix records how obligors move between grades over a
+year. Rows are the starting grade, columns the ending grade, cells the
+probability of that move. An illustrative corporate matrix, in per cent:
+
+| From \ To | AAA | AA | A | BBB | BB | B | CCC | D |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| **AAA** | 90.8 | 8.3 | 0.7 | 0.1 | 0.1 | 0.0 | 0.0 | 0.00 |
+| **AA** | 0.7 | 90.7 | 7.8 | 0.6 | 0.1 | 0.1 | 0.0 | 0.00 |
+| **A** | 0.1 | 2.3 | 91.0 | 5.5 | 0.7 | 0.3 | 0.0 | 0.06 |
+| **BBB** | 0.0 | 0.3 | 5.9 | 87.5 | 5.0 | 1.0 | 0.1 | 0.18 |
+| **BB** | 0.0 | 0.1 | 0.6 | 7.7 | 81.2 | 8.8 | 1.0 | 1.06 |
+| **B** | 0.0 | 0.1 | 0.2 | 0.5 | 6.5 | 83.5 | 4.1 | 5.20 |
+| **CCC** | 0.2 | 0.0 | 0.3 | 1.0 | 2.4 | 11.2 | 64.9 | 19.79 |
+
+Read the last column as the one-year PD for each grade. Read across a row to see
+migration risk: a BBB obligor is far more likely to be downgraded than to
+default, and under Ind AS 109 that downgrade alone may trigger SICR.
+
+**Chaining to a term structure.** If the matrix is $M$, the n-year matrix is
+$M^n$, and the cumulative PD to year $n$ is the default column of $M^n$.
+Marginal and conditional PDs follow from the definitions in Part 2.
+
+Two assumptions sit underneath, both known to be false and both worth naming:
+the process is **Markov** — where the obligor came from does not matter, though
+downgraded names in fact default more than same-grade peers — and it is
+**time-homogeneous**, though matrices are strongly cycle-dependent. This is
+exactly why capital uses matrices averaged across the cycle while ECL conditions
+them on the macroeconomic state.
 
 ### Credit risk mitigation
 
@@ -614,6 +643,73 @@ What runs in practice is a **hybrid**:
 
 Prioritisation is by **regulatory materiality** rather than business value: the mandatory minimum submission is the minimum viable product and enhancements queue behind it. Traceability from regulatory clause → requirement → test case → evidence is non-negotiable however the build is organised.
 
+### Requirements and traceability
+
+The regulatory text is not a specification, so a chain of artefacts converts it
+into something buildable and auditable.
+
+| Artefact | Holds |
+|---|---|
+| **Interpretation paper** | What the clause means for this institution, agreed by legal, risk and finance, with the supervisor where needed |
+| **Business requirements (BRD)** | What must be produced, in business language, traced to the clause |
+| **Functional specification** | How the system produces it — sources, transformations, calculations, outputs |
+| **Data dictionary** | Every field: definition, source, permitted values, owner |
+| **Requirements traceability matrix** | Clause → requirement → design → test case → evidence, both directions |
+
+The traceability matrix is the artefact a regulator or an internal auditor asks
+for. Both directions matter: every clause reaches a test, and every test traces
+back to a clause. Requirements with no clause behind them are scope creep;
+clauses with no test behind them are exposure.
+
+### Test stages
+
+| Stage | Question it answers |
+|---|---|
+| **Unit** | Does each component compute what it was specified to compute? |
+| **System integration (SIT)** | Do the components work together end to end, source through submission? |
+| **Data reconciliation** | Does the output tie to the general ledger and to the source systems? |
+| **Regression** | Did this change break an existing return? |
+| **User acceptance (UAT)** | Does the business accept the output as correct and usable? |
+| **Parallel run** | Does the new process produce the same answer as the old one, and where it differs, is the difference explained and expected? |
+
+Parallel run is the stage that distinguishes regulatory change from ordinary
+delivery. Differences are not defects by default — the new rule is *meant* to
+change the number. Every variance is classified as expected, explained by the
+rule change, or a genuine defect. An unexplained variance blocks go-live.
+
+**Dual running** goes further: both old and new are produced and submitted, or
+produced and reconciled, for a defined period after go-live.
+
+### Cutover and handover
+
+Cutover is planned as its own workstream, not as the last day of the build.
+
+- **Cutover plan** — sequenced tasks with owners, durations and dependencies, run
+  as a timed rehearsal at least once before the real event.
+- **Go / no-go criteria** — defined in advance and agreed at a decision forum, so
+  the decision is made against a standard rather than under pressure.
+- **Rollback** — what happens if the first live submission fails. For a fixed
+  regulatory date, rollback usually means reverting to the old process, which is
+  only possible if the old process was kept alive.
+- **BAU handover** — runbooks, control ownership, the sign-off matrix, the
+  support model, and a defined hypercare period. A regulatory build that is not
+  handed over becomes a permanent project.
+
+### Governance artefacts
+
+| Artefact | Purpose |
+|---|---|
+| **RAID log** | Risks, assumptions, issues, dependencies — each owned and dated |
+| **RACI** | Who is responsible, accountable, consulted, informed, per deliverable |
+| **Milestone plan** | Anchored backwards from the regulatory date, with the critical path named |
+| **Stage gates** | Formal entry and exit criteria per phase, with evidence retained |
+| **Steering committee** | Decision forum for scope, cost, and escalated risk |
+| **Change control** | How a scope change is raised, assessed for regulatory impact, and approved |
+
+Assumptions deserve particular attention. On a regulatory programme the largest
+risks are usually assumptions about interpretation that nobody has challenged —
+they sit in the log unowned until a supervisor disagrees and the build is wrong.
+
 ---
 
 ## Part 7 — SQL and Oracle
@@ -797,6 +893,8 @@ Any AI inside a regulated process is **a model**. It enters the model inventory,
 | HQLA haircut, Level 2A / 2B | 15% / 25–50% |
 | LCR inflow cap | 75% of outflows |
 | NSFR minimum / horizon | 100% / one year |
+| One-year PD, investment grade (illustrative) | under 0.2% |
+| One-year PD, CCC (illustrative) | around 20% |
 | Default definition — days past due | 90 |
 | SICR backstop presumption | 30 days past due, rebuttable |
 | NPA recognition, term loans | 90 days past due |
@@ -830,8 +928,10 @@ Any AI inside a regulated process is **a model**. It enters the model inventory,
 | **LGD** Loss Given Default | **MCLR** Marginal Cost of Funds based Lending Rate | **NII** Net Interest Income | **NSFR** Net Stable Funding Ratio |
 | **PCR** Provision Coverage Ratio | **PD** Probability of Default | **PFE** Potential Future Exposure | **PIT / TTC** Point-in-Time / Through-the-Cycle |
 | **POCI** Purchased or Originated Credit-Impaired | **PSI** Population Stability Index | **PSL** Priority Sector Lending | **RSF** Required Stable Funding |
+| **RAID** Risks, Assumptions, Issues, Dependencies | **RTM** Requirements Traceability Matrix | | |
 | **RWA** Risk Weighted Assets | **SA** Standardised Approach | **SA-CCR** Standardised Approach for Counterparty Credit Risk | **SICR** Significant Increase in Credit Risk |
-| **SMA** Special Mention Account | **SMA (op risk)** Standardised Measurement Approach | **SREP** Supervisory Review and Evaluation Process | **WOE** Weight of Evidence |
+| **SIT** System Integration Testing | **SMA** Special Mention Account | **SMA (op risk)** Standardised Measurement Approach | **SREP** Supervisory Review and Evaluation Process |
+| **UAT** User Acceptance Testing | **WOE** Weight of Evidence | | |
 
 ---
 
@@ -850,6 +950,8 @@ Reproduce these eleven from memory on a blank page. Each one compresses a part o
 9. The **LCR and NSFR ratios**, with what sits in each numerator and denominator.
 10. The **reporting production cycle**, from source extract to submission, with reconciliation and sign-off marked.
 11. The **model lifecycle** — development, independent validation, approval, monitoring, revalidation.
+12. A **rating migration matrix** in outline, with the default column marked and the chaining rule beside it.
+13. The **test stages** from unit through parallel run, with the question each one answers.
 
 ---
 
