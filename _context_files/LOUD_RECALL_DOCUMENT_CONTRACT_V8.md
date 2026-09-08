@@ -359,6 +359,7 @@ working, not a defect to be normalised away.
 |---|---|---|
 | `masterclass` | `markdown` | One subject, taught end to end at its assigned tier |
 | `role-recall` | `markdown` | One consolidated document per role, drawing across subjects |
+| `portfolio` | `markdown` | One built project, taught end to end — problem, architecture, decisions, mechanics, limits |
 
 `format` is `markdown` or `html`. Format and series are independent: a
 masterclass may be `html` where the picture is the teaching. HTML documents use
@@ -388,6 +389,25 @@ masterclass:
   thinner (section 11).
 - Closes with the reference-numbers table, the acronym table, the recall check,
   and a short compression — the whole domain in a handful of sentences.
+
+**The `portfolio` series** covers projects built by the author rather than a
+public body of knowledge. Its governing constraint is different from every other
+series: the writer has no prior knowledge of the subject and cannot infer it.
+
+- **Every fact traces to an attached source or to an answer the author gave.**
+  Nothing is reconstructed from what a project of this kind usually does. Where a
+  fact is missing, it is asked for, and until it is answered the section is not
+  written.
+- No invented metrics, no invented scale, no invented timelines, no plausible
+  filler. A project with no measured performance figure says so.
+- The document is organised around **decisions**, not features. What was chosen,
+  what was rejected, and why — that is the material that survives questioning.
+  A feature list is a README, not a document.
+- Limitations and things that broke are included. A project document with no
+  failures in it reads as marketing and is treated as incomplete.
+- Working tier by default, per section 4. Roughly 2,500 to 4,000 words.
+- Closes with the reference table (stack, versions, scale), the recall check, and
+  the compression.
 
 New series are added to this table before their first document, not after.
 
@@ -476,6 +496,7 @@ inline in the body.
 | URLs in the sources block only once verified | A verified citation has real value | Already conditional |
 | No emoji | Tone | Never |
 | No invented figures, dates or reference numbers | Silent invention is the worst failure available | Never |
+| No fact about the author's own work that did not come from a source or an answer | Invention here is undetectable by the reader and indefensible under questioning | Never |
 | No examples with named characters | The story displaces the mechanism | Never |
 | No meta-commentary about purpose, reader or difficulty | Section 11 | Never |
 | No prose restating an adjacent table | Redundancy | Never |
