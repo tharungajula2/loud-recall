@@ -11,7 +11,7 @@ export async function generateStaticParams() {
   }));
 }
 
-const DEFAULT_DESCRIPTION = "Learning out loud. A mobile-first reading system for long-form technical documents on risk, finance and AI.";
+const DEFAULT_DESCRIPTION = "Notes on risk, finance and AI. One subject at a time, taken deep enough to defend.";
 
 function truncateDescription(desc: string, maxLen = 155): string {
   if (!desc || !desc.trim()) {

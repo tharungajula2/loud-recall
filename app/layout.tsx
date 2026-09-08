@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     template: "%s — Loud Recall",
   },
   description:
-    "Learning out loud. A mobile-first reading system for long-form technical documents on risk, finance and AI.",
+    "Notes on risk, finance and AI. One subject at a time, taken deep enough to defend.",
   applicationName: "Loud Recall",
   authors: [{ name: "Tharun Gajula" }],
   alternates: {
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     url: "/",
     title: "Loud Recall",
     description:
-      "Learning out loud. A mobile-first reading system for long-form technical documents on risk, finance and AI.",
+      "Notes on risk, finance and AI. One subject at a time, taken deep enough to defend.",
     images: [
       {
         url: "/og-image.png",
@@ -49,7 +49,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Loud Recall",
     description:
-      "Learning out loud. A mobile-first reading system for long-form technical documents on risk, finance and AI.",
+      "Notes on risk, finance and AI. One subject at a time, taken deep enough to defend.",
     images: ["/og-image.png"],
   },
   robots: {

@@ -27,7 +27,7 @@ export default function Home() {
             </h1>
           </div>
           <p className="text-base text-muted leading-relaxed mb-3">
-            A mobile-first reading system for long-form technical documents.
+            Notes on risk, finance and AI. One subject at a time, taken deep enough to defend.
           </p>
           <p className="text-xs font-medium text-muted/70">
             {statLine}
