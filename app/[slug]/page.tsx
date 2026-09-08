@@ -11,6 +11,19 @@ export async function generateStaticParams() {
   }));
 }
 
+const DEFAULT_DESCRIPTION = "Learning out loud. A mobile-first reading system for long-form technical documents on risk, finance and AI.";
+
+function truncateDescription(desc: string, maxLen = 155): string {
+  if (!desc || !desc.trim()) {
+    return DEFAULT_DESCRIPTION;
+  }
+  const clean = desc.trim();
+  if (clean.length <= maxLen) return clean;
+  const truncated = clean.slice(0, maxLen);
+  const lastSpace = truncated.lastIndexOf(' ');
+  return (lastSpace > 0 ? truncated.slice(0, lastSpace) : truncated) + '…';
+}
+
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const resolvedParams = await params;
   const doc = getDocumentData(resolvedParams.slug);
@@ -19,9 +32,31 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     return { title: 'Not Found' };
   }
 
+  const description = truncateDescription(doc.description);
+  const publishedTime = doc.created || undefined;
+  const modifiedTime = doc.updated || undefined;
+
   return {
-    title: `${doc.title} - Loud Recall`,
-    description: doc.description,
+    title: doc.title,
+    description,
+    alternates: {
+      canonical: `/${resolvedParams.slug}`,
+    },
+    openGraph: {
+      type: 'article',
+      url: `/${resolvedParams.slug}`,
+      title: doc.title,
+      description,
+      images: ['/og-image.png'],
+      ...(publishedTime && { publishedTime }),
+      ...(modifiedTime && { modifiedTime }),
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: doc.title,
+      description,
+      images: ['/og-image.png'],
+    },
   };
 }
 

@@ -1,5 +1,6 @@
 import { getSortedDocumentsData } from '@/lib/markdown';
 import { ShelfList } from '@/components/ShelfList';
+import { Mark } from '@/components/Mark';
 
 export default function Home() {
   const documents = getSortedDocumentsData();
@@ -9,7 +10,10 @@ export default function Home() {
       {/* Top Header */}
       <header className="w-full py-4 border-b border-border/50">
         <div className="max-w-2xl mx-auto px-3 md:px-4 flex items-center justify-between">
-          <span className="text-sm font-medium tracking-tight text-foreground">Loud Recall</span>
+          <div className="flex items-center gap-2">
+            <Mark className="h-3.5 w-auto text-foreground" />
+            <span className="text-sm font-medium tracking-tight text-foreground">Loud Recall</span>
+          </div>
         </div>
       </header>
 
