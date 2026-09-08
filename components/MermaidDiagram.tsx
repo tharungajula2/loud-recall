@@ -22,6 +22,11 @@ export function MermaidDiagram({ chart }: MermaidDiagramProps) {
         theme: 'neutral',
         securityLevel: 'loose',
         fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+        htmlLabels: true,
+        flowchart: {
+          useMaxWidth: true,
+          htmlLabels: true,
+        },
       });
       mermaidInitialized = true;
     }
@@ -37,7 +42,23 @@ export function MermaidDiagram({ chart }: MermaidDiagramProps) {
           .replace(/&lt;/g, '<')
           .replace(/&gt;/g, '>')
           .replace(/&amp;/g, '&');
-        const { svg } = await mermaid.render(id, cleanChart);
+        let { svg } = await mermaid.render(id, cleanChart);
+        
+        if (svg.includes('<svg')) {
+          svg = svg.replace(/<svg\b([^>]*)>/i, (match, attrs) => {
+            let newAttrs = attrs;
+            if (newAttrs.includes('style="')) {
+              newAttrs = newAttrs.replace(
+                /style="([^"]*)"/,
+                'style="$1; width: 100% !important; height: auto !important; max-width: none !important;"'
+              );
+            } else {
+              newAttrs += ' style="width: 100% !important; height: auto !important; max-width: none !important;"';
+            }
+            return `<svg${newAttrs}>`;
+          });
+        }
+
         if (isMounted) {
           setSvgContent(svg);
           setError(null);
@@ -75,10 +96,12 @@ export function MermaidDiagram({ chart }: MermaidDiagramProps) {
   }
 
   return (
-    <div
-      ref={containerRef}
-      className="my-6 w-full max-w-full overflow-x-auto py-4 flex justify-center bg-background rounded-lg border border-border/60"
-      dangerouslySetInnerHTML={{ __html: svgContent }}
-    />
+    <div className="my-6 w-full max-w-full overflow-x-auto py-4 rounded-lg border border-border/60 bg-background">
+      <div
+        ref={containerRef}
+        className="w-full flex justify-center [&_svg]:w-full [&_svg]:h-auto [&_svg]:max-w-none"
+        dangerouslySetInnerHTML={{ __html: svgContent }}
+      />
+    </div>
   );
 }
