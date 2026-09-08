@@ -117,15 +117,12 @@ export function getSortedDocumentsData(): DocumentMeta[] {
       };
     });
 
-  // Sort documents by order
+  // Sort documents by updated date (newest first); fallback to title alphabetical
   return allDocumentsData.sort((a, b) => {
-    if (a.order < b.order) {
-      return -1;
-    } else if (a.order > b.order) {
-      return 1;
-    } else {
-      return 0;
+    if (a.updated !== b.updated) {
+      return b.updated.localeCompare(a.updated);
     }
+    return a.title.localeCompare(b.title);
   });
 }
 

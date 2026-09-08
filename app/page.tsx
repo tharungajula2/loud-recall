@@ -5,26 +5,34 @@ import { Mark } from '@/components/Mark';
 export default function Home() {
   const documents = getSortedDocumentsData();
 
+  // Compute total reading time in hours dynamically
+  const totalMinutes = documents.reduce((acc, doc) => {
+    const mins = parseInt(doc.readTime, 10) || Math.ceil(doc.wordCount / 225);
+    return acc + mins;
+  }, 0);
+  const totalHours = Math.round(totalMinutes / 60);
+  const hoursLabel = totalHours === 1 ? '1 hour' : `${totalHours} hours`;
+  const statLine = `${documents.length} documents · about ${hoursLabel} of reading`;
+
   return (
     <div className="flex-1 flex flex-col w-full min-w-0">
-      {/* Top Header */}
-      <header className="w-full py-4 border-b border-border/50">
-        <div className="max-w-2xl mx-auto px-3 md:px-4 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Mark className="h-3.5 w-auto text-foreground" />
-            <span className="text-sm font-medium tracking-tight text-foreground">Loud Recall</span>
-          </div>
-        </div>
-      </header>
-
       {/* Main Shelf Content */}
-      <main className="flex-1 w-full max-w-2xl mx-auto px-3 md:px-4 py-8 md:py-16 min-w-0">
-        {/* Intro */}
-        <div className="mb-8">
-          <p className="text-muted text-base leading-relaxed">
+      <main className="flex-1 w-full max-w-2xl mx-auto px-3 md:px-4 py-8 md:py-12 min-w-0">
+        {/* Masthead */}
+        <header className="mb-8 md:mb-10 pb-8 border-b border-border/40">
+          <div className="flex items-center gap-3 mb-2.5">
+            <Mark className="h-8 w-auto text-foreground" />
+            <h1 className="text-2xl font-serif font-bold tracking-tight text-foreground">
+              Loud Recall
+            </h1>
+          </div>
+          <p className="text-base text-muted leading-relaxed mb-3">
             A mobile-first reading system for long-form technical documents.
           </p>
-        </div>
+          <p className="text-xs font-medium text-muted/70">
+            {statLine}
+          </p>
+        </header>
 
         {/* Shelf List */}
         <ShelfList documents={documents} />

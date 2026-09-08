@@ -12,6 +12,18 @@ interface ClientReaderProps {
   children: React.ReactNode;
 }
 
+function formatDateDisplay(dateStr: string): string {
+  if (!dateStr) return '';
+  const parts = dateStr.split('-');
+  if (parts.length !== 3) return dateStr;
+  const year = parts[0];
+  const monthIdx = parseInt(parts[1], 10) - 1;
+  const dayNum = parseInt(parts[2], 10);
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  if (isNaN(monthIdx) || isNaN(dayNum) || monthIdx < 0 || monthIdx > 11) return dateStr;
+  return `${dayNum} ${months[monthIdx]} ${year}`;
+}
+
 export default function ClientReader({ doc, headings, children }: ClientReaderProps) {
   const [activeId, setActiveId] = useState<string>('');
   const [isTocOpen, setIsTocOpen] = useState(false);
@@ -223,7 +235,7 @@ export default function ClientReader({ doc, headings, children }: ClientReaderPr
               {doc.updated && (
                 <>
                   <span>&middot;</span>
-                  <span>Updated {doc.updated}</span>
+                  <span>Updated {formatDateDisplay(doc.updated)}</span>
                 </>
               )}
               <span>&middot;</span>
