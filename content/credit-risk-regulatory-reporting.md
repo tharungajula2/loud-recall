@@ -1,5 +1,6 @@
 ---
 title: Credit Risk, Capital and Regulatory Reporting
+description: "Single continuous pass over the domain: credit risk and IRAC, ECL under Ind AS 109, Basel capital and RWA, liquidity, capital markets, BCBS 239 and reporting, SQL and Oracle, modelling and the AI stack."
 format: markdown
 series: role-recall
 tags: [credit-risk, ecl, basel, liquidity, capital-markets, regulatory-reporting, sql, machine-learning, ai-stack]
