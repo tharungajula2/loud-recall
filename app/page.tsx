@@ -21,8 +21,8 @@ export default function Home() {
         {/* Masthead */}
         <header className="mb-8 md:mb-10 pb-8 border-b border-border/40">
           <div className="flex items-center gap-3 mb-2.5">
-            <Mark className="h-8 w-auto text-foreground" />
-            <h1 className="text-2xl font-serif font-bold tracking-tight text-foreground">
+            <Mark className="h-7 w-auto text-foreground" />
+            <h1 className="text-xl font-sans font-light tracking-wide text-foreground">
               Loud Recall
             </h1>
           </div>
