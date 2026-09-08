@@ -1,6 +1,6 @@
 @import "tailwindcss";
 @import "katex/dist/katex.min.css";
-@import "../public/primer-html.css";
+@import "../public/loud-recall-html.css";
 
 /* KaTeX Display Equations Container - Prevent overflow & clipping on mobile */
 .katex-display {

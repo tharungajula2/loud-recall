@@ -23,7 +23,7 @@ html, body {
   overflow-x: clip;
 }
 
-.primer-html-note, .atom-content, .ai-stack {
+.loud-recall-html-note, .atom-content, .ai-stack {
   width: 100%;
   max-width: 100%;
   overflow-x: clip;
@@ -36,14 +36,14 @@ html, body {
 }
 
 @media (min-width: 768px) {
-  .primer-html-note, .atom-content, .ai-stack {
+  .loud-recall-html-note, .atom-content, .ai-stack {
     font-size: 1.0625rem;
     line-height: 1.7;
   }
 }
 
 /* Card-scroll rhythm & section reveal */
-.primer-html-note section, .atom-content section {
+.loud-recall-html-note section, .atom-content section {
   padding: 2.5rem 0 3rem;
   border-bottom: 1px solid var(--html-border);
   opacity: 0;
@@ -51,18 +51,18 @@ html, body {
   transition: opacity 0.4s ease, transform 0.4s ease;
 }
 
-.primer-html-note section.in, .atom-content section.in {
+.loud-recall-html-note section.in, .atom-content section.in {
   opacity: 1;
   transform: none;
 }
 
-.primer-html-note section:last-child, .atom-content section:last-child {
+.loud-recall-html-note section:last-child, .atom-content section:last-child {
   border-bottom: none;
   padding-bottom: 5rem;
 }
 
 /* Eyebrow & Labels */
-.primer-html-note .eyebrow, .atom-content .eyebrow, .ai-stack .eyebrow {
+.loud-recall-html-note .eyebrow, .atom-content .eyebrow, .ai-stack .eyebrow {
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -70,7 +70,7 @@ html, body {
   margin-bottom: 0.875rem;
 }
 
-.primer-html-note .label, .atom-content .label, .ai-stack .label {
+.loud-recall-html-note .label, .atom-content .label, .ai-stack .label {
   font-family: var(--font-mono), monospace;
   font-size: 0.625rem;
   font-weight: 600;
@@ -82,11 +82,11 @@ html, body {
   border-radius: 0.25rem;
 }
 
-.primer-html-note .label.q, .atom-content .label.q, .ai-stack .label.q { background: var(--html-warn); }
-.primer-html-note .label.r, .atom-content .label.r, .ai-stack .label.r { background: var(--html-ok); }
-.primer-html-note .label.l, .atom-content .label.l, .ai-stack .label.l { background: var(--html-live); }
+.loud-recall-html-note .label.q, .atom-content .label.q, .ai-stack .label.q { background: var(--html-warn); }
+.loud-recall-html-note .label.r, .atom-content .label.r, .ai-stack .label.r { background: var(--html-ok); }
+.loud-recall-html-note .label.l, .atom-content .label.l, .ai-stack .label.l { background: var(--html-live); }
 
-.primer-html-note .tag, .atom-content .tag, .ai-stack .tag {
+.loud-recall-html-note .tag, .atom-content .tag, .ai-stack .tag {
   font-family: var(--font-mono), monospace;
   font-size: 0.6875rem;
   letter-spacing: 0.1em;
@@ -94,7 +94,7 @@ html, body {
   color: var(--html-muted);
 }
 
-.primer-html-note .kick, .atom-content .kick, .ai-stack .kick {
+.loud-recall-html-note .kick, .atom-content .kick, .ai-stack .kick {
   font-family: var(--font-mono), monospace;
   font-size: 0.6875rem;
   letter-spacing: 0.18em;
@@ -104,7 +104,7 @@ html, body {
 }
 
 /* Headings & Typography Scale (Mobile First) */
-.primer-html-note h1, .atom-content h1, .ai-stack h1 {
+.loud-recall-html-note h1, .atom-content h1, .ai-stack h1 {
   font-family: var(--font-serif), serif;
   font-weight: 700;
   font-size: 1.75rem; /* 28px mobile */
@@ -114,7 +114,7 @@ html, body {
   margin-bottom: 1rem;
 }
 
-.primer-html-note h2, .atom-content h2, .ai-stack h2 {
+.loud-recall-html-note h2, .atom-content h2, .ai-stack h2 {
   font-family: var(--font-serif), serif;
   font-weight: 700;
   font-size: 1.3125rem; /* ~21px mobile */
@@ -125,7 +125,7 @@ html, body {
   word-break: break-word;
 }
 
-.primer-html-note h3, .atom-content h3, .ai-stack h3, .card-title {
+.loud-recall-html-note h3, .atom-content h3, .ai-stack h3, .card-title {
   font-family: var(--font-serif), serif;
   font-weight: 600;
   font-size: 1.125rem; /* 18px mobile */
@@ -136,45 +136,45 @@ html, body {
 }
 
 @media (min-width: 640px) {
-  .primer-html-note h1, .atom-content h1, .ai-stack h1 {
+  .loud-recall-html-note h1, .atom-content h1, .ai-stack h1 {
     font-size: 2.25rem;
   }
-  .primer-html-note h2, .atom-content h2, .ai-stack h2 {
+  .loud-recall-html-note h2, .atom-content h2, .ai-stack h2 {
     font-size: 1.625rem;
     margin: 2.25rem 0 1rem;
   }
-  .primer-html-note h3, .atom-content h3, .ai-stack h3, .card-title {
+  .loud-recall-html-note h3, .atom-content h3, .ai-stack h3, .card-title {
     font-size: 1.25rem;
   }
 }
 
 @media (min-width: 1024px) {
-  .primer-html-note h1, .atom-content h1, .ai-stack h1 {
+  .loud-recall-html-note h1, .atom-content h1, .ai-stack h1 {
     font-size: 2.5rem;
   }
-  .primer-html-note h2, .atom-content h2, .ai-stack h2 {
+  .loud-recall-html-note h2, .atom-content h2, .ai-stack h2 {
     font-size: 1.875rem;
     margin: 2.5rem 0 1rem;
   }
 }
 
-.primer-html-note p, .atom-content p, .ai-stack p {
+.loud-recall-html-note p, .atom-content p, .ai-stack p {
   margin-bottom: 1rem;
   color: var(--html-body);
   line-height: 1.68;
 }
 
-.primer-html-note strong, .atom-content strong, .ai-stack strong {
+.loud-recall-html-note strong, .atom-content strong, .ai-stack strong {
   color: var(--html-ink);
   font-weight: 600;
 }
 
-.primer-html-note .k, .atom-content .k, .ai-stack .k {
+.loud-recall-html-note .k, .atom-content .k, .ai-stack .k {
   color: var(--html-accent);
   font-weight: 600;
 }
 
-.primer-html-note code, .atom-content code, .ai-stack code {
+.loud-recall-html-note code, .atom-content code, .ai-stack code {
   font-family: var(--font-mono), monospace;
   font-size: 0.85em;
   background: var(--html-raise);
@@ -183,7 +183,7 @@ html, body {
   color: var(--html-ink);
 }
 
-.primer-html-note .note, .atom-content .note, .ai-stack .note {
+.loud-recall-html-note .note, .atom-content .note, .ai-stack .note {
   border-left: 3px solid var(--html-accent);
   padding: 0.75rem 0 0.75rem 1rem;
   margin: 1.25rem 0;
@@ -229,7 +229,7 @@ html, body {
   border-radius: 0 0.5rem 0.5rem 0;
 }
 
-.primer-html-note table, .atom-content table, .ai-stack table, table.dt {
+.loud-recall-html-note table, .atom-content table, .ai-stack table, table.dt {
   width: 100%;
   border-collapse: collapse;
   font-size: 0.875rem;
@@ -237,7 +237,7 @@ html, body {
   min-width: 520px; /* Natural cell length on mobile */
 }
 
-.primer-html-note th, .atom-content th, .ai-stack th, table.dt th {
+.loud-recall-html-note th, .atom-content th, .ai-stack th, table.dt th {
   font-family: var(--font-mono), monospace;
   font-size: 0.6875rem;
   letter-spacing: 0.1em;
@@ -251,7 +251,7 @@ html, body {
   white-space: nowrap;
 }
 
-.primer-html-note td, .atom-content td, .ai-stack td, table.dt td {
+.loud-recall-html-note td, .atom-content td, .ai-stack td, table.dt td {
   padding: 0.625rem 0.875rem;
   border-bottom: 1px solid var(--html-border);
   vertical-align: top;
@@ -259,7 +259,7 @@ html, body {
   line-height: 1.5;
 }
 
-.primer-html-note tr:last-child td, .atom-content tr:last-child td, .ai-stack tr:last-child td, table.dt tr:last-child td {
+.loud-recall-html-note tr:last-child td, .atom-content tr:last-child td, .ai-stack tr:last-child td, table.dt tr:last-child td {
   border-bottom: none;
 }
 
@@ -267,7 +267,7 @@ html, body {
 @media (max-width: 1023px) {
   .table-wrapper th:first-child, .table-wrapper td:first-child,
   .dt-wrapper th:first-child, .dt-wrapper td:first-child,
-  .primer-html-note table th:first-child, .primer-html-note table td:first-child,
+  .loud-recall-html-note table th:first-child, .loud-recall-html-note table td:first-child,
   .ai-stack table th:first-child, .ai-stack table td:first-child {
     position: sticky;
     left: 0;
@@ -278,12 +278,12 @@ html, body {
 
   .table-wrapper th:first-child,
   .dt-wrapper th:first-child,
-  .primer-html-note table th:first-child,
+  .loud-recall-html-note table th:first-child,
   .ai-stack table th:first-child {
     background: var(--html-raise);
   }
 
-  .primer-html-note td:first-child, .ai-stack td:first-child {
+  .loud-recall-html-note td:first-child, .ai-stack td:first-child {
     font-weight: 600;
     color: var(--html-ink);
   }
@@ -299,18 +299,18 @@ html, body {
     margin-right: 0 !important;
   }
   
-  .primer-html-note table, .atom-content table, .ai-stack table, table.dt {
+  .loud-recall-html-note table, .atom-content table, .ai-stack table, table.dt {
     width: 100% !important;
     min-width: 0 !important;
     table-layout: fixed !important;
   }
 
-  .primer-html-note th, .primer-html-note td,
+  .loud-recall-html-note th, .loud-recall-html-note td,
   .ai-stack th, .ai-stack td {
     word-break: break-word;
   }
 
-  .primer-html-note th:first-child, .primer-html-note td:first-child,
+  .loud-recall-html-note th:first-child, .loud-recall-html-note td:first-child,
   .ai-stack th:first-child, .ai-stack td:first-child {
     width: 24% !important;
   }
@@ -324,7 +324,7 @@ html, body {
 }
 
 /* Comparison Grids */
-.primer-html-note .two, .atom-content .two, .ai-stack .nc {
+.loud-recall-html-note .two, .atom-content .two, .ai-stack .nc {
   display: grid;
   grid-template-columns: 1fr;
   gap: 0.75rem;
@@ -332,7 +332,7 @@ html, body {
   box-sizing: border-box;
 }
 
-.primer-html-note .two > div, .atom-content .two > div, .ai-stack .nc > div {
+.loud-recall-html-note .two > div, .atom-content .two > div, .ai-stack .nc > div {
   padding: 0.875rem 1rem;
   background: var(--html-surface);
   border: 1px solid var(--html-border);
@@ -340,7 +340,7 @@ html, body {
   font-size: 0.875rem;
 }
 
-.primer-html-note .two > div b, .atom-content .two > div b, .ai-stack .nc b {
+.loud-recall-html-note .two > div b, .atom-content .two > div b, .ai-stack .nc b {
   display: block;
   color: var(--html-accent);
   font-size: 0.6875rem;
@@ -351,13 +351,13 @@ html, body {
 }
 
 @media (min-width: 640px) {
-  .primer-html-note .two, .atom-content .two, .ai-stack .nc {
+  .loud-recall-html-note .two, .atom-content .two, .ai-stack .nc {
     grid-template-columns: 1fr 1fr;
   }
 }
 
 /* Typeset Workings / Worked-Calculation Figures (.calc) - Clean & Flush */
-.primer-html-note .calc, .atom-content .calc, .ai-stack .calc, .workings {
+.loud-recall-html-note .calc, .atom-content .calc, .ai-stack .calc, .workings {
   margin: 1.5rem 0 !important;
   padding: 0.875rem 0 !important;
   background: transparent !important;
@@ -490,7 +490,7 @@ html, body {
 }
 
 /* Inline SVG Responsiveness & Scaling */
-.primer-html-note figure, .atom-content figure, .ai-stack figure {
+.loud-recall-html-note figure, .atom-content figure, .ai-stack figure {
   margin: 1.5rem 0;
   padding: 0;
   width: 100%;
@@ -499,13 +499,13 @@ html, body {
   box-sizing: border-box;
 }
 
-.primer-html-note figure svg, .atom-content figure svg, .ai-stack figure svg {
+.loud-recall-html-note figure svg, .atom-content figure svg, .ai-stack figure svg {
   max-width: 100%;
   height: auto;
   display: block;
 }
 
-.primer-html-note figcaption, .atom-content figcaption, .ai-stack figcaption {
+.loud-recall-html-note figcaption, .atom-content figcaption, .ai-stack figcaption {
   font-size: 0.8125rem;
   color: var(--html-muted);
   margin-top: 0.625rem;

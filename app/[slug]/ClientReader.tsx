@@ -70,7 +70,7 @@ export default function ClientReader({ doc, headings, children }: ClientReaderPr
 
   // Section reveal observer for HTML notes or markdown sections
   useEffect(() => {
-    const sections = Array.from(document.querySelectorAll('.primer-html-note section, .atom-content section'));
+    const sections = Array.from(document.querySelectorAll('.loud-recall-html-note section, .atom-content section'));
     if (sections.length === 0) return;
 
     if ('IntersectionObserver' in window) {
@@ -233,7 +233,7 @@ export default function ClientReader({ doc, headings, children }: ClientReaderPr
             </div>
           </header>
 
-          {/* Rendered Body: Markdown notes structurally receive .prose typography styles; HTML notes render inside unstyled wrapper container holding .primer-html-note */}
+          {/* Rendered Body: Markdown notes structurally receive .prose typography styles; HTML notes render inside unstyled wrapper container holding .loud-recall-html-note */}
           <article className={clsx("w-full min-w-0 max-w-none", doc.format !== 'html' && "prose")}>
             {children}
           </article>

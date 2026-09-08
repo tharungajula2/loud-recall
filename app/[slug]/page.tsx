@@ -34,12 +34,12 @@ function processHtmlNoteContent(rawContent: string): string {
   clean = clean.replace(/<div\s+id=["'](?:bar|top|rail|idx)["'][^>]*>[\s\S]*?<\/div>/gi, '');
   clean = clean.replace(/<button\s+id=["'](?:toTop|close|count)["'][^>]*>[\s\S]*?<\/button>/gi, '');
 
-  // 3. Scope CSS rules (body, html, :root) to .primer-html-note to prevent style leakage
+  // 3. Scope CSS rules (body, html, :root) to .loud-recall-html-note to prevent style leakage
   clean = clean.replace(/<style[^>]*>([\s\S]*?)<\/style>/gi, (_, css) => {
     const scopedCss = css
-      .replace(/body\s*\{/g, '.primer-html-note {')
-      .replace(/html\s*\{/g, '.primer-html-note {')
-      .replace(/:root\s*\{/g, '.primer-html-note {');
+      .replace(/body\s*\{/g, '.loud-recall-html-note {')
+      .replace(/html\s*\{/g, '.loud-recall-html-note {')
+      .replace(/:root\s*\{/g, '.loud-recall-html-note {');
     return `<style>${scopedCss}</style>`;
   });
 
@@ -67,7 +67,7 @@ export default async function DocumentPage({ params }: { params: Promise<{ slug:
     return (
       <ClientReader doc={doc} headings={headings}>
         <div 
-          className="primer-html-note w-full min-w-0 max-w-none"
+          className="loud-recall-html-note w-full min-w-0 max-w-none"
           dangerouslySetInnerHTML={{ __html: cleanContent }} 
         />
       </ClientReader>
