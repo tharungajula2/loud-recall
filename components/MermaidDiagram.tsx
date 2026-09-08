@@ -22,10 +22,10 @@ export function MermaidDiagram({ chart }: MermaidDiagramProps) {
         theme: 'neutral',
         securityLevel: 'loose',
         fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-        htmlLabels: true,
+        htmlLabels: false,
         flowchart: {
-          useMaxWidth: true,
-          htmlLabels: true,
+          useMaxWidth: false,
+          htmlLabels: false,
         },
       });
       mermaidInitialized = true;
@@ -50,10 +50,10 @@ export function MermaidDiagram({ chart }: MermaidDiagramProps) {
             if (newAttrs.includes('style="')) {
               newAttrs = newAttrs.replace(
                 /style="([^"]*)"/,
-                'style="$1; width: 100% !important; height: auto !important; max-width: none !important;"'
+                'style="$1; max-width: none; height: auto; display: block; margin: 0 auto;"'
               );
             } else {
-              newAttrs += ' style="width: 100% !important; height: auto !important; max-width: none !important;"';
+              newAttrs += ' style="max-width: none; height: auto; display: block; margin: 0 auto;"';
             }
             return `<svg${newAttrs}>`;
           });
@@ -99,7 +99,7 @@ export function MermaidDiagram({ chart }: MermaidDiagramProps) {
     <div className="my-6 w-full max-w-full overflow-x-auto py-4 rounded-lg border border-border/60 bg-background">
       <div
         ref={containerRef}
-        className="w-full flex justify-center [&_svg]:w-full [&_svg]:h-auto [&_svg]:max-w-none"
+        className="w-max min-w-full flex justify-center p-2 [&_svg]:max-w-none [&_svg]:h-auto [&_svg]:w-auto"
         dangerouslySetInnerHTML={{ __html: svgContent }}
       />
     </div>
