@@ -3,7 +3,7 @@ title: Parents Health OS — Loud Recall
 description: Spoken-recall notes for defending the Parents Health OS product, architecture, repository, data model, AI pipeline, WhatsApp loop, failures, tests, and engineering workflow.
 collection: portfolio
 format: md
-series: loud-recall
+series: portfolio
 verified: unverified
 created: 2026-09-08
 updated: 2026-09-08

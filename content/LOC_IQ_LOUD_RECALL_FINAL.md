@@ -3,7 +3,7 @@ title: Loc-IQ — Loud Recall Final
 description: Definitive long-term memory, interview, portfolio, architecture, domain, and claim-safety companion for Loc-IQ.
 collection: portfolio
 format: md
-series: loud-recall
+series: portfolio
 verified: unverified
 created: 2026-09-08
 updated: 2026-09-08
