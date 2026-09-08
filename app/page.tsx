@@ -9,7 +9,7 @@ export default function Home() {
       {/* Top Header */}
       <header className="w-full py-4 border-b border-border/50">
         <div className="max-w-2xl mx-auto px-3 md:px-4 flex items-center justify-between">
-          <span className="text-sm font-medium tracking-tight text-foreground">Primer</span>
+          <span className="text-sm font-medium tracking-tight text-foreground">Loud Recall</span>
         </div>
       </header>
 

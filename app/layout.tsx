@@ -11,7 +11,7 @@ const literata = Literata({
 });
 
 export const metadata: Metadata = {
-  title: "Primer",
+  title: "Loud Recall",
   description: "A mobile-first reading system for long-form technical documents.",
 };
 

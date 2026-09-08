@@ -43,7 +43,6 @@ next-env.d.ts
 # agent instruction files
 AGENTS.md
 CLAUDE.md
-_primer_context_files/
 
 # scratch directory
 scratch/
