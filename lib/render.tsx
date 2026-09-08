@@ -196,19 +196,18 @@ const ResponsivePre = (props: any) => {
   );
 };
 
+import Slugger from 'github-slugger';
+
 export function extractHeadings(content: string) {
   const headings: { id: string; text: string }[] = [];
-  
+  const slugger = new Slugger();
+
   // Match markdown headers: ## Title
   const mdRegex = /^##\s+(.+)$/gm;
   let match;
   while ((match = mdRegex.exec(content)) !== null) {
     const text = match[1].trim();
-    const id = text
-      .toLowerCase()
-      .replace(/[^\w\s-]/g, '')
-      .replace(/[\s_-]+/g, '-')
-      .replace(/^-+|-+$/g, '');
+    const id = slugger.slug(text);
     headings.push({ id, text });
   }
 
@@ -219,11 +218,7 @@ export function extractHeadings(content: string) {
     while ((htmlMatch = htmlRegex.exec(content)) !== null) {
       const rawId = htmlMatch[1];
       const text = htmlMatch[2].replace(/<[^>]*>/g, '').trim();
-      const id = rawId || text
-        .toLowerCase()
-        .replace(/[^\w\s-]/g, '')
-        .replace(/[\s_-]+/g, '-')
-        .replace(/^-+|-+$/g, '');
+      const id = rawId || slugger.slug(text);
       headings.push({ id, text });
     }
   }

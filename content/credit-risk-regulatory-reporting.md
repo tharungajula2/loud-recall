@@ -69,20 +69,32 @@ $$
 
 Expected loss is the mean of the loss distribution. It is a **cost of doing business** — priced into the spread, provisioned through P&L. Unexpected loss is the distance from that mean out to a high percentile of the same distribution (Basel uses 99.9% over one year). It cannot be priced away, so it is **absorbed by capital**.
 
-```
-Loss distribution
-│
-│      ╭──╮
-│     ╱    ╲
-│    ╱      ╲___
-│   ╱           ╲______
-└──┴───┴─────────┴──────────► Loss
-   EL  ↑         ↑
-       │         99.9th percentile
-   Provisions    ────────────────
-                 Capital covers this gap
-                 (= Unexpected Loss)
-```
+<svg viewBox="0 0 600 300" width="100%" role="img" aria-labelledby="ldTitle ldDesc" xmlns="http://www.w3.org/2000/svg" style="max-width:600px;display:block;margin:0 auto">
+<title id="ldTitle">The credit loss distribution</title>
+<desc id="ldDesc">A right-skewed loss distribution. Expected loss sits near the peak and is covered by provisions. The shaded region between expected loss and the 99.9th percentile is unexpected loss, covered by capital. Beyond the 99.9th percentile the tail is uncovered.</desc>
+<defs><clipPath id="ldArea"><path d="M56 236 C 96 236 126 96 166 84 C 206 72 236 136 286 171 C 346 206 416 226 476 232 C 516 235 541 236 556 236 L 556 236 L 56 236 Z"/></clipPath></defs>
+<rect x="186" y="40" width="284" height="196" fill="currentColor" opacity="0.10" clip-path="url(#ldArea)"/>
+<rect x="56" y="40" width="130" height="196" fill="currentColor" opacity="0.22" clip-path="url(#ldArea)"/>
+<path d="M56 236 C 96 236 126 96 166 84 C 206 72 236 136 286 171 C 346 206 416 226 476 232 C 516 235 541 236 556 236" fill="none" stroke="currentColor" stroke-width="1.6"/>
+<line x1="56" y1="236" x2="580" y2="236" stroke="currentColor" stroke-width="1"/>
+<path d="M574 232 L582 236 L574 240" fill="none" stroke="currentColor" stroke-width="1"/>
+<line x1="186" y1="88" x2="186" y2="236" stroke="currentColor" stroke-width="1.2" stroke-dasharray="4 3"/>
+<line x1="470" y1="196" x2="470" y2="236" stroke="currentColor" stroke-width="1.2" stroke-dasharray="4 3"/>
+<g font-family="ui-sans-serif,system-ui,-apple-system,Segoe UI,Helvetica,Arial,sans-serif" fill="currentColor">
+<text x="186" y="78" text-anchor="middle" font-size="13" font-weight="500">EL</text>
+<text x="470" y="186" text-anchor="middle" font-size="13" font-weight="500">99.9th percentile</text>
+<text x="586" y="252" text-anchor="end" font-size="13" opacity="0.75">Loss</text>
+<text x="121" y="268" text-anchor="middle" font-size="12.5" opacity="0.8">Provisions</text>
+<text x="328" y="268" text-anchor="middle" font-size="12.5" opacity="0.8">Capital &#8212; unexpected loss</text>
+<text x="524" y="268" text-anchor="middle" font-size="12.5" opacity="0.8">Uncovered tail</text>
+<text x="121" y="286" text-anchor="middle" font-size="11.5" opacity="0.55">expected, priced in</text>
+<text x="328" y="286" text-anchor="middle" font-size="11.5" opacity="0.55">cannot be priced away</text>
+<text x="524" y="286" text-anchor="middle" font-size="11.5" opacity="0.55">beyond the standard</text>
+</g>
+<line x1="56" y1="246" x2="186" y2="246" stroke="currentColor" stroke-width="1" opacity="0.45"/>
+<line x1="190" y1="246" x2="466" y2="246" stroke="currentColor" stroke-width="1" opacity="0.45"/>
+<line x1="474" y1="246" x2="574" y2="246" stroke="currentColor" stroke-width="1" opacity="0.45"/>
+</svg>
 
 ### The three parameters
 
