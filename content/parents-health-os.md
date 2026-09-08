@@ -1,15 +1,17 @@
 ---
-title: Parents Health OS — Loud Recall
-description: Spoken-recall notes for defending the Parents Health OS product, architecture, repository, data model, AI pipeline, WhatsApp loop, failures, tests, and engineering workflow.
-collection: portfolio
-format: md
-series: portfolio
+title: "Parents Health OS — Family Care Architecture and WhatsApp Engine"
+description: "Spoken-recall notes for defending the Parents Health OS product, architecture, data model, Gemini AI extraction pipeline, WhatsApp engine, and test suites."
+order: 23
+collection: default
 verified: unverified
+format: markdown
+series: portfolio
+tags: [parents-health-os, nextjs-16, supabase, gemini-ai, whatsapp-cloud-api, row-level-security]
+related: [loc-iq, retail-credit-risk]
 created: 2026-09-08
 updated: 2026-09-08
 ---
 
-# Parents Health OS — Loud Recall
 
 **Repository baseline:** `main` @ `a7cc3ba`  
 **Grounded in:** Project Truth, Build History, Zero-to-God-Mode Masterclass, and Final Gap Recovery  
@@ -17,7 +19,7 @@ updated: 2026-09-08
 
 ---
 
-# 0. How to use this document
+## 0. How to use this document
 
 This is not a tutorial and not a code walkthrough. It is a **spoken recall system**.
 
@@ -47,7 +49,7 @@ The aim is to answer without opening the repository:
 
 ---
 
-# 1. One-sentence answer
+## 1. One-sentence answer
 
 > Parents Health OS is a Next.js 16 family-care application for adult children and caregivers managing elderly parents in India, combining a Supabase-backed care console with private AI-assisted document extraction and WhatsApp reminders that feed parent responses back into the care record.
 
@@ -55,13 +57,13 @@ Safe boundaries: do not add claims about production scale, medical outcomes, dia
 
 ---
 
-# 2. Thirty-second answer
+## 2. Thirty-second answer
 
 > Parents Health OS is a family-care application for adult children managing elderly parents. The caregiver gets a web console for medications, care routines, vitals and medical documents. The parent does not need another app: reminders are sent through WhatsApp with simple buttons such as TAKEN, SKIP or SNOOZE. The system is built with Next.js 16, Supabase PostgreSQL and Auth, Gemini 3.5 Flash-Lite for structured document extraction, and Meta WhatsApp Cloud API v25.0. The technically difficult parts were keeping privileged operations secure, preventing duplicate scheduled reminders, and making asynchronous WhatsApp delivery and response updates safe under retries and out-of-order events.
 
 ---
 
-# 3. Two-minute answer
+## 3. Two-minute answer
 
 > Parents Health OS started as a browser-side prototype and later moved to a real cloud-backed architecture. The final system uses Next.js 16 for the caregiver application and server API routes, Supabase for authentication, PostgreSQL, Row-Level Security and private document storage, Gemini 3.5 Flash-Lite for extracting structured information from uploaded medical documents, and Meta WhatsApp Cloud API v25.0 for parent reminders.
 >
@@ -75,15 +77,15 @@ Safe boundaries: do not add claims about production scale, medical outcomes, dia
 
 ---
 
-# 4. Product mental model
+## 4. Product mental model
 
 There are two interaction surfaces.
 
-## Caregiver
+### Caregiver
 
 Uses the web application to authenticate, create or enter a family care network, manage care recipients, record observations, create medication schedules, create non-medication care routines, upload medical documents, trigger structured extraction, review extracted content, send reminders and view adherence/delivery state.
 
-## Parent / care recipient
+### Parent / care recipient
 
 Does not need a dedicated application. The parent receives WhatsApp reminders and responds through deterministic quick-reply buttons.
 
@@ -93,7 +95,7 @@ Memory phrase:
 
 ---
 
-# 5. What the system is not
+## 5. What the system is not
 
 The system is not:
 
@@ -110,9 +112,9 @@ Gemini extraction is constrained and reviewable. Free-text WhatsApp messages are
 
 ---
 
-# 6. Architecture from memory
+## 6. Architecture from memory
 
-## Six layers
+### Six layers
 
 1. **Browser / PWA** — React caregiver console, user session, normal user-scoped data access.
 2. **Next.js server layer** — five important API routes.
@@ -121,7 +123,7 @@ Gemini extraction is constrained and reviewable. Free-text WhatsApp messages are
 5. **Google Gemini** — structured document extraction.
 6. **Meta WhatsApp Cloud API** — outbound messages, button responses and delivery receipts.
 
-## Five server routes
+### Five server routes
 
 - `/api/analyze`
 - `/api/documents/remove`
@@ -129,13 +131,13 @@ Gemini extraction is constrained and reviewable. Free-text WhatsApp messages are
 - `/api/whatsapp/reminders/run`
 - `/api/whatsapp/webhook`
 
-## Spoken chain
+### Spoken chain
 
 > The caregiver interacts with a Next.js application. Supabase Auth establishes identity, normal database access is constrained by PostgreSQL Row-Level Security, sensitive documents live in private Supabase Storage, server routes perform privileged operations, Gemini handles structured document extraction, and Meta handles WhatsApp delivery. Meta then calls the application back through a signed webhook, and the server updates the corresponding event in PostgreSQL.
 
 ---
 
-# 7. Repository map
+## 7. Repository map
 
 ```text
 parents-health-os/
@@ -173,7 +175,7 @@ Important file anchors:
 
 ---
 
-# 8. Next.js facts worth recalling
+## 8. Next.js facts worth recalling
 
 The application uses the **Next.js App Router**. Pages and HTTP handlers live under `src/app`; route handlers use `route.ts` under `src/app/api`.
 
@@ -201,15 +203,15 @@ Do not call 60 seconds measured extraction latency. It is a runtime allowance.
 
 ---
 
-# 9. Authentication versus authorization
+## 9. Authentication versus authorization
 
-## Authentication
+### Authentication
 
 **Who is the user?**
 
 Supabase Auth provides user identity and session state. `@supabase/ssr` integrates sessions with Next.js cookies. Middleware refreshes stale session state before normal page handling.
 
-## Authorization
+### Authorization
 
 **What is the authenticated user allowed to do?**
 
@@ -227,19 +229,19 @@ Memory line:
 
 ---
 
-# 10. RLS versus service role
+## 10. RLS versus service role
 
 This distinction must be precise.
 
-## Normal user path
+### Normal user path
 
 The user-session Supabase client operates under the authenticated caregiver's identity. PostgreSQL RLS constrains accessible rows.
 
-## Privileged path
+### Privileged path
 
 Webhooks, background scheduler work and certain private-document operations do not execute as an interactive caregiver session. They therefore use a server-only privileged client.
 
-## The important correction
+### The important correction
 
 Do not say:
 
@@ -251,11 +253,11 @@ Say:
 
 ---
 
-# 11. The 15-table database in five buckets
+## 11. The 15-table database in five buckets
 
 Do not memorise 15 disconnected names.
 
-## 1. Identity and family — 5
+### 1. Identity and family — 5
 
 1. `profiles`
 2. `families`
@@ -263,23 +265,23 @@ Do not memorise 15 disconnected names.
 4. `care_recipients`
 5. `consents`
 
-## 2. Documents and AI — 2
+### 2. Documents and AI — 2
 
 6. `health_documents`
 7. `document_extractions`
 
-## 3. Clinical / observations — 2
+### 3. Clinical / observations — 2
 
 8. `health_conditions`
 9. `health_observations`
 
-## 4. Care routines — 3
+### 4. Care routines — 3
 
 10. `care_routines`
 11. `care_routine_schedules`
 12. `care_routine_events`
 
-## 5. Medications — 3
+### 5. Medications — 3
 
 13. `medications`
 14. `medication_schedules`
@@ -291,7 +293,7 @@ Memory formula:
 
 ---
 
-# 12. Why schedule and event are separate
+## 12. Why schedule and event are separate
 
 > A schedule describes recurrence. An event describes one operational occurrence.
 
@@ -311,7 +313,7 @@ This separation lets the recurrence definition remain stable while each occurren
 
 ---
 
-# 13. Idempotency in the data model
+## 13. Idempotency in the data model
 
 Medication and routine event tables have unique constraints on:
 
@@ -325,7 +327,7 @@ Spoken explanation:
 
 ---
 
-# 14. Family isolation
+## 14. Family isolation
 
 Users connect to families through `family_members`. Care recipients belong to families. Clinical and care data descend from the care recipient. RLS and family-role checks constrain normal access.
 
@@ -335,7 +337,7 @@ Spoken answer:
 
 ---
 
-# 15. Consent, provenance and AI lineage
+## 15. Consent, provenance and AI lineage
 
 `consents` is modelled as an audit-oriented record. The audit source identifies no update/delete RLS path for these rows.
 
@@ -357,7 +359,7 @@ Spoken explanation:
 
 ---
 
-# 16. Onboarding flow
+## 16. Onboarding flow
 
 Memory chain:
 
@@ -369,7 +371,7 @@ Detailed version:
 
 ---
 
-# 17. Observation flow
+## 17. Observation flow
 
 Memory chain:
 
@@ -383,7 +385,7 @@ Safe explanation:
 
 ---
 
-# 18. Medication and care-routine flow
+## 18. Medication and care-routine flow
 
 Medication:
 
@@ -397,7 +399,7 @@ The two domains share the same architectural pattern, but their action semantics
 
 ---
 
-# 19. Document upload flow
+## 19. Document upload flow
 
 Memory chain:
 
@@ -411,7 +413,7 @@ Memory line:
 
 ---
 
-# 20. Gemini extraction flow
+## 20. Gemini extraction flow
 
 Memorise:
 
@@ -432,7 +434,7 @@ Step-by-step:
 
 ---
 
-# 21. What Gemini is allowed to do
+## 21. What Gemini is allowed to do
 
 The extraction prompt explicitly prohibits:
 
@@ -451,7 +453,7 @@ Memory line:
 
 ---
 
-# 22. Why AI output is not medical truth
+## 22. Why AI output is not medical truth
 
 Four ideas work together:
 
@@ -466,7 +468,7 @@ Spoken answer:
 
 ---
 
-# 23. Document deletion flow
+## 23. Document deletion flow
 
 Memory chain:
 
@@ -478,19 +480,19 @@ Ordering matters.
 
 ---
 
-# 24. WhatsApp mental model: sending, delivery, response
+## 24. WhatsApp mental model: sending, delivery, response
 
 Keep these three concepts separate.
 
-## Sending
+### Sending
 
 The application asks Meta to send a message.
 
-## Delivery
+### Delivery
 
 Meta later reports states such as sent, delivered, read or failed.
 
-## Response
+### Response
 
 The parent presses a quick-reply button, which produces an inbound webhook event that updates adherence/routine state.
 
@@ -500,7 +502,7 @@ Memory line:
 
 ---
 
-# 25. Manual WhatsApp send
+## 25. Manual WhatsApp send
 
 Memory chain:
 
@@ -518,7 +520,7 @@ This hardening exists because recipient resolution actually failed during live i
 
 ---
 
-# 26. Phone-number handling
+## 26. Phone-number handling
 
 `formatIndianPhoneNumber` normalises supported Indian formats. The Meta payload removes the leading `+`. `maskPhoneNumber` hides middle digits in logs.
 
@@ -530,7 +532,7 @@ Do not call masking full anonymisation.
 
 ---
 
-# 27. Interactive callback IDs
+## 27. Interactive callback IDs
 
 Medication:
 
@@ -554,7 +556,7 @@ Why this matters:
 
 ---
 
-# 28. Free-text WhatsApp handling
+## 28. Free-text WhatsApp handling
 
 Free text does not invoke an AI chatbot. It is logged and ignored for automated AI response.
 
@@ -564,7 +566,7 @@ Safe defence:
 
 ---
 
-# 29. Webhook verification
+## 29. Webhook verification
 
 The public webhook receives requests from the internet. A public route therefore cannot trust the caller just because it knows the URL.
 
@@ -589,7 +591,7 @@ GET and POST are different:
 
 ---
 
-# 30. Delivery state machine
+## 30. Delivery state machine
 
 Relevant delivery states include:
 
@@ -611,7 +613,7 @@ Memory line:
 
 ---
 
-# 31. Why the database guard matters
+## 31. Why the database guard matters
 
 Weak pattern:
 
@@ -631,7 +633,7 @@ That is what `getGuardedStatusUpdateFilter` supports.
 
 ---
 
-# 32. Scheduled WhatsApp reminders
+## 32. Scheduled WhatsApp reminders
 
 Memory chain:
 
@@ -662,7 +664,7 @@ Do not invent the historical rationale for those exact bounds.
 
 ---
 
-# 33. Duplicate-send problem
+## 33. Duplicate-send problem
 
 Without locking:
 
@@ -675,7 +677,7 @@ The project solves this by claiming the event atomically before the external sen
 
 ---
 
-# 34. CAS in one sentence
+## 34. CAS in one sentence
 
 > Compare-And-Swap means “change this row only if it is still in the state I expect.”
 
@@ -685,7 +687,7 @@ A second active worker cannot claim the same event under the same conditions.
 
 ---
 
-# 35. Lease ownership and stale recovery
+## 35. Lease ownership and stale recovery
 
 The persisted `updated_at` timestamp is used as ownership evidence.
 
@@ -711,9 +713,9 @@ Do not call five minutes a measured optimum. It is an implementation parameter w
 
 ---
 
-# 36. Success and failure after claim
+## 36. Success and failure after claim
 
-## Meta accepts the message
+### Meta accepts the message
 
 `markReminderEventSent` records:
 
@@ -723,13 +725,13 @@ Do not call five minutes a measured optimum. It is an implementation parameter w
 
 and requires the current lease token.
 
-## Meta fails before acceptance
+### Meta fails before acceptance
 
 `releaseReminderEventClaim` clears the temporary claim so a later scheduler run can retry, again requiring the correct lease token.
 
 ---
 
-# 37. Distributed side-effect edge case
+## 37. Distributed side-effect edge case
 
 A hard question:
 
@@ -743,14 +745,14 @@ Do not claim perfect exactly-once WhatsApp delivery.
 
 ---
 
-# 38. Security memory map
+## 38. Security memory map
 
-## Browser-safe / public configuration
+### Browser-safe / public configuration
 
 - `NEXT_PUBLIC_SUPABASE_URL`
 - `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`
 
-## Server-only secrets
+### Server-only secrets
 
 - `SUPABASE_SECRET_KEY` / service-role equivalent
 - `GEMINI_API_KEY`
@@ -759,7 +761,7 @@ Do not claim perfect exactly-once WhatsApp delivery.
 - `WHATSAPP_APP_SECRET`
 - `REMINDER_CRON_SECRET`
 
-## Meta identifiers
+### Meta identifiers
 
 - `WHATSAPP_PHONE_NUMBER_ID`
 - `WHATSAPP_BUSINESS_ACCOUNT_ID`
@@ -768,7 +770,7 @@ Never expose actual values during a screen recording.
 
 ---
 
-# 39. Security chain
+## 39. Security chain
 
 Memory chain:
 
@@ -790,7 +792,7 @@ These are defence-in-depth controls, not replacements for RLS or secret manageme
 
 ---
 
-# 40. Five migrations
+## 40. Five migrations
 
 Memorise by purpose:
 
@@ -806,7 +808,7 @@ Memory chain:
 
 ---
 
-# 41. Real defect: document upload schema mismatch
+## 41. Real defect: document upload schema mismatch
 
 **Symptom:** upload failed.  
 **Cause:** application payload field names did not match the `health_documents` schema.  
@@ -819,7 +821,7 @@ Memory lesson:
 
 ---
 
-# 42. Real defect: extraction service-role permission
+## 42. Real defect: extraction service-role permission
 
 **Symptom:** `/api/analyze` could not persist the extraction row.  
 **Cause:** the privileged server path lacked required table-level `INSERT` permission.  
@@ -832,7 +834,7 @@ Memory lesson:
 
 ---
 
-# 43. Real defect: Graph API version mismatch
+## 43. Real defect: Graph API version mismatch
 
 **Symptom:** Meta dispatch behaviour failed or did not match the configured developer application.  
 **Cause:** code was pinned to `v26.0`, while the Meta Developer Dashboard used `v25.0`.  
@@ -845,7 +847,7 @@ Memory lesson:
 
 ---
 
-# 44. Real defect: care-recipient lookup
+## 44. Real defect: care-recipient lookup
 
 **Symptom:** manual send returned `Care recipient profile not found`.  
 **Cause:** request-key mismatch plus user-scoped lookup/RLS behaviour.  
@@ -855,7 +857,7 @@ Memory lesson:
 
 ---
 
-# 45. Real defect: WhatsApp event-table permission
+## 45. Real defect: WhatsApp event-table permission
 
 This is the strongest debugging story.
 
@@ -874,7 +876,7 @@ Why it matters:
 
 ---
 
-# 46. Prevented risk: delivery downgrade
+## 46. Prevented risk: delivery downgrade
 
 Risk:
 
@@ -893,7 +895,7 @@ Say **prevented/tested risk**, not “observed production outage”, unless inde
 
 ---
 
-# 47. Prevented risk: duplicate scheduler sends
+## 47. Prevented risk: duplicate scheduler sends
 
 Risk:
 
@@ -914,30 +916,30 @@ Again: tested/prevented risk, not automatically an observed production incident.
 
 ---
 
-# 48. Delivery tests — 12
+## 48. Delivery tests — 12
 
 Memorise by groups.
 
-## Normal progression
+### Normal progression
 
 - pending → sent
 - sent → delivered
 - delivered → read
 
-## Regression protection
+### Regression protection
 
 - read cannot move back to delivered
 - read cannot move back to sent
 - delivered cannot be overwritten by failed
 - duplicate statuses are harmless no-ops
 
-## Recovery transitions
+### Recovery transitions
 
 - failed may advance to delivered
 - failed may advance to read
 - sent may become failed
 
-## Regression checks tied to real fixes
+### Regression checks tied to real fixes
 
 - recipient-ID payload normalisation
 - service-role event-grant migration assertion
@@ -946,7 +948,7 @@ Total: **12**.
 
 ---
 
-# 49. Scheduler tests — 10
+## 49. Scheduler tests — 10
 
 Memorise as one story:
 
@@ -965,7 +967,7 @@ Total: **10**.
 
 ---
 
-# 50. Number sheet
+## 50. Number sheet
 
 | Number | Meaning |
 |---:|---|
@@ -990,52 +992,52 @@ Never turn configuration values into measured performance claims.
 
 ---
 
-# 51. Build history in eight phases
+## 51. Build history in eight phases
 
-## Phase 1 — Jan to Mar 2026
+### Phase 1 — Jan to Mar 2026
 
 Early Next.js prototype under **Yukti OS**.
 
-## Phase 2 — May to Jun
+### Phase 2 — May to Jun
 
 Rebrand to Parents Health OS; browser sandbox with `localStorage`, mock sync queue, simulated WhatsApp UI and mock analysis.
 
-## Phase 3 — Sep 3
+### Phase 3 — Sep 3
 
 Real Supabase foundation; mock browser persistence removed; real Auth and client/server boundaries introduced.
 
-## Phase 4 — Sep 3
+### Phase 4 — Sep 3
 
 Canonical 15-table schema and real family-care core.
 
-## Phase 5 — Sep 3 to 4
+### Phase 5 — Sep 3 to 4
 
 Private Storage and Gemini document intelligence.
 
-## Phase 6 — Sep 4
+### Phase 6 — Sep 4
 
 Real Meta WhatsApp loop, scheduler, CAS, delivery state machine and tests.
 
-## Phase 7 — Sep 4 to 6
+### Phase 7 — Sep 4 to 6
 
 Document purge, PWA shell and public privacy page.
 
-## Phase 8 — Sep 6
+### Phase 8 — Sep 6
 
 Live-integration hardening: Graph API alignment, recipient lookup fix and event-table service-role permission fix.
 
 ---
 
-# 52. Prototype-to-real transition
+## 52. Prototype-to-real transition
 
-## Before
+### Before
 
 - `localStorage` persistence;
 - local/mock sync behaviour;
 - simulated WhatsApp component;
 - mock document analysis.
 
-## After
+### After
 
 - Supabase Auth;
 - PostgreSQL;
@@ -1052,7 +1054,7 @@ Safe spoken version:
 
 ---
 
-# 53. IDE-agent / AI-assisted engineering answer
+## 53. IDE-agent / AI-assisted engineering answer
 
 What the repository proves:
 
@@ -1079,9 +1081,9 @@ Safe spoken answer:
 
 ---
 
-# 54. What the tests prove and do not prove
+## 54. What the tests prove and do not prove
 
-## Prove
+### Prove
 
 - delivery transition logic;
 - duplicate-status no-op behaviour;
@@ -1096,7 +1098,7 @@ Safe spoken answer:
 - TypeScript compilation;
 - production build creation.
 
-## Do not prove
+### Do not prove
 
 - Meta global uptime;
 - production network latency;
@@ -1108,7 +1110,7 @@ Safe spoken answer:
 
 ---
 
-# 55. PWA answer
+## 55. PWA answer
 
 The final application includes a manifest, icons and a service worker.
 
@@ -1120,7 +1122,7 @@ Do not describe the final PWA as an offline-first caching engine. Offline/local 
 
 ---
 
-# 56. Deployment truth
+## 56. Deployment truth
 
 Safe answer:
 
@@ -1128,7 +1130,7 @@ Safe answer:
 
 ---
 
-# 57. What would break at 100x?
+## 57. What would break at 100x?
 
 There is no measured 100x load test.
 
@@ -1151,7 +1153,7 @@ Safe answer:
 
 ---
 
-# 58. Why server routes instead of browser calls?
+## 58. Why server routes instead of browser calls?
 
 > Browser code cannot safely hold the service-role key, Gemini API key or WhatsApp access token. It also cannot serve as a trusted inbound webhook target or reliable background scheduler. Those responsibilities belong to a server boundary.
 
@@ -1159,7 +1161,7 @@ This is an architectural property of the implementation, not necessarily a repos
 
 ---
 
-# 59. Why relational modelling?
+## 59. Why relational modelling?
 
 > The domain is explicitly relational: users belong to families, families contain care recipients, medications and routines have schedules, schedules create events, and documents own extractions. PostgreSQL foreign keys, unique constraints, cascades and RLS encode those relationships and integrity rules directly.
 
@@ -1167,25 +1169,25 @@ Do not say Firebase was evaluated and rejected unless builder testimony establis
 
 ---
 
-# 60. Why private Storage?
+## 60. Why private Storage?
 
 > Health documents are binary objects that should not be exposed through public URLs. The private bucket stores the file, while PostgreSQL stores metadata and lineage. Privileged server access retrieves bytes only for authorised processing.
 
 ---
 
-# 61. Why server-side Gemini?
+## 61. Why server-side Gemini?
 
 > The Gemini API key is server-only, the source document is private, and the operation must verify access before downloading the file. A server route gives a controlled boundary for those secrets and checks.
 
 ---
 
-# 62. Why human review?
+## 62. Why human review?
 
 > Extraction and clinical truth are different things. The model can structure a document, but the result is stored as `pending_review`, retains provider/model provenance and uncertainty, and its core extraction history is protected. Human review remains the trust boundary.
 
 ---
 
-# 63. Why no free-text WhatsApp AI?
+## 63. Why no free-text WhatsApp AI?
 
 Repository-supported boundary:
 
@@ -1197,7 +1199,7 @@ Safe rationale:
 
 ---
 
-# 64. Why CAS instead of a simple boolean?
+## 64. Why CAS instead of a simple boolean?
 
 A simple `is_processing=true` flag can get stuck and does not prove which worker owns it.
 
@@ -1209,7 +1211,7 @@ Memory line:
 
 ---
 
-# 65. Why `updated_at` as the token?
+## 65. Why `updated_at` as the token?
 
 Repository fact:
 
@@ -1225,87 +1227,87 @@ Safe answer:
 
 ---
 
-# 66. Hard interview answers
+## 66. Hard interview answers
 
-## “What was technically hardest?”
+### “What was technically hardest?”
 
 > The most technically involved area is the WhatsApp automation loop because it crosses an asynchronous external API boundary and has to handle competing workers, retries, delayed callbacks, signed webhooks and database permission boundaries. The repository contains dedicated concurrency and delivery-state tests for those risks.
 
 Do not claim it personally took the longest unless supplying that testimony.
 
-## “Why service role if you already have RLS?”
+### “Why service role if you already have RLS?”
 
 > RLS protects user-session access. Webhooks and background schedulers do not have a caregiver session, so they need a controlled privileged server identity. That privileged path is protected by server-only secrets, authenticated external calls and explicit database grants.
 
-## “How do duplicate reminders get prevented?”
+### “How do duplicate reminders get prevented?”
 
 > The scheduler atomically claims an event before sending. The claim returns an `updated_at` lease token. Another live worker cannot claim the same event, and stale workers cannot release or mark sent once ownership changes. A five-minute threshold makes abandoned claims reclaimable.
 
-## “How does delivery state avoid moving backwards?”
+### “How does delivery state avoid moving backwards?”
 
 > Incoming state is not applied unconditionally. `status.ts` defines legal progression and builds a conditional PostgREST update, so the database rejects a stale transition such as delivered overwriting read.
 
-## “What happens when the parent presses TAKEN?”
+### “What happens when the parent presses TAKEN?”
 
 > Meta sends a signed webhook. The route verifies the signature, parses a callback such as `med:<event_uuid>:taken`, and updates that exact event through the privileged server path, recording the response state and related metadata.
 
-## “How do you know the webhook is from Meta?”
+### “How do you know the webhook is from Meta?”
 
 > HMAC SHA-256 over the raw body using the Meta app secret, compared with `crypto.timingSafeEqual`.
 
-## “How do duplicate event rows get prevented?”
+### “How do duplicate event rows get prevented?”
 
 > Unique `(schedule_id, due_at)` constraints on event tables.
 
-## “How do you avoid repeated Gemini calls?”
+### “How do you avoid repeated Gemini calls?”
 
 > `/api/analyze` checks for an existing `pending_review` or `approved` extraction and reuses it when available.
 
-## “What if Gemini returns invalid JSON?”
+### “What if Gemini returns invalid JSON?”
 
 > The route catches the parse failure, preserves the raw output in a fallback structure and requires manual review rather than treating it as valid structured data.
 
-## “Does Gemini diagnose?”
+### “Does Gemini diagnose?”
 
 > No. The extraction prompt forbids diagnosis, prescribing and unsupported inference, and the output remains a reviewable extraction proposal.
 
-## “What stops arbitrary cron calls?”
+### “What stops arbitrary cron calls?”
 
 > The scheduler endpoint requires `REMINDER_CRON_SECRET` as a Bearer credential.
 
-## “What stops forged WhatsApp callbacks?”
+### “What stops forged WhatsApp callbacks?”
 
 > POST callbacks must pass HMAC signature verification.
 
-## “What is the weakest area?”
+### “What is the weakest area?”
 
 > The repository has correctness tests for the core WhatsApp state and concurrency logic, but it does not establish large-scale load behaviour, multi-region races or broad extraction-accuracy benchmarking. Recurring scheduler invocation also remains externally configured.
 
 ---
 
-# 67. Product-choice questions with safe boundaries
+## 67. Product-choice questions with safe boundaries
 
-## “Why WhatsApp instead of a parent app?”
+### “Why WhatsApp instead of a parent app?”
 
 > The implemented product deliberately separates the surfaces: complex coordination stays in the caregiver console, while the parent receives simple WhatsApp actions. That removes the requirement for the parent to operate another application.
 
 Historical motivation beyond that is builder testimony.
 
-## “Why Supabase?”
+### “Why Supabase?”
 
 > In the final architecture Supabase provides Auth, PostgreSQL, RLS and private Storage in one backend, which maps cleanly to the relational family model and client/server access boundaries. The repository does not document a Supabase-versus-Firebase decision process, so I would not invent one.
 
-## “Why Gemini 3.5 Flash-Lite?”
+### “Why Gemini 3.5 Flash-Lite?”
 
 > That is the model pinned in the final extraction route and the repository proves its structured-output use. The repository does not establish a historical comparison with GPT-4o or Claude.
 
-## “Why not an existing family health tool?”
+### “Why not an existing family health tool?”
 
 > The implemented system unifies family-scoped care records, reviewable document extraction and a WhatsApp response loop in one data model. The repository does not contain a formal market-product evaluation, so I would explain the workflow it implements rather than claim specific products were rejected.
 
 ---
 
-# 68. Numbers drill
+## 68. Numbers drill
 
 **Public tables?** 15.  
 **Migrations?** 5.  
@@ -1320,7 +1322,7 @@ Historical motivation beyond that is builder testimony.
 
 ---
 
-# 69. File-location drill
+## 69. File-location drill
 
 | Question | Answer |
 |---|---|
@@ -1345,7 +1347,7 @@ Historical motivation beyond that is builder testimony.
 
 ---
 
-# 70. High-value commit drill
+## 70. High-value commit drill
 
 | Commit | Recall |
 |---|---|
@@ -1367,7 +1369,7 @@ Historical motivation beyond that is builder testimony.
 
 ---
 
-# 71. Dangerous claims — never say these
+## 71. Dangerous claims — never say these
 
 Do not say:
 
@@ -1387,7 +1389,7 @@ Do not say:
 
 ---
 
-# 72. Masterclass corrections recovered in final audit
+## 72. Masterclass corrections recovered in final audit
 
 1. Service role bypasses RLS, **not all table-level PostgreSQL privileges**.
 2. `/api/analyze` has both `force-dynamic` and `maxDuration = 60`.
@@ -1399,7 +1401,7 @@ These corrections should govern verbal recall even if older masterclass wording 
 
 ---
 
-# 73. Architecture deep-dive answer
+## 73. Architecture deep-dive answer
 
 > The browser side is a React application running through Next.js 16. Supabase Auth establishes the caregiver session, and the normal browser data path is scoped by PostgreSQL Row-Level Security. The schema is relational because the domain is naturally hierarchical: profiles join families, families contain care recipients, care recipients own clinical and care data, and medications and routines separate schedules from event instances.
 >
@@ -1407,7 +1409,7 @@ These corrections should govern verbal recall even if older masterclass wording 
 
 ---
 
-# 74. Database deep-dive answer
+## 74. Database deep-dive answer
 
 > The database has 15 public tables grouped into five areas. Identity and family use profiles, families, family_members, care_recipients and consents. Documents use health_documents and document_extractions. Clinical tracking uses health_conditions and health_observations. Care routines have the routine, schedule and event tables. Medications mirror that with medication, schedule and event tables.
 >
@@ -1415,13 +1417,13 @@ These corrections should govern verbal recall even if older masterclass wording 
 
 ---
 
-# 75. Gemini deep-dive answer
+## 75. Gemini deep-dive answer
 
 > A caregiver uploads a document to the private `health-documents` bucket and creates metadata. `/api/analyze` verifies access and checks whether a pending or approved extraction already exists. If one exists, it is reused. Otherwise a server-only privileged client downloads the private bytes, the route calls `gemini-3.5-flash-lite` through `@google/genai`, and the model is constrained by a structured response schema and a prompt that forbids diagnosis, prescribing and unsupported inference. Parsing failures preserve the raw model output in a review-required fallback. The result is inserted into `document_extractions` as `pending_review`, preserving the distinction between model output and verified care information.
 
 ---
 
-# 76. WhatsApp deep-dive answer
+## 76. WhatsApp deep-dive answer
 
 > WhatsApp has an outbound path and two inbound paths. Outbound, the application resolves the care recipient, normalises the Indian phone number, constructs deterministic interactive buttons and sends through Meta Graph API v25.0. The provider message ID is stored on the event.
 >
@@ -1431,31 +1433,31 @@ These corrections should govern verbal recall even if older masterclass wording 
 
 ---
 
-# 77. Security deep-dive answer
+## 77. Security deep-dive answer
 
 > Security is layered. Supabase Auth answers who the caregiver is. RLS answers which family rows that caregiver can access. Sensitive credentials remain server-only. Privileged background or webhook operations use a service-role client, but that client is never exposed to the browser and still required explicit SQL grants for the relevant table operations. Private medical documents stay in a non-public Storage bucket. Meta webhook authenticity is checked cryptographically with HMAC. Scheduler invocation is protected with a bearer secret. Server-safety assertions add defence against accidental client bundling or wrong-project configuration.
 
 ---
 
-# 78. Failure deep-dive answer
+## 78. Failure deep-dive answer
 
 > The failure history crosses several layers. A document upload initially failed because application payload names did not match the schema. Gemini extraction later needed an explicit service-role insert grant. WhatsApp integration exposed a Graph API version mismatch, then a recipient-ID naming mismatch, and finally a database permission failure where the parent could press TAKEN and the webhook could arrive, but PostgreSQL rejected the event update. The final migration granted the event-table operations required by the service role. Separately, delivery-state and scheduler code proactively protect against out-of-order callbacks and duplicate workers, and those are tested risks rather than being presented as observed production outages.
 
 ---
 
-# 79. Testing deep-dive answer
+## 79. Testing deep-dive answer
 
 > The project uses targeted tests around the asynchronous areas most likely to fail. The 12 delivery tests cover normal delivery progression, invalid regressions, duplicates, recovery transitions and regressions tied to real fixes. The 10 scheduler tests simulate competing workers, lease reclamation, stale-owner rejection, mark-sent ownership, retry release and parity between medication and routine events. TypeScript compilation validates application contracts, and the production build validates the Next.js bundle. Those checks do not establish network latency, provider uptime, large-scale load behaviour or broad medical-document extraction accuracy.
 
 ---
 
-# 80. “What did you get wrong?” answer
+## 80. “What did you get wrong?” answer
 
 > Several integration assumptions were wrong during hardening. A document payload did not match the database schema. The service-role path needed explicit table privileges that were missing. The WhatsApp code and Meta dashboard were on different Graph API versions. Manual send used inconsistent recipient-ID keys. Those were corrected through schema alignment, grant migrations, central API version configuration and hardened parameter handling. The concurrency and delivery-state risks were then covered with regression tests.
 
 ---
 
-# 81. “What would you do differently?” safe answer
+## 81. “What would you do differently?” safe answer
 
 The repository does not document a personal retrospective.
 
@@ -1465,26 +1467,26 @@ Safe engineering response:
 
 ---
 
-# 82. Builder-only unknowns
+## 82. Builder-only unknowns
 
 These remain testimony questions.
 
-## Product
+### Product
 
 - Why Supabase rather than Firebase or a custom backend?
 - What real caregiver feedback, if any, drove non-medication routines?
 
-## AI
+### AI
 
 - Why Gemini 3.5 Flash-Lite rather than GPT-4o or Claude?
 - What prompt iterations preceded the current extraction prompt?
 
-## WhatsApp
+### WhatsApp
 
 - What physical devices/WhatsApp versions were used for live tests?
 - What exact Meta Developer Dashboard setup steps were performed?
 
-## AI-assisted engineering
+### AI-assisted engineering
 
 - Which exact IDE agent/model was used in each build phase?
 - What percentage was human-authored versus agent-generated?
@@ -1494,7 +1496,7 @@ Do not answer these as repository facts without builder testimony.
 
 ---
 
-# 83. Whiteboard architecture
+## 83. Whiteboard architecture
 
 ```text
                     ┌─────────────────────┐
@@ -1528,7 +1530,7 @@ Explain user-scoped RLS, server-only privilege, external boundaries, asynchronou
 
 ---
 
-# 84. Database whiteboard
+## 84. Database whiteboard
 
 ```text
 IDENTITY & FAMILY
@@ -1572,7 +1574,7 @@ care recipient
 
 ---
 
-# 85. WhatsApp whiteboard
+## 85. WhatsApp whiteboard
 
 ```text
 schedule
@@ -1608,7 +1610,7 @@ sent → delivered → read
 
 ---
 
-# 86. Gemini whiteboard
+## 86. Gemini whiteboard
 
 ```text
 upload
@@ -1635,7 +1637,7 @@ human review
 
 ---
 
-# 87. Security whiteboard
+## 87. Security whiteboard
 
 ```text
 USER IDENTITY
@@ -1666,7 +1668,7 @@ cron secret
 
 ---
 
-# 88. Final flat assertions
+## 88. Final flat assertions
 
 - Parents Health OS is a caregiver web console plus a WhatsApp parent interaction surface.
 - The final application uses Next.js 16, React 19, Supabase, Gemini and Meta WhatsApp Cloud API.

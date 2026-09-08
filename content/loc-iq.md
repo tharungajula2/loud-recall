@@ -1,16 +1,17 @@
 ---
-title: Loc-IQ — Loud Recall Final
-description: Definitive long-term memory, interview, portfolio, architecture, domain, and claim-safety companion for Loc-IQ.
-collection: portfolio
-format: md
-series: portfolio
+title: "Loc-IQ — Address Consistency and Location Evidence Workstation"
+description: "Spoken-recall notes and technical architecture breakdown for defending the Loc-IQ address-consistency solver, 6-layer case graph, knowledge graph, and network lab."
+order: 22
+collection: default
 verified: unverified
+format: markdown
+series: portfolio
+tags: [loc-iq, address-consistency, graph-analytics, fraud-investigation, retail-credit]
+related: [parents-health-os, retail-credit-risk]
 created: 2026-09-08
 updated: 2026-09-08
 ---
 
-# LOC-IQ — LOUD RECALL FINAL
-## Definitive long-term memory, interview, portfolio, architecture, domain, and claim-safety companion
 
 **Purpose:** one file to reopen months later and recover the whole Loc-IQ project quickly and truthfully.
 
@@ -18,7 +19,7 @@ updated: 2026-09-08
 
 ---
 
-# 0. HOW TO USE THIS FILE
+## 0. How To Use This File
 
 This is not the long-form walkthrough script and it is not the full domain encyclopedia.
 
@@ -44,7 +45,7 @@ If you have two minutes, read Sections **1, 8, 17, 23, and 31**.
 
 ---
 
-# 1. THE 30-SECOND RECALL
+## 1. The 30-Second Recall
 
 **Loc-IQ is a deterministic address-consistency and location-evidence investigation workstation for Indian retail-credit use cases.**
 
@@ -83,23 +84,23 @@ Three graph surfaces:
 
 ---
 
-# 2. BEST ONE-SENTENCE DEFINITIONS
+## 2. Best One-Sentence Definitions
 
-## Safe general version
+### Safe general version
 
 > **Loc-IQ is an explainable deterministic simulation of how multiple non-GPS evidence sources could be combined to evaluate address consistency and geographic contradictions in retail-credit investigations.**
 
-## Portfolio version
+### Portfolio version
 
 > **Loc-IQ is a deterministic address-consistency workstation that turns synthetic multi-source observations into traceable physical-location hypotheses and graph-based investigation trails.**
 
-## Technical version
+### Technical version
 
 > **Loc-IQ is a Next.js/TypeScript investigation console with a deterministic provenance solver, a six-layer ReactFlow case graph, a 273-node knowledge graph, and a synthetic multi-case entity-network analytics lab.**
 
 ---
 
-# 3. WHAT LOC-IQ IS NOT
+## 3. What Loc-Iq Is Not
 
 Never allow the project to drift into a claim it cannot support.
 
@@ -128,7 +129,7 @@ The strongest framing is:
 
 ---
 
-# 4. WHY LOC-IQ EXISTS
+## 4. Why Loc-Iq Exists
 
 The starting problem is:
 
@@ -172,9 +173,9 @@ That is the mental model of the entire product.
 
 ---
 
-# 5. THE MOST IMPORTANT DOMAIN PRINCIPLES
+## 5. The Most Important Domain Principles
 
-## 5.1 Identity evidence ≠ physical-location evidence
+### 5.1 Identity evidence ≠ physical-location evidence
 
 A PAN may strongly identify a person but does not prove current residence.
 
@@ -190,7 +191,7 @@ A mobile number may be an important identifier while offering only a weak origin
 
 ---
 
-## 5.2 Declared address is a claim, not ground truth
+### 5.2 Declared address is a claim, not ground truth
 
 The declared pincode is the baseline claim being tested.
 
@@ -211,7 +212,7 @@ That is why `REVIEW` matters.
 
 ---
 
-## 5.3 Old historical evidence is not current presence
+### 5.3 Old historical evidence is not current presence
 
 A bureau address can be useful and still be stale.
 
@@ -223,7 +224,7 @@ It does not necessarily answer:
 
 ---
 
-## 5.4 Branch geography is an operational anchor
+### 5.4 Branch geography is an operational anchor
 
 A branch tells you something about where a banking relationship was sourced or serviced.
 
@@ -231,7 +232,7 @@ It does not prove where the customer sleeps.
 
 ---
 
-## 5.5 IP geography ≠ human geography
+### 5.5 IP geography ≠ human geography
 
 An IP can represent:
 - ISP infrastructure,
@@ -245,7 +246,7 @@ A Frankfurt network endpoint does not mean a person lives in Frankfurt.
 
 ---
 
-## 5.6 Proxy/VPN can be risk-relevant while location-weak
+### 5.6 Proxy/VPN can be risk-relevant while location-weak
 
 This is one of Loc-IQ's best lessons.
 
@@ -257,7 +258,7 @@ So Loc-IQ preserves the observation, raises its risk relevance, and discounts it
 
 ---
 
-## 5.7 Telecom circle is weak because portability exists
+### 5.7 Telecom circle is weak because portability exists
 
 The original telecom circle can be a broad clue.
 
@@ -267,7 +268,7 @@ Never treat telecom circle as precise physical proof.
 
 ---
 
-## 5.8 Repeated recent behaviour can beat one stale record
+### 5.8 Repeated recent behaviour can beat one stale record
 
 One login is noisy.
 
@@ -275,7 +276,7 @@ A repeated operational pattern across many events can become a strong anchor.
 
 ---
 
-## 5.9 Relationship ≠ suspicious relationship ≠ proven fraud
+### 5.9 Relationship ≠ suspicious relationship ≠ proven fraud
 
 Shared:
 - device,
@@ -293,7 +294,7 @@ The benign-household counterexample exists to force this discipline.
 
 ---
 
-## 5.10 Provenance matters
+### 5.10 Provenance matters
 
 A useful investigation system should be able to answer:
 
@@ -304,9 +305,9 @@ source → evidence → signal → candidate → decision.
 
 ---
 
-# 6. THE SIX PRIMARY IDENTIFIERS
+## 6. The Six Primary Identifiers
 
-## `mobile_number`
+### `mobile_number`
 
 Role:
 - linkage,
@@ -321,7 +322,7 @@ Limitation:
 
 ---
 
-## `pan`
+### `pan`
 
 Role:
 - strong identity key in Indian lending,
@@ -335,7 +336,7 @@ Limitation:
 
 ---
 
-## `aadhaar_number`
+### `aadhaar_number`
 
 Role:
 - strong identity/de-duplication concept.
@@ -346,7 +347,7 @@ Limitation:
 
 ---
 
-## `email_id`
+### `email_id`
 
 Role:
 - entity linkage,
@@ -360,14 +361,14 @@ Limitation:
 
 ---
 
-## `customer_key`
+### `customer_key`
 
 Role:
 - internal tokenised identifier joining events/cases for one customer relationship.
 
 ---
 
-## `case_id`
+### `case_id`
 
 Role:
 - identifies one specific application/loan/recovery investigation.
@@ -379,9 +380,9 @@ Role:
 
 ---
 
-# 7. THE SIX-LAYER ACTIVE INVESTIGATION MODEL
+## 7. The Six-Layer Active Investigation Model
 
-## Layer 1 — `IDENTIFIER`
+### Layer 1 — `IDENTIFIER`
 
 Question:
 > What do we start with?
@@ -389,7 +390,7 @@ Question:
 Examples:
 PAN, mobile, email, case ID, declared pincode.
 
-## Layer 2 — `SOURCE`
+### Layer 2 — `SOURCE`
 
 Question:
 > Which provider/system could produce evidence?
@@ -397,7 +398,7 @@ Question:
 Examples:
 bureau, IFSC source, IP intelligence, telecom metadata, internal systems.
 
-## Layer 3 — `EVIDENCE`
+### Layer 3 — `EVIDENCE`
 
 Question:
 > What raw observation was obtained?
@@ -405,7 +406,7 @@ Question:
 Examples:
 bureau address, branch location, public IP.
 
-## Layer 4 — `SIGNAL`
+### Layer 4 — `SIGNAL`
 
 Question:
 > What does that observation mean for the investigation?
@@ -413,12 +414,12 @@ Question:
 Examples:
 physical-locality support, regional corroboration, network location, proxy risk.
 
-## Layer 5 — `CANDIDATE_LOCATION`
+### Layer 5 — `CANDIDATE_LOCATION`
 
 Question:
 > Which physical-location hypotheses are supported?
 
-## Layer 6 — `DECISION`
+### Layer 6 — `DECISION`
 
 Question:
 > How does the strongest evidence compare with the declared address?
@@ -428,23 +429,23 @@ Current outputs:
 
 ---
 
-# 8. THE 42 FETCHED-FIELD UNIVERSE — RECALL BY FAMILY
+## 8. The 42 Fetched-Field Universe — Recall By Family
 
 The full Masterclass contains the encyclopedic detail. For Loud Recall, remember each family and its lesson.
 
-## Event context
+### Event context
 - `event_ts`
 - `event_type`
 - `source_system`
 
 **Lesson:** evidence without time and provenance is weak.
 
-## Digital location
+### Digital location
 - `public_ip`
 
 **Lesson:** network location is not human physical location.
 
-## Declared geography
+### Declared geography
 - `declared_pincode`
 - `declared_city`
 - `declared_state`
@@ -452,14 +453,14 @@ The full Masterclass contains the encyclopedic detail. For Loud Recall, remember
 
 **Lesson:** declared geography is the hypothesis being tested.
 
-## Branch geography
+### Branch geography
 - `branch_ifsc`
 - `sourcing_branch_id`
 - `servicing_branch_id`
 
 **Lesson:** operational anchor, not residence proof.
 
-## Device/app
+### Device/app
 - `device_id_hash`
 - `app_instance_id`
 - `session_id_hash`
@@ -469,7 +470,7 @@ The full Masterclass contains the encyclopedic detail. For Loud Recall, remember
 
 **Lesson:** often stronger for linkage than for physical location.
 
-## Consented GPS
+### Consented GPS
 - `gps_lat`
 - `gps_lon`
 - `gps_accuracy_meters`
@@ -478,13 +479,13 @@ The full Masterclass contains the encyclopedic detail. For Loud Recall, remember
 
 **Current app truth:** no live GPS tracking.
 
-## Consented network positioning
+### Consented network positioning
 - `wifi_bssid_hashes`
 - `cell_mcc_mnc_lac_cellid`
 
 **Lesson:** device-side observations can support positioning; they cannot be obtained from a phone number alone.
 
-## Bank behaviour
+### Bank behaviour
 - `login_event_history`
 - `repayment_event_history`
 - `contact_center_events`
@@ -492,7 +493,7 @@ The full Masterclass contains the encyclopedic detail. For Loud Recall, remember
 
 **Lesson:** repeated recent operational behaviour may be more informative than one stale record.
 
-## Transaction geography
+### Transaction geography
 - `atm_transaction_location`
 - `pos_merchant_location`
 - `upi_merchant_or_vpa_metadata`
@@ -500,7 +501,7 @@ The full Masterclass contains the encyclopedic detail. For Loud Recall, remember
 
 **Lesson:** useful operational geography, but still requires interpretation.
 
-## Collections operations
+### Collections operations
 - `field_visit_pincode`
 - `field_visit_outcome_code`
 - `returned_mail_pincode`
@@ -508,7 +509,7 @@ The full Masterclass contains the encyclopedic detail. For Loud Recall, remember
 
 **Lesson:** outcome can matter more than location alone.
 
-## Regulated history
+### Regulated history
 - `bureau_address_history`
 - `ckyc_id_or_search_key`
 - `account_aggregator_consent_token`
@@ -518,25 +519,25 @@ The full Masterclass contains the encyclopedic detail. For Loud Recall, remember
 
 **Current app truth:** these are modelled/catalogued concepts, not live integrations.
 
-## Social/public catalogue
+### Social/public catalogue
 - `consented_social_profile_location`
 - `public_social_profile_url`
 - `geotagged_public_posts`
 
 **Lesson:** weak/privacy-sensitive evidence should never dominate.
 
-## Catalogue-only unsafe source
+### Catalogue-only unsafe source
 - `leaked_or_breached_data`
 
 **Lesson:** cataloguing a source category does not mean building on it.
 
 ---
 
-# 9. THE 46-SOURCE UNIVERSE — REMEMBER THE FAMILIES
+## 9. The 46-Source Universe — Remember The Families
 
 The current app does **not** call these sources live.
 
-## Geography infrastructure
+### Geography infrastructure
 Examples:
 - Data.gov.in pincode directory
 - Postalpincode.in
@@ -555,7 +556,7 @@ Examples:
 Purpose:
 > translate pincodes/addresses/coordinates into geography and boundaries.
 
-## IP intelligence
+### IP intelligence
 Examples:
 - ip-api
 - MaxMind
@@ -568,7 +569,7 @@ Examples:
 Purpose:
 > approximate network geography and assess network trust.
 
-## Phone intelligence
+### Phone intelligence
 Examples:
 - `phonenumbers`
 - telecom number-series references
@@ -580,7 +581,7 @@ Examples:
 Purpose:
 > phone validation/operator/original-circle context, not live location.
 
-## Bank-branch intelligence
+### Bank-branch intelligence
 Examples:
 - Razorpay IFSC
 - RBI IFSC/MICR references
@@ -588,7 +589,7 @@ Examples:
 Purpose:
 > map branch identifiers to operational geography.
 
-## Device-side positioning
+### Device-side positioning
 Examples:
 - Browser Geolocation API
 - Google Geolocation API
@@ -596,7 +597,7 @@ Examples:
 Purpose:
 > consented device positioning.
 
-## Device/fraud intelligence
+### Device/fraud intelligence
 Examples:
 - SEON
 - Signzy
@@ -605,7 +606,7 @@ Examples:
 Purpose:
 > stable device identity and risk metadata.
 
-## Regulated financial sources
+### Regulated financial sources
 Examples:
 - credit bureaus
 - CKYC
@@ -614,7 +615,7 @@ Examples:
 Purpose:
 > historical address and consented financial context.
 
-## Public/enrichment/partnership sources
+### Public/enrichment/partnership sources
 Examples:
 - eCourts
 - e-commerce delivery partnerships
@@ -625,7 +626,7 @@ Examples:
 Purpose:
 > supporting enrichment.
 
-## Catalogue-only boundaries
+### Catalogue-only boundaries
 Examples:
 - covert social tracing,
 - leaked datasets,
@@ -638,7 +639,7 @@ Purpose:
 
 ---
 
-# 10. THE CORE SCORING FORMULA
+## 10. The Core Scoring Formula
 
 The resolver uses deterministic weighting:
 
@@ -652,7 +653,7 @@ The resolver uses deterministic weighting:
 \text{ip\_trust\_factor}
 \]
 
-## `base_weight`
+### `base_weight`
 Represents default relative reliability.
 
 It is:
@@ -665,7 +666,7 @@ It is **not**:
 - ML parameter,
 - calibrated probability.
 
-## `recency_factor`
+### `recency_factor`
 Represents freshness.
 
 Concept:
@@ -674,7 +675,7 @@ Concept:
 Current limitation:
 > recency is scenario-driven deterministic logic, not a production real-time decay service.
 
-## `ip_trust_factor`
+### `ip_trust_factor`
 Memorable rule:
 > proxy/hosting/VPN observations can receive a `0.1` trust factor.
 
@@ -683,18 +684,18 @@ Meaning:
 
 ---
 
-# 11. THREE GEOGRAPHIC SIGNAL CLASSES
+## 11. Three Geographic Signal Classes
 
-## `PHYSICAL_LOCALITY`
+### `PHYSICAL_LOCALITY`
 Supports a specific locality/pincode hypothesis.
 
-## `REGIONAL_SCOPE`
+### `REGIONAL_SCOPE`
 Provides broad regional corroboration without pretending to prove an exact locality.
 
 Example:
 telecom circle.
 
-## `NETWORK_LOCATION`
+### `NETWORK_LOCATION`
 Represents network endpoint geography.
 
 Example:
@@ -705,7 +706,7 @@ Important:
 
 ---
 
-# 12. CANDIDATE AGGREGATION
+## 12. Candidate Aggregation
 
 Each physical-location hypothesis accumulates effective support.
 
@@ -727,7 +728,7 @@ The system should not delete contradictions just to produce a clean story.
 
 ---
 
-# 13. EVIDENCE SHARE — EXPLAIN THIS PERFECTLY
+## 13. Evidence Share — Explain This Perfectly
 
 Evidence Share is **not probability**.
 
@@ -763,15 +764,15 @@ Why this matters:
 
 ---
 
-# 14. CURRENT DECISION SEMANTICS
+## 14. Current Decision Semantics
 
-## `CONSISTENT`
+### `CONSISTENT`
 The evidence sufficiently supports the declared location under the deterministic rule set.
 
-## `CONFLICT`
+### `CONFLICT`
 The strongest physical evidence materially points elsewhere.
 
-## `REVIEW`
+### `REVIEW`
 Evidence is missing, split, insufficient, or ambiguous.
 
 Key product insight:
@@ -780,7 +781,7 @@ Key product insight:
 
 ---
 
-# 15. SCENARIOS — MEMORIZE THE STORY, NOT OLD PERCENTAGES
+## 15. Scenarios — Memorize The Story, Not Old Percentages
 
 Exact scenario percentages have drifted across historical documents/versions.
 
@@ -791,13 +792,13 @@ Therefore:
 
 Memorize the mechanics.
 
-## Clean
+### Clean
 Declared location and major evidence align.
 
 Lesson:
 > multi-source corroboration → `CONSISTENT`.
 
-## Physical Conflict
+### Physical Conflict
 Declared location differs from the strongest physical evidence cluster. A proxy/VPN may also appear as a network observation.
 
 Lesson:
@@ -806,13 +807,13 @@ Lesson:
 Expected semantic outcome:
 > `CONFLICT`.
 
-## Multi-Source / Maximum
+### Multi-Source / Maximum
 Historical, declared, network, regional, and operational signals disagree across several places.
 
 Lesson:
 > preserve competing hypotheses and let stronger evidence dominate without deleting contradictions.
 
-## Custom Synthetic Case
+### Custom Synthetic Case
 User enters seeds and chooses a synthetic profile.
 
 The resolver deterministically generates illustrative fields/signals/candidates.
@@ -821,13 +822,13 @@ It does **not** perform real external enrichment.
 
 
 
-# 16. THE THREE GRAPH SYSTEMS — KNOW THIS COLD
+## 16. The Three Graph Systems — Know This Cold
 
 This distinction is one of the highest-value interview topics.
 
 ---
 
-## 16.1 ACTIVE INVESTIGATION GRAPH
+### 16.1 ACTIVE INVESTIGATION GRAPH
 
 **Question answered:**
 
@@ -856,7 +857,7 @@ This distinction is one of the highest-value interview topics.
 
 ---
 
-## 16.2 INTELLIGENCE / KNOWLEDGE GRAPH
+### 16.2 INTELLIGENCE / KNOWLEDGE GRAPH
 
 **Question answered:**
 
@@ -889,7 +890,7 @@ This graph maps concepts, not one customer's runtime case.
 
 ---
 
-## 16.3 ENTITY NETWORK / NETWORK LAB
+### 16.3 ENTITY NETWORK / NETWORK LAB
 
 **Question answered:**
 
@@ -927,11 +928,11 @@ Entity concepts include:
 
 ---
 
-# 17. NETWORK LAB — RULES + FALSE-POSITIVE DISCIPLINE
+## 17. Network Lab — Rules + False-Positive Discipline
 
 The Network Lab is strongest when explained as **structural detection with contextual interpretation**.
 
-## Shared Device
+### Shared Device
 
 Structure:
 > multiple identities linked to one device.
@@ -950,7 +951,7 @@ Recall:
 
 ---
 
-## Reused Contact Attribute
+### Reused Contact Attribute
 
 Structure:
 > same phone/email reused across different applicants.
@@ -965,7 +966,7 @@ False positives:
 
 ---
 
-## Shared Proxy Endpoint
+### Shared Proxy Endpoint
 
 Structure:
 > several applications route through one proxy/VPN endpoint.
@@ -978,7 +979,7 @@ False positive:
 
 ---
 
-## Address Concentration
+### Address Concentration
 
 Structure:
 > many applications share the same address.
@@ -994,7 +995,7 @@ False positives:
 
 ---
 
-## Geographic Convergence
+### Geographic Convergence
 
 Structure:
 > applicants declare different places but operational signals converge on one hub.
@@ -1010,7 +1011,7 @@ False positives:
 
 ---
 
-## Benign Household Counterexample
+### Benign Household Counterexample
 
 This is one of the most important design ideas.
 
@@ -1028,7 +1029,7 @@ Core lesson:
 
 ---
 
-# 18. TYPED ENTITY COUNTING
+## 18. Typed Entity Counting
 
 A subtle technical strength recovered from the history pass:
 
@@ -1057,9 +1058,9 @@ Interview line:
 
 ---
 
-# 19. CURRENT REPOSITORY ARCHITECTURE
+## 19. Current Repository Architecture
 
-## Stack
+### Stack
 - Next.js 16
 - React 19
 - TypeScript
@@ -1073,13 +1074,13 @@ The current app is primarily client-side and keeps investigation state in browse
 
 ---
 
-## `app/layout.tsx`
+### `app/layout.tsx`
 
 Root layout and provider composition.
 
 ---
 
-## `app/page.tsx`
+### `app/page.tsx`
 
 High-level product shell and workspace orchestration.
 
@@ -1091,7 +1092,7 @@ Current major surfaces:
 
 ---
 
-## `src/context/AppContext.tsx`
+### `src/context/AppContext.tsx`
 
 Global application orchestration.
 
@@ -1109,7 +1110,7 @@ Refresh resets runtime memory.
 
 ---
 
-## `src/lib/resolver.ts`
+### `src/lib/resolver.ts`
 
 **The most important engine file.**
 
@@ -1130,7 +1131,7 @@ If asked “where is the brain of the app?”:
 
 ---
 
-## `src/lib/knowledgeGraph.ts`
+### `src/lib/knowledgeGraph.ts`
 
 Builds the master domain ontology.
 
@@ -1142,7 +1143,7 @@ Responsibilities:
 
 ---
 
-## `src/lib/knowledgeGraphCurated.ts`
+### `src/lib/knowledgeGraphCurated.ts`
 
 Contains explicit curated domain relationships.
 
@@ -1151,7 +1152,7 @@ Key design lesson:
 
 ---
 
-## `src/lib/entityNetworkData.ts`
+### `src/lib/entityNetworkData.ts`
 
 Synthetic multi-case instance-network data.
 
@@ -1160,7 +1161,7 @@ Important distinction:
 
 ---
 
-## `src/lib/entityNetworkAnalytics.ts`
+### `src/lib/entityNetworkAnalytics.ts`
 
 Implements network pattern logic:
 - connected components,
@@ -1172,7 +1173,7 @@ Implements network pattern logic:
 
 ---
 
-## `src/lib/activeCaseBridge.ts`
+### `src/lib/activeCaseBridge.ts`
 
 Connects the active investigation to broader graph context.
 
@@ -1181,7 +1182,7 @@ Recall it as:
 
 ---
 
-## `src/types/index.ts`
+### `src/types/index.ts`
 
 Central domain type definitions.
 
@@ -1197,7 +1198,7 @@ Strong typing reduces accidental mixing of:
 
 ---
 
-# 20. DATA FILES — WHICH ONES ARE RUNTIME TRUTH
+## 20. Data Files — Which Ones Are Runtime Truth
 
 Runtime catalogue/data files:
 - `src/data/data_primary_identifiers.json`
@@ -1217,7 +1218,7 @@ Lesson:
 
 ---
 
-# 21. DOCUMENTATION AS PRODUCT DATA
+## 21. Documentation As Product Data
 
 `LOCIQ_MASTERCLASS.md`
 
@@ -1238,11 +1239,11 @@ It means:
 
 ---
 
-# 22. THE PROJECT'S REAL EVOLUTION
+## 22. The Project'S Real Evolution
 
 The project did not begin as the current workstation.
 
-## Stage 1 — Excel research origin
+### Stage 1 — Excel research origin
 
 The project began as a research/workbook exercise mapping:
 - identifiers,
@@ -1256,7 +1257,7 @@ Strong story:
 
 ---
 
-## Stage 2 — Early Builder Console
+### Stage 2 — Early Builder Console
 
 Early UI used components such as:
 - `OverviewTab`
@@ -1273,7 +1274,7 @@ Historical language included:
 
 ---
 
-## Stage 3 — Masterclass + richer scenarios
+### Stage 3 — Masterclass + richer scenarios
 
 The project added:
 - markdown parsing,
@@ -1283,7 +1284,7 @@ The project added:
 
 ---
 
-## Stage 4 — Documentation truth alignment
+### Stage 4 — Documentation truth alignment
 
 README and project documentation were tightened.
 
@@ -1300,7 +1301,7 @@ This is part of the project story:
 
 ---
 
-## Stage 5 — Phase 2 rebuild
+### Stage 5 — Phase 2 rebuild
 
 Major architecture transition:
 - canonical deterministic resolver,
@@ -1315,7 +1316,7 @@ Legacy tab components were removed.
 
 ---
 
-## Stage 6 — forensic audit and Loud Recall
+### Stage 6 — forensic audit and Loud Recall
 
 Final phase:
 - runtime truth audit,
@@ -1325,13 +1326,13 @@ Final phase:
 
 ---
 
-# 23. IMPORTANT GIT-HISTORY RECOVERY
+## 23. Important Git-History Recovery
 
 The final read-only recovery pass reviewed all 15 commits and deleted/replaced files.
 
 Key recovered items:
 
-## `PROJECT_NORTHSTAR_MANUAL.md`
+### `PROJECT_NORTHSTAR_MANUAL.md`
 
 Historical role:
 - early developer/user guide,
@@ -1346,7 +1347,7 @@ Discard:
 
 ---
 
-## `OverviewTab.tsx`
+### `OverviewTab.tsx`
 
 Historical role:
 - landing overview,
@@ -1358,7 +1359,7 @@ Replaced by:
 
 ---
 
-## `InputForm.tsx`
+### `InputForm.tsx`
 
 Historical role:
 - manual seed entry.
@@ -1368,7 +1369,7 @@ Capability survives in:
 
 ---
 
-## `OutputView.tsx`
+### `OutputView.tsx`
 
 Historical role:
 - ranked outputs,
@@ -1381,7 +1382,7 @@ This is central to the terminology-evolution story.
 
 ---
 
-## `DataTab.tsx`
+### `DataTab.tsx`
 
 Historical role:
 - catalogue/trace tables.
@@ -1391,7 +1392,7 @@ Replaced by:
 
 ---
 
-## Original Excel workbook
+### Original Excel workbook
 
 Historical role:
 > domain research source.
@@ -1401,9 +1402,9 @@ Important recall:
 
 ---
 
-# 24. TERMINOLOGY EVOLUTION — CRITICAL
+## 24. Terminology Evolution — Critical
 
-## Old language
+### Old language
 - location probability
 - confidence score
 - “95% confidence”
@@ -1411,7 +1412,7 @@ Important recall:
 - GREEN / AMBER / RED
 - fraud detection engine
 
-## Current safer language
+### Current safer language
 - deterministic evidence share
 - weighted evidence
 - address consistency
@@ -1431,7 +1432,7 @@ This evolution is a **technical maturity story**, not merely copy editing.
 
 ---
 
-# 25. TESTING AND VERIFICATION
+## 25. Testing And Verification
 
 The current project includes:
 
@@ -1460,7 +1461,7 @@ Why this matters:
 
 ---
 
-# 26. STATE, PERSISTENCE, AND RUNTIME BOUNDARY
+## 26. State, Persistence, And Runtime Boundary
 
 Current state:
 - React Context,
@@ -1479,7 +1480,7 @@ Practical consequence:
 
 ---
 
-# 27. LIVE INTEGRATIONS — CURRENT TRUTH
+## 27. Live Integrations — Current Truth
 
 Current code does not implement live enrichment calls to:
 - credit bureaus,
@@ -1498,7 +1499,7 @@ If the UI describes what a provider could return, that is not proof that the pro
 
 ---
 
-# 28. SECURITY / SECRETS / CONFIG
+## 28. Security / Secrets / Config
 
 Current prototype:
 - no required production API credentials,
@@ -1514,15 +1515,15 @@ It also means:
 
 ---
 
-# 29. CURRENT LIMITATIONS
+## 29. Current Limitations
 
-## Heuristic weights
+### Heuristic weights
 Illustrative and deterministic, not empirically calibrated.
 
-## Synthetic scenarios
+### Synthetic scenarios
 Demonstrate logic; do not establish real-world performance.
 
-## No provider failure realism
+### No provider failure realism
 Production providers can be:
 - missing,
 - stale,
@@ -1534,7 +1535,7 @@ Production providers can be:
 
 The prototype does not model the full operational complexity.
 
-## Geographic ambiguity
+### Geographic ambiguity
 People:
 - move,
 - travel,
@@ -1543,7 +1544,7 @@ People:
 - use VPNs,
 - keep old accounts.
 
-## No statistical validation
+### No statistical validation
 No:
 - AUROC,
 - Gini,
@@ -1553,24 +1554,24 @@ No:
 - empirical lift study,
 - default model.
 
-## No runtime consent enforcement
+### No runtime consent enforcement
 Consent/access metadata is conceptual/catalogue information, not a production enforcement layer.
 
-## No durable case workflow
+### No durable case workflow
 No persistence, assignment, comments, overrides, or investigator case lifecycle.
 
-## Client-side execution
+### Client-side execution
 Appropriate for transparent prototype demonstration, not equivalent to production server controls.
 
 ---
 
-# 30. PRODUCTIONIZATION GAP
+## 30. Productionization Gap
 
 Do not describe this as already built.
 
 A real enterprise implementation could require some combination of:
 
-## Data ingestion
+### Data ingestion
 - authenticated provider adapters,
 - server-side API calls,
 - data contracts,
@@ -1579,7 +1580,7 @@ A real enterprise implementation could require some combination of:
 - circuit breakers,
 - provider fallbacks.
 
-## Consent/privacy/governance
+### Consent/privacy/governance
 - lawful basis,
 - explicit consent where required,
 - access-policy enforcement,
@@ -1587,18 +1588,18 @@ A real enterprise implementation could require some combination of:
 - retention rules,
 - auditable consent state.
 
-## Persistence
+### Persistence
 - case store,
 - evidence store,
 - decision history,
 - audit trail.
 
-## Identity/authorization
+### Identity/authorization
 - authentication,
 - RBAC,
 - separation of duties.
 
-## Scoring governance
+### Scoring governance
 If heuristic:
 - versioned weight policy,
 - threshold governance,
@@ -1613,19 +1614,19 @@ If statistical:
 - monitoring,
 - model-risk governance.
 
-## Human review
+### Human review
 - investigator workflow,
 - adjudication,
 - escalation,
 - override reasons.
 
-## Reliability
+### Reliability
 - observability,
 - provider health,
 - freshness checks,
 - degraded-mode behavior.
 
-## Graph scale
+### Graph scale
 Possible options:
 - relational joins,
 - graph database,
@@ -1638,7 +1639,7 @@ Choose infrastructure based on actual query and scale needs.
 
 
 
-# 31. WHY THIS PROJECT DOES NOT NEED ML TO BE INTERESTING
+## 31. Why This Project Does Not Need ML To Be Interesting
 
 A common question is:
 
@@ -1675,7 +1676,7 @@ Therefore:
 
 ---
 
-# 32. WHY REACTFLOW INSTEAD OF NEO4J
+## 32. Why Reactflow Instead Of Neo4J
 
 Strong interview answer:
 
@@ -1694,7 +1695,7 @@ They solve different problems.
 
 ---
 
-# 33. WHY THE HAMILTON METHOD IS WORTH TALKING ABOUT
+## 33. Why The Hamilton Method Is Worth Talking About
 
 At first glance, “make percentages add to 100” sounds small.
 
@@ -1716,7 +1717,7 @@ This is a useful interview detail because it is concrete and user-facing.
 
 ---
 
-# 34. WHY THE PROXY RULE IS WORTH TALKING ABOUT
+## 34. Why The Proxy Rule Is Worth Talking About
 
 Naive interpretation:
 
@@ -1738,7 +1739,7 @@ Core lesson:
 
 ---
 
-# 35. WHY PROVENANCE MATTERS
+## 35. Why Provenance Matters
 
 A black-box result says:
 
@@ -1759,9 +1760,9 @@ Provenance is arguably the conceptual center of Loc-IQ.
 
 ---
 
-# 36. HARDEST PROBLEMS — BEST INTERVIEW FRAMING
+## 36. Hardest Problems — Best Interview Framing
 
-## Hardest domain problem
+### Hardest domain problem
 
 > Separating identity evidence, network evidence, operational geography, and physical-location evidence without pretending they all prove the same thing.
 
@@ -1770,7 +1771,7 @@ Best example:
 
 ---
 
-## Hardest engineering problem
+### Hardest engineering problem
 
 > Designing a deterministic canonical resolver that converts heterogeneous synthetic evidence into traceable candidate-location support while preserving exact evidence-share invariants and graph provenance.
 
@@ -1784,9 +1785,9 @@ Secondary technical stories:
 
 ---
 
-# 37. HOSTILE INTERVIEW Q&A
+## 37. Hostile Interview Q&A
 
-## Q1. “Where did the weights come from?”
+### Q1. “Where did the weights come from?”
 
 **Answer:**
 
@@ -1800,7 +1801,7 @@ A production system would need policy-backed governance and/or empirical calibra
 
 ---
 
-## Q2. “Why should I trust a 55%, 70%, or 72% value?”
+### Q2. “Why should I trust a 55%, 70%, or 72% value?”
 
 **Answer:**
 
@@ -1818,7 +1819,7 @@ It is useful for relative ranking and explanation.
 
 ---
 
-## Q3. “Why didn’t you train XGBoost?”
+### Q3. “Why didn’t you train XGBoost?”
 
 **Answer:**
 
@@ -1832,7 +1833,7 @@ A future supervised model could complement it if real labels and validation beca
 
 ---
 
-## Q4. “Where are the 46 APIs?”
+### Q4. “Where are the 46 APIs?”
 
 **Answer:**
 
@@ -1842,7 +1843,7 @@ The current app does not call them live.
 
 ---
 
-## Q5. “Where is the backend?”
+### Q5. “Where is the backend?”
 
 **Answer:**
 
@@ -1852,7 +1853,7 @@ The current system is a browser-side deterministic investigation simulation.
 
 ---
 
-## Q6. “Where is the database?”
+### Q6. “Where is the database?”
 
 **Answer:**
 
@@ -1864,7 +1865,7 @@ A production version would require persistence.
 
 ---
 
-## Q7. “Why ReactFlow instead of Neo4j?”
+### Q7. “Why ReactFlow instead of Neo4j?”
 
 **Answer:**
 
@@ -1876,7 +1877,7 @@ For this prototype, in-memory graphs keep the app portable and infrastructure-li
 
 ---
 
-## Q8. “How does consent work?”
+### Q8. “How does consent work?”
 
 **Answer:**
 
@@ -1888,7 +1889,7 @@ A real implementation would need governed consent verification before regulated 
 
 ---
 
-## Q9. “Is it compliant?”
+### Q9. “Is it compliant?”
 
 **Answer:**
 
@@ -1900,7 +1901,7 @@ A production version would require legal/policy review, security, retention, con
 
 ---
 
-## Q10. “Does mismatch mean fraud?”
+### Q10. “Does mismatch mean fraud?”
 
 **Answer:**
 
@@ -1914,7 +1915,7 @@ That is why the project uses `REVIEW` and why its current framing is address con
 
 ---
 
-## Q11. “What prevents false positives?”
+### Q11. “What prevents false positives?”
 
 **Answer:**
 
@@ -1926,7 +1927,7 @@ Production use would still require empirical validation and human-review policy.
 
 ---
 
-## Q12. “What does the Network Lab prove?”
+### Q12. “What does the Network Lab prove?”
 
 **Answer:**
 
@@ -1936,7 +1937,7 @@ It does not prove that those patterns represent real fraud.
 
 ---
 
-## Q13. “Could this scale?”
+### Q13. “Could this scale?”
 
 **Answer:**
 
@@ -1948,7 +1949,7 @@ Scaling would require server-side execution, persistence, provider orchestration
 
 ---
 
-## Q14. “What is actually novel here?”
+### Q14. “What is actually novel here?”
 
 A good answer:
 
@@ -1956,9 +1957,9 @@ A good answer:
 
 ---
 
-# 38. INTERVIEW ANGLES BY AUDIENCE
+## 38. Interview Angles By Audience
 
-## Product Manager
+### Product Manager
 Emphasize:
 - investigator problem,
 - contradictory evidence,
@@ -1969,7 +1970,7 @@ Emphasize:
 - safe synthetic scenarios,
 - reference library.
 
-## Software Architect
+### Software Architect
 Emphasize:
 - three graph models,
 - typed domain boundaries,
@@ -1981,7 +1982,7 @@ Emphasize:
 - active-case bridge,
 - productionization gaps.
 
-## Credit Risk / Fraud
+### Credit Risk / Fraud
 Emphasize:
 - mismatch ≠ fraud,
 - declared address = claim,
@@ -1993,7 +1994,7 @@ Emphasize:
 - repeated behavior matters,
 - human review matters.
 
-## Data Scientist
+### Data Scientist
 Be explicit:
 - no training data,
 - no model,
@@ -2003,7 +2004,7 @@ Be explicit:
 
 Then explain how a model layer could be added responsibly.
 
-## Security / Compliance
+### Security / Compliance
 Lead with:
 - synthetic data,
 - no live provider access,
@@ -2014,25 +2015,25 @@ Then explain what production would need.
 
 ---
 
-# 39. PORTFOLIO POSITIONING
+## 39. Portfolio Positioning
 
-## Best one-line pitch
+### Best one-line pitch
 
 > **Built Loc-IQ, a deterministic address-consistency investigation workstation that turns synthetic multi-source evidence into traceable physical-location hypotheses, graph provenance, and reviewable consistency outcomes.**
 
-## Three strongest technical accomplishments
+### Three strongest technical accomplishments
 
 1. Deterministic canonical resolver with explicit weight computation and exact evidence-share allocation.
 2. Three distinct graph systems, including a 273-node ontology with BFS traversal.
 3. Synthetic multi-case network analytics with typed entity counting and benign false-positive counterexamples.
 
-## Three strongest product/domain accomplishments
+### Three strongest product/domain accomplishments
 
 1. Reframed “find the customer’s location” as an evidence-quality and provenance problem.
 2. Separated identity, physical, regional, operational, and network evidence.
 3. Designed uncertainty and explainability into the product instead of manufacturing certainty.
 
-## Why it is more than a dashboard
+### Why it is more than a dashboard
 
 A dashboard mostly displays.
 
@@ -2045,23 +2046,23 @@ Loc-IQ executes:
 - cross-case pattern detection,
 - synthetic scenario generation.
 
-## Why it is not an ML fraud model
+### Why it is not an ML fraud model
 
 It does not learn from outcomes.
 
 It encodes explicit deterministic evidence rules.
 
-## Why it is not a live data-integration platform
+### Why it is not a live data-integration platform
 
 The 46-source universe is an architecture/reference catalogue.
 
-## Why it is not a graph-database product
+### Why it is not a graph-database product
 
 Graphs are held and analyzed in memory and rendered with ReactFlow.
 
 ---
 
-# 40. “WHAT WOULD YOU BUILD NEXT?”
+## 40. “What Would You Build Next?”
 
 Do not reflexively answer “AI.”
 
@@ -2083,9 +2084,9 @@ This demonstrates maturity.
 
 ---
 
-# 41. FORGOTTEN / HIDDEN GEMS
+## 41. Forgotten / Hidden Gems
 
-## Excel genesis
+### Excel genesis
 
 The project began from an Excel research workbook.
 
@@ -2095,7 +2096,7 @@ Strong story:
 
 ---
 
-## `djb2Hash`
+### `djb2Hash`
 
 The resolver contains deterministic hashing logic used for repeatable synthetic behavior/stable generated properties.
 
@@ -2105,7 +2106,7 @@ Deeper lesson:
 
 ---
 
-## Markdown parser
+### Markdown parser
 
 The masterclass is parsed into structured JSON.
 
@@ -2115,7 +2116,7 @@ Deeper lesson:
 
 ---
 
-## District/prefix geographic matching
+### District/prefix geographic matching
 
 The resolver contains multi-granularity geographic matching logic.
 
@@ -2125,7 +2126,7 @@ Deeper lesson:
 
 ---
 
-## Standalone network components
+### Standalone network components
 
 The entity-network analytics can identify isolated components/cases.
 
@@ -2135,7 +2136,7 @@ Deeper lesson:
 
 ---
 
-# 42. TOP 25 LOC-IQ THINGS TO REMEMBER FOREVER
+## 42. Top 25 Loc-Iq Things To Remember Forever
 
 1. Loc-IQ is a **deterministic address-consistency investigation simulation**.
 2. It is **not** a production fraud-detection system.
@@ -2165,7 +2166,7 @@ Deeper lesson:
 
 ---
 
-# 43. RAPID FLASHCARD MODE
+## 43. Rapid Flashcard Mode
 
 **What is Loc-IQ?**  
 A deterministic synthetic address-consistency investigation workstation.
@@ -2229,7 +2230,7 @@ The project deliberately moved away from uncalibrated confidence/probability lan
 
 ---
 
-# 44. CURRENT SOURCE-OF-TRUTH HIERARCHY
+## 44. Current Source-Of-Truth Hierarchy
 
 When materials disagree:
 
@@ -2247,7 +2248,7 @@ Important:
 
 ---
 
-# 45. VERSION-SENSITIVE FACTS
+## 45. Version-Sensitive Facts
 
 Some exact scenario percentages changed across historical versions/documents.
 
@@ -2268,7 +2269,7 @@ This is the safest long-term recall rule.
 
 ---
 
-# 46. FINAL CLAIM-SAFETY TABLE
+## 46. Final Claim-Safety Table
 
 | Topic | Safe to say | Say with qualification | Do not say |
 |---|---|---|---|
@@ -2287,7 +2288,7 @@ This is the safest long-term recall rule.
 
 ---
 
-# 47. FINAL “TELL ME ABOUT LOC-IQ” ANSWER
+## 47. Final “Tell Me About Loc-Iq” Answer
 
 > I built Loc-IQ around a retail-credit investigation problem: how do you evaluate whether a declared address is consistent with the rest of the evidence without pretending that one source gives you the truth?
 >
@@ -2299,15 +2300,15 @@ This is the safest long-term recall rule.
 
 ---
 
-# 48. FINAL ONE-PAGE CHEAT SHEET
+## 48. Final One-Page Cheat Sheet
 
-## Core idea
+### Core idea
 Address = claim.  
 Evidence = support/contradiction.  
 Mismatch ≠ fraud.  
 Explainability > mystery score.
 
-## Pipeline
+### Pipeline
 Identifier  
 → Source  
 → Evidence  
@@ -2315,23 +2316,23 @@ Identifier
 → Candidate  
 → Decision
 
-## Math
+### Math
 `effective_weight = base_weight × recency_factor × ip_trust_factor`
 
 Evidence share:
 > normalized deterministic share, exact 100% total.
 
-## Current decisions
+### Current decisions
 - `CONSISTENT`
 - `REVIEW`
 - `CONFLICT`
 
-## Three graphs
+### Three graphs
 - Active Investigation = one-case provenance
 - Intelligence Graph = 273-node ontology
 - Network Lab = 79-node / 61-edge synthetic cross-case graph
 
-## Strong technical stories
+### Strong technical stories
 - deterministic resolver
 - Hamilton percentage allocation
 - BFS knowledge graph
@@ -2339,7 +2340,7 @@ Evidence share:
 - benign household counterexample
 - markdown → structured product data
 
-## Strong domain stories
+### Strong domain stories
 - identity ≠ location
 - IP ≠ human geography
 - branch ≠ residence
@@ -2347,7 +2348,7 @@ Evidence share:
 - repeated recent behavior > one stale observation
 - shared device ≠ proven fraud
 
-## Never claim
+### Never claim
 - live APIs
 - live GPS
 - real customer data
@@ -2358,12 +2359,12 @@ Evidence share:
 - production readiness
 - runtime compliance/consent enforcement
 
-## Best framing
+### Best framing
 > **Loc-IQ is an explainable deterministic simulation of multi-source address-consistency investigation.**
 
 ---
 
-# 49. FINAL CLOSURE
+## 49. Final Closure
 
 The deepest lesson from Loc-IQ is not Next.js, ReactFlow, a particular graph algorithm, or one scoring formula.
 
@@ -2375,7 +2376,7 @@ That is the project worth remembering.
 
 ---
 
-# 50. SOURCE BASIS AND HISTORICAL NOTE
+## 50. Source Basis And Historical Note
 
 This Loud Recall consolidates the current project truth and the final Git-history recovery across:
 - `LOC_IQ_WALKTHROUGH_SOURCEPACK.md`
