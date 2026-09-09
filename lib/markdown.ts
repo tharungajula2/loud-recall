@@ -30,7 +30,13 @@ export interface DocumentData extends DocumentMeta {
 const WPM = 225;
 
 function calculateReadTime(text: string): { readTime: string; wordCount: number } {
-  const cleanText = text.replace(/<[^>]*>/g, ' ');
+  const cleanText = text
+    .replace(/^\s*<!--\s*[\s\S]*?-->/, ' ')
+    .replace(/^\s*---[\s\S]*?---/, ' ')
+    .replace(/<script[\s\S]*?<\/script>/gi, ' ')
+    .replace(/<style[\s\S]*?<\/style>/gi, ' ')
+    .replace(/<[^>]*>/g, ' ');
+
   const words = cleanText.trim().split(/\s+/).filter(Boolean).length;
   const minutes = Math.max(1, Math.ceil(words / WPM));
   return {
@@ -58,13 +64,17 @@ function formatDateString(val: any): string {
 }
 
 function parseFrontmatter(fileContents: string) {
-  let target = fileContents;
-  // Support reading frontmatter from leading HTML comment <!-- --- ... --- -->
   const htmlCommentMatch = fileContents.match(/^\s*<!--\s*\n?(---\s*[\s\S]*?---)\s*\n?-->/);
   if (htmlCommentMatch) {
-    target = htmlCommentMatch[1];
+    const frontmatterText = htmlCommentMatch[1];
+    const parsed = matter(frontmatterText);
+    const content = fileContents.replace(/^\s*<!--\s*\n?---\s*[\s\S]*?---\s*\n?-->/, '').trim();
+    return {
+      data: parsed.data,
+      content,
+    };
   }
-  return matter(target);
+  return matter(fileContents);
 }
 
 function parseSeries(raw: any): ContentSeries {
