@@ -4,7 +4,7 @@ title: "The AI Stack — Systems, Infrastructure and Engineering"
 description: "The six layers a production AI system is built from, what each one costs, and where each one breaks. Current as at September 2026."
 series: masterclass
 status: live
-updated: 2026-09-08
+updated: 2026-09-09
 ---
 -->
 
@@ -93,6 +93,200 @@ updated: 2026-09-08
   font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;
   color:var(--mute);letter-spacing:.05em;margin-top:6px
 }
+
+/* ---------- interactive explorer system (CSS-only, no JS) ---------- */
+.ai-stack .exr{position:absolute;opacity:0;pointer-events:none;width:0;height:0}
+.ai-stack .ex{
+  border:1px solid var(--line);border-radius:10px;margin:28px 0;
+  background:#fff;overflow:hidden
+}
+.ai-stack .ex-head{
+  padding:13px 16px;border-bottom:1px solid var(--line);background:var(--surf);
+  display:flex;align-items:baseline;gap:10px;flex-wrap:wrap
+}
+.ai-stack .ex-head h4{
+  margin:0;font-size:13px;letter-spacing:.02em;color:var(--ink);font-weight:600
+}
+.ai-stack .ex-hint{
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--mute)
+}
+.ai-stack .ex-ctl{
+  display:flex;align-items:center;gap:7px;flex-wrap:wrap;
+  padding:11px 16px;border-bottom:1px solid var(--line)
+}
+.ai-stack .ex-lab{
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;
+  letter-spacing:.11em;text-transform:uppercase;color:var(--mute);
+  min-width:74px;font-weight:600
+}
+.ai-stack .ex-ctl label{
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;
+  padding:5px 11px;border:1px solid var(--line);border-radius:5px;
+  cursor:pointer;color:var(--body);background:#fff;
+  transition:background .12s,border-color .12s,color .12s;user-select:none
+}
+.ai-stack .ex-ctl label:hover{border-color:var(--mute)}
+.ai-stack .ex-body{padding:18px 16px;position:relative;min-height:132px}
+.ai-stack .ex-out{display:none}
+.ai-stack .ex-out.on{display:block}
+.ai-stack .ex-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:14px
+}
+.ai-stack .ex-cell .k{
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:9.5px;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--mute);
+  display:block;margin-bottom:5px;font-weight:600
+}
+.ai-stack .ex-cell .v{
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+  font-size:21px;color:var(--ink);font-weight:600;line-height:1.15;
+  display:block;letter-spacing:-.01em
+}
+.ai-stack .ex-cell .v small{font-size:12px;font-weight:500;color:var(--mute);letter-spacing:0}
+.ai-stack .ex-verdict{
+  font-size:14.5px;line-height:1.6;color:var(--body);
+  border-top:1px solid var(--line);padding-top:13px;margin:0
+}
+.ai-stack .ex-verdict b{color:var(--ink);font-weight:600}
+.ai-stack .ex-bar{
+  height:7px;border-radius:4px;background:var(--raise);
+  margin:2px 0 13px;overflow:hidden
+}
+.ai-stack .ex-bar i{display:block;height:100%;border-radius:4px}
+.ai-stack .ex-foot{
+  padding:10px 16px;border-top:1px solid var(--line);background:var(--surf);
+  font-size:12.5px;color:var(--mute);line-height:1.55
+}
+
+/* ---------- interactive six-layer stack ---------- */
+.ai-stack .stk{margin:26px 0;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.ai-stack .stk-row{
+  display:grid;grid-template-columns:34px 1fr;border-bottom:1px solid var(--line);
+  transition:background .14s
+}
+.ai-stack .stk-row:last-child{border-bottom:0}
+.ai-stack .stk-row:hover{background:var(--surf)}
+.ai-stack .stk-bar{width:100%}
+.ai-stack .stk-main{padding:0}
+.ai-stack .stk summary{
+  padding:12px 15px;cursor:pointer;list-style:none;
+  display:flex;align-items:center;gap:12px;flex-wrap:wrap
+}
+.ai-stack .stk summary::-webkit-details-marker{display:none}
+.ai-stack .stk summary::after{
+  content:'+';margin-left:auto;font-family:ui-monospace,monospace;
+  font-size:15px;color:var(--mute);line-height:1
+}
+.ai-stack .stk details[open] summary::after{content:'\2212'}
+.ai-stack .stk-n{
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;
+  color:var(--mute);font-weight:600;min-width:14px
+}
+.ai-stack .stk-t{font-size:15px;color:var(--ink);font-weight:600}
+.ai-stack .stk-q{font-size:13.5px;color:var(--mute)}
+.ai-stack .stk-d{padding:2px 15px 16px 41px;font-size:14.5px;line-height:1.62}
+.ai-stack .stk-d p{margin:0 0 9px}
+.ai-stack .stk-d dl{
+  margin:11px 0 0;display:grid;grid-template-columns:88px 1fr;gap:6px 14px;font-size:13.5px
+}
+.ai-stack .stk-d dt{
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:9.5px;
+  letter-spacing:.11em;text-transform:uppercase;color:var(--mute);
+  font-weight:600;padding-top:3px
+}
+.ai-stack .stk-d dd{margin:0;color:var(--body)}
+
+/* ---------- deep-dive disclosure ---------- */
+.ai-stack details.dd{
+  border:1px solid var(--line);border-radius:8px;margin:22px 0;background:var(--surf)
+}
+.ai-stack details.dd summary{
+  padding:12px 15px;cursor:pointer;font-size:13.5px;color:var(--ink);
+  font-weight:600;list-style:none;display:flex;align-items:center;gap:10px
+}
+.ai-stack details.dd summary::-webkit-details-marker{display:none}
+.ai-stack details.dd summary::before{
+  content:'';width:6px;height:6px;border-right:1.5px solid var(--mute);
+  border-bottom:1.5px solid var(--mute);transform:rotate(-45deg);
+  transition:transform .16s;flex:none;margin-left:2px
+}
+.ai-stack details.dd[open] summary::before{transform:rotate(45deg)}
+.ai-stack details.dd .ddc{padding:2px 16px 15px 31px;font-size:14.5px;line-height:1.62}
+.ai-stack details.dd .ddc>*:first-child{margin-top:0}
+.ai-stack details.dd .ddc>*:last-child{margin-bottom:0}
+
+@media (max-width:640px){
+  .ai-stack .ex-grid{grid-template-columns:1fr;gap:11px}
+  .ai-stack .ex-cell .v{font-size:19px}
+  .ai-stack .ex-lab{min-width:100%}
+  .ai-stack .stk-d{padding-left:15px}
+  .ai-stack .stk-d dl{grid-template-columns:1fr;gap:2px 0}
+  .ai-stack .stk-d dd{margin-bottom:7px}
+}
+
+/* generated explorer state rules */
+.ai-stack #ms-7b:checked ~ #mp-fp16:checked ~ .ex-body .o-7b-fp16{display:block}
+.ai-stack #ms-7b:checked ~ #mp-fp8:checked ~ .ex-body .o-7b-fp8{display:block}
+.ai-stack #ms-7b:checked ~ #mp-int4:checked ~ .ex-body .o-7b-int4{display:block}
+.ai-stack #ms-13b:checked ~ #mp-fp16:checked ~ .ex-body .o-13b-fp16{display:block}
+.ai-stack #ms-13b:checked ~ #mp-fp8:checked ~ .ex-body .o-13b-fp8{display:block}
+.ai-stack #ms-13b:checked ~ #mp-int4:checked ~ .ex-body .o-13b-int4{display:block}
+.ai-stack #ms-70b:checked ~ #mp-fp16:checked ~ .ex-body .o-70b-fp16{display:block}
+.ai-stack #ms-70b:checked ~ #mp-fp8:checked ~ .ex-body .o-70b-fp8{display:block}
+.ai-stack #ms-70b:checked ~ #mp-int4:checked ~ .ex-body .o-70b-int4{display:block}
+.ai-stack #ms-405b:checked ~ #mp-fp16:checked ~ .ex-body .o-405b-fp16{display:block}
+.ai-stack #ms-405b:checked ~ #mp-fp8:checked ~ .ex-body .o-405b-fp8{display:block}
+.ai-stack #ms-405b:checked ~ #mp-int4:checked ~ .ex-body .o-405b-int4{display:block}
+.ai-stack #ms-16t:checked ~ #mp-fp16:checked ~ .ex-body .o-16t-fp16{display:block}
+.ai-stack #ms-16t:checked ~ #mp-fp8:checked ~ .ex-body .o-16t-fp8{display:block}
+.ai-stack #ms-16t:checked ~ #mp-int4:checked ~ .ex-body .o-16t-int4{display:block}
+.ai-stack #ms-7b:checked ~ .ex-ctl label[for="ms-7b"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.ai-stack #ms-13b:checked ~ .ex-ctl label[for="ms-13b"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.ai-stack #ms-70b:checked ~ .ex-ctl label[for="ms-70b"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.ai-stack #ms-405b:checked ~ .ex-ctl label[for="ms-405b"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.ai-stack #ms-16t:checked ~ .ex-ctl label[for="ms-16t"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.ai-stack #mp-fp16:checked ~ .ex-ctl label[for="mp-fp16"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.ai-stack #mp-fp8:checked ~ .ex-ctl label[for="mp-fp8"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.ai-stack #mp-int4:checked ~ .ex-ctl label[for="mp-int4"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.ai-stack #ca-1:checked ~ #cr-95:checked ~ .ex-body .c-1-95{display:block}
+.ai-stack #ca-1:checked ~ #cr-90:checked ~ .ex-body .c-1-90{display:block}
+.ai-stack #ca-1:checked ~ #cr-80:checked ~ .ex-body .c-1-80{display:block}
+.ai-stack #ca-2:checked ~ #cr-95:checked ~ .ex-body .c-2-95{display:block}
+.ai-stack #ca-2:checked ~ #cr-90:checked ~ .ex-body .c-2-90{display:block}
+.ai-stack #ca-2:checked ~ #cr-80:checked ~ .ex-body .c-2-80{display:block}
+.ai-stack #ca-3:checked ~ #cr-95:checked ~ .ex-body .c-3-95{display:block}
+.ai-stack #ca-3:checked ~ #cr-90:checked ~ .ex-body .c-3-90{display:block}
+.ai-stack #ca-3:checked ~ #cr-80:checked ~ .ex-body .c-3-80{display:block}
+.ai-stack #ca-4:checked ~ #cr-95:checked ~ .ex-body .c-4-95{display:block}
+.ai-stack #ca-4:checked ~ #cr-90:checked ~ .ex-body .c-4-90{display:block}
+.ai-stack #ca-4:checked ~ #cr-80:checked ~ .ex-body .c-4-80{display:block}
+.ai-stack #ca-6:checked ~ #cr-95:checked ~ .ex-body .c-6-95{display:block}
+.ai-stack #ca-6:checked ~ #cr-90:checked ~ .ex-body .c-6-90{display:block}
+.ai-stack #ca-6:checked ~ #cr-80:checked ~ .ex-body .c-6-80{display:block}
+.ai-stack #ca-1:checked ~ .ex-ctl label[for="ca-1"]{background:var(--l5);color:#fff;border-color:var(--l5)}
+.ai-stack #ca-2:checked ~ .ex-ctl label[for="ca-2"]{background:var(--l5);color:#fff;border-color:var(--l5)}
+.ai-stack #ca-3:checked ~ .ex-ctl label[for="ca-3"]{background:var(--l5);color:#fff;border-color:var(--l5)}
+.ai-stack #ca-4:checked ~ .ex-ctl label[for="ca-4"]{background:var(--l5);color:#fff;border-color:var(--l5)}
+.ai-stack #ca-6:checked ~ .ex-ctl label[for="ca-6"]{background:var(--l5);color:#fff;border-color:var(--l5)}
+.ai-stack #cr-95:checked ~ .ex-ctl label[for="cr-95"]{background:var(--l5);color:#fff;border-color:var(--l5)}
+.ai-stack #cr-90:checked ~ .ex-ctl label[for="cr-90"]{background:var(--l5);color:#fff;border-color:var(--l5)}
+.ai-stack #cr-80:checked ~ .ex-ctl label[for="cr-80"]{background:var(--l5);color:#fff;border-color:var(--l5)}
+.ai-stack #pm-3:checked ~ #px-81:checked ~ .ex-body .p-3-81{display:block}
+.ai-stack #pm-3:checked ~ #px-31:checked ~ .ex-body .p-3-31{display:block}
+.ai-stack #pm-3:checked ~ #px-11:checked ~ .ex-body .p-3-11{display:block}
+.ai-stack #pm-5:checked ~ #px-81:checked ~ .ex-body .p-5-81{display:block}
+.ai-stack #pm-5:checked ~ #px-31:checked ~ .ex-body .p-5-31{display:block}
+.ai-stack #pm-5:checked ~ #px-11:checked ~ .ex-body .p-5-11{display:block}
+.ai-stack #pm-6:checked ~ #px-81:checked ~ .ex-body .p-6-81{display:block}
+.ai-stack #pm-6:checked ~ #px-31:checked ~ .ex-body .p-6-31{display:block}
+.ai-stack #pm-6:checked ~ #px-11:checked ~ .ex-body .p-6-11{display:block}
+.ai-stack #pm-3:checked ~ .ex-ctl label[for="pm-3"]{background:var(--l4);color:#fff;border-color:var(--l4)}
+.ai-stack #pm-5:checked ~ .ex-ctl label[for="pm-5"]{background:var(--l4);color:#fff;border-color:var(--l4)}
+.ai-stack #pm-6:checked ~ .ex-ctl label[for="pm-6"]{background:var(--l4);color:#fff;border-color:var(--l4)}
+.ai-stack #px-81:checked ~ .ex-ctl label[for="px-81"]{background:var(--l4);color:#fff;border-color:var(--l4)}
+.ai-stack #px-31:checked ~ .ex-ctl label[for="px-31"]{background:var(--l4);color:#fff;border-color:var(--l4)}
+.ai-stack #px-11:checked ~ .ex-ctl label[for="px-11"]{background:var(--l4);color:#fff;border-color:var(--l4)}
 </style>
 
 <p class="lead">Everything below is one system seen from six heights. The lens is production: what is actually built, what it costs, and what breaks. Model names, prices and hardware are stated as at September 2026 and will age; the layer structure will not.</p>
@@ -237,21 +431,73 @@ updated: 2026-09-08
 
 <h2 id="s4">4. Six layers, and why the model is only one</h2>
 
-<p>A production AI system is six layers deep. Read bottom to top, each layer consumes the one beneath it and is invisible to the one above.</p>
+<p>A production AI system is six layers deep. Read bottom to top: each layer consumes the one beneath it and is invisible to the one above. Open any layer for what it decides and how it fails.</p>
 
-<table class="dt">
-<thead><tr><th>Layer</th><th>Question it answers</th><th>Owned by</th></tr></thead>
-<tbody>
-<tr><td><span class="tag t1">1 Compute</span></td><td>What machine does this run on</td><td>Infrastructure, platform</td></tr>
-<tr><td><span class="tag t2">2 Training</span></td><td>Which model, trained or adapted how</td><td>Research, ML engineering</td></tr>
-<tr><td><span class="tag t3">3 Inference</span></td><td>How is it served, at what latency and cost</td><td>Platform, inference engineering</td></tr>
-<tr><td><span class="tag t4">4 Data</span></td><td>What does it know that is not in the weights</td><td>Data engineering</td></tr>
-<tr><td><span class="tag t5">5 Agents</span></td><td>What sequence of actions accomplishes the task</td><td>Application engineering</td></tr>
-<tr><td><span class="tag t6">6 Applications</span></td><td>What does a person actually use</td><td>Product</td></tr>
-<tr><td><span class="tag tx1">Reproducibility</span></td><td>Can this be rebuilt and rolled back</td><td>Everyone</td></tr>
-<tr><td><span class="tag tx2">Governance</span></td><td>Is it correct, safe, affordable, auditable</td><td>Everyone</td></tr>
-</tbody>
-</table>
+<div class="stk"><div class="stk-row">
+<div class="stk-bar" style="background:var(--l6)"></div>
+<div class="stk-main"><details>
+<summary><span class="stk-n">6</span><span class="stk-t">Applications</span><span class="stk-q">What does a person actually use</span></summary>
+<div class="stk-d"><p>The only layer a user ever sees, and the only one that can justify the other five. Everything below is cost.</p>
+<dl><dt>Owned by</dt><dd>Product</dd>
+<dt>Decides</dt><dd>Interface, latency budget, failure presentation</dd>
+<dt>Breaks as</dt><dd>A demo that never survives a real workload</dd></dl></div>
+</details></div></div><div class="stk-row">
+<div class="stk-bar" style="background:var(--l5)"></div>
+<div class="stk-main"><details>
+<summary><span class="stk-n">5</span><span class="stk-t">Agents</span><span class="stk-q">What sequence of actions accomplishes the task</span></summary>
+<div class="stk-d"><p>Where a model stops answering and starts acting. The loop, the tools, the budget, the stopping condition.</p>
+<dl><dt>Owned by</dt><dd>Application engineering</dd>
+<dt>Decides</dt><dd>Tool descriptions, context budget, termination</dd>
+<dt>Breaks as</dt><dd>Reliability falls multiplicatively; see section 22</dd></dl></div>
+</details></div></div><div class="stk-row">
+<div class="stk-bar" style="background:var(--l4)"></div>
+<div class="stk-main"><details>
+<summary><span class="stk-n">4</span><span class="stk-t">Data</span><span class="stk-q">What does it know that is not in the weights</span></summary>
+<div class="stk-d"><p>Retrieval, embeddings, vector stores, and the chunking decisions nobody revisits after the demo works.</p>
+<dl><dt>Owned by</dt><dd>Data engineering</dd>
+<dt>Decides</dt><dd>Chunking, embedding model, reranking</dd>
+<dt>Breaks as</dt><dd>Retrieval that demos on 50 documents and fails on 500,000</dd></dl></div>
+</details></div></div><div class="stk-row">
+<div class="stk-bar" style="background:var(--l3)"></div>
+<div class="stk-main"><details>
+<summary><span class="stk-n">3</span><span class="stk-t">Inference</span><span class="stk-q">How is it served, at what latency and cost</span></summary>
+<div class="stk-d"><p>Prefill and decode, batching, KV cache, quantisation. The layer that decides whether the economics work.</p>
+<dl><dt>Owned by</dt><dd>Platform, inference engineering</dd>
+<dt>Decides</dt><dd>Serving framework, batch policy, precision</dd>
+<dt>Breaks as</dt><dd>Throughput bought with latency nobody agreed to</dd></dl></div>
+</details></div></div><div class="stk-row">
+<div class="stk-bar" style="background:var(--l2)"></div>
+<div class="stk-main"><details>
+<summary><span class="stk-n">2</span><span class="stk-t">Training</span><span class="stk-q">Which model, trained or adapted how</span></summary>
+<div class="stk-d"><p>Pre-training, post-training, fine-tuning, adaptation. Almost nobody does the first; most do the last.</p>
+<dl><dt>Owned by</dt><dd>Research, ML engineering</dd>
+<dt>Decides</dt><dd>Base model, adaptation method, licence</dd>
+<dt>Breaks as</dt><dd>Fine-tuning a problem that was a retrieval problem</dd></dl></div>
+</details></div></div><div class="stk-row">
+<div class="stk-bar" style="background:var(--l1)"></div>
+<div class="stk-main"><details>
+<summary><span class="stk-n">1</span><span class="stk-t">Compute</span><span class="stk-q">What machine does this run on</span></summary>
+<div class="stk-d"><p>Accelerators, memory, interconnect, power. The file size of the model decides most of it before anyone chooses.</p>
+<dl><dt>Owned by</dt><dd>Infrastructure, platform</dd>
+<dt>Decides</dt><dd>Accelerator, memory ceiling, fabric</dd>
+<dt>Breaks as</dt><dd>Memory, not compute, is the binding constraint</dd></dl></div>
+</details></div></div><div class="stk-row">
+<div class="stk-bar" style="background:var(--x1)"></div>
+<div class="stk-main"><details>
+<summary><span class="stk-n">&mdash;</span><span class="stk-t">Reproducibility</span><span class="stk-q">Can this be rebuilt and rolled back</span></summary>
+<div class="stk-d"><p>Applies at every height. Deferred because it produces no demo, and discovered missing during the first incident.</p>
+<dl><dt>Owned by</dt><dd>Everyone</dd>
+<dt>Decides</dt><dd>Versioning of weights, prompts, data and config</dd>
+<dt>Breaks as</dt><dd>Nobody can reproduce last Tuesday's answer</dd></dl></div>
+</details></div></div><div class="stk-row">
+<div class="stk-bar" style="background:var(--x2)"></div>
+<div class="stk-main"><details>
+<summary><span class="stk-n">&mdash;</span><span class="stk-t">Governance</span><span class="stk-q">Is it correct, safe, affordable, auditable</span></summary>
+<div class="stk-d"><p>Also applies at every height. Not a seventh layer &mdash; a property every layer either has or does not.</p>
+<dl><dt>Owned by</dt><dd>Everyone</dd>
+<dt>Decides</dt><dd>Evaluation, guardrails, cost ceilings, audit</dd>
+<dt>Breaks as</dt><dd>Shipped without an evaluation set; see section 24</dd></dl></div>
+</details></div></div></div>
 
 <p>The two cross-cutting concerns are not a seventh and eighth layer. They apply at every height, and they are the two that get deferred, because neither produces a demo.</p>
 
@@ -329,6 +575,121 @@ updated: 2026-09-08
 <div class="note insight">
 <b>Key insight</b>
 <p>At production concurrency the KV cache is usually larger than the model. This is why serving frameworks spend most of their engineering on cache management rather than on matrix multiplication, and why long-context features are expensive in a way the price page does not make obvious.</p>
+</div>
+
+<div class="ex">
+<div class="ex-head"><h4>Memory sizing</h4><span class="ex-hint">pick a model and a precision</span></div>
+<input class="exr" type="radio" name="msz" id="ms-7b"><input class="exr" type="radio" name="msz" id="ms-13b"><input class="exr" type="radio" name="msz" id="ms-70b" checked><input class="exr" type="radio" name="msz" id="ms-405b"><input class="exr" type="radio" name="msz" id="ms-16t">
+<input class="exr" type="radio" name="mpr" id="mp-fp16" checked><input class="exr" type="radio" name="mpr" id="mp-fp8"><input class="exr" type="radio" name="mpr" id="mp-int4">
+<div class="ex-ctl"><span class="ex-lab">Model</span><label for="ms-7b">7B</label><label for="ms-13b">13B</label><label for="ms-70b">70B</label><label for="ms-405b">405B</label><label for="ms-16t">1.6T</label></div>
+<div class="ex-ctl"><span class="ex-lab">Precision</span><label for="mp-fp16">FP16</label><label for="mp-fp8">FP8</label><label for="mp-int4">INT4</label></div>
+<div class="ex-body"><div class="ex-out o-7b-fp16">
+<div class="ex-grid">
+<div class="ex-cell"><span class="k">Weights</span><span class="v">14 <small>GB</small></span></div>
+<div class="ex-cell"><span class="k">Accelerators</span><span class="v">1</span></div>
+<div class="ex-cell"><span class="k">Bytes / param</span><span class="v">2</span></div>
+</div>
+<div class="ex-bar"><i style="width:6.1%;background:var(--l3)"></i></div>
+<p class="ex-verdict"><b>A single consumer GPU.</b> Runs on a workstation card. No cluster, no interconnect, no scheduling problem.</p></div><div class="ex-out o-7b-fp8">
+<div class="ex-grid">
+<div class="ex-cell"><span class="k">Weights</span><span class="v">7 <small>GB</small></span></div>
+<div class="ex-cell"><span class="k">Accelerators</span><span class="v">1</span></div>
+<div class="ex-cell"><span class="k">Bytes / param</span><span class="v">1</span></div>
+</div>
+<div class="ex-bar"><i style="width:3.0%;background:var(--l3)"></i></div>
+<p class="ex-verdict"><b>A single consumer GPU.</b> Runs on a workstation card. No cluster, no interconnect, no scheduling problem.</p></div><div class="ex-out o-7b-int4">
+<div class="ex-grid">
+<div class="ex-cell"><span class="k">Weights</span><span class="v">3.5 <small>GB</small></span></div>
+<div class="ex-cell"><span class="k">Accelerators</span><span class="v">1</span></div>
+<div class="ex-cell"><span class="k">Bytes / param</span><span class="v">0.5</span></div>
+</div>
+<div class="ex-bar"><i style="width:1.5%;background:var(--l3)"></i></div>
+<p class="ex-verdict"><b>A single consumer GPU.</b> Runs on a workstation card. No cluster, no interconnect, no scheduling problem.</p></div><div class="ex-out o-13b-fp16">
+<div class="ex-grid">
+<div class="ex-cell"><span class="k">Weights</span><span class="v">26 <small>GB</small></span></div>
+<div class="ex-cell"><span class="k">Accelerators</span><span class="v">1</span></div>
+<div class="ex-cell"><span class="k">Bytes / param</span><span class="v">2</span></div>
+</div>
+<div class="ex-bar"><i style="width:11.3%;background:var(--l3)"></i></div>
+<p class="ex-verdict"><b>One accelerator.</b> Fits in a single B300-class card. The interconnect in section 8 never enters the picture.</p></div><div class="ex-out o-13b-fp8">
+<div class="ex-grid">
+<div class="ex-cell"><span class="k">Weights</span><span class="v">13 <small>GB</small></span></div>
+<div class="ex-cell"><span class="k">Accelerators</span><span class="v">1</span></div>
+<div class="ex-cell"><span class="k">Bytes / param</span><span class="v">1</span></div>
+</div>
+<div class="ex-bar"><i style="width:5.7%;background:var(--l3)"></i></div>
+<p class="ex-verdict"><b>A single consumer GPU.</b> Runs on a workstation card. No cluster, no interconnect, no scheduling problem.</p></div><div class="ex-out o-13b-int4">
+<div class="ex-grid">
+<div class="ex-cell"><span class="k">Weights</span><span class="v">6.5 <small>GB</small></span></div>
+<div class="ex-cell"><span class="k">Accelerators</span><span class="v">1</span></div>
+<div class="ex-cell"><span class="k">Bytes / param</span><span class="v">0.5</span></div>
+</div>
+<div class="ex-bar"><i style="width:2.8%;background:var(--l3)"></i></div>
+<p class="ex-verdict"><b>A single consumer GPU.</b> Runs on a workstation card. No cluster, no interconnect, no scheduling problem.</p></div><div class="ex-out o-70b-fp16">
+<div class="ex-grid">
+<div class="ex-cell"><span class="k">Weights</span><span class="v">140 <small>GB</small></span></div>
+<div class="ex-cell"><span class="k">Accelerators</span><span class="v">1</span></div>
+<div class="ex-cell"><span class="k">Bytes / param</span><span class="v">2</span></div>
+</div>
+<div class="ex-bar"><i style="width:60.9%;background:var(--l3)"></i></div>
+<p class="ex-verdict"><b>One accelerator.</b> Fits in a single B300-class card. The interconnect in section 8 never enters the picture.</p></div><div class="ex-out o-70b-fp8">
+<div class="ex-grid">
+<div class="ex-cell"><span class="k">Weights</span><span class="v">70 <small>GB</small></span></div>
+<div class="ex-cell"><span class="k">Accelerators</span><span class="v">1</span></div>
+<div class="ex-cell"><span class="k">Bytes / param</span><span class="v">1</span></div>
+</div>
+<div class="ex-bar"><i style="width:30.4%;background:var(--l3)"></i></div>
+<p class="ex-verdict"><b>One accelerator.</b> Fits in a single B300-class card. The interconnect in section 8 never enters the picture.</p></div><div class="ex-out o-70b-int4">
+<div class="ex-grid">
+<div class="ex-cell"><span class="k">Weights</span><span class="v">35 <small>GB</small></span></div>
+<div class="ex-cell"><span class="k">Accelerators</span><span class="v">1</span></div>
+<div class="ex-cell"><span class="k">Bytes / param</span><span class="v">0.5</span></div>
+</div>
+<div class="ex-bar"><i style="width:15.2%;background:var(--l3)"></i></div>
+<p class="ex-verdict"><b>One accelerator.</b> Fits in a single B300-class card. The interconnect in section 8 never enters the picture.</p></div><div class="ex-out o-405b-fp16">
+<div class="ex-grid">
+<div class="ex-cell"><span class="k">Weights</span><span class="v">810 <small>GB</small></span></div>
+<div class="ex-cell"><span class="k">Accelerators</span><span class="v">4</span></div>
+<div class="ex-cell"><span class="k">Bytes / param</span><span class="v">2</span></div>
+</div>
+<div class="ex-bar"><i style="width:100.0%;background:var(--l1)"></i></div>
+<p class="ex-verdict"><b>4 accelerators, one node.</b> Fits inside one server. Traffic stays on NVLink inside the box.</p></div><div class="ex-out o-405b-fp8">
+<div class="ex-grid">
+<div class="ex-cell"><span class="k">Weights</span><span class="v">405 <small>GB</small></span></div>
+<div class="ex-cell"><span class="k">Accelerators</span><span class="v">2</span></div>
+<div class="ex-cell"><span class="k">Bytes / param</span><span class="v">1</span></div>
+</div>
+<div class="ex-bar"><i style="width:100.0%;background:var(--l1)"></i></div>
+<p class="ex-verdict"><b>2 accelerators, one node.</b> Fits inside one server. Traffic stays on NVLink inside the box.</p></div><div class="ex-out o-405b-int4">
+<div class="ex-grid">
+<div class="ex-cell"><span class="k">Weights</span><span class="v">202 <small>GB</small></span></div>
+<div class="ex-cell"><span class="k">Accelerators</span><span class="v">1</span></div>
+<div class="ex-cell"><span class="k">Bytes / param</span><span class="v">0.5</span></div>
+</div>
+<div class="ex-bar"><i style="width:88.0%;background:var(--l3)"></i></div>
+<p class="ex-verdict"><b>One accelerator.</b> Fits in a single B300-class card. The interconnect in section 8 never enters the picture.</p></div><div class="ex-out o-16t-fp16">
+<div class="ex-grid">
+<div class="ex-cell"><span class="k">Weights</span><span class="v">3,200 <small>GB</small></span></div>
+<div class="ex-cell"><span class="k">Accelerators</span><span class="v">14</span></div>
+<div class="ex-cell"><span class="k">Bytes / param</span><span class="v">2</span></div>
+</div>
+<div class="ex-bar"><i style="width:100.0%;background:var(--l5)"></i></div>
+<p class="ex-verdict"><b>14 accelerators, rack-scale.</b> Crosses the node boundary. Now the fabric is part of the computer.</p></div><div class="ex-out o-16t-fp8">
+<div class="ex-grid">
+<div class="ex-cell"><span class="k">Weights</span><span class="v">1,600 <small>GB</small></span></div>
+<div class="ex-cell"><span class="k">Accelerators</span><span class="v">7</span></div>
+<div class="ex-cell"><span class="k">Bytes / param</span><span class="v">1</span></div>
+</div>
+<div class="ex-bar"><i style="width:100.0%;background:var(--l1)"></i></div>
+<p class="ex-verdict"><b>7 accelerators, one node.</b> Fits inside one server. Traffic stays on NVLink inside the box.</p></div><div class="ex-out o-16t-int4">
+<div class="ex-grid">
+<div class="ex-cell"><span class="k">Weights</span><span class="v">800 <small>GB</small></span></div>
+<div class="ex-cell"><span class="k">Accelerators</span><span class="v">4</span></div>
+<div class="ex-cell"><span class="k">Bytes / param</span><span class="v">0.5</span></div>
+</div>
+<div class="ex-bar"><i style="width:100.0%;background:var(--l1)"></i></div>
+<p class="ex-verdict"><b>4 accelerators, one node.</b> Fits inside one server. Traffic stays on NVLink inside the box.</p></div></div>
+<div class="ex-foot">Weights only, at 288&nbsp;GB per accelerator with roughly 230&nbsp;GB usable once KV cache and activations are accounted for. Serving a long context or a large batch pushes the count higher; this is the floor, not the requirement.</div>
 </div>
 
 <h2 id="s7">7. GPUs, and what else there is</h2>
@@ -632,6 +993,79 @@ updated: 2026-09-08
 <p>Route by task, not by preference. Cheap, fast models for classification, extraction, routing and drafting; premium models only where the output is final or the reasoning is hard. Tiered routing is the single largest cost lever available at the inference layer, and it requires no model change at all.</p>
 </div>
 
+<div class="ex">
+<div class="ex-head"><h4>What you actually pay</h4><span class="ex-hint">the headline price is the input price</span></div>
+<input class="exr" type="radio" name="pmu" id="pm-3"><input class="exr" type="radio" name="pmu" id="pm-5" checked><input class="exr" type="radio" name="pmu" id="pm-6">
+<input class="exr" type="radio" name="pmx" id="px-81" checked><input class="exr" type="radio" name="pmx" id="px-31"><input class="exr" type="radio" name="pmx" id="px-11">
+<div class="ex-ctl"><span class="ex-lab">Output mult.</span><label for="pm-3">3&times;</label><label for="pm-5">5&times;</label><label for="pm-6">6&times;</label></div>
+<div class="ex-ctl"><span class="ex-lab">Traffic mix</span><label for="px-81">8:1</label><label for="px-31">3:1</label><label for="px-11">1:1</label></div>
+<div class="ex-body"><div class="ex-out p-3-81">
+<div class="ex-grid">
+<div class="ex-cell"><span class="k">Blended multiple</span><span class="v">1.22<small>&times; input</small></span></div>
+<div class="ex-cell"><span class="k">Effective price</span><span class="v">1.61 <small>USD/M</small></span></div>
+<div class="ex-cell"><span class="k">Headline input</span><span class="v">1.32 <small>USD/M</small></span></div>
+</div>
+<div class="ex-bar"><i style="width:34.9%;background:var(--l3)"></i></div>
+<p class="ex-verdict"><b>You pay 1.22&times; the advertised input price.</b> At a 8:1 input-to-output mix with output charged at 3x input, the headline number understates the real cost by 22%.</p></div><div class="ex-out p-3-31">
+<div class="ex-grid">
+<div class="ex-cell"><span class="k">Blended multiple</span><span class="v">1.50<small>&times; input</small></span></div>
+<div class="ex-cell"><span class="k">Effective price</span><span class="v">1.98 <small>USD/M</small></span></div>
+<div class="ex-cell"><span class="k">Headline input</span><span class="v">1.32 <small>USD/M</small></span></div>
+</div>
+<div class="ex-bar"><i style="width:42.9%;background:var(--l3)"></i></div>
+<p class="ex-verdict"><b>You pay 1.50&times; the advertised input price.</b> At a 3:1 input-to-output mix with output charged at 3x input, the headline number understates the real cost by 50%.</p></div><div class="ex-out p-3-11">
+<div class="ex-grid">
+<div class="ex-cell"><span class="k">Blended multiple</span><span class="v">2.00<small>&times; input</small></span></div>
+<div class="ex-cell"><span class="k">Effective price</span><span class="v">2.64 <small>USD/M</small></span></div>
+<div class="ex-cell"><span class="k">Headline input</span><span class="v">1.32 <small>USD/M</small></span></div>
+</div>
+<div class="ex-bar"><i style="width:57.1%;background:var(--l1)"></i></div>
+<p class="ex-verdict"><b>You pay 2.00&times; the advertised input price.</b> At a 1:1 input-to-output mix with output charged at 3x input, the headline number understates the real cost by 100%.</p></div><div class="ex-out p-5-81">
+<div class="ex-grid">
+<div class="ex-cell"><span class="k">Blended multiple</span><span class="v">1.44<small>&times; input</small></span></div>
+<div class="ex-cell"><span class="k">Effective price</span><span class="v">1.91 <small>USD/M</small></span></div>
+<div class="ex-cell"><span class="k">Headline input</span><span class="v">1.32 <small>USD/M</small></span></div>
+</div>
+<div class="ex-bar"><i style="width:41.3%;background:var(--l3)"></i></div>
+<p class="ex-verdict"><b>You pay 1.44&times; the advertised input price.</b> At a 8:1 input-to-output mix with output charged at 5x input, the headline number understates the real cost by 44%.</p></div><div class="ex-out p-5-31">
+<div class="ex-grid">
+<div class="ex-cell"><span class="k">Blended multiple</span><span class="v">2.00<small>&times; input</small></span></div>
+<div class="ex-cell"><span class="k">Effective price</span><span class="v">2.64 <small>USD/M</small></span></div>
+<div class="ex-cell"><span class="k">Headline input</span><span class="v">1.32 <small>USD/M</small></span></div>
+</div>
+<div class="ex-bar"><i style="width:57.1%;background:var(--l1)"></i></div>
+<p class="ex-verdict"><b>You pay 2.00&times; the advertised input price.</b> At a 3:1 input-to-output mix with output charged at 5x input, the headline number understates the real cost by 100%.</p></div><div class="ex-out p-5-11">
+<div class="ex-grid">
+<div class="ex-cell"><span class="k">Blended multiple</span><span class="v">3.00<small>&times; input</small></span></div>
+<div class="ex-cell"><span class="k">Effective price</span><span class="v">3.96 <small>USD/M</small></span></div>
+<div class="ex-cell"><span class="k">Headline input</span><span class="v">1.32 <small>USD/M</small></span></div>
+</div>
+<div class="ex-bar"><i style="width:85.7%;background:var(--l5)"></i></div>
+<p class="ex-verdict"><b>You pay 3.00&times; the advertised input price.</b> At a 1:1 input-to-output mix with output charged at 5x input, the headline number understates the real cost by 200%.</p></div><div class="ex-out p-6-81">
+<div class="ex-grid">
+<div class="ex-cell"><span class="k">Blended multiple</span><span class="v">1.56<small>&times; input</small></span></div>
+<div class="ex-cell"><span class="k">Effective price</span><span class="v">2.05 <small>USD/M</small></span></div>
+<div class="ex-cell"><span class="k">Headline input</span><span class="v">1.32 <small>USD/M</small></span></div>
+</div>
+<div class="ex-bar"><i style="width:44.4%;background:var(--l3)"></i></div>
+<p class="ex-verdict"><b>You pay 1.56&times; the advertised input price.</b> At a 8:1 input-to-output mix with output charged at 6x input, the headline number understates the real cost by 56%.</p></div><div class="ex-out p-6-31">
+<div class="ex-grid">
+<div class="ex-cell"><span class="k">Blended multiple</span><span class="v">2.25<small>&times; input</small></span></div>
+<div class="ex-cell"><span class="k">Effective price</span><span class="v">2.97 <small>USD/M</small></span></div>
+<div class="ex-cell"><span class="k">Headline input</span><span class="v">1.32 <small>USD/M</small></span></div>
+</div>
+<div class="ex-bar"><i style="width:64.3%;background:var(--l1)"></i></div>
+<p class="ex-verdict"><b>You pay 2.25&times; the advertised input price.</b> At a 3:1 input-to-output mix with output charged at 6x input, the headline number understates the real cost by 125%.</p></div><div class="ex-out p-6-11">
+<div class="ex-grid">
+<div class="ex-cell"><span class="k">Blended multiple</span><span class="v">3.50<small>&times; input</small></span></div>
+<div class="ex-cell"><span class="k">Effective price</span><span class="v">4.62 <small>USD/M</small></span></div>
+<div class="ex-cell"><span class="k">Headline input</span><span class="v">1.32 <small>USD/M</small></span></div>
+</div>
+<div class="ex-bar"><i style="width:100.0%;background:var(--l5)"></i></div>
+<p class="ex-verdict"><b>You pay 3.50&times; the advertised input price.</b> At a 1:1 input-to-output mix with output charged at 6x input, the headline number understates the real cost by 250%.</p></div></div>
+<div class="ex-foot">Worked against a USD&nbsp;1.32 input price for illustration. Traffic mix is the variable nobody puts on a pricing page and the one that decides the bill: a summarisation workload reading long documents sits near 8:1, while a chat or agent workload generating long answers moves towards 1:1 and multiplies the effective price.</div>
+</div>
+
 <h2 id="s17">17. Embeddings and vector stores</h2>
 
 <div class="eyebrow"><span class="tag t4">Layer 4 · Data</span></div>
@@ -853,25 +1287,119 @@ updated: 2026-09-08
 
 <p>Multi-agent designs assign roles to separate agents that pass work between them. The appeal is organisational — it mirrors how a team works. The cost is that every hand-off is a lossy compression of context, and errors accumulate multiplicatively rather than additively.</p>
 
-<div class="calc workings">
-  <div class="calc-title">Reliability under composition</div>
-  <table class="calc-table">
-    <thead>
-      <tr><th>Architecture</th><th>Equation</th><th>Success Rate</th></tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>Single agent, 90% / step, 5 steps</td>
-        <td class="num">0.90<sup>5</sup></td>
-        <td class="num font-semibold text-accent">59% task success</td>
-      </tr>
-      <tr>
-        <td>Four agents, 90% / agent, hand-offs @ 95%</td>
-        <td class="num">0.90<sup>4</sup> × 0.95<sup>3</sup></td>
-        <td class="num font-semibold text-accent">56% (4× token cost)</td>
-      </tr>
-    </tbody>
-  </table>
+<div class="ex">
+<div class="ex-head"><h4>Reliability under composition</h4><span class="ex-hint">add agents and watch it fall</span></div>
+<input class="exr" type="radio" name="cag" id="ca-1"><input class="exr" type="radio" name="cag" id="ca-2"><input class="exr" type="radio" name="cag" id="ca-3"><input class="exr" type="radio" name="cag" id="ca-4" checked><input class="exr" type="radio" name="cag" id="ca-6">
+<input class="exr" type="radio" name="crl" id="cr-95"><input class="exr" type="radio" name="crl" id="cr-90" checked><input class="exr" type="radio" name="crl" id="cr-80">
+<div class="ex-ctl"><span class="ex-lab">Agents</span><label for="ca-1">1</label><label for="ca-2">2</label><label for="ca-3">3</label><label for="ca-4">4</label><label for="ca-6">6</label></div>
+<div class="ex-ctl"><span class="ex-lab">Per agent</span><label for="cr-95">95%</label><label for="cr-90">90%</label><label for="cr-80">80%</label></div>
+<div class="ex-body"><div class="ex-out c-1-95">
+<div class="ex-grid">
+<div class="ex-cell"><span class="k">Task success</span><span class="v">95<small>%</small></span></div>
+<div class="ex-cell"><span class="k">Hand-offs</span><span class="v">0</span></div>
+<div class="ex-cell"><span class="k">Token cost</span><span class="v">1<small>&times;</small></span></div>
+</div>
+<div class="ex-bar"><i style="width:95.0%;background:var(--l3)"></i></div>
+<p class="ex-verdict"><b>One agent, 95% per step.</b> No hand-offs, so nothing is lost between components. This is the baseline every multi-agent design has to beat.<br><span class="ex-hint">0.95<sup>1</sup> = 0.9500</span></p></div><div class="ex-out c-1-90">
+<div class="ex-grid">
+<div class="ex-cell"><span class="k">Task success</span><span class="v">90<small>%</small></span></div>
+<div class="ex-cell"><span class="k">Hand-offs</span><span class="v">0</span></div>
+<div class="ex-cell"><span class="k">Token cost</span><span class="v">1<small>&times;</small></span></div>
+</div>
+<div class="ex-bar"><i style="width:90.0%;background:var(--l3)"></i></div>
+<p class="ex-verdict"><b>One agent, 90% per step.</b> No hand-offs, so nothing is lost between components. This is the baseline every multi-agent design has to beat.<br><span class="ex-hint">0.90<sup>1</sup> = 0.9000</span></p></div><div class="ex-out c-1-80">
+<div class="ex-grid">
+<div class="ex-cell"><span class="k">Task success</span><span class="v">80<small>%</small></span></div>
+<div class="ex-cell"><span class="k">Hand-offs</span><span class="v">0</span></div>
+<div class="ex-cell"><span class="k">Token cost</span><span class="v">1<small>&times;</small></span></div>
+</div>
+<div class="ex-bar"><i style="width:80.0%;background:var(--l3)"></i></div>
+<p class="ex-verdict"><b>One agent, 80% per step.</b> No hand-offs, so nothing is lost between components. This is the baseline every multi-agent design has to beat.<br><span class="ex-hint">0.80<sup>1</sup> = 0.8000</span></p></div><div class="ex-out c-2-95">
+<div class="ex-grid">
+<div class="ex-cell"><span class="k">Task success</span><span class="v">86<small>%</small></span></div>
+<div class="ex-cell"><span class="k">Hand-offs</span><span class="v">1</span></div>
+<div class="ex-cell"><span class="k">Token cost</span><span class="v">2<small>&times;</small></span></div>
+</div>
+<div class="ex-bar"><i style="width:85.7%;background:var(--l3)"></i></div>
+<p class="ex-verdict"><b>86% end to end, at 2&times; the token cost.</b> Survivable, but you are paying 2&times; for a result a single agent may already reach.<br><span class="ex-hint">0.95<sup>2</sup> &times; 0.95<sup>1</sup> = 0.8574</span></p></div><div class="ex-out c-2-90">
+<div class="ex-grid">
+<div class="ex-cell"><span class="k">Task success</span><span class="v">77<small>%</small></span></div>
+<div class="ex-cell"><span class="k">Hand-offs</span><span class="v">1</span></div>
+<div class="ex-cell"><span class="k">Token cost</span><span class="v">2<small>&times;</small></span></div>
+</div>
+<div class="ex-bar"><i style="width:77.0%;background:var(--l3)"></i></div>
+<p class="ex-verdict"><b>77% end to end, at 2&times; the token cost.</b> Survivable, but you are paying 2&times; for a result a single agent may already reach.<br><span class="ex-hint">0.90<sup>2</sup> &times; 0.95<sup>1</sup> = 0.7695</span></p></div><div class="ex-out c-2-80">
+<div class="ex-grid">
+<div class="ex-cell"><span class="k">Task success</span><span class="v">61<small>%</small></span></div>
+<div class="ex-cell"><span class="k">Hand-offs</span><span class="v">1</span></div>
+<div class="ex-cell"><span class="k">Token cost</span><span class="v">2<small>&times;</small></span></div>
+</div>
+<div class="ex-bar"><i style="width:60.8%;background:var(--l1)"></i></div>
+<p class="ex-verdict"><b>61% end to end, at 2&times; the token cost.</b> Roughly 39 runs in every 100 fail somewhere. Errors compound multiplicatively; adding a specialist made the system worse.<br><span class="ex-hint">0.80<sup>2</sup> &times; 0.95<sup>1</sup> = 0.6080</span></p></div><div class="ex-out c-3-95">
+<div class="ex-grid">
+<div class="ex-cell"><span class="k">Task success</span><span class="v">77<small>%</small></span></div>
+<div class="ex-cell"><span class="k">Hand-offs</span><span class="v">2</span></div>
+<div class="ex-cell"><span class="k">Token cost</span><span class="v">3<small>&times;</small></span></div>
+</div>
+<div class="ex-bar"><i style="width:77.4%;background:var(--l3)"></i></div>
+<p class="ex-verdict"><b>77% end to end, at 3&times; the token cost.</b> Survivable, but you are paying 3&times; for a result a single agent may already reach.<br><span class="ex-hint">0.95<sup>3</sup> &times; 0.95<sup>2</sup> = 0.7738</span></p></div><div class="ex-out c-3-90">
+<div class="ex-grid">
+<div class="ex-cell"><span class="k">Task success</span><span class="v">66<small>%</small></span></div>
+<div class="ex-cell"><span class="k">Hand-offs</span><span class="v">2</span></div>
+<div class="ex-cell"><span class="k">Token cost</span><span class="v">3<small>&times;</small></span></div>
+</div>
+<div class="ex-bar"><i style="width:65.8%;background:var(--l1)"></i></div>
+<p class="ex-verdict"><b>66% end to end, at 3&times; the token cost.</b> Roughly 34 runs in every 100 fail somewhere. Errors compound multiplicatively; adding a specialist made the system worse.<br><span class="ex-hint">0.90<sup>3</sup> &times; 0.95<sup>2</sup> = 0.6579</span></p></div><div class="ex-out c-3-80">
+<div class="ex-grid">
+<div class="ex-cell"><span class="k">Task success</span><span class="v">46<small>%</small></span></div>
+<div class="ex-cell"><span class="k">Hand-offs</span><span class="v">2</span></div>
+<div class="ex-cell"><span class="k">Token cost</span><span class="v">3<small>&times;</small></span></div>
+</div>
+<div class="ex-bar"><i style="width:46.2%;background:var(--l5)"></i></div>
+<p class="ex-verdict"><b>46% end to end, at 3&times; the token cost.</b> Roughly 54 runs in every 100 fail somewhere. Errors compound multiplicatively; adding a specialist made the system worse.<br><span class="ex-hint">0.80<sup>3</sup> &times; 0.95<sup>2</sup> = 0.4621</span></p></div><div class="ex-out c-4-95">
+<div class="ex-grid">
+<div class="ex-cell"><span class="k">Task success</span><span class="v">70<small>%</small></span></div>
+<div class="ex-cell"><span class="k">Hand-offs</span><span class="v">3</span></div>
+<div class="ex-cell"><span class="k">Token cost</span><span class="v">4<small>&times;</small></span></div>
+</div>
+<div class="ex-bar"><i style="width:69.8%;background:var(--l1)"></i></div>
+<p class="ex-verdict"><b>70% end to end, at 4&times; the token cost.</b> Roughly 30 runs in every 100 fail somewhere. Errors compound multiplicatively; adding a specialist made the system worse.<br><span class="ex-hint">0.95<sup>4</sup> &times; 0.95<sup>3</sup> = 0.6983</span></p></div><div class="ex-out c-4-90">
+<div class="ex-grid">
+<div class="ex-cell"><span class="k">Task success</span><span class="v">56<small>%</small></span></div>
+<div class="ex-cell"><span class="k">Hand-offs</span><span class="v">3</span></div>
+<div class="ex-cell"><span class="k">Token cost</span><span class="v">4<small>&times;</small></span></div>
+</div>
+<div class="ex-bar"><i style="width:56.3%;background:var(--l1)"></i></div>
+<p class="ex-verdict"><b>56% end to end, at 4&times; the token cost.</b> Roughly 44 runs in every 100 fail somewhere. Errors compound multiplicatively; adding a specialist made the system worse.<br><span class="ex-hint">0.90<sup>4</sup> &times; 0.95<sup>3</sup> = 0.5625</span></p></div><div class="ex-out c-4-80">
+<div class="ex-grid">
+<div class="ex-cell"><span class="k">Task success</span><span class="v">35<small>%</small></span></div>
+<div class="ex-cell"><span class="k">Hand-offs</span><span class="v">3</span></div>
+<div class="ex-cell"><span class="k">Token cost</span><span class="v">4<small>&times;</small></span></div>
+</div>
+<div class="ex-bar"><i style="width:35.1%;background:var(--l5)"></i></div>
+<p class="ex-verdict"><b>35% end to end, at 4&times; the token cost.</b> Roughly 65 runs in every 100 fail somewhere. Errors compound multiplicatively; adding a specialist made the system worse.<br><span class="ex-hint">0.80<sup>4</sup> &times; 0.95<sup>3</sup> = 0.3512</span></p></div><div class="ex-out c-6-95">
+<div class="ex-grid">
+<div class="ex-cell"><span class="k">Task success</span><span class="v">57<small>%</small></span></div>
+<div class="ex-cell"><span class="k">Hand-offs</span><span class="v">5</span></div>
+<div class="ex-cell"><span class="k">Token cost</span><span class="v">6<small>&times;</small></span></div>
+</div>
+<div class="ex-bar"><i style="width:56.9%;background:var(--l1)"></i></div>
+<p class="ex-verdict"><b>57% end to end, at 6&times; the token cost.</b> Roughly 43 runs in every 100 fail somewhere. Errors compound multiplicatively; adding a specialist made the system worse.<br><span class="ex-hint">0.95<sup>6</sup> &times; 0.95<sup>5</sup> = 0.5688</span></p></div><div class="ex-out c-6-90">
+<div class="ex-grid">
+<div class="ex-cell"><span class="k">Task success</span><span class="v">41<small>%</small></span></div>
+<div class="ex-cell"><span class="k">Hand-offs</span><span class="v">5</span></div>
+<div class="ex-cell"><span class="k">Token cost</span><span class="v">6<small>&times;</small></span></div>
+</div>
+<div class="ex-bar"><i style="width:41.1%;background:var(--l5)"></i></div>
+<p class="ex-verdict"><b>41% end to end, at 6&times; the token cost.</b> Roughly 59 runs in every 100 fail somewhere. Errors compound multiplicatively; adding a specialist made the system worse.<br><span class="ex-hint">0.90<sup>6</sup> &times; 0.95<sup>5</sup> = 0.4112</span></p></div><div class="ex-out c-6-80">
+<div class="ex-grid">
+<div class="ex-cell"><span class="k">Task success</span><span class="v">20<small>%</small></span></div>
+<div class="ex-cell"><span class="k">Hand-offs</span><span class="v">5</span></div>
+<div class="ex-cell"><span class="k">Token cost</span><span class="v">6<small>&times;</small></span></div>
+</div>
+<div class="ex-bar"><i style="width:20.3%;background:var(--l5)"></i></div>
+<p class="ex-verdict"><b>20% end to end, at 6&times; the token cost.</b> Roughly 80 runs in every 100 fail somewhere. Errors compound multiplicatively; adding a specialist made the system worse.<br><span class="ex-hint">0.80<sup>6</sup> &times; 0.95<sup>5</sup> = 0.2028</span></p></div></div>
+<div class="ex-foot">Hand-offs are held at 95% throughout, which is generous &mdash; a hand-off is a lossy compression of context, and 95% assumes it rarely drops anything that mattered. Move from one agent to four at 90% and task success falls from 90% to 56% while cost quadruples.</div>
 </div>
 
 <table class="dt">
