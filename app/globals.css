@@ -2,6 +2,36 @@
 @import "katex/dist/katex.min.css";
 @import "../public/loud-recall-html.css";
 
+/* PWA Splash Screen Animation & Accessibility Failsafe */
+@keyframes pwaSplashFadeOut {
+  0% {
+    opacity: 1;
+    visibility: visible;
+  }
+  99% {
+    opacity: 0;
+    visibility: visible;
+  }
+  100% {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+}
+
+#pwa-splash {
+  animation: pwaSplashFadeOut 0.4s ease-out 0.3s forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #pwa-splash {
+    animation: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+  }
+}
+
 /* KaTeX Display Equations Container - Prevent overflow & clipping on mobile */
 .katex-display {
   overflow-x: auto;

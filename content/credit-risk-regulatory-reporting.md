@@ -1,14 +1,8 @@
 ---
 title: "Credit Risk, Capital and Regulatory Reporting"
 description: "One continuous pass over the domain: credit risk and IRAC, expected credit loss under Ind AS 109, Basel capital and RWA, liquidity and interest rate risk, capital markets products, BCBS 239 and the reporting factory, the delivery architecture behind it, and the models underneath."
-order: 30
-collection: default
-verified: unverified
-format: markdown
-series: role-recall
-tags: [credit-risk, ecl, basel, liquidity, irrbb, capital-markets, regulatory-reporting, data-mapping, machine-learning]
-related: [credit-risk, expected-credit-loss, basel-capital]
-created: 2026-09-08
+series: masterclass
+status: live
 updated: 2026-09-08
 ---
 

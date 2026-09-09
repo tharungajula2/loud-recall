@@ -1,14 +1,8 @@
 ---
 title: "Retail Credit Risk — Scorecards, Provisioning and Capital from One Portfolio"
 description: "How one Python system turns 466,285 LendingClub loans into WoE/logistic scorecards, two-stage LGD, term EAD, IFRS 9 ECL, CECL, and Basel III IRB capital."
-order: 21
-collection: default
-verified: unverified
-format: markdown
 series: portfolio
-tags: [credit-risk, pd-scorecard, lgd, ifrs-9, cecl, basel-iii, model-validation]
-related: [credit-risk, expected-credit-loss, basel-capital]
-created: 2026-09-08
+status: live
 updated: 2026-09-08
 ---
 

@@ -2,7 +2,7 @@
 
 import React, { useState, useMemo } from 'react';
 import Link from 'next/link';
-import { DocumentMeta } from '@/lib/markdown';
+import { DocumentMeta, ContentSeries } from '@/lib/markdown';
 
 interface ShelfListProps {
   documents: DocumentMeta[];
@@ -20,156 +20,111 @@ function formatDateDisplay(dateStr: string): string {
   return `${dayNum} ${months[monthIdx]} ${year}`;
 }
 
-function toSentenceCase(str: string): string {
-  if (!str) return '';
-  if (str === 'all') return 'All';
-  const clean = str.replace(/-/g, ' ');
-  return clean.charAt(0).toUpperCase() + clean.slice(1).toLowerCase();
-}
+const SECTION_ORDER: { key: ContentSeries; title: string }[] = [
+  { key: 'masterclass', title: 'Masterclass' },
+  { key: 'portfolio', title: 'Portfolio' },
+  { key: 'article', title: 'Article' },
+  { key: 'newsletter', title: 'Newsletter' },
+];
 
 export function ShelfList({ documents }: ShelfListProps) {
-  const [selectedSeries, setSelectedSeries] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState<string>('');
 
-  // Step 2: Derive available series dynamically at build/render time
-  const availableSeries = useMemo(() => {
-    const seriesSet = new Set<string>();
-    documents.forEach((doc) => {
-      if (doc.series) {
-        seriesSet.add(doc.series);
-      }
-    });
-    const sorted = Array.from(seriesSet).sort();
-    return ['all', ...sorted];
-  }, [documents]);
-
-  // Filter documents composing series and search query
+  // Filter documents by search query
   const filteredDocuments = useMemo(() => {
+    if (!searchQuery.trim()) return documents;
+    const q = searchQuery.toLowerCase().trim();
     return documents.filter((doc) => {
-      if (selectedSeries !== 'all' && doc.series !== selectedSeries) return false;
-      if (searchQuery.trim()) {
-        const q = searchQuery.toLowerCase().trim();
-        const matchesTitle = doc.title.toLowerCase().includes(q);
-        const matchesDesc = doc.description.toLowerCase().includes(q);
-        const matchesTags = doc.tags.some((t) => t.toLowerCase().includes(q));
-        if (!matchesTitle && !matchesDesc && !matchesTags) return false;
-      }
-      return true;
+      const matchesTitle = doc.title.toLowerCase().includes(q);
+      const matchesDesc = doc.description.toLowerCase().includes(q);
+      const matchesTags = doc.tags?.some((t) => t.toLowerCase().includes(q));
+      return matchesTitle || matchesDesc || matchesTags;
     });
-  }, [documents, selectedSeries, searchQuery]);
+  }, [documents, searchQuery]);
 
-  const isQueryActive = searchQuery.trim().length > 0 || selectedSeries !== 'all';
+  // Group live documents by series in defined order: Masterclass, Portfolio, Article, Newsletter
+  const sections = useMemo(() => {
+    return SECTION_ORDER.map(({ key, title }) => {
+      const sectionDocs = filteredDocuments
+        .filter((doc) => doc.series === key)
+        .sort((a, b) => b.updated.localeCompare(a.updated));
+      return {
+        key,
+        title,
+        docs: sectionDocs,
+      };
+    }).filter((section) => section.docs.length > 0); // Hide section completely if 0 live docs
+  }, [filteredDocuments]);
 
   return (
-    <div className="space-y-6">
-      {/* Search & Series Filter Controls */}
-      <div className="space-y-3 pb-6 border-b border-border/40">
-        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
-          {/* Search Input Container with Clear Control */}
-          <div className="relative w-full sm:max-w-xs flex items-center">
-            <input
-              type="text"
-              placeholder="Search title, description, tags..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full px-3 py-1.5 pr-14 text-xs bg-background border border-border rounded-md text-foreground placeholder:text-muted/60 focus:outline-none focus:ring-1 focus:ring-foreground transition-all"
-            />
-            {searchQuery && (
-              <button
-                type="button"
-                onClick={() => setSearchQuery('')}
-                className="absolute right-2 text-xs font-medium text-muted hover:text-foreground px-1 py-0.5"
-                aria-label="Clear search"
-              >
-                Clear
-              </button>
-            )}
-          </div>
+    <div className="space-y-8 min-w-0">
+      {/* Optional Search Control */}
+      <div className="relative w-full max-w-xs flex items-center">
+        <input
+          type="text"
+          placeholder="Search notes..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="w-full px-3 py-2 min-h-[44px] text-xs bg-background border border-border rounded-md text-foreground placeholder:text-muted/60 focus:outline-none focus:ring-1 focus:ring-foreground transition-all"
+        />
+        {searchQuery && (
+          <button
+            type="button"
+            onClick={() => setSearchQuery('')}
+            className="absolute right-2 text-xs font-medium text-muted hover:text-foreground px-2 py-1.5 min-h-[44px] flex items-center"
+            aria-label="Clear search"
+          >
+            Clear
+          </button>
+        )}
+      </div>
 
-          {/* Derived Series Filters */}
-          <div className="flex items-center gap-1 shrink-0 flex-wrap">
-            {availableSeries.map((s) => (
-              <button
-                key={s}
-                type="button"
-                onClick={() => setSelectedSeries(s)}
-                className={`px-2.5 py-1 rounded-md text-xs font-medium transition-colors ${
-                  selectedSeries === s
-                    ? 'bg-foreground text-background font-semibold'
-                    : 'text-muted hover:text-foreground hover:bg-black/5'
-                }`}
-              >
-                {toSentenceCase(s)}
-              </button>
-            ))}
-          </div>
+      {/* Grouped Document Sections */}
+      {sections.length === 0 ? (
+        <div className="py-12 text-center text-xs text-muted">
+          No notes found matching &quot;{searchQuery}&quot;.
         </div>
+      ) : (
+        sections.map((section) => (
+          <section key={section.key} className="space-y-3 min-w-0">
+            {/* Section Heading */}
+            <h2 className="text-xs font-semibold uppercase tracking-wider text-muted/70 pb-2 border-b border-border/40">
+              {section.title}
+            </h2>
 
-        {/* Active Query Result Count */}
-        {isQueryActive && (
-          <div className="text-xs text-muted/70 flex items-center justify-between pt-1">
-            <span>
-              {filteredDocuments.length} of {documents.length}
-            </span>
-          </div>
-        )}
-      </div>
+            {/* Document Links within Section */}
+            <div className="divide-y divide-border/30">
+              {section.docs.map((doc) => (
+                <Link
+                  key={doc.slug}
+                  href={`/${doc.slug}`}
+                  className="group block min-h-[44px] py-3.5 px-2 -mx-2 rounded-lg transition-colors hover:bg-black/5 active:bg-black/10 flex flex-col justify-center"
+                >
+                  <h3 className="text-base font-medium tracking-tight text-foreground leading-snug mb-1">
+                    {doc.title}
+                  </h3>
 
-      {/* Document List */}
-      <div className="divide-y divide-border/40">
-        {filteredDocuments.length === 0 ? (
-          <div className="py-12 text-center text-xs text-muted">
-            {selectedSeries !== 'all' && searchQuery.trim()
-              ? `No notes found matching "${searchQuery}" in ${toSentenceCase(selectedSeries)}.`
-              : selectedSeries !== 'all'
-              ? `No notes found in ${toSentenceCase(selectedSeries)}.`
-              : `No notes found matching "${searchQuery}".`}
-          </div>
-        ) : (
-          filteredDocuments.map((doc) => (
-            <Link
-              key={doc.slug}
-              href={`/${doc.slug}`}
-              className="group block py-4 px-2 -mx-2 rounded-lg transition-colors hover:bg-black/5 active:bg-black/10"
-            >
-              {/* 1. Title — full, wrapping to as many lines as needed, never truncated */}
-              <h2 className="text-base font-medium tracking-tight text-foreground leading-snug mb-1">
-                {doc.title}
-              </h2>
+                  {doc.description && (
+                    <p className="text-xs text-muted line-clamp-2 leading-relaxed mb-2">
+                      {doc.description}
+                    </p>
+                  )}
 
-              {/* 2. Description — clamped to 2 lines max */}
-              {doc.description && (
-                <p className="text-xs text-muted line-clamp-2 leading-relaxed mb-2.5">
-                  {doc.description}
-                </p>
-              )}
-
-              {/* 3. Single meta line: hairline-separated inline items */}
-              <div className="text-xs text-muted/70 flex flex-wrap items-center gap-x-2 gap-y-1 font-medium">
-                <span className="uppercase tracking-wider text-[10px] text-muted/60 font-semibold">
-                  {doc.series}
-                </span>
-                <span>&middot;</span>
-                <span>{doc.readTime}</span>
-                {doc.updated && (
-                  <>
-                    <span>&middot;</span>
-                    <span>{formatDateDisplay(doc.updated)}</span>
-                  </>
-                )}
-                {doc.verified !== 'verified' && doc.verified !== 'true' && (
-                  <>
-                    <span>&middot;</span>
-                    <span className="text-muted/60 uppercase tracking-wider text-[10px]">
-                      Unverified
-                    </span>
-                  </>
-                )}
-              </div>
-            </Link>
-          ))
-        )}
-      </div>
+                  <div className="text-xs text-muted/70 flex flex-wrap items-center gap-x-2 gap-y-1 font-medium">
+                    <span>{doc.readTime}</span>
+                    {doc.updated && (
+                      <>
+                        <span>&middot;</span>
+                        <span>{formatDateDisplay(doc.updated)}</span>
+                      </>
+                    )}
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </section>
+        ))
+      )}
     </div>
   );
 }

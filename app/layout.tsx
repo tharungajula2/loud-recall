@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Literata } from "next/font/google";
 import "./globals.css";
+import { Mark } from "@/components/Mark";
 
 const literata = Literata({
   variable: "--font-literata",
@@ -74,7 +75,24 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       lang="en"
       className={`${literata.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col min-w-0 bg-background text-foreground">{children}</body>
+      <body className="min-h-full flex flex-col min-w-0 bg-background text-foreground">
+        {/* Inline PWA First-Paint Splash Screen */}
+        <div
+          id="pwa-splash"
+          className="fixed inset-0 z-[99999] flex flex-col items-center justify-center bg-[#FFFFFF] text-[#111111] pointer-events-none select-none"
+          aria-hidden="true"
+        >
+          <Mark className="h-9 w-auto text-[#111111]" />
+          <div className="text-xl font-sans font-light tracking-wide text-[#111111] mt-3">
+            Loud Recall
+          </div>
+          <div className="text-[11px] font-sans text-[#666666] tracking-widest uppercase mt-1 font-medium">
+            Tharun Gajula
+          </div>
+        </div>
+
+        {children}
+      </body>
     </html>
   );
 }

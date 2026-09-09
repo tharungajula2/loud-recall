@@ -1,17 +1,10 @@
 ---
 title: "Parents Health OS — Family Care Architecture and WhatsApp Engine"
 description: "Spoken-recall notes for defending the Parents Health OS product, architecture, data model, Gemini AI extraction pipeline, WhatsApp engine, and test suites."
-order: 23
-collection: default
-verified: unverified
-format: markdown
 series: portfolio
-tags: [parents-health-os, nextjs-16, supabase, gemini-ai, whatsapp-cloud-api, row-level-security]
-related: [loc-iq, retail-credit-risk]
-created: 2026-09-08
+status: live
 updated: 2026-09-08
 ---
-
 
 **Repository baseline:** `main` @ `a7cc3ba`  
 **Grounded in:** Project Truth, Build History, Zero-to-God-Mode Masterclass, and Final Gap Recovery  

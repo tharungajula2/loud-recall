@@ -1,17 +1,10 @@
 ---
 title: "Loc-IQ — Address Consistency and Location Evidence Workstation"
 description: "Spoken-recall notes and technical architecture breakdown for defending the Loc-IQ address-consistency solver, 6-layer case graph, knowledge graph, and network lab."
-order: 22
-collection: default
-verified: unverified
-format: markdown
 series: portfolio
-tags: [loc-iq, address-consistency, graph-analytics, fraud-investigation, retail-credit]
-related: [parents-health-os, retail-credit-risk]
-created: 2026-09-08
+status: live
 updated: 2026-09-08
 ---
-
 
 **Purpose:** one file to reopen months later and recover the whole Loc-IQ project quickly and truthfully.
 
