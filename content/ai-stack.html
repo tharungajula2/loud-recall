@@ -287,6 +287,19 @@ updated: 2026-09-09
 .ai-stack #px-81:checked ~ .ex-ctl label[for="px-81"]{background:var(--l4);color:#fff;border-color:var(--l4)}
 .ai-stack #px-31:checked ~ .ex-ctl label[for="px-31"]{background:var(--l4);color:#fff;border-color:var(--l4)}
 .ai-stack #px-11:checked ~ .ex-ctl label[for="px-11"]{background:var(--l4);color:#fff;border-color:var(--l4)}
+
+/* bill explorer */
+.ai-stack #bh-0:checked ~ #br-no:checked ~ .ex-body .b-0-no{display:block}
+.ai-stack #bh-0:checked ~ #br-yes:checked ~ .ex-body .b-0-yes{display:block}
+.ai-stack #bh-50:checked ~ #br-no:checked ~ .ex-body .b-50-no{display:block}
+.ai-stack #bh-50:checked ~ #br-yes:checked ~ .ex-body .b-50-yes{display:block}
+.ai-stack #bh-95:checked ~ #br-no:checked ~ .ex-body .b-95-no{display:block}
+.ai-stack #bh-95:checked ~ #br-yes:checked ~ .ex-body .b-95-yes{display:block}
+.ai-stack #bh-0:checked ~ .ex-ctl label[for="bh-0"]{background:var(--l4);color:#fff;border-color:var(--l4)}
+.ai-stack #bh-50:checked ~ .ex-ctl label[for="bh-50"]{background:var(--l4);color:#fff;border-color:var(--l4)}
+.ai-stack #bh-95:checked ~ .ex-ctl label[for="bh-95"]{background:var(--l4);color:#fff;border-color:var(--l4)}
+.ai-stack #br-no:checked ~ .ex-ctl label[for="br-no"]{background:var(--l4);color:#fff;border-color:var(--l4)}
+.ai-stack #br-yes:checked ~ .ex-ctl label[for="br-yes"]{background:var(--l4);color:#fff;border-color:var(--l4)}
 </style>
 
 <p class="lead">Everything below is one system seen from six heights. The lens is production: what is actually built, what it costs, and what breaks. Model names, prices and hardware are stated as at September 2026 and will age; the layer structure will not.</p>
@@ -345,6 +358,35 @@ updated: 2026-09-09
 <div class="note rule">
 <b>Permanent rule</b>
 <p>The model is one layer of six. Almost every production failure happens in the other five.</p>
+</div>
+
+<h2 id="s0">0. The system we follow</h2>
+
+<p>Everything in this document happens to one system, and it is worth meeting before any of the vocabulary arrives.</p>
+
+<p>A mid-sized company handles about <span class="num">5,000</span> support tickets a day. An engineer builds an assistant that reads the ticket, searches the internal documentation, and drafts a reply. It takes a fortnight, it demos beautifully, and it goes live.</p>
+
+<p>Then the first month happens. The bill is larger than anyone modelled. It is slower than the demo. It confidently cites a policy that was withdrawn in 2024. Someone asks it to issue a refund and it tries. And nobody can say whether last Tuesday's version was better or worse than today's.</p>
+
+<p>Each of those failures is a different layer of the stack, and each section below is one of them arriving.</p>
+
+<div class="ex">
+<div class="ex-head"><h4>The system, in numbers</h4><span class="ex-hint">every figure below returns later</span></div>
+<div class="ex-body">
+<div class="ex-out on">
+<div class="ex-grid">
+<div class="ex-cell"><span class="k">Requests / day</span><span class="v">5,000</span></div>
+<div class="ex-cell"><span class="k">Input / request</span><span class="v">28,200 <small>tok</small></span></div>
+<div class="ex-cell"><span class="k">Output / request</span><span class="v">600 <small>tok</small></span></div>
+</div>
+<p class="ex-verdict">The input breaks into <b>20,000 tokens of system prompt and tool definitions</b> that never change, <b>8,000 tokens of retrieved documentation</b> that changes every request, and <b>200 tokens of actual question</b>. That 20,000-token stable block is the single most important number in the document: it is re-sent and re-billed on every one of the 5,000 daily calls, and section 16b is about what happens when you stop doing that.</p>
+</div></div>
+<div class="ex-foot">Input-heavy at roughly 47:1, which is typical of retrieval workloads and nothing like a chat product. Traffic shape decides the bill, and this system's shape is why.</div>
+</div>
+
+<div class="note rule">
+<b>How to read this</b>
+<p>Sections 1 to 3 are the units everything is counted in. Sections 4 to 9 are the machine underneath. Sections 10 to 16b are how the model is made, served and paid for. Sections 17 to 22b are what surrounds it once it has to act. Sections 23 to 26 are how you find out whether any of it works.</p>
 </div>
 
 <h2 id="s1">1. A model is a file of numbers</h2>
@@ -431,7 +473,9 @@ updated: 2026-09-09
 
 <h2 id="s4">4. Six layers, and why the model is only one</h2>
 
-<p>A production AI system is six layers deep. Read bottom to top: each layer consumes the one beneath it and is invisible to the one above. Open any layer for what it decides and how it fails.</p>
+<p>The engineer who built the assistant made one decision consciously &mdash; which model to call. Every failure in the first month came from a decision made by default: how documentation was chunked, how many tokens the loop was allowed, what happened when the model asked to issue a refund, whether anyone could reproduce last Tuesday.</p>
+
+<p>Those defaults have names, and they sort into six layers. Read bottom to top: each consumes the one beneath it and is invisible to the one above. Open any layer for what it decides and how it fails.</p>
 
 <div class="stk"><div class="stk-row">
 <div class="stk-bar" style="background:var(--l6)"></div>
@@ -1066,6 +1110,108 @@ updated: 2026-09-09
 <div class="ex-foot">Worked against a USD&nbsp;1.32 input price for illustration. Traffic mix is the variable nobody puts on a pricing page and the one that decides the bill: a summarisation workload reading long documents sits near 8:1, while a chat or agent workload generating long answers moves towards 1:1 and multiplies the effective price.</div>
 </div>
 
+<h2 id="s16b">16b. Three levers on the same bill</h2>
+
+<div class="eyebrow"><span class="tag t3">Layer 3 &middot; Inference</span><span class="asof">as at Sep 2026</span></div>
+
+<p>The assistant's first invoice was about USD&nbsp;5,900 for the month. Nobody had modelled it, because the pricing page quotes cents per million tokens and 5,000 tickets a day does not sound like a lot of tokens.</p>
+
+<p>It is 141 million input tokens a day. And 100 million of those are the <em>same 20,000-token block</em> &mdash; system prompt, tool definitions, formatting rules &mdash; re-sent and recomputed on every single call.</p>
+
+<div class="note insight">
+<b>The paradox worth holding</b>
+<p>Per-token prices have fallen roughly 98% since early 2024, and enterprise AI bills have tripled over the same period. Both are true. Prices collapsed and consumption outran them, because agentic workflows generate five to thirty times more tokens per task than a chat interaction &mdash; every reasoning step, every tool call and every retry re-sends the accumulated context. Getting cheaper per token and more expensive per task at once is the normal condition, not an anomaly. <b>[verify]</b></p>
+</div>
+
+<h3>Caching: stop paying twice for the same prefix</h3>
+
+<p>Prompt caching stores the computed key-value tensors behind a repeated prompt prefix, so the static portion of every request is billed at a steep discount instead of being recomputed. Output is byte-identical &mdash; this is not quantisation and not a cheaper model. It is the same computation, not performed a second time.</p>
+
+<p>The mechanics that decide whether it works:</p>
+
+<table class="dt">
+<thead><tr><th>Property</th><th>Consequence</th></tr></thead>
+<tbody>
+<tr><td>Matches on <em>prefix</em>, not content</td><td>Everything stable must come first. A timestamp near the top of the prompt invalidates every token after it</td></tr>
+<tr><td>Writes cost more than normal input</td><td>Roughly 1.25&times;. A prefix used once is more expensive cached than not</td></tr>
+<tr><td>Reads cost far less</td><td>Roughly 0.10&times;. The saving lives entirely in the hit rate</td></tr>
+<tr><td>Entries expire</td><td>Low-traffic paths may never hit. Break-even needs the prefix reused within the window</td></tr>
+<tr><td>Prefill only</td><td>Output tokens are unaffected. A verbose system is not fixed by caching</td></tr>
+</tbody>
+</table>
+
+<div class="note trap">
+<b>The failure everyone hits first</b>
+<p>Cache-aware ordering is a prompt design constraint, not an optimisation applied afterwards. Teams enable caching, see a 5% saving, and conclude it does not work &mdash; when the real problem is that a session identifier or a reordered tool list sits inside the block that was supposed to be stable. Measure hit rate directly; do not infer it from the bill.</p>
+</div>
+
+<h3>Routing: not every ticket needs the frontier</h3>
+
+<p>Around 70% of the support tickets are password resets and billing address changes. They were being answered by the same frontier model as the genuinely hard 30%, because there was only ever one model in the code.</p>
+
+<p>Tiered routing sends routine work to a smaller model and reserves the expensive one for hard problems, and it is reported as the single largest lever available &mdash; 60&ndash;80% savings &mdash; because it attacks volume rather than unit price. <b>[verify]</b> The cost is a classifier that must itself be evaluated, and a failure mode where the router sends a hard ticket to the cheap model and nobody notices until the customer does.</p>
+
+<h3>Batching: half price for work that can wait</h3>
+
+<p>Asynchronous batch endpoints typically run at about half the synchronous rate in exchange for a delayed result. Nothing in the ticket assistant's live path qualifies. Its nightly job re-embedding changed documentation does, and that was running synchronously for no reason at all.</p>
+
+<div class="ex">
+<div class="ex-head"><h4>The monthly bill</h4><span class="ex-hint">same model, same answers</span></div>
+<input class="exr" type="radio" name="bhr" id="bh-0" checked><input class="exr" type="radio" name="bhr" id="bh-50"><input class="exr" type="radio" name="bhr" id="bh-95">
+<input class="exr" type="radio" name="brt" id="br-no" checked><input class="exr" type="radio" name="brt" id="br-yes">
+<div class="ex-ctl"><span class="ex-lab">Cache hits</span><label for="bh-0">0%</label><label for="bh-50">50%</label><label for="bh-95">95%</label></div>
+<div class="ex-ctl"><span class="ex-lab">Routing</span><label for="br-no">All frontier</label><label for="br-yes">70% routed</label></div>
+<div class="ex-body"><div class="ex-out b-0-no">
+<div class="ex-grid">
+<div class="ex-cell"><span class="k">Per day</span><span class="v">198 <small>USD</small></span></div>
+<div class="ex-cell"><span class="k">Per month</span><span class="v">5,940 <small>USD</small></span></div>
+<div class="ex-cell"><span class="k">Against baseline</span><span class="v">&mdash;</span></div>
+</div>
+<div class="ex-bar"><i style="width:100.0%;background:var(--l5)"></i></div>
+<p class="ex-verdict"><b>The baseline.</b> Every one of the 5,000 daily calls re-sends and re-pays for the same 20,000-token block of system prompt and tool definitions. Nothing here is wasted compute in the model &mdash; it is wasted compute in your invoice.</p></div><div class="ex-out b-0-yes">
+<div class="ex-grid">
+<div class="ex-cell"><span class="k">Per day</span><span class="v">73 <small>USD</small></span></div>
+<div class="ex-cell"><span class="k">Per month</span><span class="v">2,198 <small>USD</small></span></div>
+<div class="ex-cell"><span class="k">Against baseline</span><span class="v">&minus;63<small>%</small></span></div>
+</div>
+<div class="ex-bar"><i style="width:37.0%;background:var(--l3)"></i></div>
+<p class="ex-verdict"><b>63% off, two levers stacked.</b> Caching removes the repeated prefill; routing sends the 70% of tickets that are password resets to a model costing a tenth as much. Neither touched the model's quality on the hard 30%.</p></div><div class="ex-out b-50-no">
+<div class="ex-grid">
+<div class="ex-cell"><span class="k">Per day</span><span class="v">155 <small>USD</small></span></div>
+<div class="ex-cell"><span class="k">Per month</span><span class="v">4,653 <small>USD</small></span></div>
+<div class="ex-cell"><span class="k">Against baseline</span><span class="v">&minus;22<small>%</small></span></div>
+</div>
+<div class="ex-bar"><i style="width:78.3%;background:var(--l1)"></i></div>
+<p class="ex-verdict"><b>22% off, one lever.</b> Same model, same answers, byte for byte. The only change is that the stable block is billed once and read back cheaply instead of recomputed 5,000 times a day.</p></div><div class="ex-out b-50-yes">
+<div class="ex-grid">
+<div class="ex-cell"><span class="k">Per day</span><span class="v">57 <small>USD</small></span></div>
+<div class="ex-cell"><span class="k">Per month</span><span class="v">1,722 <small>USD</small></span></div>
+<div class="ex-cell"><span class="k">Against baseline</span><span class="v">&minus;71<small>%</small></span></div>
+</div>
+<div class="ex-bar"><i style="width:29.0%;background:var(--l3)"></i></div>
+<p class="ex-verdict"><b>71% off, two levers stacked.</b> Caching removes the repeated prefill; routing sends the 70% of tickets that are password resets to a model costing a tenth as much. Neither touched the model's quality on the hard 30%.</p></div><div class="ex-out b-95-no">
+<div class="ex-grid">
+<div class="ex-cell"><span class="k">Per day</span><span class="v">87 <small>USD</small></span></div>
+<div class="ex-cell"><span class="k">Per month</span><span class="v">2,604 <small>USD</small></span></div>
+<div class="ex-cell"><span class="k">Against baseline</span><span class="v">&minus;56<small>%</small></span></div>
+</div>
+<div class="ex-bar"><i style="width:43.8%;background:var(--l3)"></i></div>
+<p class="ex-verdict"><b>56% off, two levers stacked.</b> Caching removes the repeated prefill; routing sends the 70% of tickets that are password resets to a model costing a tenth as much. Neither touched the model's quality on the hard 30%.</p></div><div class="ex-out b-95-yes">
+<div class="ex-grid">
+<div class="ex-cell"><span class="k">Per day</span><span class="v">32 <small>USD</small></span></div>
+<div class="ex-cell"><span class="k">Per month</span><span class="v">963 <small>USD</small></span></div>
+<div class="ex-cell"><span class="k">Against baseline</span><span class="v">&minus;84<small>%</small></span></div>
+</div>
+<div class="ex-bar"><i style="width:16.2%;background:var(--l3)"></i></div>
+<p class="ex-verdict"><b>84% off, two levers stacked.</b> Caching removes the repeated prefill; routing sends the 70% of tickets that are password resets to a model costing a tenth as much. Neither touched the model's quality on the hard 30%.</p></div></div>
+<div class="ex-foot">Our 5,000 tickets a day at USD&nbsp;1.32 input and USD&nbsp;3.96 output per million, with cache writes at 1.25&times; and cache reads at 0.10&times; the input rate. Multipliers are provider-specific and change; verify before budgeting. <b>[verify]</b></div>
+</div>
+
+<div class="note rule">
+<b>Permanent rule</b>
+<p>Measure before optimising, and measure each lever separately. The three interact in messy ways &mdash; routing changes what is cacheable, caching changes the break-even for routing &mdash; and a team that turns all three on at once cannot tell which one worked. Instrument token usage by path first; the bill is a lagging indicator and tells you nothing about where the tokens went.</p>
+</div>
+
 <h2 id="s17">17. Embeddings and vector stores</h2>
 
 <div class="eyebrow"><span class="tag t4">Layer 4 · Data</span></div>
@@ -1281,6 +1427,92 @@ updated: 2026-09-09
 <p>Shipping an agent without a hard budget. An agent that loops is a bill that grows on its own, in production, at three in the morning. Every deployed agent needs an iteration cap, a token budget and a wall-clock limit before it is exposed to real traffic, not after the first incident.</p>
 </div>
 
+<h2 id="s21b">21b. The harness is the other half of the agent</h2>
+
+<div class="eyebrow"><span class="tag t5">Layer 5 &middot; Agents</span><span class="asof">as at Sep 2026</span></div>
+
+<p>The ticket assistant was given a tool that issues refunds. A customer wrote in angry about a duplicate charge, and the assistant issued the refund. Correctly, as it happens. Then a second customer pasted a forwarded email into their ticket, the email contained a line addressed to the assistant, and it tried to issue that refund too.</p>
+
+<p>The instinct is to fix the model &mdash; a firmer system prompt, a better model, a warning about untrusted text. All three help slightly and none of them fixes it, because <b>the model was never the component that should have been deciding whether a refund may be issued.</b></p>
+
+<div class="note insight">
+<b>The equation</b>
+<p><b>Agent = Model + Harness.</b> The harness is the programmatic wrapper around a frozen model: it decides what enters the context, which tools exist, whether a call is permitted, what the budget is, and when to stop. Treating the model as a reasoning component and the harness as the system around it is the shift that took the field from prompt engineering through context engineering to what is now called harness engineering. <b>[verify]</b></p>
+</div>
+
+<p>The progression is worth stating because it explains why so much advice reads as dated. Prompt engineering asked how to word the request. Context engineering, from around 2025, asked what to put in the window &mdash; retrieval, history, tool definitions. Harness engineering asks what governs execution, and it subsumes both. The term was crystallised by Mitchell Hashimoto and the discipline was formalised through 2026. <b>[verify]</b></p>
+
+<h3>What the harness owns</h3>
+
+<table class="dt">
+<thead><tr><th>Component</th><th>Decides</th><th>Failure it prevents</th></tr></thead>
+<tbody>
+<tr><td>Instruction manager</td><td>What the standing instructions are and how they version</td><td>Prompt drift nobody can reproduce or roll back</td></tr>
+<tr><td>Context builder</td><td>What enters the window, in what order, at what budget</td><td>A context full of unvetted text the model cannot prioritise</td></tr>
+<tr><td>Tool registry</td><td>Which tools exist for this task and how they are described</td><td>Over-tooling &mdash; the model picking wrong from forty options</td></tr>
+<tr><td>Permission resolver</td><td>Whether <em>this</em> call, with <em>these</em> arguments, is allowed</td><td>Exactly the refund above</td></tr>
+<tr><td>Budget tracker</td><td>Token, step, wall-clock and monetary ceilings</td><td>A loop that runs until someone notices the invoice</td></tr>
+<tr><td>Compaction trigger</td><td>When to summarise and what is safe to drop</td><td>Context exhaustion mid-task, and silent loss of the goal</td></tr>
+<tr><td>Stop condition</td><td>What counts as done, and what counts as stuck</td><td>An agent that succeeds and keeps going</td></tr>
+</tbody>
+</table>
+
+<div class="note rule">
+<b>Permanent rule</b>
+<p>The model never calls a tool. It <em>returns a structured tool call</em>, and the harness validates the schema, checks the permission matrix, executes, and injects the result back. Everything the model emits is a request, not an instruction. A system where the model's output reaches an effectful API directly has no harness, whatever else it has. <b>[verify]</b></p>
+</div>
+
+<h3>Capability and permission, separated</h3>
+
+<p>Section 25 draws this line for guardrails; the harness is where it is enforced. Every tool carries a risk class, and the class &mdash; not the model's confidence &mdash; decides what happens.</p>
+
+<table class="dt">
+<thead><tr><th>Risk class</th><th>Example in this system</th><th>Harness behaviour</th></tr></thead>
+<tbody>
+<tr><td>Read-only</td><td>Search documentation, read the ticket</td><td>Execute freely; log</td></tr>
+<tr><td>Reversible write</td><td>Draft a reply, add an internal note</td><td>Execute; keep an undo path</td></tr>
+<tr><td>Irreversible</td><td>Send the reply to the customer</td><td>Confirm, or restrict to a reviewed queue</td></tr>
+<tr><td>Financial</td><td>Issue the refund</td><td>Never autonomous, regardless of how the request arrived</td></tr>
+<tr><td>Destructive</td><td>Close or delete a ticket</td><td>Never autonomous</td></tr>
+</tbody>
+</table>
+
+<p>Read that against the refund incident. Nothing about a better prompt would have helped, because the correct control is that a financial tool is never reachable autonomously by a component whose input includes text a stranger wrote.</p>
+
+<h3>Fewer, more general tools beat more specific ones</h3>
+
+<p>The instinct when an agent fails at something is to build it a tool for that thing. Repeated, this produces a registry of dozens of narrow tools and an agent that chooses badly among them.</p>
+
+<p>The counter-evidence is unusually clean. Microsoft's site-reliability agent moved from over a hundred bespoke tools and a prescriptive prompt to a filesystem-based approach &mdash; exposing source, runbooks, schemas and past investigation notes as files, and letting the agent use <code>read_file</code>, <code>grep</code>, <code>find</code> and a shell. Their &ldquo;Intent Met&rdquo; score on novel incidents rose from 45% to 75%. <b>[verify]</b></p>
+
+<div class="note trap">
+<b>The trap</b>
+<p>A specific tool encodes the anticipated path. It works for the incidents you designed it for and is useless for the ones you did not, which is the entire population of interesting incidents. General primitives compose; specific tools do not.</p>
+</div>
+
+<h3>Evaluate the harness, not only the model</h3>
+
+<p>Section 24 covers evaluating outputs. The harness needs its own suite, and it tests things the model is not responsible for:</p>
+
+<table class="dt">
+<thead><tr><th>Test</th><th>Passing looks like</th></tr></thead>
+<tbody>
+<tr><td>Injected instruction in retrieved content</td><td>Permission resolver refuses; the instruction is surfaced, not executed</td></tr>
+<tr><td>Tool returns malformed output</td><td>Schema validation rejects; the loop recovers rather than hallucinating around it</td></tr>
+<tr><td>Tool times out</td><td>Budget honoured; partial state reported honestly</td></tr>
+<tr><td>Task exceeds the step budget</td><td>Stops and says so; does not silently truncate and claim success</td></tr>
+<tr><td>Context fills mid-task</td><td>Compaction preserves the goal and the constraints</td></tr>
+<tr><td>Forty tools available</td><td>Selection accuracy holds &mdash; if it does not, the registry is too large</td></tr>
+</tbody>
+</table>
+
+<div class="note rule">
+<b>Permanent rule</b>
+<p>When an agent fails repeatedly at the same thing, the fix belongs in the harness, not the prompt. A prompt instruction is a request the model may ignore under load; a harness control is a property of the system. Anything that has gone wrong twice should be made structurally impossible rather than discouraged more firmly.</p>
+</div>
+
+<p>Which reframes section 22 entirely. The alternative to one struggling agent is almost never four agents &mdash; it is one agent with a better harness.</p>
+
 <h2 id="s22">22. Multi-agent, and when it is the wrong answer</h2>
 
 <div class="eyebrow"><span class="tag t5">Layer 5 · Agents</span></div>
@@ -1414,7 +1646,7 @@ updated: 2026-09-09
 
 <div class="note rule">
 <b>Permanent rule</b>
-<p>Add an agent only when a single agent with the same tools has been measured and found insufficient. Role separation is an organisational metaphor, not an engineering result. The reliable configuration is usually one agent, few tools, tight descriptions and a hard budget.</p>
+<p>Add an agent only when a single agent with the same tools <em>and a harness built as in section 21b</em> has been measured and found insufficient. Role separation is an organisational metaphor, not an engineering result. The reliable configuration is usually one agent, few tools, tight descriptions and a hard budget.</p>
 </div>
 
 <h2 id="s23">23. What is actually shipping</h2>
@@ -1604,6 +1836,15 @@ updated: 2026-09-09
 <tr><td>SWE-bench Verified leader</td><td class="num">Claude Opus 4.7, 87.6%</td><td>24</td></tr>
 <tr><td>Retrieve-then-rerank shape</td><td class="num">~50 down to ~5</td><td>18</td></tr>
 <tr><td>Composition example, 4 agents at 90% with 95% hand-offs</td><td class="num">56%</td><td>22</td></tr>
+<tr><td>Ticket assistant, requests per day</td><td class="num">5,000</td><td class="num">0</td></tr>
+<tr><td>Stable prompt block, re-sent every call</td><td class="num">20,000 tokens</td><td class="num">0, 16b</td></tr>
+<tr><td>Cache write / read multiplier</td><td class="num">1.25x / 0.10x</td><td class="num">16b</td></tr>
+<tr><td>Caching plus routing, bill reduction</td><td class="num">~84%</td><td class="num">16b</td></tr>
+<tr><td>Token price fall since early 2024</td><td class="num">~98%</td><td class="num">16b</td></tr>
+<tr><td>Enterprise AI spend, same period</td><td class="num">+320%</td><td class="num">16b</td></tr>
+<tr><td>Agentic token multiple over chat</td><td class="num">5-30x</td><td class="num">16b</td></tr>
+<tr><td>Tiered routing, reported saving</td><td class="num">60-80%</td><td class="num">16b</td></tr>
+<tr><td>Filesystem tools vs 100+ bespoke, intent met</td><td class="num">45% to 75%</td><td class="num">21b</td></tr>
 <tr><td>Evaluation set, minimum useful size</td><td class="num">~50 examples</td><td>24</td></tr>
 </tbody>
 </table>
