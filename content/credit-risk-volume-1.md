@@ -27,7 +27,11 @@ Everything in this document happens inside one institution. It is a mid-sized In
 | | | Equity capital and reserves | 150 |
 | **Total** | **1,700** | **Total** | **1,700** |
 
-Two things on that sheet do the work of this volume. **Advances** is the loan book — ₹1,000 crore lent out, less an allowance of ₹22 crore against losses not yet realised. **Equity capital and reserves** is ₹150 crore of the owners' money, sitting last in the queue to be repaid, which is precisely what makes it capital.
+Two lines on that sheet do the work of this volume, and both need unpacking before anything else makes sense.
+
+**Advances, net of allowance.** The bank has ₹1,000 crore of loans outstanding. It does not expect all of it back. So it subtracts ₹22 crore — its own estimate of what will be lost — and shows ₹978 crore. That ₹22 crore is the **loss allowance**: not cash set aside in an account, but a deduction from the value of the asset. The bank still holds ₹1,000 crore of loans; it is simply admitting on the face of the balance sheet that ₹22 crore of them will not come back. When the estimate goes up, the extra is charged against that year's profit. Provision, allowance and impairment provision all name the same thing; this document says allowance.
+
+**Equity capital and reserves.** ₹150 crore of the owners' money. It has two components. **Capital** is what shareholders paid in when they bought their shares. **Reserves** are profits the bank earned in past years and did not pay out as dividends — retained, and therefore still belonging to shareholders but working inside the bank. Both sit last in the queue in a failure: depositors are paid first, bondholders next, and shareholders get whatever remains, which is usually nothing. That last-in-the-queue position is precisely what makes it capital, and it is why a loss reduces reserves rather than reducing deposits.
 
 The ratio between them is the whole subject. The bank has lent ₹1,000 crore and has ₹150 crore of its own money behind it. Depositors supplied the other ₹1,300 crore and expect it back in full. If the loan book loses more than ₹150 crore, the deposits start absorbing losses, and at that point the bank has failed.
 
@@ -57,17 +61,9 @@ Borrower 1, the steel manufacturer, is the one to watch. Over the next four year
 
 ### How to read this
 
-Each part stands on one line of the balance sheet above.
+The volume works inwards from the loan and back out to the balance sheet.
 
-| Part | Balance sheet line | Question it answers |
-|---|---|---|
-| 1 | Advances, gross | What is a loan actually worth on the books? |
-| 2 | — | What can go wrong, and how is that size measured? |
-| 3 | — | How does a borrower's quality change over time? |
-| 4 | Advances, the whole book | Why is a book riskier than the sum of its loans? |
-| 5 | The allowance between gross and net | What do we set aside, and when? |
-| 6 | The allowance, Indian rules | What does RBI require on top of the accounting? |
-| 7 | Equity capital and reserves | How much of the owners' money must stand behind it? |
+Parts 1 to 3 stay with a single exposure: what it is worth, what can go wrong with it, and how its quality changes over time. Part 4 zooms out to the whole book, because ten loans behave differently from ten times one loan. Parts 5 and 6 build the ₹22 crore allowance — first under the accounting standard, then under RBI's rules, which give different answers on the same exposure. Part 7 arrives at the ₹150 crore of capital and asks whether it is enough.
 
 Volume 2 reads the rest of the sheet — deposits, borrowings, investments, and the reporting machine that assembles all of it into returns.
 
@@ -115,27 +111,29 @@ Two consequences follow immediately, and both bite later:
 
 The uplift is smaller than it looks because the loan is long. The same ₹2 crore fee on a one-year loan would have lifted the rate from 10% to over 12%, because there is only one year to spread it over. Fee-heavy short-tenor lending carries a much larger gap between the coupon the customer thinks they are paying and the yield the bank is actually earning.
 
-### The three numbers that describe the asset
+### What is the loan worth a year later?
 
-From this point the loan is described by three figures, and confusing them is the single most common source of error in impairment work.
+It is 31 March, twelve months after disbursement. The borrower has paid its ₹10 crore of interest, on time. The finance team has to state what this loan is worth on the balance sheet.
 
-| Figure | What it is | Where it comes from |
-|---|---|---|
-| **Gross carrying amount** | The amortised cost of the loan before deducting anything for expected losses | Grows at the EIR, falls by cash received |
-| **Loss allowance** | The accumulated provision held against expected losses on that loan | Recalculated at every reporting date |
-| **Net carrying amount** | Gross carrying amount less the loss allowance | What actually appears in advances on the balance sheet |
+Start with what the bank has in it. ₹98 crore went out. ₹10 crore came back. So ₹88 crore?
 
-They are not three definitions to memorise. They are three columns of one ledger, and the whole of Part 5 is watching them move.
+No — because the loan *earned* during the year, and it did not earn ₹10 crore. It earned the effective rate on what was invested in it: 10.54% of ₹98 crore, which is **₹10.33 crore**.
 
-### How the gross carrying amount moves
+So the loan grew by ₹10.33 crore and shrank by the ₹10 crore that was paid out.
 
-At every year end, the gross carrying amount grows by interest at the effective rate and falls by the cash actually received.
+$$
+98.00 + 10.33 - 10.00 = 98.33
+$$
+
+**The loan is worth more than it was a year ago, even though the borrower made a payment.** Only ₹10 crore of the ₹10.33 crore earned actually arrived as cash. The missing ₹0.33 crore is the processing fee being handed back a little at a time — it was folded into the asset on day one and is released across five years.
+
+That figure, ₹98.33 crore, is the **gross carrying amount**. Think of it as a running account for the loan: what it earns goes in, what the borrower pays comes out.
 
 $$
 GCA_t = GCA_{t-1} \times (1 + \text{EIR}) - \text{Cash received}_t
 $$
 
-| Year | Opening GCA | Interest at 10.54% | Cash received | Closing GCA |
+| Year | Opening | Interest earned at 10.54% | Cash received | Closing |
 |---|---:|---:|---:|---:|
 | 1 | 98.00 | 10.33 | 10.00 | 98.33 |
 | 2 | 98.33 | 10.36 | 10.00 | 98.69 |
@@ -145,11 +143,46 @@ $$
 
 All figures ₹ crore.
 
-The asset starts at ₹98 crore, climbs to ₹100 crore by maturity, and is extinguished by the final payment. That climb is the ₹2 crore fee being released a little at a time, and it is why interest income in year one is ₹10.33 crore rather than the ₹10.00 crore of cash that arrived. The extra ₹0.33 crore is fee, earned.
+The asset climbs from ₹98 crore to exactly ₹100 crore by maturity, then the final payment extinguishes it. Landing on ₹100.00 is the proof the machinery works: by the end, the whole ₹2 crore fee has been released and the loan is worth its face value.
 
-Note what happens to income recognition. The bank reports **₹10.33 crore of interest revenue** in year one and receives ₹10.00 crore of cash. Revenue and cash are different numbers, deliberately, and reconciling them is a standing task in the finance function.
+### Getting the number at any date without rolling forward
 
----
+Rolling year by year is fine when you have the history. Usually you do not — you have a loan, a date, and a number due this afternoon.
+
+The shortcut is this: **the gross carrying amount is the present value of the cash flows still to come, discounted at the effective interest rate.**
+
+Test it at the end of year three. Still owed: ₹10 crore next year, ₹110 crore the year after.
+
+$$
+10 \times 0.9047 + 110 \times 0.8184 = 9.05 + 90.02 = 99.07
+$$
+
+The same ₹99.09 crore the roll-forward gave, to rounding. Two routes, one number.
+
+This is the definition worth carrying, because it says what the gross carrying amount actually *means*: **what the borrower still owes, valued at the yield the bank originally struck.** Which is exactly why it is the right starting point when the borrower defaults in Part 2 — the loss is what is still owed, less what will actually arrive.
+
+Note also what it is *not*. It is not the ₹100 crore principal, and it is not affected by the borrower's credit quality. If the borrower is downgraded tomorrow, the gross carrying amount does not move by a rupee. It is a function of the EIR and the cash received, nothing else.
+
+### The three numbers, and how they relate
+
+Credit deterioration does not touch the gross carrying amount. It is handled by a second number sitting alongside it.
+
+At the end of year one the bank estimates that ₹0.20 crore of this loan will not come back. It does not reduce the ₹98.33 crore — that is what is owed. It records a separate **loss allowance** of ₹0.20 crore and subtracts it:
+
+| | ₹ crore | What it is |
+|---|---:|---|
+| Gross carrying amount | 98.33 | What the borrower owes, at the original yield |
+| Loss allowance | (0.20) | What the bank thinks it will not get back |
+| **Net carrying amount** | **98.13** | What appears in advances on the balance sheet |
+
+That third line is the ₹978 crore in Part 0, one loan at a time.
+
+Two of these move for completely different reasons, and keeping them apart is the single most useful habit in impairment work:
+
+- **Gross carrying amount** moves with the *contract* — interest earned, cash received. Credit has no effect on it.
+- **Loss allowance** moves with the *borrower* — ratings, arrears, recovery expectations. The contract has no effect on it.
+
+Part 5 is nothing but these three columns, watched across four reporting dates as the borrower deteriorates.
 
 ## Part 2 — What can go wrong
 
@@ -240,7 +273,20 @@ PD is the chance the borrower fails within a stated horizon, usually one year. O
 | **Days past due** | 90 days past due on a material obligation | Objective, mechanical |
 | **Unlikely to pay** | The bank judges the obligor unlikely to meet obligations in full without recourse to actions such as realising security | Judgemental |
 
-The second limb is where banks diverge, and it is the first thing a supervisor examines. A bank with a narrow unlikely-to-pay policy will report fewer defaults, lower PDs, lower capital requirements and lower provisions than an identical bank with a wide one, with no difference in the underlying book. Indicators that ordinarily trigger it include restructuring at a loss to the bank, sale of the exposure at a material credit-related discount, and the borrower entering insolvency proceedings.
+The second limb is judgemental, and judgement can be leaned on. A bank with a narrow unlikely-to-pay policy reports fewer defaults, lower PDs, lower capital requirements and lower provisions than an identical bank with a wide one — same book, better numbers.
+
+So how is that stopped?
+
+| Control | How it works |
+|---|---|
+| **The policy is written and approved** | The bank must document what triggers unlikely-to-pay, get it approved at board level, and apply it consistently. It cannot be decided case by case at the moment of inconvenience. |
+| **The 90-day limb is a hard floor** | However narrow the judgement, 90 days past due is a default regardless. The bank can be late to call a default; it cannot avoid one. |
+| **Peer benchmarking** | The supervisor sees every bank's default rates by segment. A bank reporting materially fewer defaults than peers on a similar book is asked why, and "our policy is narrower" is the answer that starts an examination. |
+| **The use test** | Under IRB, the same default definition must drive credit decisions, limits, pricing and collections — not just the capital calculation. A bank that calls an exposure performing for capital while its own collections team is working it has failed the test visibly. |
+| **Back-testing** | Predicted default rates are compared to realised ones each year. Systematic under-prediction is evidence of a definition being applied too narrowly. |
+| **Supervisory inspection** | Examiners pull individual files and form their own view. Where they disagree, they can require reclassification and additional provisions. |
+
+The mandatory indicators help too: restructuring at a loss to the bank, sale of the exposure at a material credit-related discount, and the borrower entering insolvency proceedings are all specified triggers rather than matters of opinion. In India this is reinforced from another direction entirely — CRILC in Part 6 means every lender sees how the *other* lenders have classified a shared borrower, so a bank calling an exposure standard while three others call it non-performing is visible to the supervisor without anyone having to ask.
 
 ### The same borrower has two PDs, legitimately
 
@@ -255,24 +301,37 @@ Our steel borrower carries a TTC PD of 0.50% for capital and a PIT PD that was a
 
 ### Expected loss and unexpected loss
 
-Apply the parameters across the whole ten-borrower book, using a 45% LGD and the PD attached to each grade.
+The bank's chief risk officer has to answer a question from the board: **how much should we expect to lose on this book next year?**
 
-| Rating | One-year PD | Exposure ₹ crore | Expected loss ₹ crore |
-|---|---:|---:|---:|
-| AA | 0.10% | 160 | 0.07 |
-| A | 0.20% | 210 | 0.19 |
-| BBB | 0.50% | 480 | 1.08 |
-| BB | 2.30% | 150 | 1.55 |
-| | | **1,000** | **2.89** |
+Not in a crisis. In an ordinary year. The answer is arithmetic — apply the parameters to every exposure and add them up.
 
-The bank expects to lose about **₹2.89 crore a year** on this book. That is 0.29% of advances, and it is not a disaster — it is a cost of doing business, priced into the loans and provided against as it accrues.
+| Rating | One-year PD | Exposure ₹ crore | LGD | Expected loss ₹ crore |
+|---|---:|---:|---:|---:|
+| AA | 0.10% | 160 | 45% | 0.07 |
+| A | 0.20% | 210 | 45% | 0.19 |
+| BBB | 0.50% | 480 | 45% | 1.08 |
+| BB | 2.30% | 150 | 45% | 1.55 |
+| | | **1,000** | | **2.89** |
 
-Now compare it with what actually happened in year three, when the steel borrower failed: an impairment charge of **₹62.77 crore** in a single year.
+**₹2.89 crore a year.** That is 0.29% of the book, and it is not a disaster — it is a cost of doing business, like rent. The bank knows about it in advance, prices it into loan spreads, and carries it as an allowance. The board is not alarmed.
 
-That gap is the entire subject of bank capital.
+Now year three arrives and the steel borrower fails. The impairment charge is **₹62.77 crore**.
 
-- **Expected loss** is the average. It is a cost. It is priced into loan spreads and carried as a provision, which reduces profit.
-- **Unexpected loss** is the distance between the average year and the bad year. It cannot be provided for, because you do not know which year it is. It is absorbed by capital, which reduces equity.
+That is twenty-two years of expected losses in one year, and it is where the interesting question lives. If the bank had been setting aside ₹2.89 crore a year, it would have accumulated about ₹8.7 crore over three years. It is short by ₹54 crore.
+
+**Could it have provided for this?** No — and the reason is not that the estimate was bad. It is that ₹2.89 crore is an *average*, and averages describe what happens across many years, not what happens in any particular one. In most years the book loses less than ₹2.89 crore. Occasionally it loses vastly more. The bank cannot know which year is which, so it cannot provide for it in advance.
+
+So there are two entirely different animals, and they need two entirely different responses.
+
+| | Expected loss | Unexpected loss |
+|---|---|---|
+| What it is | The average annual loss | How far a bad year exceeds the average |
+| Is it predictable? | Yes, from parameters | No — only its distribution is |
+| How the bank handles it | Prices it into loan spreads; carries it as an allowance | Holds capital against it |
+| What it reduces | Profit, a little, every year | Equity, a lot, occasionally |
+| In our bank | ₹2.89 crore a year | ₹62.77 crore in year three |
+
+Picture the bank's annual loss as a distribution. Most years cluster near ₹2.89 crore. A long tail stretches right, because losses can be enormous but never negative — the best possible year is one where nothing defaults, and that is only about ₹2.89 crore better than average, while the worst year is unbounded.
 
 <svg viewBox="0 0 700 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Loss distribution showing expected loss at the mean and unexpected loss as the distance to the 99.9th percentile">
   <path d="M 200 260 L 200 100 C 240 128 262 162 300 190 C 360 224 440 246 520 254 L 520 260 Z" fill="#ececec"/>
@@ -290,9 +349,15 @@ That gap is the entire subject of bank capital.
   <text x="360" y="312" text-anchor="middle" font-size="13" fill="#000">Annual loss on the book →</text>
 </svg>
 
-The provision covers the shaded region's left edge. Capital covers its width. Beyond the right edge, the bank fails — and the regulator's choice of where to draw that line, at the 99.9th percentile of one year's losses, is a statement that a supervised bank should fail no more than once in a thousand years.
+Read that picture in three pieces.
 
-Parts 5 and 6 build the provision. Part 7 builds the capital.
+- **Up to the dashed line at ₹2.89 crore** — expected loss. Covered by the allowance, funded out of loan spreads.
+- **The shaded band beyond it** — unexpected loss. Covered by capital. Our ₹62.77 crore year sits in here.
+- **Past the right-hand line** — the losses capital does not cover. The bank fails.
+
+The regulator chooses where that right-hand line goes, and it chooses the **99.9th percentile of one year's losses**. That is a deliberate statement: a supervised bank should have no more than a one-in-a-thousand chance of exhausting its capital in any year.
+
+This split is the architecture of the entire framework, and it is why the two halves of this volume exist. Parts 5 and 6 build the allowance for expected loss. Part 7 builds the capital for unexpected loss. They are not two views of the same thing — they are two defences against two different problems, and confusing them is the standard conceptual error.
 
 ---
 
@@ -319,9 +384,19 @@ A rating is not a permanent label. Every year, some BBB borrowers become BB, som
 | **B** | 0.0 | 0.2 | 0.8 | 7.0 | 84.0 | 8.00 |
 | **Default** | 0 | 0 | 0 | 0 | 0 | 100 |
 
-All figures per cent. Rows sum to 100. Default is an **absorbing state** — nothing leaves it, which is a modelling convention rather than a claim that defaulted borrowers never recover.
+All figures per cent. Every row sums to 100, because after a year the borrower must be *somewhere* — better, same, worse, or defaulted.
 
-Read the BBB row for our steel borrower. Over one year: 88% chance it is still BBB, 5% chance it slips to BB, 1.2% chance it falls to B, 5% chance it improves to A, and 0.50% chance it defaults. That 0.50% is exactly the one-year PD used in Part 2. **The PD is a cell in this matrix.**
+**Read the BBB row for our steel borrower.** Over the next year: 88.0% chance it is still BBB, 5.0% chance it slips to BB, 1.2% chance it falls to B, 5.0% chance it improves to A, 0.3% chance it improves to AA, and 0.50% chance it defaults.
+
+That last figure answers a question left open in Part 2. **Where does the one-year PD for a rating come from?** It is the default column of that rating's row. BBB's PD of 0.50% is not a separate estimate produced by a separate model — it is a cell in this table. Same for BB's 2.30% and AA's 0.10%. One matrix, and every rating's PD is read off it.
+
+The matrix itself is built by counting. Take every BBB-rated borrower the bank had at the start of each of the last fifteen years, look at where each one was a year later, and express the counts as percentages. Out of a thousand BBB borrowers, roughly 880 were still BBB, 50 had slipped to BB, and 5 had defaulted. The row is history, tabulated.
+
+**Why the default row is all zeros except the last cell.** Once a borrower defaults it stays defaulted, forever, in the model's arithmetic. This is called an **absorbing state**: probability flows in and never flows out.
+
+That is obviously not true in life — companies emerge from insolvency, restructured loans get repaid, and the bank's own recovery process in Part 2 collected ₹44 crore from a defaulted borrower. So why model it that way?
+
+Because default is the event the model exists to predict, and the prediction is over. The question the matrix answers is "what is the chance this borrower defaults in the next five years?" Once it has defaulted, the answer is fixed and the exposure moves to a different set of machinery entirely — recovery, LGD, Stage 3, enforcement. A borrower that cures and returns to performing is not put back into this matrix; it is treated as a fresh exposure with a fresh rating. The absorbing state is a boundary between two models, not a claim about corporate mortality.
 
 ### From one year to several
 
@@ -351,18 +426,50 @@ Notice where the year-two default probability came from. Only two-thirds of it (
 
 ### The four quantities everyone confuses
 
-All four come from the same term structure, and using the wrong one is the standard implementation error.
+Part 5 will need a specific number: **the chance this borrower defaults during year two.** Not by year two — *during* it.
 
-| Term | Meaning | Relationship | BBB, year 2 |
-|---|---|---|---:|
-| **Cumulative PD** $F(t)$ | Probability of having defaulted at any point up to time $t$ | Rises towards 1 | 1.1613% |
-| **Survival** $S(t)$ | Probability of reaching $t$ without defaulting | $S(t) = 1 - F(t)$ | 98.8387% |
-| **Marginal PD** | Probability of defaulting *in* period $t$, measured from origination | $S(t-1) - S(t)$ | 0.6613% |
-| **Conditional PD** | Probability of defaulting in period $t$ *given* survival to $t-1$ | $\dfrac{S(t-1) - S(t)}{S(t-1)}$ | 0.6646% |
+That sounds like the 0.6613% just computed, and it nearly is. But there are four closely related quantities here, they are all derived from the same term structure, they all sound alike, and picking the wrong one is the standard implementation error. Build them one at a time from what is already known.
 
-Marginal and conditional look almost identical here — 0.6613% against 0.6646% — only because survival is close to 1. On a B-rated borrower with an 8% first-year default probability they diverge sharply, and substituting one for the other misstates every subsequent period.
+**Cumulative PD** — the chance of having defaulted at any point up to time $t$. Written $F(t)$. For BBB: $F(1) = 0.5000\%$, and $F(2) = 1.1613\%$ from the table above. It only ever rises, because a default that has happened stays happened.
 
-The rule for lifetime ECL: **marginal PD is the correct input**, because each period's expected loss must be weighted by the unconditional probability of that period's default as seen from today, not by a probability that assumes survival the calculation has already accounted for elsewhere.
+**Survival** — the chance of getting to $t$ without defaulting. It is just the other side of the same coin.
+
+$$
+S(t) = 1 - F(t)
+$$
+
+$$
+S(1) = 99.5000\% \qquad S(2) = 98.8387\%
+$$
+
+**Marginal PD** — the chance of defaulting *during* period $t$, viewed from today. If 99.5000% of BBB borrowers reach the end of year one and 98.8387% reach the end of year two, then the difference is the fraction that fell over during year two.
+
+$$
+S(1) - S(2) = 99.5000\% - 98.8387\% = 0.6613\%
+$$
+
+**Conditional PD** — the chance of defaulting during period $t$ *given that the borrower made it to the start of it*. This is a different question. It is not asked of all BBB borrowers, only of the 99.5000% still standing at the end of year one.
+
+$$
+\frac{S(1) - S(2)}{S(1)} = \frac{0.6613\%}{99.5000\%} = 0.6646\%
+$$
+
+Also called the hazard rate.
+
+| Term | The question it answers | BBB, year 2 |
+|---|---|---:|
+| Cumulative PD $F(t)$ | Has it defaulted by now? | 1.1613% |
+| Survival $S(t)$ | Has it survived to now? | 98.8387% |
+| Marginal PD | Does it default during year 2, out of all borrowers? | 0.6613% |
+| Conditional PD | Does it default during year 2, out of survivors? | 0.6646% |
+
+The last two differ by only 0.0033 percentage points here, which is why they get muddled. That closeness is an accident of BBB being a safe grade — 99.5% survive year one, so dividing by 99.5% barely changes anything.
+
+Run the same arithmetic on a B-rated borrower with an 8% first-year PD and only 92% survive. Now the divisor bites, and marginal and conditional diverge by roughly 9% of their own value. On a five-year term structure that error compounds every period.
+
+**Which one does lifetime ECL use?** Marginal PD. The reason is a double-counting trap. Lifetime ECL adds up the expected loss from each future year, as seen from today. If year three's loss were weighted by the conditional PD, it would be weighted by a probability that *assumes the borrower survived years one and two* — but the calculation has already accounted for that survival by treating years one and two as separate lines. Weighting by conditional PD counts the survival twice.
+
+The check is simple: the marginal PDs across all periods, plus the survival probability at the end, must sum to 1. Every borrower either defaults in some period or survives the whole life. If a term structure fails that test, the wrong quantity is in the column.
 
 ### Two assumptions inside the matrix, both false
 

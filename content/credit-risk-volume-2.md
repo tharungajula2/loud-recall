@@ -262,13 +262,25 @@ The assumptions also break precisely when needed. Deposits that were core for el
 
 ### The one-year test
 
-The LCR asks about thirty days. The **net stable funding ratio** asks a different question over a different horizon: is the *structure* of the funding sustainable for a year?
+The bank passed the thirty-day test at 159%. Does that mean the funding is sound?
+
+Look at what it is actually doing. The steel loan runs five years. The wholesale deposits funding a chunk of it run three months. Every three months the bank must find someone willing to lend again. Nothing about that arrangement fails a thirty-day test — the money is there today, and the LCR only asks whether the bank survives the next month.
+
+But it is a bet, renewed four times a year, that the market stays open. Do that across a large enough share of the balance sheet and the bank is fine right up until the quarter it is not.
+
+The **net stable funding ratio** measures that. It asks: **is the funding structure sustainable for a year?**
 
 $$
 NSFR = \frac{\text{Available stable funding}}{\text{Required stable funding}} \geq 100\%
 $$
 
-**Available stable funding** weights liabilities and capital by how likely they are to still be there in a year. **Required stable funding** weights assets by how difficult they would be to monetise, and therefore how much long-term funding they need behind them.
+The two halves work like this.
+
+**Available stable funding** looks at everything on the right-hand side and asks how much of it will still be here in a year. Equity gets 100% — it never leaves. A three-month deposit from another bank gets 0% — it will be gone and may not come back. Retail savings get 90 to 95%, because households mostly stay.
+
+**Required stable funding** looks at the left-hand side and asks how much long-term funding each asset *needs behind it*. Cash needs none, so 0%. A five-year corporate loan cannot be turned into money on demand, so it needs almost all of its value funded stably: 85%. Government securities sit in between at 5%, because they can be sold or repo'd in hours.
+
+The ratio then simply asks whether the stable funding available covers the stable funding required.
 
 | Available stable funding | ₹ crore | Factor | ASF ₹ crore |
 |---|---:|---:|---:|
@@ -399,15 +411,23 @@ Two limitations of this measure, both of which supervisors probe:
 
 ### The economic value view
 
-The second measurement asks a different question over a different horizon: **what happens to the present value of everything on the balance sheet?**
+The earnings measure said a 100 basis point rise costs ₹3 crore. That is the answer to a twelve-month question — and the damage does not stop at twelve months.
 
-Revalue every asset and every liability at the shifted curve. The change in the difference is the change in **economic value of equity (EVE)**.
+The steel loan is locked at 10% for five years. If rates rose in year one, the bank is stuck earning 10% on that loan while funding it more expensively for the whole remaining life. The ₹3 crore is one year's instalment of a longer bill.
+
+So ask a bigger question: **if rates rise 100 basis points today and stay there, what is the total damage to the bank, across all remaining time?**
+
+Answering it means revaluing everything. Every asset is worth the present value of its future cash flows; when the discount rate rises, that present value falls. The same is true of liabilities — and a fall in the value of what you owe is a *gain*. So the bank loses on its assets and gains on its liabilities, and what matters is which effect is larger.
+
+The difference between the two is the value of the shareholders' stake, and its change is the change in **economic value of equity (EVE)**.
+
+Which side wins depends on **duration** — how long, on average, the money is tied up. A longer duration means a larger price move for the same rate change. Our bank's assets have a duration of 2.4 years and its liabilities 1.5 years, so the assets fall further than the liabilities do, and the bank loses on net.
 
 $$
 \Delta EVE \approx -\left(D_A - D_L \times \frac{L}{A}\right) \times A \times \Delta r
 $$
 
-where $D_A$ and $D_L$ are the durations of assets and liabilities.
+The bracket is the **duration gap** — asset duration less liability duration, the latter scaled down because there are fewer liabilities than assets. It is the net exposure after the offset.
 
 | Input | Value |
 |---|---:|

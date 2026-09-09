@@ -4,6 +4,7 @@ description: "How one Python system turns 466,285 LendingClub loans into WoE/log
 series: portfolio
 status: live
 updated: 2026-09-08
+verified: false
 ---
 
 **Lens:** Credit risk is treated as one chain: define default, estimate default probability, estimate loss severity and exposure, validate the estimates, then use them for provision, capital and monitoring.
@@ -229,7 +230,7 @@ Other structural limits remain. The vintages are historical. The 2014 OOT cohort
 
 The repository documents the corresponding production extensions without presenting them as personal retrospective decisions: exact LMS default timestamps, empirical revolving CCF data, account-level origination PD history, macro-conditioned lifetime-loss models and recession-calibrated downturn LGD.
 
-## Reference
+## Reference stack
 
 | Item | Project value |
 |---|---|
