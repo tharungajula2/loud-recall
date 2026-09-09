@@ -24,9 +24,9 @@ export function MermaidDiagram({ chart }: MermaidDiagramProps) {
         fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
         fontSize: 14,
         htmlLabels: true,
-        useMaxWidth: true,
+        useMaxWidth: false,
         flowchart: {
-          useMaxWidth: true,
+          useMaxWidth: false,
           htmlLabels: true,
           padding: 12,
         },
@@ -55,10 +55,10 @@ export function MermaidDiagram({ chart }: MermaidDiagramProps) {
             if (newAttrs.includes('style="')) {
               newAttrs = newAttrs.replace(
                 /style="([^"]*)"/,
-                'style="$1; max-width: 100% !important; height: auto !important; width: 100% !important;"'
+                'style="$1; max-width: 100% !important; height: auto !important; width: auto !important;"'
               );
             } else {
-              newAttrs += ' style="max-width: 100% !important; height: auto !important; width: 100% !important;"';
+              newAttrs += ' style="max-width: 100% !important; height: auto !important; width: auto !important;"';
             }
             return `<svg${newAttrs}>`;
           });
@@ -101,10 +101,10 @@ export function MermaidDiagram({ chart }: MermaidDiagramProps) {
   }
 
   return (
-    <div className="my-6 w-full max-w-full overflow-x-auto overflow-y-visible py-4 px-2 rounded-lg border border-border/60 bg-background">
+    <div className="mermaid-container my-6 w-full max-w-full overflow-x-auto overflow-y-visible py-4 px-2 rounded-lg border border-border/60 bg-background">
       <div
         ref={containerRef}
-        className="w-full flex justify-center items-center [&_svg]:max-w-full [&_svg]:h-auto [&_svg]:w-full [&_svg]:block [&_svg]:mx-auto [&_foreignObject]:overflow-visible [&_foreignObject_div]:whitespace-normal [&_foreignObject_div]:break-words"
+        className="w-full flex justify-center items-center [&_svg]:max-w-full [&_svg]:h-auto [&_svg]:w-auto [&_svg]:block [&_svg]:mx-auto [&_foreignObject]:overflow-visible [&_foreignObject_div]:whitespace-normal [&_foreignObject_div]:break-words"
         dangerouslySetInnerHTML={{ __html: svgContent }}
       />
     </div>

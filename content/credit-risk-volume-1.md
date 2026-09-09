@@ -704,19 +704,19 @@ The classic implementation error is **double counting**: the overlay is added at
 
 Every reporting date, the same sequence runs.
 
-```mermaid
-flowchart TD
-    A[Data cut-off] --> B[Exposure assembly]
-    B --> C[Staging]
-    C --> D[Parameters applied]
-    D --> E[Scenario weighting]
-    E --> F[Discounting]
-    F --> G[Model output]
-    G --> H[Overlays]
-    H --> I[Movement analysis]
-    I --> J[Committee challenge]
-    J --> K[Sign-off]
-```
+| # | Step | What it produces |
+|---:|---|---|
+| 1 | Data cut-off | A frozen position; nothing after this timestamp enters the run |
+| 2 | Exposure assembly | Gross carrying amounts and contractual cash flows per account |
+| 3 | Staging | Each exposure placed in Stage 1, 2 or 3 |
+| 4 | Parameter application | PD, LGD and EAD term structures attached |
+| 5 | Scenario weighting | Base, upside and downside combined at their weights |
+| 6 | Discounting | Everything brought to present value at the original EIR |
+| 7 | Model output | The ₹3.34 crore before adjustment |
+| 8 | Overlays | Post-model adjustments applied and documented |
+| 9 | Movement analysis | The allowance walk, opening to closing |
+| 10 | Committee challenge | The numbers defended and questioned |
+| 11 | Sign-off | Named individuals accept the figure |
 
 Two controls anchor it, and they answer different questions.
 
@@ -1116,4 +1116,4 @@ Between the two sits the provision, and the whole of modern impairment accountin
 
 Follow one borrower and all of it connects. It is written at ₹98 crore, provided at ₹0.20 crore, downgraded and provided at ₹3.74 crore while still classified Standard, defaulted and provided at ₹66.51 crore, and the bank's capital ratio falls from 12.16% to 7.07% — through the numerator, because the provision hit profit, and through the denominator, because a worse borrower carries more weight.
 
-[Volume 2](/credit-risk-volume-2) turns to the other side of the balance sheet: where the ₹1,300 crore of funding comes from, what happens when it wants to leave, how the two sides reprice against each other, and how all of it is assembled into the returns that go to the regulator.
+Volume 2 turns to the other side of the balance sheet: where the ₹1,300 crore of funding comes from, what happens when it wants to leave, how the two sides reprice against each other, and how all of it is assembled into the returns that go to the regulator.

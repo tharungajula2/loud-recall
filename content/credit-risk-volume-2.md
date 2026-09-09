@@ -16,7 +16,7 @@ tags:
 
 ## Part 0 — Where the money comes from
 
-[Volume 1](/credit-risk-volume-1) read the asset side: ₹1,000 crore lent to ten borrowers, one of which failed, and what that did to capital. It treated the funding as a given — ₹1,300 crore of deposits and borrowings that simply existed.
+Volume 1 read the asset side: ₹1,000 crore lent to ten borrowers, one of which failed, and what that did to capital. It treated the funding as a given — ₹1,300 crore of deposits and borrowings that simply existed.
 
 They do not simply exist. They belong to other people, most of whom can ask for them back tomorrow.
 
@@ -697,17 +697,17 @@ These are not independent documents. The ₹99.09 crore steel exposure appears i
 
 ### The production cycle
 
-```mermaid
-flowchart TD
-    A[Data cut-off] --> B[Extract from source]
-    B --> C[Transform and enrich]
-    C --> D[Compute]
-    D --> E[Reconcile to ledger]
-    E --> F[Variance analysis]
-    F --> G[Review and challenge]
-    G --> H[Sign-off]
-    H --> I[Submit]
-```
+| # | Step | What it produces |
+|---:|---|---|
+| 1 | Data cut-off | A frozen position across every source system |
+| 2 | Extract | Raw records landed in staging, unaltered |
+| 3 | Transform and enrich | Mapped, conformed and joined to reference data |
+| 4 | Compute | RWA, ratios, buckets, sensitivities |
+| 5 | Reconcile to ledger | Risk figures tied to finance, differences explained |
+| 6 | Variance analysis | Every material movement attributed to a business event |
+| 7 | Review and challenge | Independent scrutiny of the output |
+| 8 | Sign-off | Preparer, reviewer, function head, attesting officer |
+| 9 | Submit | Filed within the regulatory deadline |
 
 Two steps in that chain do the real work, and they are the two most often compressed when the deadline is tight.
 
@@ -754,15 +754,6 @@ Three parties are involved in every regulatory reporting programme, and most del
 The commonest failure: a regulatory rule change arrives, technology implements it from the vendor's release notes, and nobody in the business ever wrote down what the bank's own interpretation is. The number then changes for reasons nobody can articulate when the supervisor asks.
 
 ### The layers
-
-```mermaid
-flowchart TD
-    A[Source systems] --> B[Staging]
-    B --> C[Risk data warehouse]
-    C --> D[Calculation engines]
-    D --> E[Reporting layer]
-    E --> F[Submission]
-```
 
 | Layer | Contains | Owned by |
 |---|---|---|
