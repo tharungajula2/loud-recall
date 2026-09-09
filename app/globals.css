@@ -357,11 +357,19 @@ html::-webkit-scrollbar, body::-webkit-scrollbar {
   }
 }
 
-/* Mobile-safe SVG rendering inside article */
-article svg {
-  max-width: 100%;
-  height: auto;
+/* Mobile-safe SVG, Figure, and Table Container rendering */
+article svg, .prose svg {
+  max-width: 100% !important;
+  height: auto !important;
   display: block;
   margin: 0 auto;
+}
+
+.prose figure, article figure {
+  max-width: 100%;
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: visible;
+  margin: 1.5rem 0;
 }
 

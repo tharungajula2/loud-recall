@@ -17,13 +17,14 @@ export function MermaidDiagram({ chart }: MermaidDiagramProps) {
 
   useEffect(() => {
     if (!mermaidInitialized) {
-      mermaid.initialize({
+      (mermaid as any).initialize({
         startOnLoad: false,
         theme: 'neutral',
         securityLevel: 'loose',
         fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
         fontSize: 14,
         htmlLabels: true,
+        useMaxWidth: true,
         flowchart: {
           useMaxWidth: true,
           htmlLabels: true,
@@ -49,13 +50,15 @@ export function MermaidDiagram({ chart }: MermaidDiagramProps) {
         if (svg.includes('<svg')) {
           svg = svg.replace(/<svg\b([^>]*)>/i, (match, attrs) => {
             let newAttrs = attrs;
+            // Neutralize any fixed width/height attributes emitted by Mermaid
+            newAttrs = newAttrs.replace(/\s+(width|height)=["'][^"']*["']/gi, '');
             if (newAttrs.includes('style="')) {
               newAttrs = newAttrs.replace(
                 /style="([^"]*)"/,
-                'style="$1; max-width: 100%; height: auto; display: block; margin: 0 auto;"'
+                'style="$1; max-width: 100% !important; height: auto !important; width: 100% !important;"'
               );
             } else {
-              newAttrs += ' style="max-width: 100%; height: auto; display: block; margin: 0 auto;"';
+              newAttrs += ' style="max-width: 100% !important; height: auto !important; width: 100% !important;"';
             }
             return `<svg${newAttrs}>`;
           });
@@ -98,10 +101,10 @@ export function MermaidDiagram({ chart }: MermaidDiagramProps) {
   }
 
   return (
-    <div className="my-6 w-full max-w-full overflow-x-auto py-4 px-2 rounded-lg border border-border/60 bg-background">
+    <div className="my-6 w-full max-w-full overflow-x-auto overflow-y-visible py-4 px-2 rounded-lg border border-border/60 bg-background">
       <div
         ref={containerRef}
-        className="w-full flex justify-center items-center [&_svg]:max-w-full [&_svg]:h-auto [&_svg]:w-auto [&_svg]:mx-auto [&_foreignObject]:overflow-visible"
+        className="w-full flex justify-center items-center [&_svg]:max-w-full [&_svg]:h-auto [&_svg]:w-full [&_svg]:block [&_svg]:mx-auto [&_foreignObject]:overflow-visible [&_foreignObject_div]:whitespace-normal [&_foreignObject_div]:break-words"
         dangerouslySetInnerHTML={{ __html: svgContent }}
       />
     </div>

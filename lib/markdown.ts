@@ -88,6 +88,16 @@ function parseStatus(raw: any): ContentStatus {
   return 'live';
 }
 
+function parseVerified(raw: any): string {
+  if (typeof raw === 'boolean') {
+    return raw ? 'verified' : 'unverified';
+  }
+  if (typeof raw === 'string' && raw.trim()) {
+    return raw.trim();
+  }
+  return 'unverified';
+}
+
 export function getSortedDocumentsData(): DocumentMeta[] {
   if (!fs.existsSync(contentDirectory)) {
     return [];
@@ -112,12 +122,13 @@ export function getSortedDocumentsData(): DocumentMeta[] {
 
       const series = parseSeries(matterResult.data.series);
       const status = parseStatus(matterResult.data.status);
+      const verified = parseVerified(matterResult.data.verified);
 
       return {
         slug,
         title: matterResult.data.title || slug,
         description: matterResult.data.description || '',
-        verified: matterResult.data.verified || 'unverified',
+        verified,
         format,
         series,
         status,
@@ -167,12 +178,13 @@ export function getDocumentData(slug: string): DocumentData | null {
     : (matterResult.data.format ? matterResult.data.format : (isHtml ? 'html' : 'md'));
 
   const series = parseSeries(matterResult.data.series);
+  const verified = parseVerified(matterResult.data.verified);
 
   return {
     slug,
     title: matterResult.data.title || slug,
     description: matterResult.data.description || '',
-    verified: matterResult.data.verified || 'unverified',
+    verified,
     format,
     series,
     status,
