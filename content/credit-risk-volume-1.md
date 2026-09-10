@@ -2,7 +2,7 @@
 title: "Credit Risk and Capital — Volume 1: The Asset Side"
 description: "One bank, one loan book, one borrower that fails. How a loan is valued, what can go wrong with it, how the loss is provisioned under Ind AS 109 and IRAC, and how much capital has to stand behind it."
 series: masterclass
-status: draft
+status: live
 updated: 2026-09-09
 verified: false
 tags:
