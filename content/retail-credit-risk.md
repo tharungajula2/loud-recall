@@ -4,7 +4,6 @@ description: "How one Python system turns 466,285 LendingClub loans into WoE/log
 series: portfolio
 status: live
 updated: 2026-09-08
-verified: false
 ---
 
 **Lens:** Credit risk is treated as one chain: define default, estimate default probability, estimate loss severity and exposure, validate the estimates, then use them for provision, capital and monitoring.
@@ -96,15 +95,7 @@ The LGD sample contains 50,968 defaulted exposures. Mean LGD is 93.01%, and 52.1
 
 The repository therefore uses a hurdle structure:
 
-```mermaid
-flowchart TD
-    A["Defaulted exposure"] --> B{"Any recovery?"}
-    B -->|No| C["Zero recovery"]
-    B -->|Yes| D["Predict positive recovery magnitude"]
-    D --> E["Expected recovery"]
-    C --> F["Expected LGD"]
-    E --> F
-```
+<svg viewBox="0 0 400 366" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="LGD hurdle model" style="width:100%;max-width:400px;height:auto;display:block;margin:26px auto"><rect x="110" y="8" width="180" height="36" rx="5" fill="#f4f4f4" stroke="#333" stroke-width="1"/><text x="200.0" y="30.6" text-anchor="middle" font-size="13" fill="#111" style="font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif">Defaulted exposure</text><line x1="200" y1="44" x2="200" y2="55" stroke="#555" stroke-width="1.3"/><polygon points="200,62 196,55 204,55" fill="#555"/><polygon points="200,62 286,96 200,130 114,96" fill="#f4f4f4" stroke="#333" stroke-width="1"/><text x="200" y="100.5" text-anchor="middle" font-size="13" fill="#111" style="font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif">Any recovery?</text><line x1="200" y1="130" x2="200" y2="146" stroke="#555" stroke-width="1.3"/><path d="M 200 146 L 90 146 L 90 168" fill="none" stroke="#555" stroke-width="1.3"/><polygon points="90,175 86,168 94,168" fill="#555"/><path d="M 200 146 L 310 146 L 310 168" fill="none" stroke="#555" stroke-width="1.3"/><polygon points="310,175 306,168 314,168" fill="#555"/><text x="124" y="142" text-anchor="middle" font-size="11" fill="#666" style="font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif">No</text><text x="276" y="142" text-anchor="middle" font-size="11" fill="#666" style="font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif">Yes</text><rect x="15" y="175" width="150" height="36" rx="5" fill="#f4f4f4" stroke="#333" stroke-width="1"/><text x="90.0" y="197.2" text-anchor="middle" font-size="12" fill="#111" style="font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif">Zero recovery</text><rect x="235" y="175" width="150" height="44" rx="5" fill="#f4f4f4" stroke="#333" stroke-width="1"/><text x="310.0" y="194.2" text-anchor="middle" font-size="12" fill="#111" style="font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif">Predict positive</text><text x="310.0" y="208.2" text-anchor="middle" font-size="12" fill="#111" style="font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif">recovery magnitude</text><line x1="310" y1="219" x2="310" y2="232" stroke="#555" stroke-width="1.3"/><polygon points="310,239 306,232 314,232" fill="#555"/><rect x="235" y="239" width="150" height="36" rx="5" fill="#f4f4f4" stroke="#333" stroke-width="1"/><text x="310.0" y="261.2" text-anchor="middle" font-size="12" fill="#111" style="font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif">Expected recovery</text><path d="M 90 211 L 90 300 L 200 300" fill="none" stroke="#555" stroke-width="1.3"/><path d="M 310 275 L 310 300 L 200 300" fill="none" stroke="#555" stroke-width="1.3"/><line x1="200" y1="300" x2="200" y2="311" stroke="#555" stroke-width="1.3"/><polygon points="200,318 196,311 204,311" fill="#555"/><rect x="120" y="318" width="160" height="36" rx="5" fill="#f4f4f4" stroke="#333" stroke-width="1"/><text x="200.0" y="340.6" text-anchor="middle" font-size="13" fill="#111" style="font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif">Expected LGD</text></svg>
 
 Stage 1 is a logistic classifier for whether any recovery occurs. Stage 2 is a `GradientBoostingRegressor` trained only on positive-recovery cases to estimate recovery magnitude. The two pieces are combined into expected recovery, and LGD is one minus that expected recovery rate.
 
@@ -122,15 +113,7 @@ This boundary prevents a methodological example from being presented as empirica
 
 Expected loss is the common starting relationship: `PD × LGD × EAD`. The repository then routes the risk components into distinct frameworks rather than treating provision and capital as substitutes.
 
-```mermaid
-flowchart TD
-    A["PD"] --> D["Risk components"]
-    B["LGD"] --> D
-    C["EAD"] --> D
-    D --> E["IFRS 9 staged ECL"]
-    D --> F["US CECL comparison"]
-    D --> G["Basel III IRB capital"]
-```
+<svg viewBox="0 0 400 204" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Risk components feeding three frameworks" style="width:100%;max-width:400px;height:auto;display:block;margin:26px auto"><rect x="20" y="8" width="100" height="34" rx="5" fill="#f4f4f4" stroke="#333" stroke-width="1"/><text x="70.0" y="29.6" text-anchor="middle" font-size="13" fill="#111" style="font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif">PD</text><line x1="70" y1="42" x2="70" y2="60" stroke="#555" stroke-width="1.3"/><rect x="150" y="8" width="100" height="34" rx="5" fill="#f4f4f4" stroke="#333" stroke-width="1"/><text x="200.0" y="29.6" text-anchor="middle" font-size="13" fill="#111" style="font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif">LGD</text><line x1="200" y1="42" x2="200" y2="60" stroke="#555" stroke-width="1.3"/><rect x="280" y="8" width="100" height="34" rx="5" fill="#f4f4f4" stroke="#333" stroke-width="1"/><text x="330.0" y="29.6" text-anchor="middle" font-size="13" fill="#111" style="font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif">EAD</text><line x1="330" y1="42" x2="330" y2="60" stroke="#555" stroke-width="1.3"/><line x1="70" y1="60" x2="330" y2="60" stroke="#555" stroke-width="1.3"/><line x1="200" y1="60" x2="200" y2="73" stroke="#555" stroke-width="1.3"/><polygon points="200,80 196,73 204,73" fill="#555"/><rect x="120" y="80" width="160" height="34" rx="5" fill="#f4f4f4" stroke="#333" stroke-width="1"/><text x="200.0" y="101.5" text-anchor="middle" font-size="13" fill="#111" style="font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif">Risk components</text><line x1="200" y1="114" x2="200" y2="132" stroke="#555" stroke-width="1.3"/><line x1="70" y1="132" x2="330" y2="132" stroke="#555" stroke-width="1.3"/><line x1="70" y1="132" x2="70" y2="145" stroke="#555" stroke-width="1.3"/><polygon points="70,152 66,145 74,145" fill="#555"/><rect x="20" y="152" width="100" height="42" rx="5" fill="#f4f4f4" stroke="#333" stroke-width="1"/><text x="70.0" y="170.2" text-anchor="middle" font-size="12" fill="#111" style="font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif">IFRS 9</text><text x="70.0" y="184.2" text-anchor="middle" font-size="12" fill="#111" style="font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif">staged ECL</text><line x1="200" y1="132" x2="200" y2="145" stroke="#555" stroke-width="1.3"/><polygon points="200,152 196,145 204,145" fill="#555"/><rect x="150" y="152" width="100" height="42" rx="5" fill="#f4f4f4" stroke="#333" stroke-width="1"/><text x="200.0" y="170.2" text-anchor="middle" font-size="12" fill="#111" style="font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif">US CECL</text><text x="200.0" y="184.2" text-anchor="middle" font-size="12" fill="#111" style="font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif">comparison</text><line x1="330" y1="132" x2="330" y2="145" stroke="#555" stroke-width="1.3"/><polygon points="330,152 326,145 334,145" fill="#555"/><rect x="280" y="152" width="100" height="42" rx="5" fill="#f4f4f4" stroke="#333" stroke-width="1"/><text x="330.0" y="170.2" text-anchor="middle" font-size="12" fill="#111" style="font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif">Basel III</text><text x="330.0" y="184.2" text-anchor="middle" font-size="12" fill="#111" style="font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif">IRB capital</text></svg>
 
 On the 2014 OOT portfolio, total EAD is about $1.827 billion. The staged IFRS 9 calculation produces total ECL of about $278.48 million. The CECL comparison produces about $327.47 million, a provision difference of about $48.99 million. The Basel III IRB engine produces about $2.295 billion of RWA and an average risk weight of 125.63%.
 
@@ -230,7 +213,7 @@ Other structural limits remain. The vintages are historical. The 2014 OOT cohort
 
 The repository documents the corresponding production extensions without presenting them as personal retrospective decisions: exact LMS default timestamps, empirical revolving CCF data, account-level origination PD history, macro-conditioned lifetime-loss models and recession-calibrated downturn LGD.
 
-## Reference stack
+## Reference
 
 | Item | Project value |
 |---|---|

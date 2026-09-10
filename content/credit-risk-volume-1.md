@@ -2,7 +2,7 @@
 title: "Credit Risk and Capital — Volume 1: The Asset Side"
 description: "One bank, one loan book, one borrower that fails. How a loan is valued, what can go wrong with it, how the loss is provisioned under Ind AS 109 and IRAC, and how much capital has to stand behind it."
 series: masterclass
-status: live
+status: draft
 updated: 2026-09-09
 verified: false
 tags:
@@ -911,17 +911,7 @@ At T3 the borrower proposes a restructuring: cut the interest rate from 10% to 7
 
 The accounting question is not whether this is a good idea. It is: **has the change been substantial enough that the original asset no longer exists?**
 
-```mermaid
-flowchart TD
-    A[Terms changed] --> B{Substantial?}
-    B -->|Yes| C[Derecognise]
-    C --> D[New asset at fair value]
-    D --> E[New EIR]
-    B -->|No| F[Asset continues]
-    F --> G[Recompute gross amount]
-    G --> H[Original EIR retained]
-    H --> I[Modification gain or loss]
-```
+<svg viewBox="0 0 400 379" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Restructuring derecognition decision" style="width:100%;max-width:400px;height:auto;display:block;margin:26px auto"><rect x="90" y="8" width="220" height="36" rx="5" fill="#f4f4f4" stroke="#333" stroke-width="1"/><text x="200.0" y="30.6" text-anchor="middle" font-size="13" fill="#111" style="font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif">Terms changed</text><line x1="200" y1="44" x2="200" y2="55" stroke="#555" stroke-width="1.3"/><polygon points="200,62 196,55 204,55" fill="#555"/><polygon points="200,62 288,96 200,130 112,96" fill="#f4f4f4" stroke="#333" stroke-width="1"/><text x="200" y="100.5" text-anchor="middle" font-size="13" fill="#111" style="font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif">Substantial?</text><line x1="200" y1="130" x2="200" y2="146" stroke="#555" stroke-width="1.3"/><path d="M 200 146 L 95 146 L 95 168" fill="none" stroke="#555" stroke-width="1.3"/><polygon points="95,175 91,168 99,168" fill="#555"/><path d="M 200 146 L 305 146 L 305 168" fill="none" stroke="#555" stroke-width="1.3"/><polygon points="305,175 301,168 309,168" fill="#555"/><text x="128" y="142" text-anchor="middle" font-size="11" fill="#666" style="font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif">Yes</text><text x="272" y="142" text-anchor="middle" font-size="11" fill="#666" style="font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif">No</text><rect x="10" y="175" width="170" height="36" rx="5" fill="#f4f4f4" stroke="#333" stroke-width="1"/><text x="95.0" y="197.2" text-anchor="middle" font-size="12" fill="#111" style="font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif">Derecognise</text><line x1="95" y1="211" x2="95" y2="224" stroke="#555" stroke-width="1.3"/><polygon points="95,231 91,224 99,224" fill="#555"/><rect x="10" y="231" width="170" height="36" rx="5" fill="#f4f4f4" stroke="#333" stroke-width="1"/><text x="95.0" y="253.2" text-anchor="middle" font-size="12" fill="#111" style="font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif">New asset at fair value</text><line x1="95" y1="267" x2="95" y2="280" stroke="#555" stroke-width="1.3"/><polygon points="95,287 91,280 99,280" fill="#555"/><rect x="10" y="287" width="170" height="36" rx="5" fill="#f4f4f4" stroke="#333" stroke-width="1"/><text x="95.0" y="309.2" text-anchor="middle" font-size="12" fill="#111" style="font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif">New EIR</text><rect x="220" y="175" width="170" height="36" rx="5" fill="#f4f4f4" stroke="#333" stroke-width="1"/><text x="305.0" y="197.2" text-anchor="middle" font-size="12" fill="#111" style="font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif">Asset continues</text><line x1="305" y1="211" x2="305" y2="224" stroke="#555" stroke-width="1.3"/><polygon points="305,231 301,224 309,224" fill="#555"/><rect x="220" y="231" width="170" height="36" rx="5" fill="#f4f4f4" stroke="#333" stroke-width="1"/><text x="305.0" y="246.2" text-anchor="middle" font-size="12" fill="#111" style="font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif">Recompute gross</text><text x="305.0" y="260.2" text-anchor="middle" font-size="12" fill="#111" style="font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif">amount</text><line x1="305" y1="267" x2="305" y2="280" stroke="#555" stroke-width="1.3"/><polygon points="305,287 301,280 309,280" fill="#555"/><rect x="220" y="287" width="170" height="36" rx="5" fill="#f4f4f4" stroke="#333" stroke-width="1"/><text x="305.0" y="309.2" text-anchor="middle" font-size="12" fill="#111" style="font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif">Original EIR retained</text><line x1="305" y1="323" x2="305" y2="336" stroke="#555" stroke-width="1.3"/><polygon points="305,343 301,336 309,336" fill="#555"/><rect x="220" y="343" width="170" height="36" rx="5" fill="#f4f4f4" stroke="#333" stroke-width="1"/><text x="305.0" y="358.2" text-anchor="middle" font-size="12" fill="#111" style="font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif">Modification gain or</text><text x="305.0" y="372.2" text-anchor="middle" font-size="12" fill="#111" style="font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif">loss</text></svg>
 
 The test is quantitative: discount the **original** remaining cash flows and the **modified** cash flows, both at the **original** effective interest rate, and compare.
 

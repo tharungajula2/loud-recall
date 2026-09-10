@@ -357,20 +357,30 @@ html::-webkit-scrollbar, body::-webkit-scrollbar {
   }
 }
 
-/* Author-written inline SVG figures scale 100% to fill prose column */
-article > svg, .prose > svg, .prose p > svg, .prose figure svg, article figure svg {
-  max-width: 100% !important;
-  width: 100% !important;
-  height: auto !important;
+/* Author-written inline SVG figures scale up to column width while preserving inline max-width */
+article > svg:not(.mermaid-container *),
+.prose > svg:not(.mermaid-container *),
+.prose p > svg:not(.mermaid-container *),
+.prose figure svg:not(.mermaid-container *),
+article figure svg:not(.mermaid-container *) {
+  max-width: 100%;
+  height: auto;
   display: block;
   margin: 0 auto;
 }
 
+/* Mermaid diagram container */
+.mermaid-container {
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: visible;
+}
+
 /* Mermaid diagrams stay at intrinsic width up to column max-width (useMaxWidth: false) */
 .mermaid-container svg {
-  max-width: 100% !important;
-  width: auto !important;
-  height: auto !important;
+  max-width: 100%;
+  width: auto;
+  height: auto;
   display: block;
   margin: 0 auto;
 }
