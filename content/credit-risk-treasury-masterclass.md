@@ -1,17 +1,9 @@
 ---
-title: "Credit Risk and Treasury — One Balance Sheet, One Reporting Chain"
-description: "One bank, one balance sheet, one reporting chain. Credit risk, impairment, capital, funding, liquidity, ALM, funds transfer pricing, regulatory returns and software delivery from a single reconciled institution."
-series: masterclass
-status: live
 updated: 2026-09-11
 verified: false
-tags:
-  - credit risk
-  - treasury
-  - alm
-  - liquidity
-  - regulatory reporting
 ---
+
+# Credit Risk and Treasury — One Balance Sheet, One Reporting Chain
 
 ## 1. The bank and the journey
 
