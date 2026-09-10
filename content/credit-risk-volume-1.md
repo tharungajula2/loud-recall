@@ -3,7 +3,7 @@ title: "Credit Risk and Capital — Volume 1: The Asset Side"
 description: "One bank, one loan book, one borrower that fails. How a loan is valued, what can go wrong with it, how the loss is provisioned under Ind AS 109 and IRAC, and how much capital has to stand behind it."
 series: masterclass
 status: live
-updated: 2026-09-09
+updated: 2026-09-10
 verified: false
 tags:
   - credit risk
@@ -595,253 +595,261 @@ Run the haircuts on the steel loan at sanction and the ₹70 crore of security s
 
 ---
 
-## Part 5 — Provisioning: expected credit loss
 
-### The two systems running in parallel
+## Part 5 — The allowance
 
-Indian banks classify and provide under RBI's **income recognition, asset classification and provisioning (IRAC)** norms — a rules-based regime built on days past due. Indian NBFCs, and the consolidated accounts of groups reporting under Ind AS, apply **Ind AS 109**, which is a forward-looking expected credit loss model. Banks' own adoption of Ind AS has been deferred. [verify]
+### How the rest of this volume works
 
-Which means a bank of any size runs both. IRAC for the regulatory returns and the statutory accounts; ECL for the group consolidation, for any Ind AS subsidiary, for overseas branches reporting under IFRS 9, and increasingly for internal risk management because it is simply the better measure. The two produce different numbers on the same exposure, and reconciling them is a monthly production task, not an academic exercise.
+Parts 1 to 4 built the machinery. From here nothing new is introduced. One borrower deteriorates and fails across four reporting dates, and we watch what that single event does to three things.
 
-This part builds ECL. Part 6 builds IRAC and sets them side by side on our borrower.
+| Block | The question | Built in |
+|---|---|---|
+| **The asset** | What is this loan worth on the balance sheet? | Part 5 |
+| **The Indian rules** | What does RBI require on the same loan on the same day? | Part 6 |
+| **The capital** | What does it do to the bank's capital ratio? | Part 7 |
 
-### The one question
+Three blocks of one table, same four dates. Part 7 closes with all three assembled and read together. These are not three subjects — they are one event read three ways, and the reason they are separate parts is that they answer to three different rulebooks.
 
-Expected credit loss asks a single question at every reporting date:
+The four dates:
+
+| | T0 | T1 | T2 | T3 |
+|---|---|---|---|---|
+| **Date** | 1 Apr Y1 | 31 Mar Y2 | 31 Mar Y3 | 31 Mar Y4 |
+| **What happened** | ₹100 crore disbursed | Paid ₹10 crore on time | Downgraded BBB→BB, 40 days past due | 95 days past due, unlikely to pay |
+
+### The question the accounting asks
+
+Ind AS 109 asks one question at every reporting date:
 
 **How much has this exposure's credit risk changed since the day it was first recognised?**
 
-Not "is it bad?" — "has it got worse, relative to what we expected when we wrote it?" A loan booked as BB and still BB is behaving exactly as underwritten. A loan booked as AA and now BBB has deteriorated sharply even though BBB is a perfectly respectable grade. The standard cares about the second, not the first.
+Not "is it bad?" — "has it got worse than we underwrote?" A loan written at BB and still BB is behaving exactly as expected. A loan written at AA and now BBB has deteriorated badly, even though BBB is a perfectly respectable grade. The standard cares about the second, not the first.
 
-The answer places the exposure in one of three stages, and the stage decides two things: how much provision to hold, and how to recognise interest.
+The answer places the exposure in one of three stages, and the stage decides two things.
 
 | | Stage 1 | Stage 2 | Stage 3 |
 |---|---|---|---|
-| **Condition** | No significant increase in credit risk since origination | Significant increase in credit risk, but not credit-impaired | Credit-impaired |
-| **Loss allowance** | 12-month expected credit loss | Lifetime expected credit loss | Lifetime expected credit loss |
+| **Condition** | No significant increase in credit risk since origination | Significant increase, but not credit-impaired | Credit-impaired |
+| **Allowance covers** | Losses from defaults in the next 12 months | Losses from defaults over the whole remaining life | The actual shortfall |
 | **Interest revenue** | EIR × **gross** carrying amount | EIR × **gross** carrying amount | EIR × **net** carrying amount |
 
-An exposure moves back down the stages if it recovers. The staging is symmetric; the interest treatment reverses on cure.
+Staging is symmetric: an exposure that recovers moves back down, and the interest treatment reverses with it.
 
-**A trap in the name.** "12-month expected credit loss" is not the loss expected during the next twelve months. It is the **lifetime** loss on the exposure, weighted by the probability that a default occurs within the next twelve months. On a fifteen-year mortgage, a default in month eleven causes losses stretching for years afterwards, and the whole of that loss is captured in the Stage 1 number. What the twelve months restricts is *when the default happens*, not *when the loss lands*.
+**One trap in the wording.** Stage 1 is not the loss expected *during* the next twelve months. It is the **whole lifetime loss** the exposure would suffer, weighted by the chance that the default happens within twelve months. On a fifteen-year mortgage, a default in month eleven causes losses for years afterwards, and all of it sits inside the Stage 1 number. The twelve months restricts *when the default occurs*, not *when the loss lands*.
 
-### The ledger
+### T0 — the day it is written
 
-Here is the steel loan across four reporting dates. Every subsequent section explains one column of this table.
+Origination is now, so credit risk cannot have increased since origination. Stage 1.
 
-| | T0 | T1 | T2 | T3 |
-|---|---:|---:|---:|---:|
-| **Date** | 1 Apr Y1 | 31 Mar Y2 | 31 Mar Y3 | 31 Mar Y4 |
-| **Event** | Disbursed | No change | Rating BBB→BB, 40 days past due | 95 days past due, credit-impaired |
-| **Stage** | 1 | 1 | 2 | 3 |
-| Gross carrying amount | 98.00 | 98.33 | 98.69 | 99.09 |
-| Loss allowance | 0.20 | 0.20 | 3.74 | 66.51 |
-| **Net carrying amount** | **97.80** | **98.13** | **94.95** | **32.58** |
-| Interest revenue for the year | — | 10.33 | 10.36 | 10.40 |
-| Impairment charge to P&L | 0.20 | 0.00 | 3.54 | 62.77 |
+Inputs, every one of them already built:
 
-All figures ₹ crore. Gross carrying amount is from the amortisation table in Part 1 and never changes because of credit — it is a function of the EIR and the cash received, nothing else.
-
-Three relationships hold at every column and are worth checking as you read:
-
-- Net carrying amount = gross carrying amount − loss allowance
-- Impairment charge = closing allowance − opening allowance
-- Total of all four charges (0.20 + 0.00 + 3.54 + 62.77) = ₹66.51 crore = the closing allowance
-
-That last identity is what a movement analysis proves, and it is the control that catches almost every impairment error.
-
-### T0 — origination
-
-The loan is written. The borrower is BBB, there has been no change in credit risk since origination because origination *is* now, so it is Stage 1 and the allowance is a 12-month ECL.
-
-| Input | Value | Source |
+| Input | Value | Where it came from |
 |---|---:|---|
 | 12-month PD, BBB | 0.50% | Transition matrix, Part 3 |
 | LGD, secured, downturn view | 45% | Collateral analysis, Part 2 |
-| EAD — gross carrying amount at end of year 1 | ₹98.33 crore | Amortisation table, Part 1 |
+| Exposure at default | ₹98.33 crore | Gross carrying amount at end of year 1, Part 1 |
 | Discount factor, 1 year at 10.54% | 0.9047 | EIR, Part 1 |
 
 $$
-ECL_{T0} = 0.0050 \times 0.45 \times 98.33 \times 0.9047 = 0.20
+ECL = PD \times LGD \times EAD \times DF
 $$
 
-The allowance is **₹0.20 crore** and the same amount is charged to profit. The bank has booked a ₹98 crore asset and, on the same day, recognised a ₹0.20 crore loss on it — a **day-one loss**, which surprises people the first time they see it and is entirely intentional. Some fraction of every loan written will not come back, and the standard requires that to be recognised immediately rather than when it becomes obvious.
+Read left to right, one step at a time:
 
-Note that the loss is discounted. Default is assumed to occur at the end of year one, so the loss it causes is a year away and is worth less than its face value today. Every ECL figure in this document is a present value at the effective interest rate.
+| Step | Working | ₹ crore |
+|---|---|---:|
+| If it defaults, what is lost | 45% × 98.33 | 44.25 |
+| Weighted by the chance of default in 12 months | 0.50% × 44.25 | 0.221 |
+| Brought back to today, one year at 10.54% | 0.221 × 0.9047 | **0.20** |
+
+The allowance is **₹0.20 crore**, and the same amount is charged to profit on day one.
+
+The bank has booked a ₹98 crore asset and immediately recognised a loss on it. That is a **day-one loss**, and it is intentional: some fraction of every loan ever written does not come back, and the standard makes the bank say so at the start rather than when it becomes obvious.
+
+The discounting matters and is easy to skip. Default is assumed at the end of year one, so the loss it causes is a year away and is worth less than its face today. **Every ECL figure in this document is a present value at the original effective interest rate** — the 10.54% fixed in Part 1 and never revised.
 
 ### T1 — a year passes, nothing happens
 
-The borrower pays ₹10 crore of interest on time. It is still BBB. Nothing in its financials or the steel market has moved materially.
+The borrower pays ₹10 crore on time. Still BBB. Nothing has moved.
 
-The calculation is the same with the window rolled forward: 12-month PD still 0.50%, LGD still 45%, EAD now the gross carrying amount at the end of year two, ₹98.69 crore.
+| Step | Working | ₹ crore |
+|---|---|---:|
+| Loss if it defaults | 45% × 98.69 | 44.41 |
+| Weighted by 12-month PD | 0.50% × 44.41 | 0.222 |
+| Discounted one year | 0.222 × 0.9047 | **0.20** |
+
+The only thing that changed is the exposure, from ₹98.33 crore to ₹98.69 crore, because the gross carrying amount rolled forward.
+
+**The charge to profit this year is nil.** Not because nothing was provided — the bank still holds ₹0.20 crore — but because the closing allowance equals the opening one. The charge is always the *movement*, never the balance.
 
 $$
-ECL_{T1} = 0.0050 \times 0.45 \times 98.69 \times 0.9047 = 0.20
+\text{Impairment charge} = \text{Closing allowance} - \text{Opening allowance}
 $$
 
-The allowance stays at ₹0.20 crore and the impairment charge for the year is **nil** — not because nothing was provided, but because the closing allowance equals the opening one. The bank held ₹0.20 crore, it still needs ₹0.20 crore, and nothing passes through profit.
-
-Meanwhile ₹10.33 crore of interest revenue was recognised on a gross carrying amount of ₹98.00 crore. Stage 1 interest is on gross, so the allowance plays no part in the income statement's revenue line.
+Interest revenue for the year is ₹10.33 crore: 10.54% on a **gross** carrying amount of ₹98.00 crore. Stage 1 interest ignores the allowance entirely.
 
 ### T2 — the step
 
-In year two, Chinese steel imports surge, domestic prices fall, and the borrower's cash generation deteriorates. The bank's annual review downgrades it from BBB to BB. It is also 40 days past due on its interest payment.
+In year two Chinese steel imports surge, domestic prices fall, the borrower's cash generation deteriorates. The annual review downgrades it **BBB → BB**. It is also **40 days past due**.
 
-Neither of those things is a default. Forty days is nowhere near ninety. The loan is still classified Standard under IRAC. And yet:
+Neither is a default. Forty days is nowhere near ninety, and under RBI's rules the loan is still Standard. But the accounting question is not whether it has failed — it is whether risk has increased significantly since origination. A two-notch downgrade taking the one-year PD from 0.50% to 2.30%, a 4.6× increase, is significant on any reading.
 
-**Has credit risk increased significantly since origination?** Yes. A two-notch downgrade taking the one-year PD from 0.50% to 2.30% — a 4.6× increase — is significant on any reasonable reading. The exposure moves to **Stage 2**, and the allowance must now cover the **whole remaining life**, which is three years.
+**Stage 2.** The allowance must now cover the whole remaining life, which is three years.
 
-| Year from T2 | Marginal PD (BB) | LGD | EAD ₹ crore | Discount factor | ECL ₹ crore |
-|---:|---:|---:|---:|---:|---:|
-| 1 | 2.30% | 55% | 99.09 | 0.9047 | 1.134 |
-| 2 | 2.52% | 55% | 99.54 | 0.8184 | 1.129 |
-| 3 | 2.65% | 55% | 100.00 | 0.7405 | 1.079 |
-| | | | | **Model ECL** | **3.342** |
+Three years means three rows, each with its own PD, exposure and discount factor. Marginal PDs come from applying the BB row of the transition matrix repeatedly, exactly as Part 3 did for BBB. LGD has risen from 45% to 55% because the collateral is a steel plant and steel plant values fall with the sector.
 
-Each row is $PD \times LGD \times EAD \times DF$. The marginal PDs come from applying the transition matrix to the BB row repeatedly, exactly as Part 3 did for BBB. LGD has risen from 45% to 55% because the collateral is a steel plant and steel plant values are falling with the sector.
+| Year from T2 | Marginal PD | LGD | EAD ₹ crore | Loss if default | Weighted | Discount factor | ECL ₹ crore |
+|---:|---:|---:|---:|---:|---:|---:|---:|
+| 1 | 2.30% | 55% | 99.09 | 54.50 | 1.253 | 0.9047 | 1.134 |
+| 2 | 2.52% | 55% | 99.54 | 54.75 | 1.380 | 0.8184 | 1.129 |
+| 3 | 2.65% | 55% | 100.00 | 55.00 | 1.458 | 0.7405 | 1.079 |
+| | | | | | | **Lifetime ECL** | **3.34** |
 
-A **management overlay of ₹0.40 crore** is added on top, for a sector stress that is visible in the market but not yet in the model's development data. Overlays are covered below.
+Each row is the same three steps as T0 — loss if it defaults, weighted by the chance of it defaulting in *that* year, discounted back from *that* year. Lifetime ECL is their sum. Nothing new; the same calculation run three times.
 
-| | ₹ crore |
-|---|---:|
-| Opening allowance | 0.20 |
-| Model ECL, closing | 3.34 |
-| Management overlay | 0.40 |
-| **Closing allowance** | **3.74** |
-| **Charge to profit for the year** | **3.54** |
+**Why marginal PD and not cumulative.** Each row must be weighted by the probability, seen from today, that default happens in that specific year. Cumulative PD would count the same default in every subsequent row.
 
-**The allowance rose eighteen-fold in one reporting date, on a loan that is 40 days past due and still classified Standard.** No payment has been permanently missed. No security has been enforced. The borrower may well recover. And yet the bank has taken a ₹3.54 crore hit to profit.
+### The scenarios inside that 2.30%
 
-That step is the single most consequential mechanic in the standard, and it is why the trigger for it is the most scrutinised judgement in impairment work. Move too many exposures to Stage 2 and profit collapses; move too few and the provision is inadequate when the losses arrive.
+The standard requires a probability-weighted estimate across a range of outcomes, not a single view. The PDs above already carry that weighting. Here is the same number reached the other way — computing lifetime ECL under each scenario, then weighting the results.
+
+| Scenario | Weight | Steel sector assumption | Lifetime ECL ₹ crore | Contribution |
+|---|---:|---|---:|---:|
+| Base | 60% | Prices stabilise at current levels | 3.10 | 1.860 |
+| Downside | 30% | Import pressure continues, prices fall a further 15% | 4.05 | 1.215 |
+| Upside | 10% | Safeguard duty imposed, prices recover | 2.60 | 0.260 |
+| | | **Probability-weighted** | | **3.34** |
+
+Two routes, one number — the same check Part 1 ran on the gross carrying amount.
+
+**The weighted figure is higher than the base case.** That is the whole reason for doing it: losses are asymmetric, the downside hurts more than the upside helps, and a single-scenario estimate is systematically too low.
+
+The scenarios must be the **same** ones the bank uses in stress testing and capital planning. A bank running an optimistic view for impairment and a pessimistic one for capital is telling two stories about the same future, and that inconsistency is exactly what auditors and supervisors look for.
+
+### The overlay
+
+The model is calibrated on data ending before the import surge began. Management adds **₹0.40 crore** on top for a sector stress that is visible in the market and absent from the model.
+
+A **management overlay** is a post-model adjustment, and it is watched closely because it is a discretionary line inside a number that determines reported profit. Three disciplines make one defensible: a documented trigger, a stated quantification method, and a **release condition** — the observable event on which it will be reversed. An overlay with no release condition becomes permanent, and a permanent overlay is a model correction nobody has made.
+
+The classic error is **double counting**: the overlay is added in the walk *and* embedded in the parameters. It is invisible unless the walk reconciles line by line.
+
+### The walk
+
+The closing allowance is ₹3.74 crore. Proving that balance proves nothing about the charge, and the charge is what hits profit. So the control is not the balance — it is the **movement analysis**, which explains every rupee between opening and closing.
+
+| Line | Working | ₹ crore |
+|---|---|---:|
+| Opening allowance at T1 | | 0.20 |
+| Transfer to Stage 2 — 12-month remeasured to lifetime, LGD unchanged | 2.73 − 0.20 | +2.53 |
+| Change in LGD, 45% → 55% | 3.34 − 2.73 | +0.61 |
+| Management overlay | | +0.40 |
+| **Closing allowance at T2** | | **3.74** |
+| **Charge to profit for the year** | 3.74 − 0.20 | **3.54** |
+
+Read the split. Two-thirds of the charge is the *stage transfer* — the same borrower, the same parameters, measured over three years instead of one. A fifth is the *parameter change*. The rest is judgement. A walk that lumped these together would hide which of the three actually happened, and they have completely different implications.
+
+**The allowance rose eighteen-fold on a loan that is 40 days past due and still classified Standard.** No payment has been permanently missed, no security enforced, and the borrower may well recover. The bank has still taken ₹3.54 crore off profit.
+
+That step is the most consequential mechanic in the standard, which is why the trigger for it is the most scrutinised judgement in impairment work. Too many exposures into Stage 2 and profit collapses; too few and the provision is inadequate when the losses arrive.
 
 ### What triggers the step
 
-**Significant increase in credit risk (SICR)** is assessed on three tiers, and any one is sufficient.
+**Significant increase in credit risk (SICR)** is assessed on three tiers. Any one is sufficient.
 
 | Tier | Trigger | Character |
 |---|---|---|
-| **Quantitative** | Lifetime PD at the reporting date has risen materially against the lifetime PD expected at origination for this point in the life | Primary; requires PD at origination to have been stored |
+| **Quantitative** | Lifetime PD today has risen materially against the lifetime PD expected at origination for this point in the life | Primary; requires the origination PD to have been stored |
 | **Qualitative** | Watch-list placement, covenant breach, forbearance granted, adverse sector or management developments | Catches deterioration before the model does |
 | **Backstop** | More than 30 days past due | Rebuttable presumption; a floor, not the test |
 
 Three things about this are worth holding on to.
 
-**The comparison is against origination, not against an absolute threshold.** A loan written at BB and still BB stays in Stage 1. A loan written at AA and now A may move to Stage 2 despite A being a better grade than the first loan ever had. This requires the bank to have stored the PD at origination for every exposure, forever — an obligation that is trivial to state and a serious data problem in practice, particularly for loans written before the system existed.
+**The comparison is against origination, not an absolute level.** A loan written at BB and still BB stays in Stage 1. A loan written at AA and now A may move to Stage 2 despite A being better than the first loan ever was. This obliges the bank to have stored the PD at origination for every exposure, forever — trivial to state, a serious data problem in practice, and the first thing that breaks on loans written before the system existed.
 
-**Thirty days is a backstop, not the test.** If the bank waits for 30 days past due it has failed the standard, because the qualitative and quantitative triggers should have fired first. Our borrower was downgraded *and* 40 days past due; the downgrade alone was sufficient.
+**Thirty days is a backstop, not the test.** A bank waiting for 30 days past due has already failed the standard, because the qualitative or quantitative trigger should have fired first. Our borrower was downgraded *and* 40 days past due; the downgrade alone was enough.
 
-**Relative, not absolute.** A move from 0.10% to 0.50% PD is a five-fold increase on a very safe asset. A move from 4.00% to 4.50% is a much smaller relative change on a much riskier one. The first is more likely to be significant than the second, which is counterintuitive until you remember the question is about *change since origination*, not about current risk.
+**Relative, not absolute.** A move from 0.10% to 0.50% is a five-fold increase on a very safe asset. A move from 4.00% to 4.50% is a small relative change on a much riskier one. The first is more likely to be significant, which is counterintuitive until you remember the question is about *change since origination*.
 
 ### T3 — credit-impaired
 
-In year three the borrower stops paying altogether. At 31 March it is 95 days past due, it has publicly announced it is seeking to restructure its debt, and the bank's credit committee concludes it is unlikely to pay in full without enforcing security.
+In year three the borrower stops paying. At 31 March it is 95 days past due, it has announced it is seeking to restructure, and the credit committee concludes it is unlikely to pay in full without enforcing security.
 
-The exposure is **credit-impaired** and moves to **Stage 3**. Two things change.
+**Stage 3.** Two things change.
 
-**First, the measurement method changes.** Below Stage 3 the loss is $PD \times LGD \times EAD$ because default is a possibility. In Stage 3 default has effectively occurred, so PD is 1 and the calculation collapses to something more direct: the shortfall between what is owed and what is expected to be recovered, discounted.
+**The measurement method changes.** Below Stage 3, loss is $PD \times LGD \times EAD$ because default is a possibility. In Stage 3 default has effectively happened, so PD is 1 and the calculation collapses to something more direct — what is owed, less what will actually arrive, discounted.
 
 $$
-ECL_{T3} = GCA - PV(\text{expected cash flows})
+ECL = GCA - PV(\text{expected cash flows})
 $$
 
-| | ₹ crore |
-|---|---:|
-| Gross carrying amount | 99.09 |
-| Expected gross realisation from security | 48.00 |
-| Less enforcement, legal and valuation costs | (4.00) |
-| Net expected recovery | 44.00 |
-| Discounted 3 years at 10.54% (factor 0.7405) | 32.58 |
-| **Loss allowance required** | **66.51** |
-| Net carrying amount | 32.58 |
+| Step | Working | ₹ crore |
+|---|---|---:|
+| Gross carrying amount | Part 1 | 99.09 |
+| Expected realisation from security | Revalued steel plant | 48.00 |
+| Less enforcement, legal and valuation costs | | (4.00) |
+| Net expected recovery | | 44.00 |
+| Discounted 3 years at 10.54% | 44.00 × 0.7405 | 32.58 |
+| **Allowance required** | 99.09 − 32.58 | **66.51** |
+| **Net carrying amount** | | **32.58** |
 
-The closing identity is worth pausing on. **The net carrying amount equals the present value of what the bank actually expects to collect.** That is what the whole apparatus of gross, allowance and net exists to produce: a balance sheet number that is the bank's honest estimate of the asset's worth. Everything upstream — the EIR, the amortisation, the staging, the parameters — is machinery for getting to ₹32.58 crore.
+Those are the same figures Part 2 used to derive the 67% LGD. Nothing new has been estimated — the Stage 3 allowance *is* the Part 2 loss calculation, arrived at from the other end.
 
-The impairment charge for the year is 66.51 − 3.74 = **₹62.77 crore**. On a book with an annual expected loss of ₹2.89 crore, one borrower has produced twenty-two years' worth of expected losses in a single year. That is the unexpected loss of Part 2, and Part 7 shows what it does to the capital ratio.
+Look at the last two lines together. **The net carrying amount equals the present value of what the bank actually expects to collect.** That is what the whole apparatus of gross, allowance and net exists to produce: a balance sheet number that is the bank's honest estimate of the asset's worth. The EIR, the amortisation, the staging, the parameters — all of it is machinery for getting to ₹32.58 crore.
+
+The charge for the year is 66.51 − 3.74 = **₹62.77 crore**. On a book with ₹2.89 crore of annual expected loss, one borrower has produced twenty-two years of it at once. That is the unexpected loss of Part 2, and Part 7 shows what it does to capital.
 
 ### The interest switch
 
-The second thing that changes at Stage 3 is interest recognition. Up to and including Stage 2, interest revenue is the effective rate applied to the **gross** carrying amount. From Stage 3, it is applied to the **net**.
+From Stage 3, interest revenue is the effective rate applied to the **net** carrying amount rather than the gross.
 
-| Basis | Calculation | Interest revenue for year 4 |
+| Basis | Working | Interest revenue, year 4 |
 |---|---|---:|
 | Stage 1 or 2 — on gross | 10.54% × 99.09 | ₹10.45 crore |
 | Stage 3 — on net | 10.54% × 32.58 | ₹3.43 crore |
 
-The logic is exact. Once the asset is impaired, ₹66.51 crore of it is not expected to arrive, and revenue may not be accrued on money that will never be collected. Recognising the full ₹10.45 crore would book income the bank already knows to be uncollectible — and would then require it to be provided against, so the same amount would appear as revenue in one line and impairment in another, inflating both. The switch removes the round trip.
+The logic is exact. ₹66.51 crore of this asset is not expected to arrive, and revenue may not be accrued on money that will never be collected. Booking the full ₹10.45 crore would recognise income the bank already knows is uncollectible — and would then require provisioning against it, so the same amount would appear as revenue in one line and impairment in another, inflating both. The switch removes the round trip.
 
-Two boundaries are commonly got wrong:
+Two boundaries that get confused:
 
-- The switch applies to **interest revenue only**. The discounting *inside* the ECL calculation continues to use the original effective interest rate on the original gross amounts throughout. Two different uses of the same rate; only one of them changes.
-- The switch **reverses on cure**. If the borrower recovers and returns to Stage 2, interest goes back onto gross. The mechanic is symmetric even though the credit event that caused it was not.
+- The switch applies to **interest revenue only**. The discounting *inside* the ECL calculation still uses the original EIR on the original gross amounts. Same rate, two uses, only one of them changes.
+- It **reverses on cure**. If the borrower recovers to Stage 2, interest goes back onto gross.
 
-The IRAC regime achieves the same outcome by a different route, which Part 6 covers: interest on a non-performing asset is recognised only when it is actually received.
+### Block one, assembled
 
-### Forward-looking information
+| | T0 | T1 | T2 | T3 |
+|---|---:|---:|---:|---:|
+| **Event** | Disbursed | Paid on time | BBB→BB, 40 dpd | 95 dpd, impaired |
+| **Stage** | 1 | 1 | 2 | 3 |
+| Gross carrying amount | 98.00 | 98.33 | 98.69 | 99.09 |
+| Loss allowance | 0.20 | 0.20 | 3.74 | 66.51 |
+| **Net carrying amount** | **97.80** | **98.13** | **94.95** | **32.58** |
+| Interest revenue, year just ended | — | 10.33 | 10.36 | 10.40 |
+| Impairment charge to profit | 0.20 | 0.00 | 3.54 | 62.77 |
 
-Everything above used a single set of PDs. The standard requires the estimate to reflect **a range of possible outcomes, probability-weighted** — because expected loss is a mathematical expectation, and the expectation of a convex function is not the function of the expectation.
+All figures ₹ crore. Three identities hold in every column, and they are the checks that catch almost every impairment error:
 
-In practice, three scenarios:
+- Net = gross − allowance
+- Charge = closing allowance − opening allowance
+- The four charges sum to the closing allowance: 0.20 + 0.00 + 3.54 + 62.77 = 66.51
 
-| Scenario | Weight | Steel sector assumption | Lifetime ECL ₹ crore |
-|---|---:|---|---:|
-| Base | 60% | Prices stabilise at current levels | 3.10 |
-| Downside | 30% | Import pressure continues, further 15% price fall | 3.95 |
-| Upside | 10% | Safeguard duty imposed, prices recover | 2.65 |
-| | | **Probability-weighted ECL** | **3.34** |
-
-Check: $0.60 \times 3.10 + 0.30 \times 3.95 + 0.10 \times 2.65 = 1.86 + 1.185 + 0.265 = 3.31$, rounding to the ₹3.34 crore used in the ledger.
-
-The weighted figure is higher than the base case alone. That is the point — losses are asymmetric, the downside scenario hurts more than the upside helps, and a single-scenario estimate systematically understates the provision.
-
-The scenarios themselves come from the bank's economics function and must be the *same* scenarios used elsewhere in the bank, notably in stress testing and in the ICAAP. A bank running an optimistic scenario for impairment and a pessimistic one for capital planning is telling two different stories about the same future, and both auditors and supervisors look for exactly that inconsistency.
-
-### Overlays
-
-The ₹0.40 crore added at T2 was a **management overlay** — a post-model adjustment for something real that the model cannot see. Legitimate reasons are narrow:
-
-- A risk that has emerged since the model's development data ended
-- A known model limitation, quantified
-- Data quality issues in a specific segment
-
-Overlays are supervised closely because they are a discretionary line in a number that determines reported profit. Three disciplines make them defensible: each overlay is documented with its trigger, quantified with a stated method, and given a **release condition** — the observable event on which it will be reversed. An overlay with no release condition becomes permanent, and a permanent overlay is a model correction that has not been made.
-
-The classic implementation error is **double counting**: the overlay is added at the allowance walk *and* embedded in the model parameters. It is invisible unless the movement analysis reconciles line by line, which is why the walk is a control and not a presentation.
-
-### The production cycle
-
-Every reporting date, the same sequence runs.
-
-| # | Step | What it produces |
-|---:|---|---|
-| 1 | Data cut-off | A frozen position; nothing after this timestamp enters the run |
-| 2 | Exposure assembly | Gross carrying amounts and contractual cash flows per account |
-| 3 | Staging | Each exposure placed in Stage 1, 2 or 3 |
-| 4 | Parameter application | PD, LGD and EAD term structures attached |
-| 5 | Scenario weighting | Base, upside and downside combined at their weights |
-| 6 | Discounting | Everything brought to present value at the original EIR |
-| 7 | Model output | The ₹3.34 crore before adjustment |
-| 8 | Overlays | Post-model adjustments applied and documented |
-| 9 | Movement analysis | The allowance walk, opening to closing |
-| 10 | Committee challenge | The numbers defended and questioned |
-| 11 | Sign-off | Named individuals accept the figure |
-
-Two controls anchor it, and they answer different questions.
-
-**Movement analysis** explains the allowance walk line by line — opening balance, new exposures, derecognitions, stage transfers, remeasurement within stage, overlay, closing balance. Proving the closing balance alone proves nothing about the charge, and the charge is what hits profit.
-
-**Stage migration reporting** shows how many accounts and how much exposure moved between stages during the period, and why. It is the earliest visible signal of portfolio deterioration and the first number a risk committee reads, because a wave of Stage 1 to Stage 2 migration this quarter is next year's Stage 3.
+Note what the gross carrying amount did through all of this: **nothing that credit caused.** It rolled from 98.00 to 99.09 on the EIR and the cash received, exactly as Part 1 said it would, while the borrower collapsed. All the credit deterioration lives in the second row.
 
 ---
 
-## Part 6 — India's regime
+## Part 6 — The same loan under RBI's rules
 
-### Classification by the calendar
+### A different question
 
-Where Ind AS 109 asks a judgement question — has risk increased significantly? — RBI's IRAC norms ask a clerical one: **how many days overdue?** The answer determines classification, and classification determines provisioning, with almost no discretion in between.
+Ind AS 109 asks a judgement question: has risk increased significantly? RBI's **income recognition, asset classification and provisioning (IRAC)** norms ask a clerical one: **how many days overdue?**
 
-That design is deliberate. A rules-based regime is harder to game, easier to supervise across hundreds of banks, and produces numbers that are comparable between institutions. What it gives up is timeliness: it cannot act until the borrower actually misses payments.
+The answer determines classification, classification determines the provision, and there is almost no discretion in between. That is deliberate. A rules regime is harder to game, easier to supervise across hundreds of banks, and produces numbers comparable between them. What it gives up is timeliness — it cannot act until the borrower actually misses payments.
 
-The ladder, and where our steel borrower sat at each reporting date:
+Indian banks report under IRAC. Ind AS 109 applies to NBFCs, to the consolidated accounts of groups reporting under Ind AS, and to overseas branches under IFRS 9; bank adoption has been deferred. [verify] In practice a bank of any size runs both, and reconciling them is a monthly production task.
+
+Two regimes, one loan. This part puts the second set of numbers next to the first.
+
+### The ladder
 
 | Days past due | IRAC status | Our borrower | ECL stage |
 |---|---|---|---:|
@@ -849,138 +857,186 @@ The ladder, and where our steel borrower sat at each reporting date:
 | 1–30 | Standard, flagged **SMA-0** | — | 1 |
 | 31–60 | Standard, flagged **SMA-1** | **T2 — 40 days** | **2** |
 | 61–90 | Standard, flagged **SMA-2** | — | 2 |
-| Over 90 | **Sub-standard** — a non-performing asset | **T3 — 95 days** | **3** |
-| 12 months as sub-standard | Doubtful | Year 5 | 3 |
+| Over 90 | **Sub-standard** — a non-performing asset | **T3 — 95 days** | 3 |
+| 12 months as sub-standard | Doubtful | Y5 if unresolved | 3 |
 | Loss identified, not written off | Loss | — | 3 |
 
 **SMA** is a *special mention account* — not a classification but an early-warning flag, reported to RBI and used to force attention before an asset turns. [verify]
 
-Read the two right-hand columns together. At T2 the accounting had already moved the exposure to Stage 2 and taken a ₹3.54 crore charge, while IRAC still called it Standard and required nothing beyond the general provision. **The accounting saw it a full year before the classification did.** That lag is the single strongest argument for expected loss provisioning, and it is exactly what the 2008 crisis exposed in the incurred-loss regimes that preceded it.
+Read the two right-hand columns together at T2. The accounting had already moved to Stage 2 and taken ₹3.54 crore off profit while IRAC still said Standard. **The accounting saw it a full year before the classification did.** That lag is the strongest single argument for expected-loss provisioning, and it is exactly what 2008 exposed in the incurred-loss regimes that came before.
 
-### Provisioning norms
+### The provision
 
-IRAC provisions are percentages of outstanding, fixed by rule.
+IRAC provisions are percentages of **contractual outstanding** — ₹100 crore here, not the ₹99.09 crore amortised cost, because IRAC does not use the EIR.
 
 | Classification | Secured portion | Unsecured portion |
 |---|---:|---:|
-| Standard — general provision | 0.25% to 1.00% by sector | — |
+| Standard — general provision, most sectors | 0.40% | — |
 | Sub-standard | 15% | 25% |
 | Doubtful, up to 1 year | 25% | 100% |
 | Doubtful, 1 to 3 years | 40% | 100% |
 | Doubtful, over 3 years | 100% | 100% |
 | Loss | 100% | 100% |
 
-All figures indicative and subject to change. [verify]
+Indicative and subject to change. [verify]
 
-Two mechanics worth noting. Provisions **escalate with time**, not with any new information — an asset sitting in doubtful for three years attracts 100% whether or not recovery prospects have changed, which forces resolution rather than indefinite carrying. And **unsecured exposure is punished heavily** from the first day of doubtful, which is why security documentation and perfection (Part 4) has a direct and immediate capital cost when it is defective.
+Applied to our borrower:
 
-### The two systems on one exposure
+| | Classification | Rate | Working | Provision ₹ crore |
+|---|---|---:|---|---:|
+| T0 | Standard | 0.40% | 0.40% × 100 | 0.40 |
+| T1 | Standard | 0.40% | 0.40% × 100 | 0.40 |
+| T2 | Standard, SMA-1 | 0.40% | 0.40% × 100 | 0.40 |
+| T3 | Sub-standard | 15% | 15% × 100 | 15.00 |
 
-At T3 the steel loan is 95 days past due. Both regimes apply, and they disagree.
+### The crossover
+
+Now put the two side by side.
+
+| ₹ crore | T0 | T1 | T2 | T3 |
+|---|---:|---:|---:|---:|
+| ECL allowance | 0.20 | 0.20 | 3.74 | 66.51 |
+| IRAC provision | 0.40 | 0.40 | 0.40 | 15.00 |
+| **Which is higher** | **IRAC** | **IRAC** | **ECL** | **ECL** |
+
+They cross between T1 and T2, and both sides of that crossover teach something.
+
+**At T0 and T1, IRAC demands more.** A healthy BBB loan attracts a flat 0.40% general provision regardless of how good it is, while ECL computes the loan's own tiny expected loss and gets ₹0.20 crore. The rules regime is *more* conservative on good assets, because a flat percentage cannot tell a AA from a BBB.
+
+**At T2 and T3, ECL demands vastly more.** Once the borrower deteriorates, ECL reprices immediately and IRAC waits for the calendar. At T3 the gap is ₹51.51 crore on the same loan on the same day.
+
+Neither number is wrong. **IRAC provisions on elapsed time; ECL provisions on expected cash.** IRAC will reach a similar place eventually — it just takes years:
+
+| Reporting date | Age as NPA | Classification | Rate | IRAC provision ₹ crore |
+|---|---|---|---:|---:|
+| 31 Mar Y4 | new | Sub-standard | 15% | 15.00 |
+| 31 Mar Y5 | 1 year | Doubtful, up to 1 year | 25% | 25.00 |
+| 31 Mar Y6 | 2 years | Doubtful, 1 to 3 years | 40% | 40.00 |
+| 31 Mar Y8 | 4 years | Doubtful, over 3 years | 100% | 100.00 |
+
+ECL said ₹66.51 crore in Y4. IRAC passes that figure somewhere in Y7 or Y8. Four years later, on an asset whose recovery prospects have not changed at all — because the escalation is driven by **age, not information**. That is not a defect: it forces resolution rather than indefinite carrying, which is precisely what the escalation is for.
+
+### The impairment reserve
+
+Where an entity applies Ind AS and the IRAC requirement is **higher** than its ECL, the shortfall is appropriated from net profit into an **impairment reserve** — a prudential floor ensuring the accounting can never provide less than the regulator demands. [verify]
+
+At T0 and T1 that is exactly our position: IRAC ₹0.40 crore against ECL ₹0.20 crore, so ₹0.20 crore is set aside in the reserve. At T2 and T3, ECL is higher and no reserve arises.
+
+On a large book of well-secured retail loans the T0 situation is the normal one, and the reserve is a real and permanent feature of the balance sheet rather than a curiosity.
+
+### Interest: two mechanics, one refusal
 
 | | IRAC | Ind AS 109 |
-|---|---:|---:|
-| Basis of the balance | Contractual outstanding | Amortised cost at EIR |
-| Amount | ₹100.00 crore | ₹99.09 crore |
-| Classification | Sub-standard | Stage 3 |
-| Provision rule | 15% of secured outstanding | Gross less PV of expected recoveries |
-| **Provision** | **₹15.00 crore** | **₹66.51 crore** |
-| Interest on the asset | Recognised only when received | EIR × net carrying amount |
+|---|---|---|
+| Once the asset is non-performing | Interest is recognised **only when received** | Interest accrues on the **net** carrying amount |
+| Effect in year 4 | ₹0 unless cash arrives | ₹3.43 crore |
 
-A gap of ₹51.51 crore on the same loan on the same day.
+Different routes, the same refusal: neither regime will book income the bank does not expect to collect. IRAC does it by stopping the accrual outright; Ind AS does it by shrinking the base the accrual runs on.
 
-The difference is not error. IRAC applies a flat 15% because the asset has only just turned; it will escalate to 25%, then 40%, then 100% over the following years. ECL has jumped straight to the bank's actual estimate of the shortfall, because the standard asks what will be recovered rather than how long it has been bad. **IRAC provisions on elapsed time; ECL provisions on expected cash.** IRAC will get to a similar number eventually. ECL gets there now.
+### CRILC — the other lenders' view
 
-Where an entity applies Ind AS and the IRAC requirement is *higher* than its ECL, the shortfall is transferred to an **impairment reserve** appropriated from net profit — a prudential floor ensuring the accounting can never provide less than the regulator demands. [verify] Here ECL is higher, so no reserve arises. On a large book of well-secured retail loans the reverse is common, and the reserve is real.
+Our borrower has facilities with three other banks. Each of them sees only its own exposure, its own arrears, its own security. If the borrower pays us and defaults elsewhere, we learn nothing until the failure arrives whole.
 
-The two also treat income differently, to the same end. IRAC stops interest accrual on a non-performing asset entirely — it is recognised only on receipt. Ind AS 109 continues to accrue but on the net carrying amount. Different mechanics, the same refusal to book income the bank does not expect to collect.
+The **Central Repository of Information on Large Credits (CRILC)** closes that gap. Banks report every borrower with aggregate exposure at or above ₹5 crore, including classification and SMA status, and accounts flagged SMA-2 are reported weekly. The data is returned to the system, so every lender sees every other lender's view of a shared borrower. [verify]
 
-### CRILC and system-wide visibility
-
-Our borrower has facilities with three other banks. Each of them sees only its own exposure, its own days past due, and its own security. If the borrower pays this bank and defaults elsewhere, this bank learns nothing — until the failure arrives whole.
-
-The **Central Repository of Information on Large Credits (CRILC)** closes that gap. Banks report every borrower with aggregate exposure at or above ₹5 crore, on a defined cycle, including classification and SMA status. Accounts flagged SMA-2 are reported weekly. The data is returned to the system, so every lender sees every other lender's view of a shared borrower. [verify]
-
-The consequence for our borrower is that the day it went SMA-1 with us, its other lenders knew. And if it had gone SMA-2 with one of them first, we would have known — and Stage 2 would have been triggered by the qualitative limb before our own payment record showed anything at all.
+The consequence for us is direct: the day our borrower went SMA-1, its other lenders knew. And had it gone SMA-2 with one of them first, **we** would have known — and Stage 2 would have been triggered by the qualitative limb of SICR before our own payment record showed anything.
 
 CRILC is therefore not just a supervisory return. It is a **credit risk input**, and a bank that treats it as a reporting obligation rather than a monitoring feed is throwing away the earliest signal it has.
 
-### Restructuring: when changing the terms changes the asset
+### Restructuring
 
-At T3 the borrower proposes a restructuring: cut the interest rate from 10% to 7%, and extend the maturity by two years.
+At T3 the borrower proposes cutting the rate from 10% to 7% and extending maturity by two years.
 
-The accounting question is not whether this is a good idea. It is: **has the change been substantial enough that the original asset no longer exists?**
+The accounting question is not whether that is a good idea. It is: **has the change been substantial enough that the original asset no longer exists?**
 
-<svg viewBox="0 0 400 379" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Restructuring derecognition decision" style="width:100%;max-width:400px;height:auto;display:block;margin:26px auto"><rect x="90" y="8" width="220" height="36" rx="5" fill="#f4f4f4" stroke="#333" stroke-width="1"/><text x="200.0" y="30.6" text-anchor="middle" font-size="13" fill="#111" style="font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif">Terms changed</text><line x1="200" y1="44" x2="200" y2="55" stroke="#555" stroke-width="1.3"/><polygon points="200,62 196,55 204,55" fill="#555"/><polygon points="200,62 288,96 200,130 112,96" fill="#f4f4f4" stroke="#333" stroke-width="1"/><text x="200" y="100.5" text-anchor="middle" font-size="13" fill="#111" style="font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif">Substantial?</text><line x1="200" y1="130" x2="200" y2="146" stroke="#555" stroke-width="1.3"/><path d="M 200 146 L 95 146 L 95 168" fill="none" stroke="#555" stroke-width="1.3"/><polygon points="95,175 91,168 99,168" fill="#555"/><path d="M 200 146 L 305 146 L 305 168" fill="none" stroke="#555" stroke-width="1.3"/><polygon points="305,175 301,168 309,168" fill="#555"/><text x="128" y="142" text-anchor="middle" font-size="11" fill="#666" style="font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif">Yes</text><text x="272" y="142" text-anchor="middle" font-size="11" fill="#666" style="font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif">No</text><rect x="10" y="175" width="170" height="36" rx="5" fill="#f4f4f4" stroke="#333" stroke-width="1"/><text x="95.0" y="197.2" text-anchor="middle" font-size="12" fill="#111" style="font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif">Derecognise</text><line x1="95" y1="211" x2="95" y2="224" stroke="#555" stroke-width="1.3"/><polygon points="95,231 91,224 99,224" fill="#555"/><rect x="10" y="231" width="170" height="36" rx="5" fill="#f4f4f4" stroke="#333" stroke-width="1"/><text x="95.0" y="253.2" text-anchor="middle" font-size="12" fill="#111" style="font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif">New asset at fair value</text><line x1="95" y1="267" x2="95" y2="280" stroke="#555" stroke-width="1.3"/><polygon points="95,287 91,280 99,280" fill="#555"/><rect x="10" y="287" width="170" height="36" rx="5" fill="#f4f4f4" stroke="#333" stroke-width="1"/><text x="95.0" y="309.2" text-anchor="middle" font-size="12" fill="#111" style="font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif">New EIR</text><rect x="220" y="175" width="170" height="36" rx="5" fill="#f4f4f4" stroke="#333" stroke-width="1"/><text x="305.0" y="197.2" text-anchor="middle" font-size="12" fill="#111" style="font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif">Asset continues</text><line x1="305" y1="211" x2="305" y2="224" stroke="#555" stroke-width="1.3"/><polygon points="305,231 301,224 309,224" fill="#555"/><rect x="220" y="231" width="170" height="36" rx="5" fill="#f4f4f4" stroke="#333" stroke-width="1"/><text x="305.0" y="246.2" text-anchor="middle" font-size="12" fill="#111" style="font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif">Recompute gross</text><text x="305.0" y="260.2" text-anchor="middle" font-size="12" fill="#111" style="font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif">amount</text><line x1="305" y1="267" x2="305" y2="280" stroke="#555" stroke-width="1.3"/><polygon points="305,287 301,280 309,280" fill="#555"/><rect x="220" y="287" width="170" height="36" rx="5" fill="#f4f4f4" stroke="#333" stroke-width="1"/><text x="305.0" y="309.2" text-anchor="middle" font-size="12" fill="#111" style="font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif">Original EIR retained</text><line x1="305" y1="323" x2="305" y2="336" stroke="#555" stroke-width="1.3"/><polygon points="305,343 301,336 309,336" fill="#555"/><rect x="220" y="343" width="170" height="36" rx="5" fill="#f4f4f4" stroke="#333" stroke-width="1"/><text x="305.0" y="358.2" text-anchor="middle" font-size="12" fill="#111" style="font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif">Modification gain or</text><text x="305.0" y="372.2" text-anchor="middle" font-size="12" fill="#111" style="font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif">loss</text></svg>
+The test is quantitative. Discount the **original** remaining cash flows and the **modified** cash flows, both at the **original** EIR, and compare.
 
-The test is quantitative: discount the **original** remaining cash flows and the **modified** cash flows, both at the **original** effective interest rate, and compare.
-
-| | Cash flows | PV at 10.54% ₹ crore |
-|---|---|---:|
-| **Original** | ₹10 crore in year 4; ₹110 crore in year 5 | 99.07 |
-| **Modified** | ₹7 crore in years 4–6; ₹107 crore in year 7 | 88.93 |
-| | **Change** | **10.14** |
+| | Cash flows | Working at 10.54% | PV ₹ crore |
+|---|---|---|---:|
+| **Original** | ₹10 crore in year 4; ₹110 crore in year 5 | 10(0.9047) + 110(0.8184) | 99.07 |
+| **Modified** | ₹7 crore in years 4–6; ₹107 crore in year 7 | 7(0.9047 + 0.8184 + 0.7405) + 107(0.6699) | 88.92 |
+| | | **Change** | **10.15** |
 
 $$
-\frac{10.14}{99.07} = 10.2\%
+\frac{10.15}{99.07} = 10.2\%
 $$
 
 Above the 10% threshold, so the modification is substantial: the original asset is **derecognised** and a new one recognised at fair value with a fresh EIR.
 
-Note how close that is to the line. Had the rate been cut to 7.5% instead of 7%, the change would have fallen just under 10% and the accounting would have gone the other way — the asset would have continued, the gross carrying amount would have been recomputed as ₹88.93 crore, and the ₹10.16 crore difference booked immediately as a **modification loss**. Same commercial deal, materially different accounting, decided by a mechanical threshold. This is exactly the kind of boundary where restructuring terms get negotiated to land on a preferred side, and exactly why auditors test it.
+```mermaid
+flowchart TD
+    A[Terms changed] --> B{Substantial?}
+    B -->|Yes| C[Derecognise]
+    C --> D[New asset, fair value]
+    D --> E[New EIR]
+    B -->|No| F[Asset continues]
+    F --> G[Recompute gross amount]
+    G --> H[Original EIR retained]
+    H --> I[Modification loss]
+```
 
-Three points that catch people:
+Notice how close that is to the line. Had the rate been cut to 7.5% rather than 7%, the change would have fallen just under 10%, the asset would have continued, the gross carrying amount would have been recomputed at the lower figure, and the difference booked immediately as a **modification loss**. Same commercial deal, materially different accounting, decided by a mechanical threshold — which is exactly where restructuring terms get negotiated to land on a preferred side, and exactly why auditors test it.
 
-- **Discounting always uses the original EIR** where the asset is not derecognised. The whole purpose of retaining the old rate is to make the loss visible; discounting at a new market rate would conceal it.
-- **Restructuring a stressed borrower is itself evidence of credit impairment.** It cannot leave the exposure in Stage 1. Under IRAC, restructuring a standard account for financial difficulty downgrades it to sub-standard.
+Three things that catch people:
+
+- **The original EIR is used throughout** where the asset is not derecognised. That is the point: discounting at a fresh market rate would conceal the loss the standard exists to reveal.
+- **Restructuring a stressed borrower is itself evidence of impairment.** It cannot leave the exposure in Stage 1. Under IRAC, restructuring a standard account for financial difficulty downgrades it to sub-standard.
 - **Derecognition does not reset the credit history.** The new asset is recognised in Stage 3 if the borrower is still impaired, not in Stage 1 because it is "new".
 
-### Resolution
+### If restructuring is not enough
 
-Where restructuring is not enough, India provides an escalating set of routes.
-
-| Route | What it is | When it is used |
+| Route | What it is | When |
 |---|---|---|
-| **Prudential Framework** | RBI's stressed asset framework — review period on default, inter-creditor agreement, resolution plan within a deadline, additional provisions if the deadline slips | First response on any default by a large borrower |
-| **SARFAESI** | Secured creditor enforces security directly, without a court, after notice | Where security is registered and perfected |
-| **DRT** | Debt Recovery Tribunal — adjudicates recovery suits | Unsecured or contested claims |
-| **IBC / NCLT** | Insolvency and Bankruptcy Code — time-bound corporate insolvency resolution, resolution plan or liquidation | Where the enterprise, not just the debt, needs resolving |
+| **Prudential Framework** | RBI's stressed asset framework — review period on default, inter-creditor agreement, resolution plan within a deadline | First response on any large default |
+| **SARFAESI** | Secured creditor enforces security directly, without a court, after notice | Security registered and perfected |
+| **DRT** | Debt Recovery Tribunal adjudicates recovery suits | Unsecured or contested claims |
+| **IBC / NCLT** | Time-bound corporate insolvency resolution, or liquidation | Where the enterprise, not just the debt, needs resolving |
 
-All subject to change. [verify]
+Subject to change. [verify]
 
-The framework's key lever is that **provisions escalate if resolution is not achieved within the prescribed timelines**, which converts delay into an immediate cost to the bank's profit. That is a deliberate design: left alone, lenders prefer to wait rather than crystallise a loss, and the resulting inaction is what allowed stressed assets to accumulate in the Indian system before the framework existed.
+The framework's key lever is that **provisions escalate if resolution misses the prescribed timelines**, which converts delay into an immediate cost to profit. Left alone, lenders prefer to wait rather than crystallise a loss, and that inaction is what let stressed assets accumulate in the Indian system before the framework existed.
 
-Our three-year enforcement timeline in Part 2 — the one that turned a 56% LGD into a 67% LGD — is the reason all of this machinery exists, and the reason LGD estimation in India is materially higher than in jurisdictions with faster enforcement.
+The three-year enforcement timeline in Part 2 — the one that turned a 56% LGD into 67% — is why all of this machinery exists, and why Indian LGDs run materially higher than in jurisdictions with faster enforcement.
+
+### Block two, assembled
+
+| | T0 | T1 | T2 | T3 |
+|---|---|---|---|---|
+| IRAC classification | Standard | Standard | Standard, SMA-1 | Sub-standard |
+| IRAC provision ₹ crore | 0.40 | 0.40 | 0.40 | 15.00 |
+| ECL allowance ₹ crore | 0.20 | 0.20 | 3.74 | 66.51 |
+| Impairment reserve ₹ crore | 0.20 | 0.20 | — | — |
+| Interest treatment | Accrual | Accrual | Accrual | IRAC: on receipt |
 
 ---
 
 ## Part 7 — The capital behind it
 
-### What capital is for
+### What capital is
 
-Part 2 left a gap: expected loss on the book is ₹2.89 crore a year, and year three produced a ₹62.77 crore charge. Provisions cover the first. **Capital covers the second.**
+Part 2 left a gap. Expected loss on this book is ₹2.89 crore a year; year three produced a ₹62.77 crore charge. **Provisions cover the first. Capital covers the second.**
 
-Capital is not a reserve fund sitting somewhere. It is a description of *who absorbs losses first*. Equity capital and reserves — the ₹150 crore on the right-hand side of Part 0's balance sheet — is money whose owners have agreed to be paid last. When the loan book loses value, that loss reduces equity. Only when equity is exhausted do depositors begin to lose, and that point is failure.
+Capital is not a fund sitting somewhere. It is a statement about **who absorbs losses first**. The ₹150 crore of equity and reserves on the right-hand side of Part 0's balance sheet is money whose owners have agreed to be paid last. When the loan book loses value, that loss reduces equity. Only when equity is exhausted do depositors begin to lose — and that point is failure.
 
-So the regulatory question is: **how much equity is enough, given what this particular book could lose in a bad year?** Not a flat percentage of assets, because ₹100 crore lent to a AA-rated IT company and ₹100 crore lent to a BB-rated hotel are not the same risk. The answer scales the requirement to the risk.
+So the regulatory question is: **how much equity is enough, given what this particular book could lose in a bad year?** Not a flat percentage of assets, because ₹100 crore lent to a AA-rated IT company and ₹100 crore lent to a BB-rated hotel are not the same risk. The requirement has to scale to the risk, and that is what everything below does.
 
 ### The stack
 
-Not all capital absorbs losses equally, so it is tiered by how reliably it does so.
+Not all capital absorbs losses equally, so it is tiered by how reliably it does.
 
-| Tier | Instruments | Loss absorption |
+| Tier | Instruments | Absorbs losses |
 |---|---|---|
-| **Common equity Tier 1 (CET1)** | Paid-up equity, retained earnings, disclosed reserves, less regulatory deductions | Absorbs first, immediately, with no trigger required |
-| **Additional Tier 1 (AT1)** | Perpetual instruments with fully discretionary coupons and a write-down or conversion trigger | Absorbs while the bank is a going concern, once triggered |
-| **Tier 2** | Subordinated debt with at least five years' original maturity, amortised in its final five years | Absorbs in liquidation — gone concern |
+| **Common equity Tier 1 (CET1)** | Paid-up equity, retained earnings, disclosed reserves, less deductions | First, immediately, no trigger needed |
+| **Additional Tier 1 (AT1)** | Perpetual instruments, fully discretionary coupons, write-down or conversion trigger | Going concern, once triggered |
+| **Tier 2** | Subordinated debt, minimum five years' original maturity, amortised in the last five | Gone concern — in liquidation |
 
-CET1 is the only tier that absorbs losses without anything having to happen first. That is why it carries the strictest definition, the largest deductions, and the ratio supervisors actually watch. Goodwill, deferred tax assets that depend on future profitability, and investments in the capital of other financial institutions are deducted precisely because they will not be worth anything in the circumstances where capital is needed.
+CET1 is the only tier that absorbs without anything having to happen first, which is why it carries the strictest definition, the largest deductions, and the ratio supervisors actually watch. Goodwill, deferred tax assets that depend on future profitability, and investments in other financial institutions' capital are deducted precisely because they will be worth nothing in the circumstances where capital is needed.
 
-Our bank's capital: **CET1 ₹150 crore**, no AT1, and **₹40 crore of Tier 2** subordinated debt sitting inside the ₹200 crore of borrowings on the balance sheet. Total regulatory capital ₹190 crore.
+Our bank: **CET1 ₹150 crore**, no AT1, and **₹40 crore of Tier 2** subordinated debt sitting inside the ₹200 crore of borrowings. Total regulatory capital **₹190 crore**.
 
-### Risk-weighted assets
+### Risk-weighted assets — the standardised approach
 
-The denominator scales each exposure by its riskiness. Under the **standardised approach**, the weights come from external ratings.
+The denominator scales each exposure by its riskiness. Under the **standardised approach** the weights come off a table, keyed to external ratings.
 
 | Rating | Risk weight |
 |---|---:|
@@ -992,8 +1048,6 @@ The denominator scales each exposure by its riskiness. Under the **standardised 
 | Unrated | 100% |
 
 Indicative; subject to change. [verify]
-
-Applied to the book:
 
 | Borrower | Exposure ₹ crore | Rating | Weight | RWA ₹ crore |
 |---|---:|---|---:|---:|
@@ -1009,12 +1063,12 @@ Applied to the book:
 | Information technology | 40 | AA | 30% | 12 |
 | **Advances** | **1,000** | | | **858** |
 
-Then everything else on the balance sheet, plus the exposures that are not on it:
+Then the rest of the sheet, plus what is not on it:
 
 | Item | Exposure ₹ crore | Treatment | RWA ₹ crore |
 |---|---:|---|---:|
 | Advances, from above | 1,000 | | 858 |
-| Undrawn cash credit limits | 108 | 50% credit conversion, then 100% weight | 54 |
+| Undrawn cash credit limits | 108 | 50% conversion, then 100% weight | 54 |
 | Cash and balances with RBI | 130 | 0% | 0 |
 | Investments — government securities | 400 | 0% | 0 |
 | Investments — corporate | 120 | 100% | 120 |
@@ -1024,7 +1078,7 @@ Then everything else on the balance sheet, plus the exposures that are not on it
 | Operational risk | | Business indicator based | 90 |
 | **Total RWA** | | | **1,234** |
 
-**The ₹108 crore of undrawn limits produced ₹54 crore of RWA.** They appear nowhere in the balance sheet in Part 0, cost the bank nothing in funding, and are genuinely available to the borrowers who would draw them at exactly the wrong moment. This is the same exposure the credit conversion factor in Part 2 was built to measure, and it is why off-balance-sheet items are the first thing a supervisor asks about.
+**The ₹108 crore of undrawn limits produced ₹54 crore of RWA.** They appear nowhere on the balance sheet, cost nothing to fund, and are genuinely available to the borrowers who would draw them at exactly the wrong moment. Same exposure the credit conversion factor in Part 2 was built to measure, and the reason off-balance-sheet items are the first thing a supervisor asks about.
 
 ### The ratios
 
@@ -1032,122 +1086,247 @@ $$
 \text{Capital ratio} = \frac{\text{Regulatory capital}}{\text{Risk-weighted assets}}
 $$
 
-| Ratio | Our bank | Minimum | Minimum + buffer |
-|---|---:|---:|---:|
-| CET1 | 12.16% | 5.5% | 8.0% |
-| Tier 1 | 12.16% | 7.0% | 9.5% |
-| Total capital | 15.40% | 9.0% | 11.5% |
+| Ratio | Working | Our bank | Minimum | Minimum + buffer |
+|---|---|---:|---:|---:|
+| CET1 | 150 / 1,234 | 12.16% | 5.5% | 8.0% |
+| Tier 1 | 150 / 1,234 | 12.16% | 7.0% | 9.5% |
+| Total capital | 190 / 1,234 | 15.40% | 9.0% | 11.5% |
 
 Indian minima including the 2.5% capital conservation buffer; subject to change. [verify]
 
-The bank is comfortable. CET1 of 12.16% against an 8% requirement is over ₹51 crore of headroom.
+Comfortable — over ₹51 crore of CET1 headroom above the 8% requirement.
 
-The **capital conservation buffer** is not a minimum in the usual sense. Falling into it does not make the bank non-compliant — it restricts what the bank may distribute. Dividends, share buybacks and discretionary bonuses are constrained progressively as the ratio falls through the buffer, on the reasoning that a bank running low on capital should be rebuilding it rather than paying it out. Two further buffers may apply: a **countercyclical buffer** switched on by the regulator when system-wide credit growth looks excessive, and a **D-SIB surcharge** on banks whose failure would be systemic.
+The **capital conservation buffer** is not a minimum in the usual sense. Falling into it does not make the bank non-compliant; it restricts what the bank may **distribute**. Dividends, buybacks and discretionary bonuses are constrained progressively as the ratio falls through the buffer, on the reasoning that a bank running low on capital should be rebuilding it rather than paying it out. Two further buffers may apply: a **countercyclical buffer**, switched on when system-wide credit growth looks excessive, and a **D-SIB surcharge** on banks whose failure would be systemic.
 
-### What one borrower does to the ratio
+### Internal ratings — the same question, the bank's own answer
 
-Now run the ledger from Part 5 through the capital calculation. Three states of the same bank.
+The standardised table gives our steel exposure 100% because it is BBB. It would give 100% to a one-year loan to a strong BBB and 100% to a seven-year loan to a weak one. The table cannot see maturity, cannot see collateral quality, and cannot see the difference between a BBB at the top of its band and a BBB about to fall out of it.
 
-**T1 — everything is fine.** Steel is BBB, weighted 100%, contributing ₹100 crore of RWA. CET1 ₹150 crore, RWA ₹1,234 crore.
-
-**T2 — the borrower is downgraded to BB.** Two things happen at once, and this is the mechanic worth internalising.
-
-- The **denominator rises**: the risk weight goes from 100% to 150%, so the steel exposure's RWA goes from ₹100 crore to ₹150 crore. Total RWA becomes ₹1,284 crore.
-- The **numerator falls**: the ₹3.54 crore impairment charge goes through profit and loss, reducing retained earnings. CET1 becomes ₹146.46 crore.
-
-**T3 — the borrower defaults.** The charge is ₹62.77 crore, taking CET1 to ₹83.69 crore. The risk weight on a non-performing asset depends on provision coverage: at 67% coverage, well above the 50% threshold, the weight drops to 50%. [verify] Steel's RWA falls to about ₹50 crore and total RWA to ₹1,184 crore.
-
-| | T1 | T2 | T3 |
-|---|---:|---:|---:|
-| Event | Performing | Downgraded, Stage 2 | Defaulted, Stage 3 |
-| CET1 capital ₹ crore | 150.00 | 146.46 | 83.69 |
-| Total RWA ₹ crore | 1,234 | 1,284 | 1,184 |
-| **CET1 ratio** | **12.16%** | **11.41%** | **7.07%** |
-| Total capital ratio | 15.40% | 14.52% | 10.45% |
-| Position | Comfortable | Comfortable | **Inside the buffer** |
-
-Three things fall out of that table, and they are the point of this entire volume.
-
-**A downgrade costs capital before any default.** Between T1 and T2 the bank lost 75 basis points of CET1 on a loan that was still classified Standard and still paying, eventually. Nothing had been lost; the risk had merely become visible.
-
-**The two effects compound.** The provision reduces the numerator and the migration raises the denominator simultaneously. A framework that modelled only one of them would understate the impact by roughly half.
-
-**Concentration is not an abstraction.** A single exposure of 10% of the book took CET1 from 12.16% to 7.07% — through the buffer, into distribution restrictions, and requiring a capital raise. This is the arithmetic behind the large exposure limit in Part 4 that capped single-name exposure at ₹30 crore. Had the steel exposure been ₹30 crore rather than ₹100 crore, the same default would have cost roughly ₹19 crore and CET1 would have ended near 10.6% — bruised but inside the buffer.
-
-Note also that RWA *fell* at T3. A heavily provided non-performing asset attracts a lower weight than a performing sub-investment-grade one, because most of the loss has already been taken through capital. The denominator improving does not mean the bank improved.
-
-### Internal ratings: the same idea, self-estimated
-
-Under the **internal ratings based (IRB) approach**, a bank estimates its own parameters and feeds them into a supervisory formula rather than reading weights off a table.
+Under the **internal ratings based (IRB)** approach the bank supplies its own parameters and a supervisory formula converts them into a capital requirement — the same PD, LGD and EAD built in Part 2, now doing a second job.
 
 | Approach | Bank estimates | Supervisor prescribes |
 |---|---|---|
 | **Foundation IRB** | PD | LGD, EAD, maturity |
 | **Advanced IRB** | PD, LGD, EAD | The risk weight function itself |
 
-The formula converts the parameters into a capital requirement at a **99.9% confidence level over a one-year horizon** — the once-in-a-thousand-years standard from the loss distribution in Part 2. Two features of it matter more than its algebra:
+The formula looks forbidding written out in one line. It is four ideas in sequence, and each one is a question you can already answer.
 
-- It capitalises **unexpected loss only**. Expected loss is deducted, because it is already covered by provisions. The framework's whole architecture assumes provisions and capital are doing different jobs, which is exactly what Part 2 established and Part 5 built.
-- It contains an **asset correlation** parameter, supervisor-set by asset class, which represents how much borrowers fail together. This is where the concentration of Part 4 enters the capital calculation — though only as a broad average, which is why supervisors add a concentration charge under Pillar 2 on top.
+**Step 1 — how tied is this borrower to the economy?**
 
-An **output floor** caps the benefit: total RWA under internal models may not fall below a set percentage of what the standardised approach would produce. [verify] Its purpose is to bound how far model choice can drive capital, after a period in which two banks with near-identical books reported materially different requirements.
+Losses on a portfolio depend on how much its borrowers fail *together*. Basel prescribes an **asset correlation** $R$ as a function of PD, running from 24% down to 12%:
 
-### The three pillars, and what each catches
+$$
+R = 0.12\,w + 0.24\,(1-w), \qquad w = \frac{1 - e^{-50 \times PD}}{1 - e^{-50}}
+$$
+
+For our BBB borrower at PD 0.50%, **R = 0.2135**.
+
+The shape is deliberate and worth understanding. Low-PD borrowers get *higher* correlation: a AAA company fails only when the whole economy fails, so its default is almost pure systemic risk. High-PD borrowers get lower correlation: a company already in trouble usually fails for its own reasons, whatever the economy is doing. This is the concentration idea of Part 4 entering the capital calculation — though only as a broad average, which is why supervisors add a concentration charge separately under Pillar 2.
+
+**Step 2 — what is this borrower's default probability in a one-in-a-thousand year?**
+
+Take the borrower's own PD and place it on a standard normal scale, then ask what it becomes when the common economic factor sits at its 99.9th percentile bad point.
+
+$$
+PD_{\text{conditional}} = N\!\left[\frac{G(PD) + \sqrt{R}\;G(0.999)}{\sqrt{1-R}}\right]
+$$
+
+| Step | Working | Value |
+|---|---|---:|
+| Borrower's PD on the normal scale | $G(0.005)$ | −2.5758 |
+| The 99.9th percentile stress | $G(0.999)$ | 3.0902 |
+| Stress scaled by correlation | $\sqrt{0.2135} \times 3.0902$ | 1.4279 |
+| Combined and rescaled | $(-2.5758 + 1.4279) / \sqrt{0.7865}$ | −1.2944 |
+| Back to a probability | $N(-1.2944)$ | **9.77%** |
+
+**A borrower with a 0.50% chance of failing in an average year has a 9.77% chance in a one-in-a-thousand year.** That single number is the whole idea of bank capital, and it is the 99.9th percentile line from the loss distribution in Part 2, now with an actual value attached.
+
+**Step 3 — strip out expected loss.**
+
+Capital covers unexpected loss only; expected loss is already covered by the allowance. So subtract it.
+
+| Step | Working | Value |
+|---|---|---:|
+| Loss rate in the stressed year | 45% × 9.7738% | 4.398% |
+| Less expected loss rate | 45% × 0.50% | (0.225%) |
+| **Unexpected loss rate** | | **4.173%** |
+
+This is where the architecture of Part 2 becomes literal. The framework does not merely *assume* provisions and capital do different jobs — it subtracts one from the other in the formula.
+
+**Step 4 — adjust for maturity.**
+
+A longer loan has more time to migrate downwards before it matures, so it needs more capital for the same PD today.
+
+$$
+b = \left(0.11852 - 0.05478 \ln PD\right)^2, \qquad \text{adjustment} = \frac{1 + (M - 2.5)\,b}{1 - 1.5\,b}
+$$
+
+At PD 0.50%, **b = 0.16709**. Our loan has an effective maturity of 2.5 years, so the numerator is 1 and the adjustment is $1 / (1 - 0.2506) = 1.3345$.
+
+$$
+K = 4.173\% \times 1.3345 = 5.569\%
+$$
+
+**Step 5 — turn a capital requirement into a risk weight.**
+
+$K$ is capital as a share of exposure. RWA is that grossed up at the framework's 8% reference point, which is why the factor is 12.5.
+
+| Step | Working | Value |
+|---|---|---:|
+| Risk weight | 5.569% × 12.5 | **69.6%** |
+| RWA | 69.6% × 99.09 | **₹68.98 crore** |
+
+### What the IRB curve shows that the table cannot
+
+Run the same five steps on three variations and set them against the standardised weight.
+
+| Exposure | PD | LGD | Maturity | Standardised | IRB |
+|---|---:|---:|---:|---:|---:|
+| Steel at origination | 0.50% | 45% | 2.5 yrs | 100% | **69.6%** |
+| Same borrower, 5-year loan | 0.50% | 45% | 5.0 yrs | 100% | **98.7%** |
+| Steel at T2, downgraded | 2.30% | 55% | 2.5 yrs | 150% | **145.9%** |
+| The AA borrower in the book | 0.10% | 45% | 2.5 yrs | 30% | **29.7%** |
+
+Three things fall out.
+
+**The saving is real and that is the incentive.** ₹68.98 crore of RWA instead of ₹99.09 crore — 30% less capital tied up against the same loan. Multiply across a book and it is the reason banks invest years in IRB accreditation.
+
+**Maturity does the work the table cannot see.** The same borrower, the same rating, the same collateral: a five-year loan carries a 98.7% weight against 69.6% for a two-and-a-half year one. Standardised charges both 100% and is right by accident on one of them.
+
+**The table is a coarse fit to the same curve.** At BB the two agree within four points; at AA within a third of a point. IRB is not a different theory of capital — it is the same curve read at the borrower's own coordinates instead of at the midpoint of a band.
+
+Two guardrails go with it. An **output floor** caps total RWA under internal models at a set percentage of the standardised result [verify], introduced after a period in which two banks with near-identical books reported materially different requirements. And the **use test**: the default definition and the ratings that feed IRB must be the same ones driving credit decisions, limits, pricing and collections. A bank calling an exposure performing for capital while its own collections team is working it has failed visibly — which is the Part 2 default definition being enforced from the capital side.
+
+### What one borrower does to the ratio
+
+Now run the ledger from Parts 5 and 6 through the capital calculation, on the standardised approach.
+
+**T0 and T1 — performing.** Steel is BBB, weighted 100%, contributing ₹100 crore of RWA. CET1 ₹150 crore against RWA ₹1,234 crore.
+
+**T2 — downgraded.** Two things move at once, in opposite directions, and this is the mechanic worth internalising.
+
+| | Working | Effect |
+|---|---|---|
+| **Denominator rises** | Weight 100% → 150%, so steel RWA 100 → 150 | Total RWA 1,234 → 1,284 |
+| **Numerator falls** | ₹3.54 crore impairment charge reduces retained earnings | CET1 150.00 → 146.46 |
+
+**T3 — defaulted.** The ₹62.77 crore charge takes CET1 to ₹83.69 crore. The risk weight on a non-performing asset depends on provision coverage: at 67% coverage, above the 50% threshold, the weight drops to 50%. [verify] Steel RWA falls to ₹50 crore and total RWA to ₹1,184 crore.
+
+### Block three, assembled
+
+| | T0 | T1 | T2 | T3 |
+|---|---:|---:|---:|---:|
+| Steel risk weight | 100% | 100% | 150% | 50% |
+| CET1 capital ₹ crore | 150.00 | 150.00 | 146.46 | 83.69 |
+| Total RWA ₹ crore | 1,234 | 1,234 | 1,284 | 1,184 |
+| **CET1 ratio** | **12.16%** | **12.16%** | **11.41%** | **7.07%** |
+| Total capital ratio | 15.40% | 15.40% | 14.52% | 10.45% |
+| Position | Comfortable | Comfortable | Comfortable | **Inside the buffer** |
+
+Three readings, and they are the point of this entire volume.
+
+**A downgrade costs capital before any default.** Between T1 and T2 the bank lost 75 basis points of CET1 on a loan still classified Standard and still expected to pay. Nothing had been lost. The risk had merely become visible.
+
+**The two effects compound.** The provision cuts the numerator while the migration raises the denominator. A framework modelling only one of them would understate the impact by roughly half — which is why an ECL forecast and a capital forecast have to be run off the same downgrade assumptions.
+
+**Concentration is not an abstraction.** One exposure at 10% of the book took CET1 from 12.16% to 7.07% — through the buffer, into distribution restrictions, and into needing a capital raise. That is the arithmetic behind the ₹30 crore large exposure cap in Part 4. Had the exposure been ₹30 crore, the same default would have cost roughly ₹19 crore and CET1 would have landed near 10.6% — bruised, but inside the buffer.
+
+And note that RWA *fell* between T2 and T3 while the bank lost ₹62.77 crore. A heavily provided non-performing asset attracts a lower weight than a performing sub-investment-grade one, because most of the loss has already gone through capital. **The denominator improving does not mean the bank improved.**
+
+### What Pillar 1 cannot see
 
 | Pillar | Content | What it catches that the others do not |
 |---|---|---|
 | **1 — Minimum requirements** | Credit, market and operational risk capital by prescribed rules | Comparable, mechanical, auditable |
-| **2 — Supervisory review** | ICAAP, stress testing, risks not captured in Pillar 1 | Concentration, interest rate risk in the banking book, strategic and reputational risk |
+| **2 — Supervisory review** | ICAAP, stress testing, risks absent from Pillar 1 | Concentration, interest rate risk in the banking book, strategic and reputational risk |
 | **3 — Market discipline** | Public disclosure of risk and capital position | Lets funding markets price the bank's risk themselves |
 
-Pillar 2 exists because Pillar 1 is deliberately incomplete. Our bank's concentration — 8.4 effective names against a ₹150 crore capital base — is barely visible in the Pillar 1 arithmetic and is precisely what destroyed the ratio at T3. The **ICAAP** is where the bank must state its own view of how much capital it needs, run its own stress scenarios, and defend the answer.
+Pillar 2 exists because Pillar 1 is deliberately incomplete. Our bank's concentration — 8.4 effective names against ₹150 crore of capital — is barely visible in the Pillar 1 arithmetic and is precisely what destroyed the ratio at T3. The **internal capital adequacy assessment process (ICAAP)** is where the bank must state its own view of how much capital it needs, stress it, and defend the answer.
 
-A useful stress test for this bank writes itself: what if the *three* industrial borrowers — steel, auto components and power, ₹280 crore of correlated exposure — deteriorate together? The answer is that CET1 does not survive it, and the ICAAP either produces a capital add-on or a lending limit. That is the test doing its job.
+The stress test for this bank writes itself: what if steel, auto components and power — ₹280 crore of correlated industrial exposure — deteriorate together? CET1 does not survive it. The ICAAP then produces either a capital add-on or a lending limit, which is the test doing its job.
 
-### The leverage ratio backstop
+### The leverage backstop
 
 $$
 \text{Leverage ratio} = \frac{\text{Tier 1 capital}}{\text{Total exposure measure}}
 $$
 
-The exposure measure is unweighted — on-balance-sheet assets plus off-balance-sheet items at conversion factors, with no risk weighting at all. Our bank: ₹150 crore against roughly ₹1,754 crore of exposure, giving 8.55% against a minimum of 3.5% for a non-systemic bank. [verify]
+The exposure measure is **unweighted** — on-balance-sheet assets plus off-balance-sheet items at conversion factors, no risk weighting at all. Our bank: ₹150 crore against roughly ₹1,754 crore, giving **8.55%** against a 3.5% minimum for a non-systemic bank. [verify]
 
-Comfortable, and that is the point of the contrast. A bank stuffed with government securities and residential mortgages can show a magnificent risk-based ratio while holding very little capital against a very large balance sheet, because those assets are weighted at or near zero. The leverage ratio is deliberately blind to risk weighting so that it cannot be optimised the same way. The two constraints bind different banks: risk-based ratios bind banks with risky books, leverage binds banks with large low-weight ones.
+The contrast is the point. A bank stuffed with government securities and residential mortgages can show a magnificent risk-based ratio while holding very little capital against a very large balance sheet, because those assets weight at or near zero. The leverage ratio is deliberately blind to risk weighting so it cannot be optimised the same way. The two constraints bind different banks: risk-based ratios bind banks with risky books, leverage binds banks with large low-weight ones.
+
+---
+
+## The whole thing, on one table
+
+One borrower, four dates, three rulebooks.
+
+| | T0 | T1 | T2 | T3 |
+|---|---:|---:|---:|---:|
+| **Date** | 1 Apr Y1 | 31 Mar Y2 | 31 Mar Y3 | 31 Mar Y4 |
+| **Event** | Disbursed | Paid on time | BBB→BB, 40 dpd | 95 dpd, impaired |
+| **The asset — Part 5** | | | | |
+| Gross carrying amount | 98.00 | 98.33 | 98.69 | 99.09 |
+| ECL stage | 1 | 1 | 2 | 3 |
+| Loss allowance | 0.20 | 0.20 | 3.74 | 66.51 |
+| Net carrying amount | 97.80 | 98.13 | 94.95 | 32.58 |
+| Impairment charge | 0.20 | 0.00 | 3.54 | 62.77 |
+| **The Indian rules — Part 6** | | | | |
+| IRAC classification | Standard | Standard | Standard, SMA-1 | Sub-standard |
+| IRAC provision | 0.40 | 0.40 | 0.40 | 15.00 |
+| Impairment reserve | 0.20 | 0.20 | — | — |
+| **The capital — Part 7** | | | | |
+| Steel risk weight | 100% | 100% | 150% | 50% |
+| CET1 capital | 150.00 | 150.00 | 146.46 | 83.69 |
+| Total RWA | 1,234 | 1,234 | 1,284 | 1,184 |
+| **CET1 ratio** | **12.16%** | **12.16%** | **11.41%** | **7.07%** |
+
+All ₹ crore unless a percentage.
+
+Read down any column and you have a bank's complete position on one exposure on one day. Read across any row and you have how that position moved. Read the three blocks against each other and you have the argument the whole industry is having: **the accounting saw it at T2, the Indian classification saw it at T3, and the capital ratio paid for both.**
 
 ---
 
 ## Reference numbers
 
-| Figure | Value | Where it appears |
+| Figure | Value | Part |
 |---|---:|---|
-| Bank balance sheet total | ₹1,700 crore | Part 0 |
-| Gross advances | ₹1,000 crore | Part 0 |
-| Undrawn commitments, off balance sheet | ₹108 crore | Part 0, Part 7 |
-| Equity capital and reserves | ₹150 crore | Part 0, Part 7 |
-| Steel loan, principal | ₹100 crore | Part 1 |
-| Steel loan, net cash disbursed | ₹98 crore | Part 1 |
-| Contractual rate | 10.00% | Part 1 |
-| Effective interest rate | 10.54% | Part 1 |
-| Expected loss on the book, annual | ₹2.89 crore | Part 2 |
-| LGD, discounted | 67% | Part 2 |
-| LGD, undiscounted | 56% | Part 2 |
-| Credit conversion factor, revolving | 80% | Part 2 |
-| BBB one-year PD | 0.50% | Part 3 |
-| BBB two-year cumulative PD | 1.16% | Part 3 |
-| BB one-year PD | 2.30% | Part 3 |
-| HHI | 0.1196 | Part 4 |
-| Effective number of names | 8.4 | Part 4 |
-| Allowance at T0 | ₹0.20 crore | Part 5 |
-| Allowance at T2 | ₹3.74 crore | Part 5 |
-| Allowance at T3 | ₹66.51 crore | Part 5 |
-| Impairment charge, year 3 | ₹62.77 crore | Part 5 |
-| IRAC provision at T3 | ₹15.00 crore | Part 6 |
-| Modification test threshold | 10% | Part 6 |
-| Total risk-weighted assets | ₹1,234 crore | Part 7 |
-| CET1 ratio, T1 | 12.16% | Part 7 |
-| CET1 ratio, T3 | 7.07% | Part 7 |
+| Balance sheet total | ₹1,700 crore | 0 |
+| Gross advances | ₹1,000 crore | 0 |
+| Undrawn commitments, off balance sheet | ₹108 crore | 0, 7 |
+| Equity capital and reserves | ₹150 crore | 0, 7 |
+| Steel loan, principal | ₹100 crore | 1 |
+| Steel loan, net cash disbursed | ₹98 crore | 1 |
+| Contractual rate | 10.00% | 1 |
+| Effective interest rate | 10.54% | 1 |
+| Expected loss on the book, annual | ₹2.89 crore | 2 |
+| LGD, discounted | 67% | 2 |
+| LGD, undiscounted | 56% | 2 |
+| Credit conversion factor, revolving | 80% | 2 |
+| BBB one-year PD | 0.50% | 3 |
+| BBB two-year cumulative PD | 1.16% | 3 |
+| BB one-year PD | 2.30% | 3 |
+| HHI | 0.1196 | 4 |
+| Effective number of names | 8.4 | 4 |
+| ECL allowance, T0 and T1 | ₹0.20 crore | 5 |
+| ECL allowance, T2 | ₹3.74 crore | 5 |
+| ECL allowance, T3 | ₹66.51 crore | 5 |
+| Impairment charge, year 3 | ₹62.77 crore | 5 |
+| Interest revenue, year 4, on gross vs net | ₹10.45 / ₹3.43 crore | 5 |
+| IRAC provision, standard | 0.40% | 6 |
+| IRAC provision, T3 | ₹15.00 crore | 6 |
+| Impairment reserve, T0 and T1 | ₹0.20 crore | 6 |
+| Modification test threshold | 10% | 6 |
+| Total risk-weighted assets | ₹1,234 crore | 7 |
+| Asset correlation R at PD 0.50% | 0.2135 | 7 |
+| Conditional PD in a 1-in-1,000 year | 9.77% | 7 |
+| IRB capital requirement K | 5.57% | 7 |
+| IRB risk weight vs standardised | 69.6% vs 100% | 7 |
+| CET1 ratio, T0 | 12.16% | 7 |
+| CET1 ratio, T3 | 7.07% | 7 |
+| Leverage ratio | 8.55% | 7 |
 
-Regulatory minima, risk weights, provisioning percentages and reporting thresholds are all subject to change and are marked **[verify]** where they appear.
+Regulatory minima, risk weights, provisioning percentages and reporting thresholds are subject to change and are marked **[verify]** where they appear.
 
 ---
 
@@ -1183,19 +1362,23 @@ Regulatory minima, risk weights, provisioning percentages and reporting threshol
 
 ## Recall check
 
-1. The bank disbursed ₹100 crore and collected a ₹2 crore fee. Why does the asset go on the books at ₹98 crore, and what happens to the missing ₹2 crore?
-2. Why does the gross carrying amount rise from ₹98.00 crore to ₹100.00 crore over five years when no additional money is lent?
+1. ₹100 crore disbursed, ₹2 crore fee collected. Why does the asset go on at ₹98 crore, and where does the ₹2 crore go?
+2. The gross carrying amount rises from ₹98.00 crore to ₹100.00 crore over five years with no further lending. Why, and what does credit deterioration do to it?
 3. Net recoveries of ₹44 crore on ₹99.09 crore of exposure. Why is LGD 67% and not 56%?
-4. A borrower's cash credit line is 40% drawn today. Why is that not the exposure at default, and what number is?
-5. The same borrower has a TTC PD of 0.50% and a PIT PD of 2.8% on the same day. Explain why both are correct.
+4. A cash credit line is 40% drawn today. Why is that not the exposure at default, and what is?
+5. The same borrower has a TTC PD of 0.50% and a PIT PD of 2.8% on the same day. Why are both correct?
 6. Two-thirds of a BBB borrower's second-year default probability does not come from it staying BBB. Where does the rest come from?
-7. Ten borrowers, HHI 0.1196. What does 8.4 mean, and why does adding ₹100 crore to a good borrower make the book worse?
-8. At T2 the allowance rose from ₹0.20 crore to ₹3.74 crore on a loan classified Standard and 40 days past due. What caused the step, and why is it that large?
+7. HHI 0.1196 across ten borrowers. What does 8.4 mean, and why does lending ₹100 crore more to a *good* borrower make the book worse?
+8. At T2 the allowance goes from ₹0.20 crore to ₹3.74 crore. Split the ₹3.54 crore charge into its three components and say which is the largest.
 9. At T3 the net carrying amount is ₹32.58 crore. What is that number, precisely?
-10. Why does interest revenue drop from ₹10.45 crore to ₹3.43 crore at Stage 3, and what does *not* change with it?
-11. IRAC says ₹15 crore, ECL says ₹66.51 crore, on the same loan on the same day. Which is wrong?
-12. The steel borrower's downgrade cost 75 basis points of CET1 before any default occurred. Through which two channels?
-13. RWA fell between T2 and T3 while the bank lost ₹62.77 crore. Explain.
+10. Interest revenue drops from ₹10.45 crore to ₹3.43 crore at Stage 3. What else uses the 10.54% and does *not* change?
+11. At T0, IRAC demands ₹0.40 crore and ECL ₹0.20 crore. Which regime is more conservative on a healthy loan, and what happens to the difference?
+12. At T3, IRAC says ₹15 crore and ECL says ₹66.51 crore on the same loan. Which is wrong, and when does IRAC catch up?
+13. A borrower with a 0.50% one-year PD has a 9.77% PD in the IRB calculation. What has been done to it, and what is that number for?
+14. IRB gives our steel loan a 69.6% risk weight against the standardised 100%, but only 29.7% against 30% for the AA borrower. Why do they converge?
+15. The same BBB borrower, same collateral, gets 69.6% at 2.5 years and 98.7% at 5 years. What does the standardised table charge, and what is it missing?
+16. The downgrade at T2 cost 75 basis points of CET1 before any default. Through which two channels?
+17. RWA *fell* between T2 and T3 while the bank lost ₹62.77 crore. Explain.
 
 ---
 
@@ -1203,14 +1386,14 @@ Regulatory minima, risk weights, provisioning percentages and reporting threshol
 
 A bank lends money it mostly does not own. Its own money — capital — is what stands between a loss and a depositor.
 
-A loan is worth what was actually paid out, and it earns the rate that reconciles that outlay to its future receipts. Fees are part of the yield, not of day one's profit.
+A loan is worth what was actually paid out, and it earns the rate reconciling that outlay to its future receipts. Fees are part of the yield, not day one's profit. That gross carrying amount moves only with the contract; credit never touches it.
 
-Every loan has an expected loss: how likely it is to fail, how much would be owed when it did, and how little would come back after the courts had finished. That number is small, predictable, priced in, and provided against. It is a cost.
+Every loan has an expected loss: how likely it is to fail, how much would be owed when it did, and how little would come back after the courts had finished. Small, predictable, priced into the spread, carried as an allowance. A cost of business.
 
-What cannot be provided against is the year the average does not hold — the year one borrower in a concentrated book fails and takes twenty years of expected losses at once. That is what capital is for, and how much of it is required depends on how risky the book is, which is what risk weighting measures.
+What cannot be provided for is the year the average does not hold — the year one borrower in a concentrated book takes twenty-two years of expected losses at once. That is what capital is for, and how much is required depends on how risky the book is. The standardised table answers that from a rating; the IRB curve answers the same question from the bank's own PD, LGD, maturity and a prescribed correlation, by asking what this borrower's default probability becomes in a one-in-a-thousand year and charging for the gap between that and the average.
 
-Between the two sits the provision, and the whole of modern impairment accounting is an argument about when to take it. The rules-based answer waits for missed payments. The forward-looking answer moves the moment risk deteriorates relative to what was underwritten, which is a year earlier and several times larger. Both run in India, on the same exposures, producing different numbers that must be reconciled every month.
+Between allowance and capital sits the argument the whole industry is having: **when to take the provision.** The rules-based answer waits for missed payments and escalates on age. The forward-looking answer moves the moment risk deteriorates against what was underwritten — a year earlier and four times larger. Both run in India, on the same exposures, and reconciling them is monthly production work.
 
-Follow one borrower and all of it connects. It is written at ₹98 crore, provided at ₹0.20 crore, downgraded and provided at ₹3.74 crore while still classified Standard, defaulted and provided at ₹66.51 crore, and the bank's capital ratio falls from 12.16% to 7.07% — through the numerator, because the provision hit profit, and through the denominator, because a worse borrower carries more weight.
+Follow one borrower and all of it connects. Written at ₹98 crore. Provided ₹0.20 crore on day one, against an IRAC floor of ₹0.40 crore. Downgraded, still classified Standard, provided ₹3.74 crore. Defaulted, provided ₹66.51 crore while IRAC still asked for ₹15 crore. And the bank's CET1 ratio fell from 12.16% to 7.07% — through the numerator because the provision hit profit, and through the denominator because a worse borrower carries more weight.
 
-Volume 2 turns to the other side of the balance sheet: where the ₹1,300 crore of funding comes from, what happens when it wants to leave, how the two sides reprice against each other, and how all of it is assembled into the returns that go to the regulator.
+Volume 2 turns to the other side of the balance sheet: where the ₹1,300 crore of funding comes from, what happens when it wants to leave, how the two sides reprice against each other, and how every number in both volumes is assembled into the returns that go to the regulator.
