@@ -1,1742 +1,1145 @@
 ---
+title: "Credit Risk and Treasury — One Balance Sheet, One Reporting Chain"
+description: "This note covers what a credit risk, capital and regulatory reporting business analyst needs to hold in working memory. It assumes no banking background. Every term is defined before it is used. It follows one bank from the products it holds, through the risks those products create, to the returns it files with the regulator and the project work that produces them."
+series: masterclass
+status: live
 updated: 2026-09-11
 verified: false
+tags:
+  - credit risk
+  - treasury
+  - alm
+  - liquidity
+  - regulatory reporting
 ---
 
-# Credit Risk and Treasury — One Balance Sheet, One Reporting Chain
+This note covers what a credit risk, capital and regulatory reporting business analyst needs to hold in working memory. It assumes no banking background. Every term is defined before it is used. It follows one bank from the products it holds, through the risks those products create, to the returns it files with the regulator and the project work that produces them.
+
+Amounts are in Indian rupees, stated in ₹ crore. One crore is ten million.
+
+---
 
 ## 1. The bank and the journey
 
-A **balance sheet** records resources, obligations and the owners’ residual interest at a date. **Assets** are resources and claims; **liabilities** are obligations; **equity** belongs to owners after liabilities.
+### 1.1 What a bank actually does
 
-$$\text{Assets}=\text{Liabilities}+\text{Equity}$$
-Assets = resources and claims; liabilities = obligations; equity = the residual belonging to shareholders.
+A bank borrows money from people who want it back soon and lends it to people who repay slowly. It earns the difference between the two rates.
 
-Amounts: **Indian rupees (INR)**, in ₹ crore.
+That single sentence contains every risk in this document:
+
+- The borrowers may not repay — **credit risk**
+- The lenders may want their money back faster than it arrives — **liquidity risk**
+- Interest rates may move between the two sides — **interest rate risk**
+- The bank must hold a buffer for the losses it cannot predict — **capital**
+- And it must prove all of this to a regulator, from data, on a schedule — **reporting**
+
+### 1.2 The balance sheet
+
+A **balance sheet** is a photograph, taken on one date, of what a bank owns and what it owes.
+
+- **Assets** are what the bank owns or is owed. Loans are assets — someone owes the bank money.
+- **Liabilities** are what the bank owes to others. Deposits are liabilities — the bank owes its depositors.
+- **Equity** is what is left for the owners after every liability is met.
+
+$$
+\text{Assets} = \text{Liabilities} + \text{Equity}
+$$
+
+where:
+
+- **Assets** — resources owned and amounts owed to the bank
+- **Liabilities** — obligations owed by the bank to others
+- **Equity** — the owners' residual claim
+
+This identity always holds. If an asset loses value and no liability changes, equity absorbs the fall. That is the mechanism by which losses reach shareholders.
+
+### 1.3 Our bank
+
+One institution runs through this entire note. Every later section stands somewhere on this table.
 
 | Assets | ₹ crore | Liabilities and equity | ₹ crore |
 |---|---:|---|---:|
-| Cash and balances with the Reserve Bank of India (RBI) | 130 | Retail deposits | 900 |
+| Cash and balances with the RBI | 130 | Retail deposits | 900 |
 | Investments | 520 | Wholesale deposits | 400 |
 | Advances, net of allowance | 978 | Borrowings | 200 |
 | Fixed and other assets | 72 | Other liabilities | 50 |
 | — | — | Equity capital and reserves | 150 |
 | **Total** | **1,700** | **Total** | **1,700** |
 
-| Journey | Balance-sheet position | What is established |
-|---|---|---|
-| Hold and trade | Advances, investments and contracts | Product, cash flows, currency and book |
-| Measure asset risk | Loans, securities and commitments | Default likelihood, severity and exposure |
-| Value and provide | Asset and allowance | Carrying value and charge to profit |
-| Protect | Equity and capital instruments | Loss absorption relative to risk |
-| Fund | Deposits, borrowings and liquid assets | Cash availability, stability and rate mismatch |
-| Price internally | Assets and funding together | Ownership of each margin |
-| Produce and prove | Records covering both sides | Reconciled calculations and returns |
-| Build and change | Systems carrying those records | Defined rules and tested implementation |
+Detail to carry forward:
 
-**Trap — allowance, capital and cash are different.** An allowance reduces an asset’s accounting value. Capital absorbs losses. Cash settles payments. Neither an allowance nor capital is a separate pot of cash.
+- The loan book is **₹1,000 crore gross**. The **allowance** against it is **₹22 crore**. The ₹978 crore shown is the net of the two.
+- Investments are **₹400 crore government securities** and **₹120 crore corporate bonds**.
+- There is **₹108 crore of undrawn commitments** — credit the bank has promised but the customer has not yet drawn. It is not on the balance sheet, and it still creates risk.
+- The **RBI** is the Reserve Bank of India, the central bank and the prudential regulator.
+
+**Trap — allowance, capital and cash are three different things.** The allowance is an accounting deduction from the loan book for losses already expected. Capital is the equity buffer for losses not yet expected. Cash is money available today to pay someone. A bank can be well provided, well capitalised and still fail because it has no cash on the day.
+
+### 1.4 The journey
+
+| Stage | Question | Section |
+|---|---|---|
+| Products | What do we hold and trade? | 2 |
+| Credit risk | What can go wrong on the asset side? | 3 |
+| Valuation and provisioning | What is it worth, what do we set aside? | 4 |
+| Capital | What absorbs the losses we cannot predict? | 5 |
+| Liquidity and funding | Can we pay people on time? | 6 |
+| Rate risk | What do rate moves do to earnings and value? | 7 |
+| FTP | Who inside the bank earned which slice? | 8 |
+| Risk data | Where do the numbers come from? | 9 |
+| Reporting | How are they proved and submitted? | 10 |
+| Delivery | How is the machine built and changed? | 11 |
+
+---
 
 ## 2. What the bank holds and trades
 
-The **banking book** contains continuing lending, investment and funding positions. The **trading book** contains positions held for trading and market-making—buying and selling to serve customers or earn trading returns.
+### 2.1 The book boundary
 
-### 2.1 Loans: principal, interest and repayment shape
+Every instrument sits in one of two books, and the choice decides everything downstream.
 
-Banking-book **advances** are loans made by the bank: ₹1,000 crore before the ₹22 crore allowance; ₹978 crore reported net.
-
-**Principal** is the amount lent and contractually repayable. **Interest** charges for its use. A **cash flow** is a dated payment or receipt; **origination** is when the exposure begins; **maturity** is final contractual repayment; **tenor** is a stated length of time.
-
-| Feature | Meaning | Consequence |
+| | Banking book | Trading book |
 |---|---|---|
-| Fixed rate | Customer rate fixed for an agreed period | Income cannot immediately follow market rates |
-| Floating rate | Rate resets against a benchmark | Income changes at reset dates |
-| Bullet | Principal repaid at maturity | Funding remains tied up |
-| Amortising | Principal repaid in instalments | Funding need reduces |
-| Revolving | Repaid amounts can be redrawn within a limit | Future use can exceed today’s balance |
-| Prepayable | Borrower can repay early | Expected life can shorten |
+| Intent | Hold to earn interest | Buy and sell for short-term gain |
+| Typical contents | Loans, deposits, most investments | Actively traded securities and derivatives |
+| Valuation | Amortised cost or similar | Market value, daily |
+| Main risk measures | Credit risk, IRRBB | Market risk, VaR |
 
-A **benchmark** is a reference rate; a **reset date** updates the rate; a **spread** is the difference between rates.
+**Trap — the boundary is an intent decision made at inception, not a description of what happened later.** Reclassifying between books is heavily restricted, because a free choice would let a bank move a loss out of daily market valuation the moment it appeared.
 
-A **sanctioned limit** is approved facility capacity. **Drawn** means used; **undrawn** means available but unused; **utilisation** is the used proportion.
+### 2.2 Loans
 
-The bank’s ₹108 crore of **undrawn commitments** is promised lending not yet paid out. It remains **off the balance sheet** until drawn but already creates credit and funding obligations.
+A **loan** is money advanced now against a promise of repayment with interest.
 
-**Trap — maturity and repricing are different dates.** A loan can require funding until final maturity while its interest rate resets much sooner. Funding duration and rate sensitivity must therefore be identified separately.
+Terms that matter throughout:
 
-### 2.2 Bonds and the investment line
+- **Principal** — the amount advanced
+- **Tenor** — how long the loan runs; **maturity** is the date it ends
+- **Drawn** — the amount actually taken; **undrawn** — the approved amount still available
+- **Secured** — backed by specific assets the bank can claim on failure; **unsecured** — backed only by the promise
+- **Amortising** — principal repays gradually; **bullet** — all principal repays at the end
 
-A **security** is a transferable financial claim. A **bond** is debt issued under transferable terms; its **issuer** owes the payments. The investment line holds ₹400 crore of government securities and ₹120 crore of corporate securities, totalling ₹520 crore.
+### 2.3 Bonds
 
-| Term | Meaning |
+A **bond** is a loan that can be sold to someone else. Four features define it: who issues it, the **coupon** (the periodic interest rate), the **maturity**, and the **face value** repaid at the end.
+
+Price and yield move in opposite directions. This is arithmetic, not sentiment: the future payments are fixed, so if buyers demand a higher return, the only thing that can adjust is the price they pay today.
+
+$$
+P = \sum_{t=1}^{n} \frac{C_t}{(1+y)^t} + \frac{F}{(1+y)^n}
+$$
+
+where:
+
+- **P** — price today
+- **C₍t₎** — coupon paid in period t
+- **F** — face value repaid at maturity
+- **y** — the market yield per period
+- **n** — number of periods to maturity
+
+**Clean price** excludes interest accrued since the last coupon. **Dirty price** includes it. Bonds are quoted clean and settled dirty.
+
+### 2.4 Interest rate sensitivity
+
+**Duration** measures how much a bond's price moves when yields move. **Modified duration** expresses it as a percentage price change per one percentage point of yield.
+
+$$
+\frac{\Delta P}{P} \approx -D_{\text{mod}} \times \Delta y
+$$
+
+where:
+
+- **ΔP/P** — proportional change in price
+- **D₍mod₎** — modified duration in years
+- **Δy** — change in yield, as a decimal
+
+**DV01** is the same idea in rupees: the change in value for a one basis point move. A **basis point** is one hundredth of a percentage point.
+
+$$
+DV01 = D_{\text{mod}} \times P \times 0.0001
+$$
+
+where:
+
+- **D₍mod₎** — modified duration
+- **P** — current value of the position
+- **0.0001** — one basis point expressed as a decimal
+
+Longer maturity and lower coupon both mean higher duration, so both mean more price movement per unit of yield change.
+
+### 2.5 Credit spread
+
+The **credit spread** is the extra yield demanded over a government bond of the same maturity, compensating for the chance the issuer fails.
+
+$$
+y_{\text{corporate}} = y_{\text{risk-free}} + s
+$$
+
+where:
+
+- **y₍corporate₎** — yield on the corporate bond
+- **y₍risk-free₎** — yield on the government bond of matching maturity
+- **s** — credit spread
+
+Spread widens, price falls. Same direction as yield, because spread is part of yield.
+
+### 2.6 Equities
+
+A **share** is ownership, not a promise to repay. There is no maturity and no contractual payment. A bank holds very little equity, because equity investments attract a punitive capital requirement.
+
+### 2.7 Foreign exchange
+
+Three shapes:
+
+- **Spot** — exchange at today's rate, settling in a couple of days
+- **Forward** — a rate agreed today for exchange on a future date
+- **FX swap** — a spot exchange combined with a reversing forward
+
+A forward rate is not a prediction. It is today's spot adjusted for the interest rate difference between the two currencies.
+
+$$
+F = S \times \frac{1 + r_d}{1 + r_f}
+$$
+
+where:
+
+- **F** — forward rate
+- **S** — spot rate, same quotation convention
+- **r₍d₎** — domestic interest rate for the period
+- **r₍f₎** — foreign interest rate for the same period
+
+**Trap — a forward rate is not a forecast of future spot.** If it differed from the interest-rate-adjusted spot, a riskless profit would exist. The forward price is set by arbitrage, not by a view.
+
+### 2.8 Derivatives
+
+A **derivative** takes its value from something else — a rate, a price, an index.
+
+| Instrument | What it is |
 |---|---|
-| Face value, or par | Contractual principal repaid at maturity |
-| Coupon | Interest paid on face value |
+| Forward | Obligation to transact later at an agreed price, privately agreed |
+| Future | The same, standardised, exchange-traded, margined daily |
+| Swap | Exchange of two payment streams over an agreed term |
+| Option | The right, not the obligation, to transact |
 
-Transferability can improve saleability; it guarantees neither an active market nor repayment.
+The **interest rate swap** is the one to actually know. One party pays a fixed rate, the other pays a floating rate, both calculated on an agreed **notional** amount, for an agreed term. Only the net difference changes hands each period. A bank uses it to convert fixed-rate exposure into floating or the reverse, which is why it reappears in the rate risk section.
 
-| Instrument | Cash-flow feature | Use or implication |
-|---|---|---|
-| Government security | Government debt | Investment, reserves and liquidity |
-| Treasury bill | Short government debt issued at a discount; no coupon | Short-term investment |
-| Corporate bond | Company debt | Investment income and issuer exposure |
-| Floating rate note | Coupon resets to a benchmark | Lower benchmark-rate sensitivity |
-| Zero coupon bond | All cash arrives at maturity | No intermediate receipts |
-| Covered or securitised instrument | Supported by an asset-pool structure | Retain pool and structural information |
+**Trap — notional, market value and exposure are three different numbers.**
 
-**Securitisation** packages exposures into securities backed by their cash flows; a generic bond label does not identify that repayment structure.
-
-**Trap — government debt can have low credit risk and material price risk.** The issuer’s ability to repay and today’s market value are separate questions.
-
-### 2.3 Shares: ownership on the asset side
-
-A **share** held in the investment or trading book gives ownership in another company, distinct from the bank’s own equity. A **dividend** distributes value to shareholders without being contractual interest.
-
-| Feature | Bond | Share |
-|---|---|---|
-| Claim | Contractual debt payments | Residual ownership |
-| Priority | Ahead of ordinary shareholders | After creditors |
-| Maturity | Usually specified | None |
-| Return | Payments and price movement | Dividends and price movement |
-
-| Measure | Meaning |
+| Number | Meaning |
 |---|---|
-| Market capitalisation | Share price multiplied by shares outstanding |
-| Dividend yield | Annual dividend divided by price |
-| Price-to-earnings ratio | Price relative to earnings per share |
-| Beta | Sensitivity to broad equity-market movement |
+| Notional | The reference amount used to calculate payments. Never exchanged. |
+| Market value | What the contract is worth today. Starts near zero, then moves. |
+| Credit exposure | What could be lost if the counterparty fails — market value plus an allowance for future movement |
 
-A **corporate action** changes shareholder entitlements or a holding’s form. Dividends, splits, bonus issues, rights issues and buybacks require dated position and price adjustments.
+Quoting notional as exposure overstates risk by orders of magnitude.
 
-**Trap — a split changes share count and price, not total value merely by splitting.** Unadjusted data can manufacture a price loss.
+### 2.9 Market risk measures
 
-Holdings in other financial institutions’ capital require specific capital treatment; another bank’s shares do not provide the same protection as cash.
+**Sensitivities** are first-order measures: how much value moves per unit move in the underlying. DV01 for rates, **delta** for options.
 
-### 2.4 Currency positions
+**Value at risk (VaR)** summarises a trading portfolio in one number: the loss that will not be exceeded over a stated holding period at a stated confidence level.
 
-On either side and in either book, **foreign exchange (FX)** exchanges currencies. An INR price for a **United States dollar (USD)** rises when the dollar becomes more expensive in rupees.
+$$
+P(\text{Loss} > VaR_\alpha) = 1 - \alpha
+$$
 
-**Long** benefits from a rising relevant price; **short** benefits from a fall. Each FX trade buys one currency and sells another.
+where:
 
-| Transaction | Agreement | Cash timing |
-|---|---|---|
-| Spot | Current agreed exchange rate | Near-term settlement |
-| Forward | Rate fixed today for future exchange | Agreed future date |
-| FX swap | Exchange followed by its reversal | Two linked dates |
+- **VaR₍α₎** — the value at risk at confidence level α
+- **α** — the confidence level, typically 0.99
+- **Loss** — portfolio loss over the stated holding period
 
-An FX swap can fund one currency against another; its near and far cash-flow legs must remain linked.
+Two things VaR does not tell you: how bad the tail beyond that confidence level gets, and how the estimate behaves when correlations break in a crisis. Both are why stress testing exists alongside it.
 
-**Covered interest parity** aligns returns when the exchange rate is fixed in advance:
-
-$$F=S\times\frac{1+r_{\mathrm{INR}}}{1+r_{\mathrm{USD}}}$$
-F = forward INR price of one USD; S = spot price in the same quotation; rINR and rUSD = interest rates for the same single period in INR and USD.
-
-**Trap — a forward rate is not a forecast of future spot.** Interest-rate differences help determine the agreed rate. A forward position still has currency and interest-rate sensitivities.
-
-The **net open position (NOP)** combines relevant currency assets, liabilities and market contracts.
-
-### 2.5 Derivatives around the balance sheet
-
-A **derivative** depends on an underlying rate, price or index. It can hedge a banking-book position or create trading exposure. A **counterparty** is the other party to the financial relationship.
-
-**Hedging** offsets existing risk; **speculation** deliberately takes market exposure. **Over the counter (OTC)** means agreed directly rather than exchange-standardised.
-
-| Contract | Rights and obligations | Operation |
-|---|---|---|
-| Forward | Both commit to future transaction | Usually customised, OTC |
-| Future | Both commit under standardised terms | Exchange trading, daily margin |
-| Swap | Exchange payment streams | Often OTC; may be cleared |
-| Option | Buyer has a right; seller must perform on exercise | Buyer pays premium |
-
-**Notional** is the payment-calculation reference amount. A plain **interest rate swap** exchanges fixed and floating interest without exchanging that principal. Paying fixed and receiving floating can offset floating funding costs behind fixed assets; amounts, benchmarks and reset dates determine the match.
-
-The **Mumbai Interbank Offered Rate (MIBOR)** is a floating-rate benchmark.
-
-| Option term | Meaning |
-|---|---|
-| Strike | Agreed exercise price |
-| Expiry | End of the right |
-| Premium | Purchase price |
-| Call / put | Right to buy / sell |
-| In the money | Positive exercise value, before considering premium |
-
-A **cap** pays above an interest-rate strike; a **floor** pays below it; a **swaption** gives the right to enter a swap.
-
-**Trap — option buyer and seller have different loss shapes.** A purchased option’s loss is limited to its premium under its contractual payoff. An uncovered seller can face much larger losses; an uncovered call can have unlimited upside exposure.
-
-### 2.6 The book boundary and the accounting classification
-
-**Fair value** is current market-based value. **Amortised cost** updates the starting accounting amount for interest and repayments, with an allowance for expected credit loss.
-
-**Profit and loss (P&L)** records period income and expenses. **Other comprehensive income (OCI)** records specified gains and losses outside current P&L, within equity.
-
-| Dimension | Banking book | Trading book |
-|---|---|---|
-| Purpose | Continuing lending, investment and funding | Trading and market-making |
-| Rate-risk view | Earnings and lifetime balance-sheet value | Daily sensitivities and trading losses |
-| Accounting | Category-dependent: amortised cost or fair value | Generally fair-value changes through P&L |
-| Reporting | Credit, liquidity and banking-book risk | Market-risk and trading, plus other applicable exposures |
-
-**Fair value through profit and loss (FVPL)** sends fair-value changes to P&L; **fair value through other comprehensive income (FVOCI)** directs specified changes to OCI.
-
-**Trap — the book flag is not a complete accounting rule.** A banking-book hedge can still be measured at fair value. Book, accounting category and hedge designation are related fields, not interchangeable labels.
-
-**Hedge accounting** applies to a documented qualifying hedge relationship. Without designation and effectiveness evidence, an economic hedge can produce accounting volatility because its sides use different measurement bases.
-
-**Regulatory arbitrage** seeks favourable treatment through designation rather than economic substance. Book transfers need authority and an audit trail.
-
-The book boundary routes risk measurement and returns; its associated accounting classification determines valuation. An incorrect mapping can misroute all three.
+---
 
 ## 3. What can go wrong on the asset side
 
-Banking-book advances and debt investments depend on repayment. Commitments can increase that exposure; market contracts make its size sensitive to prices.
+### 3.1 Default
 
-### 3.1 Default: the event being measured
+**Credit risk** is the risk that a borrower fails to pay as agreed. **Default** is the formal recognition of that failure — typically when payment is more than 90 days overdue, or when the bank judges repayment unlikely without recourse to security.
 
-**Credit risk** is failure to receive promised payments fully or on time. An **obligor** is the borrower; a **facility** is an individual lending arrangement.
+Three inputs describe it, and they answer three different questions.
 
-**Default** occurs when payment failure or inability to repay meets the applicable definition. **Days past due (DPD)** measures elapsed time since a contractual payment became overdue.
-
-| Limb | Test | Evidence |
+| Input | Question it answers | Units |
 |---|---|---|
-| Delinquency | Material obligation passes the overdue threshold | Due dates, unpaid amounts and payments |
-| Unlikely to pay | Full repayment unlikely without recovery action | Distress, restructuring or approved indicators |
+| **PD** — probability of default | How likely is failure? | A probability, over a stated horizon |
+| **LGD** — loss given default | If it fails, what fraction do we lose? | A percentage of exposure |
+| **EAD** — exposure at default | How much is outstanding when it fails? | Rupees |
 
-**Trap — waiting for an overdue threshold can recognise distress too late.** The inability-to-pay assessment can establish default before the mechanical backstop.
+### 3.2 Expected loss
 
-Approved definitions and retained evidence support both current classification and future model estimation. Preserve facility payment history separately from obligor-wide classification.
+$$
+EL = PD \times LGD \times EAD
+$$
 
-### 3.2 The three credit-loss inputs
+where:
 
-On each advances or commitment record:
+- **EL** — expected loss, in rupees
+- **PD** — probability of default over the horizon
+- **LGD** — loss fraction if default occurs
+- **EAD** — exposure at the time of default
 
-| Input | Meaning | Driver |
-|---|---|---|
-| **Probability of default (PD)** | Default chance within a stated horizon | Borrower quality |
-| **Loss given default (LGD)** | Exposure fraction lost if default occurs | Recovery, cost and timing |
-| **Exposure at default (EAD)** | Amount exposed when default occurs | Drawings, repayments and future use |
+Expected loss is the average outcome. It is a cost of doing business, priced into the interest rate and covered by provisions. It is not a surprise.
 
-**Expected loss (EL)** is the probability-weighted average credit loss on a defined period and basis.
+**Unexpected loss** is the amount by which a bad year exceeds that average. It cannot be provided for, because it is by definition not expected. It is covered by capital.
 
-$$EL=PD\times LGD\times EAD$$
-PD = default probability; LGD = loss fraction conditional on default; EAD = exposure amount at default. All inputs must use compatible horizons and definitions.
+That split is the organising logic of the next two sections: **expected loss is provisioned, unexpected loss is capitalised.**
 
-**Trap — security does not make a weak borrower unlikely to fail.** It can improve recovery after failure. A lower LGD is not automatically a lower PD.
+**Trap — collateral does not make a weak borrower strong.** Security improves recovery after failure, so it lowers LGD. It does not change how likely the borrower is to fail, so it does not lower PD.
 
-### 3.3 Ratings and how probability changes through time
+### 3.3 Probability of default
 
-In advances, the **borrower rating** supports PD; the **facility rating** reflects transaction protection and supports loss-severity assessment. **Seniority** is payment priority. Facilities sharing a borrower can share PD but differ in LGD.
+PD is estimated for a stated horizon, usually one year. It comes from a rating or a scorecard.
 
-**Migration** changes a rating: a **downgrade** worsens it; an **upgrade** improves it. A **transition matrix** records probabilities of moving between grades over a stated interval.
+- **Through-the-cycle** PD is a long-run average that deliberately ignores where we are in the economic cycle. It is used for capital, to stop requirements swinging violently.
+- **Point-in-time** PD reflects current conditions. It is used for accounting provisions, which are supposed to reflect the present.
 
-| Matrix element | Meaning | Control |
-|---|---|---|
-| Starting row | Initial grade population | Defined date and population |
-| Ending columns | Possible grades and default | Exhaustive outcomes |
-| Default column | Default probability over the interval | Consistent default definition |
-| Row total | Probability of ending somewhere | 100% |
+**Trap — a PD is meaningless without its horizon.** A 2% one-year PD and a 2% lifetime PD describe completely different borrowers.
 
-An **absorbing state** does not release probability: default remains counted once it has occurred, without implying recoveries or cures are impossible.
+### 3.4 Loss given default
 
-Repeated transitions produce a **PD term structure**, probabilities across future horizons. Two assumptions limit simple matrix projection:
+$$
+LGD = 1 - \frac{PV(\text{net recoveries})}{EAD}
+$$
 
-| Assumption | What it ignores | Consequence |
-|---|---|---|
-| Markov: current grade determines next transition | Path into the grade | Misses downgrade momentum |
-| Time-homogeneous: transitions unchanged across periods | Economic changes | Average transitions can misstate current risk |
+where:
 
-| Quantity | Probability measured |
+- **PV(net recoveries)** — recovery cash flows, net of costs, discounted to the measurement date
+- **EAD** — exposure at default on the same basis
+
+Three things reduce recovery below the headline value of the security: the **haircut** applied to its assessed value, the **costs** of enforcement, and the **delay** before cash arrives, which discounting converts into lost value.
+
+**Trap — collateral value is not recovery value.** A property valued at ₹10 crore may recover far less after haircut, legal costs and two years of delay.
+
+### 3.5 Exposure at default
+
+For a term loan with no undrawn portion, EAD is close to the outstanding balance. For anything with an available limit, it is not — borrowers in trouble draw what remains.
+
+$$
+EAD = \text{Drawn} + CCF \times \text{Undrawn}
+$$
+
+where:
+
+- **Drawn** — the amount currently outstanding
+- **Undrawn** — the approved limit not yet used
+- **CCF** — credit conversion factor, the fraction of the undrawn amount assumed to be drawn by the time of default
+
+Our bank's ₹108 crore of undrawn commitments is exactly this exposure. It is off the balance sheet and firmly inside the risk numbers.
+
+### 3.6 Ratings and migration
+
+A **rating** is a grade summarising a borrower's creditworthiness, each grade mapped to a PD. **Migration** is movement between grades over time, usually presented as a matrix showing the probability of moving from each grade to each other grade within a year.
+
+Migration matters because deterioration short of default still costs money: it raises PD, which raises the provision, and it raises the risk weight, which raises the capital requirement. Loss arrives long before default does.
+
+### 3.7 Portfolio risk
+
+Individual expected losses add up. Risk does not.
+
+**Concentration** is the accumulation of exposure to a single borrower, group, sector or geography. It matters because defaults are **correlated** — borrowers exposed to the same shock fail together, and it is simultaneous failure that exhausts capital.
+
+Concentration is monitored through limits: single borrower, group, sector, and largest-exposure measures.
+
+**Trap — a diversified-looking book can be concentrated in its drivers.** Different borrowers in different cities are still one exposure if they all depend on the same commodity price.
+
+### 3.8 Credit risk mitigation
+
+| Technique | What it does |
 |---|---|
-| Cumulative PD | Default by a date |
-| Survival | No default by that date |
-| Marginal PD | Default during one future period, viewed today |
-| Conditional PD | Default during the period, given survival to its start |
+| Collateral | Gives a claim on specific assets — reduces LGD |
+| Guarantee | Substitutes a stronger party's obligation — can substitute PD |
+| Netting | Offsets amounts owed both ways with one counterparty — reduces EAD |
+| Covenants | Contractual conditions triggering early action — reduces the time spent deteriorating |
 
-$$S(t)=1-F(t)$$
-S(t) = survival probability to time t; F(t) = cumulative PD to time t.
+Mitigation only counts if it is legally enforceable, properly documented and correctly valued. Recognition in capital and provisions depends on that evidence existing, not on the arrangement being described in a credit paper.
 
-$$m(t)=F(t)-F(t-1)$$
-m(t) = marginal PD during period t; F(t) and F(t−1) = cumulative PDs at the period’s end and start.
-
-$$q(t)=\frac{m(t)}{S(t-1)}$$
-q(t) = conditional PD during period t; m(t) = marginal PD; S(t−1) = probability of surviving to the period’s start.
-
-Marginal PDs plus final survival total one; cumulative PD cannot decline.
-
-**Trap — do not sum cumulative PDs as period losses.** Earlier defaults would be counted repeatedly. Conditional PD must be multiplied by survival to become a probability viewed from today.
-
-| Basis | Conditions reflected | Main use |
-|---|---|---|
-| **Point-in-time (PIT)** | Current borrower and economy | Forward-looking accounting loss |
-| **Through-the-cycle (TTC)** | Good and bad periods | Long-run capital calibration |
-
-Retain purpose, horizon, version and effective date with each PD. Different labelled estimates can legitimately describe the same borrower.
-
-### 3.4 Recovery severity
-
-For defaulted advances, **collateral** is an asset supporting repayment; a **guarantor** promises to meet specified obligations. **Discounting** converts future cash to its **present value (PV)** at the measurement date.
-
-$$LGD=1-\frac{PV(\text{net recoveries})}{EAD}$$
-PV(net recoveries) = recovery cash flows after relevant costs, discounted to the measurement date; EAD = exposure on the compatible basis.
-
-| Change, other inputs fixed | LGD | Why |
-|---|---|---|
-| Higher realisable recovery | Falls | More exposure returns |
-| Higher enforcement cost | Rises | Less cash remains |
-| Longer recovery delay | Rises | Lower recovery PV |
-| Weaker collateral market | Rises | Lower proceeds |
-
-Net recoveries deduct legal, valuation, enforcement and sale costs. **Downturn LGD** reflects adverse recovery conditions because borrower distress and collateral weakness can coincide.
-
-**Trap — a collateral valuation is not a recovery estimate.** Enforceability, saleability, costs, priority and delay stand between valuation and collected cash.
-
-Shared collateral data can support different accounting and capital LGD calibrations; label the measurement purpose.
-
-### 3.5 Exposure before and after drawing
-
-For commitments supporting advances, a **credit conversion factor (CCF)** estimates or prescribes the undrawn share included under the relevant exposure framework.
-
-$$EAD=\text{Drawn exposure}+CCF\times\text{Undrawn amount}$$
-Drawn exposure = funded amount on the measurement basis; CCF = conversion fraction; undrawn amount = available commitment not yet used.
-
-Distress can increase utilisation before default. Amortisation can reduce future exposure through repayments; both effects belong in the future balance, not merely today’s drawn amount.
-
-**Trap — the credit CCF and the liquidity drawdown factor are not the same parameter.** Capital, accounting loss and stressed cash outflow calculations answer different questions. Retain separate rule references even when they consume the same limit and utilisation record.
-
-### 3.6 Mitigation: which part of the exposure changes
-
-For secured advances and collateralised contracts, **credit risk mitigation** is recognised protection changing exposure or loss.
-
-| Protection | Mechanism | Effect |
-|---|---|---|
-| Eligible financial collateral | Recognised liquid assets support repayment | Adjusted exposure can fall |
-| Guarantee or credit protection | Eligible third party covers obligations | Covered credit treatment can substitute |
-| Enforceable netting | Permitted claims offset obligations | Recognised net exposure falls |
-| Physical collateral | Property or other assets support recovery | LGD changes; capital recognition depends on approach |
-
-**Netting** requires legally effective offset, including the relevant insolvency treatment. **Perfection** completes legal steps establishing security and priority.
-
-Protection requires documentation, registration where required, current valuation and monitoring. A **haircut** adjusts recognised value for adverse movement.
-
-| Adjustment | Risk addressed | Direction |
-|---|---|---|
-| Exposure haircut | Exposure growth before close-out | Exposure increases |
-| Collateral haircut | Falling collateral value | Recognised collateral decreases |
-| Currency mismatch | Protection in another currency | Recognition reduces |
-| Maturity mismatch | Protection expires first | Coverage reduces |
-
-**Trap — do not subtract every kind of “security value” from EAD.** Financial collateral, physical collateral, guarantees and netting use different recognition mechanics.
-
-### 3.7 The portfolio and the loss beyond the average
-
-Across advances and investments, **concentration** means shared exposure to a borrower, group, sector, geography or driver; **correlation** means outcomes move together.
-
-| Concentration | What individual-facility analysis misses |
-|---|---|
-| Single name or connected group | Several acceptable facilities share one repayment source |
-| Sector | Separate borrowers depend on similar demand or costs |
-| Geography or common factor | Legal separation does not remove economic dependence |
-
-Portfolio EL sums individual ELs without requiring independence. Correlation changes the distribution of aggregate losses, particularly its adverse tail.
-
-**Unexpected loss (UL)** is adverse loss beyond the expected level.
-
-| Dimension | EL | UL |
-|---|---|---|
-| Describes | Probability-weighted average | Adverse deviation beyond average |
-| Main response | Pricing and allowances | Capital and limits |
-| Main inputs | PD, LGD, EAD | Those inputs plus concentration and co-movement |
-
-The **Herfindahl–Hirschman Index (HHI)** adds squared exposure shares:
-
-$$HHI=\sum_{i=1}^{n}w_i^2$$
-wi = exposure i divided by total exposure; n = number of exposures included.
-
-$$\text{Effective equal-sized names}=\frac{1}{HHI}$$
-HHI = the concentration index calculated from the chosen exposure shares.
-
-Squaring makes large positions contribute disproportionately: greater unevenness raises HHI and reduces effective equal-sized names.
-
-**Trap — HHI measures size concentration, not all correlation.** A collection of equally sized borrowers can still depend on the same economic factor.
-
-Large-exposure controls aggregate connected counterparties against eligible capital, a different denominator from the loan book.
+---
 
 ## 4. What the assets are worth and what is provided against them
 
-Advances and investments become accounting values; derivatives can sit on either side.
+### 4.1 Effective interest rate
 
-### 4.1 The loan’s effective yield and carrying amount
+When a loan is written, its yield is locked in. The **effective interest rate (EIR)** is the rate that discounts all expected cash flows back to the amount initially advanced, including fees and costs.
 
-For an amortised-cost advance, the **effective interest rate (EIR)** equates estimated contractual receipts with the initial net investment, incorporating integral lending fees into lifetime yield.
+$$
+\text{Initial carrying amount} = \sum_{t=1}^{n} \frac{CF_t}{(1 + EIR)^t}
+$$
 
-$$I_0=\sum_{t=1}^{n}\frac{CF_t}{(1+EIR)^t}$$
-I0 = initial net investment; CFt = estimated receipt at time t; n = final period; EIR = effective rate per period; t = time measured in matching periods.
+where:
 
-**Trap — a fee integral to the loan’s yield is not automatically day-one fee income.** It is released through the effective-interest calculation.
+- **CF₍t₎** — expected cash flow in period t
+- **EIR** — effective interest rate per period
+- **n** — number of periods
 
-The **gross carrying amount (GCA)** is the amortised-cost balance before allowance.
+EIR then drives interest income and the carrying amount for the life of the loan.
 
-$$GCA_t=GCA_{t-1}\times(1+EIR)-\text{Cash received}_t$$
-GCAt−1 = opening gross carrying amount; EIR = effective rate for the period; cash receivedt = payments reducing the balance during the period; GCAt = closing gross amount under the stated roll-forward.
+**Trap — EIR is not the market yield.** EIR is fixed at origination and stays fixed. Market yield moves daily. A banking-book loan does not reprice because market yields moved; a traded bond does. Confusing the two is the most common valuation error in this territory.
 
-The roll-forward assumes unchanged terms and stated payment timing. Further lending, modifications and write-offs need separate movements.
+### 4.2 Amortised cost
 
-**Amortisation** releases fees, discounts or premiums through yield; principal amortisation instead describes borrower repayments.
+$$
+\text{Carrying amount}_t = \text{Carrying amount}_{t-1} + \text{Interest accrued} - \text{Cash received} - \text{Allowance movement}
+$$
 
-$$\text{Net carrying amount}=GCA-\text{Loss allowance}$$
-GCA = value before the credit-loss deduction; loss allowance = recognised estimate of non-collection.
+where:
 
-| Amount | Represents | Moves with |
+- **Interest accrued** — EIR applied to the opening carrying amount
+- **Cash received** — actual payments in the period
+- **Allowance movement** — change in the impairment allowance
+
+### 4.3 Expected credit loss
+
+**Expected credit loss (ECL)** is the accounting provision for credit losses. It is forward-looking: losses are recognised before they occur, not when they crystallise.
+
+$$
+ECL = \sum_{t} PD_t \times LGD_t \times EAD_t \times DF_t
+$$
+
+where:
+
+- **PD₍t₎** — probability of default in period t
+- **LGD₍t₎** — loss fraction if default occurs in that period
+- **EAD₍t₎** — expected exposure at that time
+- **DF₍t₎** — discount factor bringing the loss back to today
+
+### 4.4 The three stages
+
+| Stage | Condition | Loss measured over |
 |---|---|---|
-| Contractual principal | Legal principal outstanding | Drawings and principal repayments |
-| GCA | Accounting balance before allowance | Effective interest, cash and accounting events |
-| Allowance | Expected non-collection | Credit quality and recovery expectations |
-| Net carrying amount | Asset after allowance | GCA and allowance |
+| 1 | Performing, no significant deterioration | Defaults occurring in the next 12 months |
+| 2 | Significant increase in credit risk since origination | The whole remaining life |
+| 3 | Credit-impaired | The whole remaining life, with interest on the net amount |
 
-A **write-off** removes a carrying amount under the applicable conditions.
+**Significant increase in credit risk (SICR)** is the trigger for Stage 2. It is assessed against the risk **at origination**, not against an absolute threshold. A loan written as high-risk that stays high-risk has not deteriorated. A loan written as very safe that becomes merely safe may have.
 
-**Trap — a downgrade alone does not mark an amortised-cost loan down to market.** Deterioration is reflected through the allowance. A modification or write-off is a separate event.
+**Trap — Stage 1 limits the default window, not the loss.** It counts defaults that occur within 12 months, but for each of those defaults it measures the full loss, which may run for years. It is a 12-month window on defaults, not a 12-month cap on losses.
 
-Credit deterioration does not replace the original fixed-rate EIR with today’s higher market yield; that would mix the original bargain with subsequent loss.
+The move from Stage 1 to Stage 2 is the single largest driver of provision volatility, because the measurement horizon jumps from twelve months to the full remaining life in one step.
 
-### 4.2 Market value, price and yield
+### 4.5 The provision walk
 
-For investment bonds, **yield to maturity (YTM)** equates current price with contractual future cash flows.
+Two different things are constantly confused:
 
-$$P=\sum_{t=1}^{n}\frac{CF_t}{(1+y)^t}$$
-P = bond price on the stated cash-flow basis; CFt = coupon or principal cash flow at time t; y = yield per matching period; n = final period.
+- **Allowance** is a **stock** — the balance sitting against the loan book at a date. Ours is ₹22 crore.
+- **Impairment expense** is a **flow** — the charge passing through profit in a period.
 
-| Dimension | EIR | Current YTM |
-|---|---|---|
-| Starting value | Initial accounting investment | Current market price |
-| Purpose | Effective-interest accounting | Market quotation and valuation |
-| Market repricing | Original fixed-rate EIR retained | Yield changes with price |
+$$
+\text{Closing allowance} = \text{Opening allowance} + \text{Charge} - \text{Write-offs} + \text{Recoveries} \pm \text{Other movements}
+$$
 
-For a conventional fixed-coupon bond, **yield rises → price falls; yield falls → price rises**. Fixed payments must compete with the return available elsewhere.
+where:
 
-A **premium** is price above par; a **discount** is below par. Yield below coupon corresponds to a premium; yield above coupon to a discount.
+- **Charge** — the amount recognised in profit for the period
+- **Write-offs** — amounts removed as unrecoverable, which reduce both loan and allowance
+- **Recoveries** — cash received on amounts previously written off
 
-**Accrued interest** is coupon earned since the last payment. **Clean price** excludes accrual; **dirty price** includes it.
+A **write-off** does not create a loss. The loss was recognised when the allowance was raised. The write-off removes both the gross asset and the allowance, leaving the net figure unchanged. This surprises people every time.
 
-$$\text{Dirty price}=\text{Clean price}+\text{Accrued interest}$$
-Dirty price = settlement price including accrual; clean price = quoted price excluding accrual; accrued interest = earned coupon not yet paid.
+### 4.6 IRAC — the Indian prudential classification
 
-**Trap — quote clean, settle dirty.** A valuation-to-ledger difference can be an accrual-basis mismatch rather than a market-price error.
+The RBI's **income recognition and asset classification (IRAC)** norms run alongside ECL, on a different basis.
 
-### 4.3 Duration, spread and market-loss measures
-
-For securities in either book, **market risk** is adverse value movement from rates, prices, spreads or currencies.
-
-**Macaulay duration** averages cash-flow times weighted by present values. **Modified duration** converts that timing into approximate price sensitivity.
-
-$$D_{\mathrm{mod}}=\frac{D_{\mathrm{Mac}}}{1+y}$$
-Dmod = modified duration; DMac = Macaulay duration; y = annual yield under the annual-payment convention shown.
-
-$$\frac{\Delta P}{P}\approx-D_{\mathrm{mod}}\times\Delta y$$
-ΔP = price change; P = starting price; Dmod = modified duration; Δy = yield change expressed as a decimal.
-
-Payment frequency and yield compounding must match; the annual formula cannot be applied unchanged to another convention.
-
-| Feature | Sensitivity direction | Why |
-|---|---|---|
-| Later cash receipts | Usually higher | More distant discounting |
-| Earlier principal repayment | Lower | Less value remains tied up |
-| Floating coupon resets | Lower benchmark-rate duration | Income adjusts |
-| No intermediate coupons | Cash-flow timing at maturity | All cash arrives together |
-
-**Trap — a floating-rate instrument does not have zero risk.** Reset timing, credit spread and other contractual features still matter. A zero coupon bond’s Macaulay duration equals maturity; that statement does not make modified duration equal maturity.
-
-**Convexity** is price–yield curvature. Duration is local: for a conventional option-free bond, convexity can make gains exceed and losses fall below the straight-line estimate.
-
-A **basis point (bp)** is one hundredth of a percentage point. **Dollar value of one basis point (DV01)** is money sensitivity to a bp of yield; INR positions report it in rupees, often ₹ lakh per bp.
-
-$$DV01=P\times D_{\mathrm{mod}}\times0.0001$$
-P = position market value; Dmod = modified duration; 0.0001 = one bp expressed as a decimal yield change.
-
-This gives magnitude. A long conventional bond loses approximately that amount when yield rises one bp; retain the system’s sign convention.
-
-A **credit spread** is the corporate yield increment over the relevant government benchmark.
-
-$$\text{Corporate yield}=\text{Government benchmark yield}+\text{Credit spread}$$
-The yields refer to comparable maturity and quotation bases; credit spread = the difference between them.
-
-**Spread widens → value falls**, other inputs unchanged. Separate issuer-spread movement from government-rate movement; spread is a credit signal, not a PD.
-
-| Sensitivity | Measures | Applies to |
-|---|---|---|
-| DV01 | Money change per bp of yield | Bonds and rates |
-| Delta | Value change per underlying-price unit | Shares, FX, options |
-| Vega | Value change with volatility | Options |
-| Credit-spread sensitivity | Money change per bp of spread | Corporate debt |
-
-**Volatility** measures market variability. **Value at risk (VaR)** is a modelled loss threshold for a specified horizon and confidence.
-
-$$VaR\approx z\times DV01\times\sigma_y$$
-z = normal-distribution multiplier for the chosen confidence; DV01 = money sensitivity per bp; σy = yield volatility in bp over the same horizon.
-
-The approximation assumes a linear position response and stated distribution; it is not universal for options or large moves. **Expected shortfall (ES)** averages modelled losses beyond the tail threshold.
-
-**Trap — VaR is not the maximum possible loss.** It says where a threshold lies, not how severe losses beyond it become. Stress testing examines adverse conditions that a single statistical threshold may conceal.
-
-### 4.4 Derivative value, credit exposure and collateral cash
-
-A derivative’s **mark-to-market** is current fair value: positive means a claim, negative an obligation. **Counterparty credit risk** is failure of the other party before meeting obligations.
-
-| Quantity | Meaning | Use |
-|---|---|---|
-| Notional | Payment reference amount | Contract specification |
-| Market value | Current contract value | Accounting asset or liability |
-| Current exposure | Positive replacement claim after recognised offsets | Failure now |
-| **Potential future exposure (PFE)** | Possible increase in positive exposure | Future counterparty measurement |
-
-Derivative EAD incorporates current and future exposure under the applicable method, not gross notional treated as lending.
-
-**Trap — market value can be negative; credit exposure is not a negative loss asset.** A liability to the counterparty does not create a negative standalone EAD.
-
-| Protection | Meaning |
+| IRAC class | Broad condition |
 |---|---|
-| **Credit support annex (CSA)** | Contractual collateral arrangements |
-| Variation margin | Collateral responding to current value changes |
-| Initial margin | Protection against changes during close-out |
-| Central clearing | Central counterparty between original parties |
-| Novation | Original contract replaced with contracts against that counterparty |
+| Standard | Performing |
+| Sub-standard | Non-performing up to 12 months |
+| Doubtful | Non-performing beyond that |
+| Loss | Identified as unrecoverable |
 
-The **Clearing Corporation of India Limited (CCIL)** performs Indian central-clearing functions. Clearing, margin and enforceable netting reduce defined exposures without eliminating credit or liquidity risk.
+A **non-performing asset (NPA)** is broadly one overdue beyond 90 days. Once an asset is an NPA, interest stops being recognised in income unless received.
 
-**Credit valuation adjustment (CVA)** adjusts derivative value for counterparty credit risk; capital for CVA risk is distinct from the accounting adjustment.
+IRAC is rule-driven and mainly days-past-due. ECL is estimate-driven and forward-looking. They produce different numbers from the same loan and both are reported.
 
-**Wrong-way risk** means exposure grows as the counterparty weakens. **Settlement risk** exists between paying and receiving; **payment versus payment** makes both currency payments conditional.
+**Trap — IRAC Standard does not mean ECL Stage 1.** A loan can be perfectly current on payments, and therefore Standard, while its credit risk has increased significantly enough for Stage 2. Days past due is one SICR indicator among several, not the definition.
 
-A hedge can reduce rate risk while creating margin demand, settlement obligations and counterparty exposure.
-
-### 4.5 Expected credit loss and the three stages
-
-For impaired-value measurement in advances, **expected credit loss (ECL)** is the probability-weighted credit cash shortfall discounted to reporting date.
-
-**Indian Accounting Standard (Ind AS) 109** sets out ECL accounting. Apply the regime belonging to the entity and reporting purpose.
-
-**Significant increase in credit risk (SICR)** is material deterioration since initial recognition. **Credit-impaired** means events have adversely affected expected future cash flows.
-
-| Stage | Condition | Allowance horizon | Interest basis |
-|---|---|---|---|
-| Stage 1 | No SICR | Defaults within next 12 months | EIR on GCA |
-| Stage 2 | SICR; not credit-impaired | Remaining-life defaults | EIR on GCA |
-| Stage 3 | Credit-impaired | Remaining-life shortfall | EIR on net amount |
-
-Cure and stage improvement require supporting evidence.
-
-**Trap — 12-month ECL is not cash lost during the next 12 months.** It includes the losses associated with defaults occurring in that window, even when recoveries and shortfalls extend beyond it.
-
-A **discount factor (DF)** converts future money to present value.
-
-$$ECL=PD\times LGD\times EAD\times DF$$
-PD = probability of default in the selected period; LGD = loss fraction conditional on default; EAD = exposure at that default time; DF = discount factor bringing the resulting loss to the reporting date.
-
-$$DF_t=\frac{1}{(1+EIR)^t}$$
-DFt = discount factor for time t; EIR = effective rate matching the time convention; t = time from the reporting date.
-
-$$ECL=\sum_{t=1}^{T}m(t)\times LGD_t\times EAD_t\times DF_t$$
-T = remaining measurement horizon; m(t) = marginal PD in period t; LGDt = loss severity for default in that period; EADt = exposure then; DFt = discount to the reporting date.
-
-LGD can discount recoveries back to default; the final DF then discounts that loss to reporting date. Do not discount the same interval twice.
-
-### 4.6 The rating-to-profit connection
-
-| Evidence | Assessment | Required data |
-|---|---|---|
-| Quantitative | Current lifetime risk versus comparable origination expectation | Retained original and current measures |
-| Qualitative | Watch-list, covenant breach, forbearance or adverse developments | Dated monitoring evidence |
-| Overdue backstop | More than 30 DPD: rebuttable presumption | Due dates and arrears |
-
-A **covenant** is a contractual condition. **Forbearance** grants a concession for financial difficulty. A **rebuttable presumption** applies unless sufficient evidence supports approved rebuttal.
-
-**Trap — an absolute PD threshold is not the whole SICR test.** A borrower can have a relatively high but unchanged risk level, while a safer borrower has deteriorated significantly from its own starting point.
-
-**Rating deterioration → revised PD and evidence → SICR assessment → stage and allowance horizon → allowance movement → P&L charge.**
-
-Separate the Stage 1-to-Stage 2 horizon effect from simultaneous PD, LGD or exposure changes.
-
-### 4.7 Forward-looking information and overlays
-
-Across advances, **scenario weighting** assigns probabilities to possible economic outcomes.
-
-$$ECL_{\mathrm{weighted}}=\sum_{s=1}^{S}p_s\times ECL_s$$
-ps = probability assigned to outcome s; ECLs = loss estimate under that outcome; S = number of outcomes; the probabilities sum to one.
-
-Calculate consistent losses within each outcome before weighting. Averaging inputs first can differ because the relationships are nonlinear.
-
-**Trap — weighted ECL need not equal the central estimate.** The adverse and favourable changes need not cancel.
-
-A **management overlay** adjusts for risk or limitations inadequately captured by the model. Retain trigger, quantification, owner, approval, release condition and interaction with parameter adjustments.
-
-**Trap — an overlay embedded in parameters and added again after the model is double counted.** An overlay with no release condition can become a permanent substitute for correcting the model.
-
-Assumptions across impairment, stress and capital planning must align or have justified differences.
-
-### 4.8 Credit-impaired value and the allowance walk
-
-On Stage 3 advances, measurement compares the gross claim with expected collections.
-
-$$ECL=GCA-PV(\text{Expected net collections})$$
-GCA = gross carrying amount; PV(expected net collections) = expected borrower and recovery cash flows after costs, discounted on the applicable EIR basis.
-
-**Trap — the Stage 3 interest switch changes the revenue base, not the identity of the original discount rate.** Interest on net value and discounting recovery cash flows are two different uses of the rate.
-
-A **provision** is a recognised loss amount; an **impairment charge** is period P&L expense. The **allowance walk** explains opening-to-closing movement.
-
-| Movement | Captures | Evidence |
-|---|---|---|
-| Exposure changes | New, repaid or removed lending | Population bridge |
-| Stage transfers | Horizon or impairment-status change | Trigger and transfer record |
-| Remeasurement | PD, LGD, EAD and recovery revisions | Versions and inputs |
-| Overlays | Adjustments outside the base model | Addition and release approval |
-| Write-offs and other movements | Allowance used or moved outside ordinary expense | Separate movement classification |
-
-Using an existing allowance for a write-off is not automatically a fresh equal expense.
-
-$$\text{Closing allowance}=\text{Opening allowance}+\text{P\&L charge}+\text{Other net movements}$$
-P&L charge = net impairment expense or reversal; other net movements = signed movements such as allowance used in write-offs and relevant non-P&L changes.
-
-**Trap — closing allowance minus opening allowance equals the charge only when other movements are absent.** A stock of allowance and a flow of expense must not be confused.
-
-Use consistent attribution order when stage, parameter and exposure changes interact.
-
-### 4.9 The same loan under Indian prudential classification
-
-Indian advances follow **income recognition, asset classification and provisioning (IRAC)** rules for prudential treatment.
-
-A **non-performing asset (NPA)** meets the applicable non-performance classification; a **special mention account (SMA)** flags stress before NPA recognition.
-
-| Ordinary overdue ladder | Status | Meaning |
-|---|---|---|
-| Up to 30 DPD | Standard; SMA-0 where applicable | Early stress |
-| 31–60 DPD | Standard; SMA-1 | Further deterioration |
-| 61–90 DPD | Standard; SMA-2 | Near overdue NPA threshold |
-| Over 90 DPD | Initially sub-standard NPA | Ordinary overdue test met |
-| Continued sub-standard status | Doubtful under applicable ageing rule | Prolonged non-performance |
-| Identified loss awaiting write-off | Loss asset | Loss recognised in substance |
-
-Product rules determine application. Preserve payment evidence, prudential classification and accounting stage separately.
-
-| Dimension | ECL | IRAC |
-|---|---|---|
-| Driver | Expected shortfall and deterioration | Classification, ageing and security |
-| Amount | Forward-looking estimate | Prescribed rates and outstanding basis |
-| Performing deterioration | Can require lifetime allowance | Can remain Standard with SMA flag |
-| Interest after impairment | Stage 3: EIR on net amount | NPA: cash-receipt rules |
-
-**Trap — Standard does not necessarily mean Stage 1.** A Standard exposure can already have SICR. Equally, the two allowance amounts do not have to match.
-
-Provision rates vary by category and security; doubtful treatment escalates with age.
-
-Where an applicable prudential floor exceeds accounting allowance, an **impairment reserve** records the required appropriation, separately from ECL expense and allowance.
-
-### 4.10 Shared-borrower information and resolution
-
-For an advances borrower with several lenders, the **Central Repository of Information on Large Credits (CRILC)** supports reporting and sharing exposure, classification and stress information. Submissions and incoming monitoring information must both connect to the borrower record.
-
-**Restructuring** changes contractual terms, often for repayment difficulty. **Derecognition** removes the original financial asset.
-
-| Outcome | Accounting | Yield |
-|---|---|---|
-| Asset continues | Recompute modified cash flows; recognise modification effect | Original EIR retained |
-| Asset derecognised | Remove original; recognise new asset appropriately | Relevant new yield |
-| Borrower still impaired | Preserve impairment evidence | New contract does not establish cure |
-
-**Trap — do not turn a numerical modification test into an automatic universal rule for loan-asset derecognition.** The applicable accounting policy and qualitative assessment must govern the decision.
-
-A **modification loss** is the recognised reduction in continuing-asset cash-flow value.
-
-| Indian resolution route | Function |
-|---|---|
-| Prudential framework | Negotiated resolution under prescribed requirements |
-| **Securitisation and Reconstruction of Financial Assets and Enforcement of Security Interest Act (SARFAESI)** | Security enforcement |
-| **Debt Recovery Tribunal (DRT)** | Recovery claims |
-| **Insolvency and Bankruptcy Code (IBC)** | Corporate resolution |
-
-Resolution changes recovery priority, cost and timing—LGD inputs. Delay can increase allowance without further lending; the impairment charge reduces profit and equity.
+---
 
 ## 5. The capital behind the assets
 
-On the funding side, **capital** includes shareholder contributions; **retained earnings** are profits kept in the bank. Losses from assets reduce this protection.
+### 5.1 What capital is
 
-### 5.1 The capital stack
+Capital is not a reserve of cash. It is the portion of the balance sheet funded by owners rather than creditors, and its function is to absorb losses without the bank failing to pay anyone.
 
-**Regulatory capital** comprises recognised loss-absorbing instruments and reserves after adjustments.
+Our bank has ₹150 crore of equity capital and reserves. If ₹50 crore of loans turn out to be worthless, equity falls to ₹100 crore and every depositor is still paid. That is what capital does.
 
-| Component | Content | Loss absorption |
+**Common equity tier 1 (CET1)** is the highest quality: paid-up equity plus retained earnings, less regulatory deductions. **Tier 1** adds certain perpetual instruments. **Tier 2** is subordinated and lower quality.
+
+### 5.2 Risk-weighted assets
+
+Capital is measured against **risk-weighted assets (RWA)** rather than total assets, because ₹100 crore of government securities and ₹100 crore of unsecured personal loans are not the same risk.
+
+$$
+RWA = \sum_i E_i \times w_i
+$$
+
+where:
+
+- **E₍i₎** — exposure amount of item i, after eligible mitigation
+- **w₍i₎** — the risk weight applicable to it
+
+$$
+\text{Capital ratio} = \frac{\text{Eligible capital}}{RWA}
+$$
+
+where:
+
+- **Eligible capital** — capital of the relevant tier, after deductions
+- **RWA** — risk-weighted assets across credit, market and operational risk
+
+### 5.3 The two approaches
+
+| | Standardised | Internal ratings based |
 |---|---|---|
-| **Common Equity Tier 1 (CET1)** | Eligible ordinary equity and retained earnings after deductions | Primary ongoing protection |
-| **Additional Tier 1 (AT1)** | Qualifying perpetual instruments | Specified contractual or regulatory mechanisms |
-| Tier 2 | Qualifying subordinated instruments | Further framework-defined protection |
+| Risk weights | Prescribed by the regulator | Derived from the bank's own PD, LGD and EAD estimates |
+| Data demand | Moderate | Heavy — long histories, validated models |
+| Supervisory approval | Not required for weights | Required, with ongoing validation |
 
-**Subordinated** means ranking behind senior creditors. The bank’s ₹40 crore Tier 2 remains inside ₹200 crore of accounting borrowings despite capital recognition.
+### 5.4 The leverage ratio
 
-**Goodwill** is acquisition value above identifiable net assets; a **deferred tax asset** is a future tax benefit. Capital deductions reflect whether such values provide usable stress protection.
+$$
+\text{Leverage ratio} = \frac{\text{Tier 1 capital}}{\text{Total exposure measure}}
+$$
 
-**Trap — reserve balances at RBI are cash assets; retained-earnings reserves are part of equity.** The shared word “reserve” does not make them the same thing.
+where:
 
-### 5.2 Risk-weighted and unweighted requirements
+- **Tier 1 capital** — as defined above
+- **Total exposure measure** — on-balance-sheet assets plus off-balance-sheet and derivative exposure, with no risk weighting
 
-Against assets and commitments, **risk-weighted assets (RWA)** adjust exposures for prescribed risk.
+It exists as a backstop. If risk weights are wrong or gamed, an unweighted measure still constrains the balance sheet.
 
-$$\text{Credit RWA}=\sum_i\text{Adjusted exposure}_i\times\text{Risk weight}_i$$
-Adjusted exposurei = recognised exposure after applicable conversion and mitigation; risk weighti = prescribed or model-derived weighting for that exposure.
+### 5.5 Why deterioration hurts twice
 
-| Approach | Internal input | Prescribed treatment |
-|---|---|---|
-| Standardised | Exposure information and classification | Risk weights and conversion rules |
-| Foundation **internal ratings based (IRB)** | Primarily PD | Other supervisory inputs and functions |
-| Advanced IRB | Broader credit-input estimation | Supervisory functions and constraints |
+This is the connection to carry forward. When a borrower deteriorates:
 
-IRB conditions borrower default risk on severe common economic stress, applies LGD, separates expected loss and adjusts maturity. Longer exposure allows more migration before repayment.
+1. The risk weight rises, so **RWA increases** — the denominator grows.
+2. The provision rises, the charge hits profit, so **capital falls** — the numerator shrinks.
 
-**Asset correlation** measures sensitivity to the common factor. An **output floor** constrains model-based RWA below the standardised reference. The **use test** requires ratings and definitions in real lending, pricing and monitoring.
+The capital ratio falls from both ends at once, and it does so before any default occurs.
 
-Total RWA also includes market and **operational risk**—loss from process, people, system or external-event failures.
+**Trap — provisions and capital are not alternatives.** They cover different losses. Raising a provision does not reduce the capital requirement for the same exposure; it reduces capital itself.
 
-$$\text{Capital ratio}=\frac{\text{Eligible capital}}{\text{Total RWA}}$$
-Eligible capital = the component appropriate to the ratio, such as CET1 or total capital; total RWA = risk-weighted denominator across applicable risk types.
-
-$$\text{Leverage ratio}=\frac{\text{Tier 1 capital}}{\text{Total exposure measure}}$$
-Tier 1 capital = CET1 plus AT1; total exposure measure = the applicable exposure base without risk weighting.
-
-**Trap — low risk weights do not remove balance-sheet size.** The leverage ratio constrains exposure growth that favourable risk weights can conceal.
-
-### 5.3 Why deterioration can hurt both sides of the ratio
-
-On an impaired advance:
-
-| Channel | Mechanism | Effect |
-|---|---|---|
-| Numerator | Expense reduces retained earnings | Capital falls |
-| Denominator | Worse credit treatment | RWA can rise |
-| Heavily provided default | Remaining exposure and provision treatment | RWA can fall after losses |
-
-**Trap — falling RWA does not establish improving financial health.** Losses may already have reduced the capital numerator.
-
-A **capital conservation buffer** provides additional protection linked to distribution restrictions when depleted; other buffers depend on the bank and framework.
-
-| Basel pillar | Function |
-|---|---|
-| Pillar 1 | Minimum prescribed capital |
-| Pillar 2 | Supervisory review and additional risk assessment |
-| Pillar 3 | Public disclosure and market discipline |
-
-The **Internal Capital Adequacy Assessment Process (ICAAP)** assesses the bank’s own capital needs. **Stress testing** measures adverse-assumption consequences across credit loss, earnings, RWA and capital together.
-
-**The same exposure record supplies ECL, capital requirements and return classifications through separately defined transformations.**
+---
 
 ## 6. How the bank funds itself and meets payments
 
-Deposits and borrowings finance later asset receipts; cash and marketable investments meet earlier payments. **Liquidity** means paying when due; **solvency** concerns loss absorption and support for obligations.
+### 6.1 The problem
 
-### 6.1 The funding structure
+Our bank's assets mature over years. Its deposits are repayable in days. That mismatch is not a defect — it is the business. **Maturity transformation** is what a bank is for.
 
-Banking-book **deposits** are customer money repayable by the bank; **borrowings** raise funding through market or other arrangements. Retail funding comes from individuals and households; wholesale funding from larger corporate and financial counterparties.
+It is also the thing that kills banks, and quickly. Profit is not cash. A bank can be solvent, well provided and well capitalised, and still fail on a Tuesday because it could not fund an outflow.
 
-| Funding | ₹ crore | Contractual feature | Vulnerability |
-|---|---:|---|---|
-| Retail savings/current | 500 | On demand | Withdrawals and changing stability |
-| Retail term | 400 | Agreed term and withdrawal rights | Early breaks/non-renewal |
-| Corporate wholesale | 250 | Short maturity | Concentration/non-renewal |
-| Financial-institution deposits | 150 | Short market-sensitive funding | Rapid withdrawal/non-roll |
-| Market/refinance borrowings | 160 | Mixed maturities | Access/replacement cost |
-| Tier 2 borrowing | 40 | Longer funding | Repayment/capital eligibility |
+### 6.2 Contractual versus behavioural
 
-**Rollover** renews or replaces maturing funding; **refinancing risk** is unavailable or expensive replacement. **Maturity transformation** funds longer assets with shorter liabilities, creating margin and replacement-rate exposure.
+This is the hinge concept of the whole document.
 
-**Trap — a cheap liability is not necessarily valuable stable funding.** Its withdrawal behaviour, maturity, concentration and currency matter alongside its customer rate.
+- **Contractual maturity** is what the document says. A savings deposit is repayable on demand.
+- **Behavioural maturity** is what actually happens. Most of that deposit stays for years.
 
-### 6.2 Reserve holdings and cash access
+The same asymmetry runs the other way: a five-year loan may repay early, because borrowers **prepay**.
 
-In RBI balances and investments, the **cash reserve ratio (CRR)** requires cash against the relevant liability base; the **statutory liquidity ratio (SLR)** requires eligible liquid holdings.
+Every treasury number depends on which one you use, and behavioural assumptions are where the real analytical work sits.
 
-**Net demand and time liabilities (NDTL)** is the prescribed base after inclusions and netting. Demand liabilities are repayable immediately; time liabilities have agreed terms.
+**Trap — a core percentage is not proof of a behavioural life.** Saying 70% of savings balances are stable is one claim. Saying that stable portion behaves like five-year money is a second, separate claim. Both need evidence, and aggregate stability never means individual deposits stay.
 
-| Dimension | CRR | SLR |
+### 6.3 The maturity ladder
+
+The underlying picture behind every liquidity ratio. Expected cash inflows and outflows are placed into time buckets — overnight, up to 7 days, up to 30 days, and onward — and the gap in each bucket is examined.
+
+$$
+\text{Gap}_t = \text{Inflows}_t - \text{Outflows}_t
+$$
+
+where:
+
+- **Inflows₍t₎** — expected cash receipts in bucket t
+- **Outflows₍t₎** — expected cash payments in bucket t
+
+Cumulative gaps matter more than individual ones, because a surplus in one bucket can fund a deficit in the next.
+
+### 6.4 The liquidity coverage ratio
+
+The **liquidity coverage ratio (LCR)** asks one question: if the next thirty days went badly, would we survive them on our own liquid assets?
+
+$$
+LCR = \frac{HQLA}{\text{Net cash outflows over 30 days}}
+$$
+
+where:
+
+- **HQLA** — high-quality liquid assets, valued after haircuts
+- **Net cash outflows** — stressed outflows less capped stressed inflows, over a 30-day stress
+
+**High-quality liquid assets (HQLA)** are assets that can be turned into cash quickly, in size, at little loss. Cash and government securities dominate. **Level 1** assets are the most liquid and count in full. **Level 2** assets count after haircuts and subject to caps.
+
+$$
+\text{Net outflows} = \text{Stressed outflows} - \min(\text{Stressed inflows},\ 0.75 \times \text{Stressed outflows})
+$$
+
+where:
+
+- **Stressed outflows** — balances multiplied by prescribed run-off rates
+- **Stressed inflows** — expected receipts multiplied by prescribed inflow rates
+- **0.75** — the cap ensuring at least 25% of outflows are met from HQLA
+
+The outflow rates are prescribed, not estimated. Retail deposits run off more slowly than wholesale. Operational balances more slowly than non-operational. Undrawn commitments carry a draw-down assumption — our ₹108 crore appears here too.
+
+The inflow cap is the part people forget: you cannot assume everyone pays you on time in a crisis while assuming your own depositors flee.
+
+**Trap — LCR can rise while HQLA falls in rupees.** It is a ratio. Shrinking the outflow side lifts it just as effectively as buying liquid assets. Always read the numerator and the denominator together.
+
+### 6.5 The net stable funding ratio
+
+The **net stable funding ratio (NSFR)** asks a structural question over one year: are long-lived assets funded by durable money?
+
+$$
+NSFR = \frac{ASF}{RSF}
+$$
+
+where:
+
+- **ASF** — available stable funding, the supply of durable funding
+- **RSF** — required stable funding, the amount the asset side needs
+
+$$
+ASF = \sum_i L_i \times a_i
+$$
+
+where:
+
+- **L₍i₎** — liability or capital amount in category i
+- **a₍i₎** — the ASF factor for that category, higher for more durable funding
+
+$$
+RSF = \sum_j A_j \times r_j
+$$
+
+where:
+
+- **A₍j₎** — asset or off-balance-sheet amount in category j
+- **r₍j₎** — the RSF factor, higher for assets that are long or illiquid
+
+Equity gets the highest ASF factor. Retail deposits score well. Short wholesale funding scores poorly. On the asset side, cash and HQLA need little stable funding; long illiquid loans need a lot.
+
+| Ratio | Horizon | Nature of the question |
 |---|---|---|
-| Holding | Cash with RBI | Eligible cash, gold or approved securities |
-| Effect | Reserve-bound cash | Statutory asset holding |
-| Income | No ordinary lending income | Securities can earn coupons |
-| Evidence | NDTL and reserve balances | NDTL and eligible holdings |
+| LCR | 30 days | Survival under acute stress |
+| NSFR | 1 year | Structural soundness of the funding model |
 
-**Trap — the entire RBI balance is not automatically freely usable liquidity.** Required reserves and usable surplus must be distinguished.
+Both must hold. They are not substitutes — one is about surviving a run, the other about not building a fragile balance sheet in the first place.
 
-**Encumbered** means pledged or otherwise restricted. Statutory eligibility does not establish unrestricted liquidity recognition: permissions and availability determine usable value.
+### 6.6 Other liquidity controls
 
-### 6.3 Repo and the Indian money market
+- **Intraday liquidity** — the cash needed at specific moments during the day to settle payments. A bank can end the day comfortably and still fail a settlement at 11 a.m.
+- **Encumbrance** — assets pledged as security are not available for anything else. Pledged HQLA is not HQLA.
+- **Concentration of funding** — reliance on a few large depositors or a single market is itself a risk.
+- **CRR and SLR** — Indian requirements. The **cash reserve ratio (CRR)** is a proportion of deposits held with the RBI. The **statutory liquidity ratio (SLR)** is a proportion held in prescribed liquid assets, largely government securities. Our ₹400 crore of government securities sits substantially here.
 
-A **repurchase agreement, or repo**, sells investment securities with an agreement to repurchase, commonly providing secured funding. Its haircut reduces cash advanced against collateral value.
+**Trap — SLR securities are not automatically free HQLA.** Assets required to meet another obligation, or already pledged, cannot simultaneously be counted as available.
 
-Under secured-borrowing accounting, retained economic risks and rewards keep the security as an asset while recognising the funding liability.
-
-**Trap — repo does not create both free cash and an unrestricted copy of the same collateral.** The cash, borrowing and encumbrance must be recorded together.
-
-| Market/facility | Function | Funding |
-|---|---|---|
-| Call, notice and term money | Short-period interbank borrowing | Unsecured |
-| **Triparty Repo Dealing System (TREPS)** | Repo with third-party collateral arrangements and CCIL infrastructure | Secured |
-| **Liquidity Adjustment Facility (LAF)** | RBI liquidity operations | Central-bank access |
-| **Marginal Standing Facility (MSF)** | Eligible overnight borrowing | Additional access |
-| Treasury bills and bank/corporate paper | Short-term debt | Investment or market funding |
-
-### 6.4 The thirty-day liquidity test
-
-Across liquid assets and runnable funding, the **liquidity coverage ratio (LCR)** compares the buffer with 30-day stressed net outflows. **High quality liquid assets (HQLA)** are qualifying cash-convertible assets.
-
-$$LCR=\frac{HQLA}{\text{Stressed 30-day net cash outflows}}$$
-HQLA = eligible liquid-asset stock after required adjustments and caps; denominator = recognised stressed outflows less permitted inflows over 30 days.
-
-Full coverage is 100%; associate the calculation and requirement with their rule version.
-
-| Numerator control | Required evidence | Failure |
-|---|---|---|
-| Eligibility | Asset, issuer, rating and other conditions | Ineligible investments included |
-| Availability | Unencumbered, usable amount | Restricted value included |
-| Valuation | Market value and business date | Stale buffer value |
-| Haircuts/caps | Prescribed reductions and composition | Gross value overstates recognition |
-
-**Level 1** and **Level 2** distinguish liquidity treatment. Standard Level 2 composition is capped at 40%; eligible Level 2A corporate bonds receive the stated 15% haircut.
-
-A rating does not prove every eligibility condition; the whole ₹120 crore corporate holding cannot be counted merely because part qualifies.
-
-**Trap — book designation alone does not establish HQLA eligibility.** Liquidity recognition also depends on the asset and its availability.
-
-### 6.5 Building stressed outflows and permitted inflows
-
-On deposits and commitments, a **run-off factor** is the prescribed stressed withdrawal or drawing share.
-
-$$\text{Gross stressed outflows}=\sum_i B_i\times f_i+\text{Other recognised outflows}$$
-Bi = balance or commitment base for category i; fi = applicable run-off or drawdown factor; other recognised outflows = relevant contractual, collateral and other cash demands.
-
-| Category | Required evidence | Wrong treatment affects |
-|---|---|---|
-| Stable retail | Customer and required stability/protection attributes | Deposit outflow |
-| Less-stable retail | Retail status without all stable conditions | Deposit outflow |
-| Non-financial corporate | Correct corporate type | Wholesale outflow |
-| Financial institution | Financial-counterparty identity | Wholesale outflow |
-| Operational deposit | Qualifying service relationship | Operational outflow |
-| Commitment | Type, availability and committed status | Potential drawdown |
-| Derivative collateral | Contract and margin terms | Collateral cash demand |
-
-An **operational deposit** supports qualifying operational services; transaction activity alone does not establish eligibility.
-
-Apply asset-inflow category factors before the overall cap:
-
-$$\text{Net outflows}=O-\min(I,\;0.75\times O)$$
-O = gross stressed outflows; I = eligible inflows after category-specific treatment; 0.75 = the standard overall inflow cap as a proportion of outflows.
-
-**Trap — an inflow recognition factor and the overall inflow cap are different controls.** A factor applied to corporate receipts is not the percentage of all outflows that may be offset.
-
-The cap prevents expected receipts replacing the actual liquidity buffer.
-
-**Trap — a higher LCR does not always mean more liquidity in rupees.** When highly runnable funding leaves, both HQLA and the next period’s assumed outflows fall. The ratio can rise if its denominator falls faster.
-
-### 6.6 The maturity ladder
-
-Across both sides and commitments, the **structural liquidity statement (SLS)** places receipts and payments into a **maturity ladder** of defined time **buckets**.
-
-$$\text{Bucket gap}_k=\text{Inflows}_k-\text{Outflows}_k$$
-k = time bucket; inflowsk = recognised receipts in the bucket; outflowsk = recognised payments in the bucket.
-
-$$\text{Cumulative gap}_k=\sum_{j=1}^{k}\text{Bucket gap}_j$$
-Cumulative gapk = accumulated surplus or deficit through bucket k; j = each included earlier bucket.
-
-**Trap — a later surplus cannot settle an earlier payment.** The cumulative near-term deficit matters even when lifetime inflows and outflows eventually balance.
-
-| Group | Intervals | Focus |
-|---|---|---|
-| Near term | Day 1; 2–7; 8–14; 15–30 days | Immediate pressure |
-| Intermediate | 31 days–2 months; 2–3; 3–6 months; 6 months–1 year | Refinancing |
-| Longer | 1–3; 3–5; over 5 years | Structural mismatch |
-
-A **tolerance limit** restricts deficits, often against cumulative outflows. Govern the bucket definition and limit together.
-
-A government security may mature late but realise cash early through sale or repo; contractual maturity and permitted realisation differ.
-
-**Trap — shifting a security into an early bucket requires a permitted, evidenced treatment.** It cannot be done simply to remove a reported deficit.
-
-### 6.7 Contractual and behavioural maturity
-
-For deposits and prepayable advances, **behavioural maturity** estimates cash timing from customer behaviour. A **core deposit balance** is the on-demand portion expected to remain stable.
-
-| Dimension | Contractual | Behavioural |
-|---|---|---|
-| Basis | Legal schedule | Observed and modelled behaviour |
-| Demand deposits | Immediately repayable | Stable and volatile portions |
-| Prepayable loans | Agreed schedule | Potential earlier repayment |
-| Evidence | Contract | History, method, approval and back-testing |
-
-**Back-testing** compares predictions with subsequent outcomes. Core assumptions require relevant history, stress consideration and review; aggregate stability does not mean individual deposits stay.
-
-**Trap — a core percentage is not proof of a particular behavioural life.** The amount regarded as stable and the length of stability both require evidence.
-
-### 6.8 The structural funding test
-
-The **net stable funding ratio (NSFR)** connects liabilities to the asset structure over a one-year horizon. **Available stable funding (ASF)** weights liabilities and capital for stability; **required stable funding (RSF)** weights assets and commitments for funding need.
-
-$$NSFR=\frac{ASF}{RSF}$$
-ASF = recognised stable funding supply; RSF = recognised stable funding requirement.
-
-$$ASF=\sum_i L_i\times a_i$$
-Li = liability or capital amount in category i; ai = applicable ASF factor.
-
-$$RSF=\sum_j A_j\times r_j+\text{Off-balance-sheet requirement}$$
-Aj = asset amount in category j; rj = applicable RSF factor; off-balance-sheet requirement = recognised stable funding need from commitments and other included items.
-
-| Position | Broad treatment | Critical input |
-|---|---|---|
-| Equity/long funding | Greater ASF | Eligibility and maturity |
-| Qualifying retail funding | Greater stability than short financial wholesale | Counterparty and stability |
-| Short financial funding | Low ASF | Counterparty and maturity |
-| Cash/highly liquid assets | Lower RSF | Category and availability |
-| Long loans/less-liquid assets | Higher RSF | Maturity, quality, encumbrance |
-| Commitments | Additional requirement | Complete population |
-
-Factors are regulatory weights, not probability forecasts.
-
-| Dimension | LCR | NSFR |
-|---|---|---|
-| Question | 30-day stressed coverage | Stable structural support |
-| Numerator | HQLA | ASF |
-| Denominator | Net cash outflows | RSF |
-| Response | Buffer and near-term demand | Funding or asset composition |
-
-**Trap — passing one ratio does not establish passing the other.** Liquidity stock and stable funding structure are different constraints.
-
-### 6.9 Intraday liquidity
-
-In settlement accounts, **intraday liquidity** meets payments within the day. Positive daily cash totals can hide inflows arriving after obligations.
-
-| Measure | Captures | Source |
-|---|---|---|
-| Peak usage | Greatest intraday resource use | Payment records |
-| Available liquidity | Resources usable within the day | Settlement/resource records |
-| Throughput | Payments completed through the day | Payment timestamps |
-| Time-critical obligations | Payments due by specific times | Settlement schedules |
-
-Closing loan and deposit balances cannot reconstruct these deadlines.
+---
 
 ## 7. What funding does to earnings and economic value
 
-Across banking-book assets and funding, **interest rate risk in the banking book (IRRBB)** measures rate-change effects. **Asset and liability management (ALM)** manages cash-flow, maturity and repricing relationships.
+**Interest rate risk in the banking book (IRRBB)** is the risk that rate movements hurt the bank through its banking-book assets and liabilities. **Asset and liability management (ALM)** is the function that manages it.
+
+There are two views, measuring different things over different horizons. Neither replaces the other.
 
 ### 7.1 The earnings view
 
-**Net interest income (NII)** measures the interest margin.
+**Net interest income (NII)** is the margin the bank earns.
 
-$$NII=\text{Interest income}-\text{Interest expense}$$
-Interest income = recognised interest on assets; interest expense = recognised funding interest cost for the same period.
+$$
+NII = \text{Interest income} - \text{Interest expense}
+$$
 
-A **repricing gap** compares amounts resetting within the selected horizon.
+where:
 
-$$G=\text{Rate-sensitive assets}-\text{Rate-sensitive liabilities}$$
-G = repricing gap; rate-sensitive assets and liabilities = amounts repricing within the defined interval.
+- **Interest income** — interest recognised on assets in the period
+- **Interest expense** — interest cost of funding for the same period
 
-$$\Delta NII\approx G\times\Delta r$$
-ΔNII = approximate income change over the stated horizon; G = repricing gap; Δr = assumed interest-rate change as a decimal.
+The exposure comes from timing. **Repricing** is when an instrument's rate resets — which is not the same as when it matures. A ten-year loan on a floating rate reprices every three months.
 
-Timing, balance changes and pass-through qualify this approximation.
+$$
+G = RSA - RSL
+$$
+
+where:
+
+- **G** — repricing gap for the chosen time bucket
+- **RSA** — rate-sensitive assets repricing within that bucket
+- **RSL** — rate-sensitive liabilities repricing within that bucket
+
+$$
+\Delta NII \approx G \times \Delta r
+$$
+
+where:
+
+- **ΔNII** — approximate change in net interest income over the horizon
+- **G** — repricing gap
+- **Δr** — assumed rate change, as a decimal
 
 | Gap | Rates rise | Rates fall |
 |---|---|---|
-| Positive | Income tends to rise faster than cost | Income tends to fall faster |
-| Negative | Cost tends to rise faster than income | Cost tends to fall faster |
+| Positive — more assets reprice | NII rises | NII falls |
+| Negative — more liabilities reprice | NII falls | NII rises |
 
-Negative means **liability-sensitive**. **Deposit beta** measures deposit-rate pass-through from market rates.
+The approximation ignores timing within the bucket, balance changes, and **pass-through** — the extent to which the bank actually moves deposit rates when policy rates move. Pass-through is a behavioural assumption, and it is often the largest source of error.
 
-**Trap — maturity is not the repricing date.** A long floating loan may reprice early; a fixed loan does not merely because its funding renews.
+**Trap — maturity and repricing are different dates.** Bucketing a floating-rate loan by its maturity instead of its next reset produces a gap that is simply wrong.
 
-### 7.2 The lifetime-value view
+### 7.2 The economic value view
 
-Across banking-book cash flows, **economic value of equity (EVE)** measures discounted assets less liabilities.
+**Economic value of equity (EVE)** measures the present value of everything, not this year's earnings.
 
-$$EVE=PV(\text{Assets})-PV(\text{Liabilities})$$
-PV(assets) = discounted expected asset cash flows; PV(liabilities) = discounted expected liability cash flows.
+$$
+EVE = PV(\text{Assets}) - PV(\text{Liabilities})
+$$
 
-EVE is economic value, not accounting equity.
+where:
 
-$$\Delta EVE\approx-\left(D_A-D_L\times\frac{L}{A}\right)\times A\times\Delta r$$
-DA and DL = asset and liability duration measures; A and L = corresponding value bases; Δr = rate shock; ΔEVE = approximate economic-value change.
+- **PV(Assets)** — present value of all asset cash flows
+- **PV(Liabilities)** — present value of all liability cash flows
 
-Rising rates reduce fixed receipts and fixed payments: asset-value loss hurts EVE; liability-value reduction offsets it.
+Rates rise, present values fall, and they fall by more on the side with longer duration. If assets are longer than liabilities, rising rates reduce EVE.
 
-| Dimension | NII sensitivity | EVE sensitivity |
+| | NII sensitivity | EVE sensitivity |
 |---|---|---|
-| Horizon | Selected earnings period, commonly one year | Remaining life |
-| Measures | Income and expense change | PV change |
-| Limitation | Beyond-horizon risk | Reported earnings timing |
-| Assumptions | Resets, balances, deposit beta | Timing, discounting, behaviour |
+| Measures | Earnings | Value |
+| Horizon | Short, usually 12 months | Full remaining life |
+| Misses | Long-dated risk beyond the horizon | Near-term earnings pressure |
 
-**Trap — a stable one-year NII result does not establish low lifetime rate risk.** Conversely, acceptable EVE sensitivity does not guarantee smooth near-term earnings.
+A balance sheet can look comfortable on earnings and be badly exposed on value, because the damage sits beyond the earnings window. Reporting both is the point.
 
-The **asset and liability committee (ALCO)** oversees structure and limits using both views.
+**Trap — EVE is not a market valuation of the bank.** It is a cash-flow present value under stated assumptions, and it is only as good as the behavioural inputs feeding it.
 
-### 7.3 The shared behavioural assumption
-
-Longer stable deposit life can increase liability duration, offset more asset duration and increase the deposit business’s internal funding credit.
-
-**Trap — favourable movement in two outputs is not independent evidence that the assumption is correct.** Both may come from the same optimistic model input.
+---
 
 ## 8. How the spread is split internally
 
-**Funds transfer pricing (FTP)** assigns internal prices between banking-book assets and funding. Treasury credits deposit businesses supplying funds and charges lending businesses using them, through management entries.
+### 8.1 The problem FTP solves
 
-### 8.1 The three margins
+The branch takes a deposit at 5%. The corporate desk lends at 9%. Who earned the 4%?
 
-| Margin | Calculation | Responsibility |
+Without a mechanism, both claim it, and neither is accountable for the mismatch risk sitting between them. **Funds transfer pricing (FTP)** is that mechanism.
+
+### 8.2 How it works
+
+Every asset is **charged** an internal rate for the funding it consumes. Every liability is **credited** an internal rate for the funding it supplies. Treasury sits in the middle, receiving all charges and paying all credits, and holds the mismatch.
+
+$$
+\text{Lending margin} = \text{Customer rate} - \text{FTP charge}
+$$
+
+$$
+\text{Deposit margin} = \text{FTP credit} - \text{Customer rate}
+$$
+
+$$
+\text{Treasury margin} = \text{Total spread} - \text{Lending margin} - \text{Deposit margin}
+$$
+
+where:
+
+- **Customer rate** — the rate actually contracted with the customer
+- **FTP charge / credit** — the internal rate applied to the asset or liability
+- **Total spread** — the bank's overall interest margin
+
+The three add to the total. Nothing is created or destroyed — FTP allocates, it does not generate.
+
+| Margin | Owner | What it rewards |
 |---|---|---|
-| Lending | Customer asset yield less FTP charge | Customer pricing and credit economics |
-| Deposit | FTP credit less customer cost | Gathering funding |
-| Treasury | Charges less credits, plus allocated income/costs | Funding and mismatch management |
+| Lending margin | The asset business | Pricing and credit selection |
+| Deposit margin | The liability business | Raising durable funding |
+| Mismatch margin | Treasury | Bearing the maturity and rate mismatch |
 
-**Trap — the lending margin is not automatically net profit.** Credit loss and other applicable costs still have to be recognised on consistent bases.
+### 8.3 The curve
 
-**FTP prices the deposit’s funding value; NSFR measures its stable-funding contribution—the same liability viewed two ways.**
+The **transfer pricing curve** is a term structure of internal rates — one rate for each tenor. A product is priced at the point on the curve that matches its **behavioural** life, not its contractual one.
 
-### 8.2 The transfer-pricing curve
+That single choice is why FTP cannot be separated from liquidity work. The behavioural life assumed for a savings book determines the credit the branch receives, and the same assumption determines the outflow treatment in LCR.
 
-The **FTP curve** contains dated internal rates by tenor and currency. **Marginal funding cost** prices the next funding unit, unlike the existing deposit average.
+### 8.4 The components
 
-An **overnight indexed swap (OIS)** exchanges fixed interest against an overnight-rate-based stream.
+| Component | What it charges for |
+|---|---|
+| Base rate for the tenor | The cost of funds for that maturity |
+| Term liquidity premium | The extra cost of funding long rather than short |
+| Contingent liquidity charge | Standing ready to fund undrawn commitments |
+| Optionality charge | The customer's right to prepay or withdraw early |
 
-| Layer | Prices | Source |
-|---|---|---|
-| Base rate | Interest-rate value by tenor | Approved swap/OIS reference |
-| Bank funding spread | Cost above the reference | Own issuance and wholesale levels |
-| Combined curve | Marginal funding cost | Governed combination |
+$$
+\text{FTP rate} = r_{\text{base}}(t) + \text{TLP}(t) + \text{CLC} + \text{OC}
+$$
 
-**Trap — the bank’s cheap existing deposit average is not the correct price for every new asset tenor.** A pooled average hides the cost of committing funding for longer.
+where:
 
-**Interpolation** estimates between published points under a specified rule.
+- **r₍base₎(t)** — base transfer rate for behavioural tenor t
+- **TLP(t)** — term liquidity premium for that tenor
+- **CLC** — contingent liquidity charge for committed but undrawn facilities
+- **OC** — optionality charge for prepayment or early withdrawal rights
 
-### 8.3 Which life is priced
+The contingent liquidity charge is what makes our ₹108 crore of undrawn commitments cost something before anyone draws it. Without it, promising credit looks free.
 
-For each asset or liability, use the schedule and approved behavioural treatment. **Weighted average life (WAL)** weights principal-repayment timing.
+### 8.5 Governance
 
-$$WAL=\frac{\sum_t t\times PR_t}{\sum_t PR_t}$$
-PRt = principal repaid at time t; t = time from the pricing reference date in a consistent unit.
+Internal charges and credits must net to zero across the bank. If they do not, profit is being manufactured or destroyed by the allocation mechanism, and someone's performance figures are wrong.
 
-| Product | Assignment | Evidence |
-|---|---|---|
-| Fixed bullet | Contractual matched-funding life | Contract and origination |
-| Amortising | Repayment-weighted or approved cash-flow method | Principal schedule |
-| Revolving | Core and volatile portions | History/model |
-| Savings/current | Stable and volatile portions | Core amount/life evidence |
-| Term deposit | Term with early-break treatment | Withdrawal terms/history |
-| Prepayable loan | Prepayment-adjusted treatment | History/methodology |
+Curve changes are approved, dated and applied consistently. Rates are usually locked at origination for fixed-rate products, so that a later curve move does not retrospectively rewrite a business unit's margin.
 
-**Trap — an amortising asset is not funded at its opening balance until final maturity.** Charging it as a full-life bullet can overstate the lending unit’s funding cost.
+**Trap — FTP is not a cost allocation.** It is a price for a real economic service: funding, liquidity and optionality. Treating it as an overhead invites gaming and destroys the incentive it was built to create.
 
-Separate floating-rate reset tenor from funding life; resetting the base component does not shorten the liquidity commitment.
-
-### 8.4 One behavioural view, three consequences
-
-On the same deposit population, the behavioural evidence must be governed once and supplied to its consumers.
-
-| Consumer | How behaviour enters | Consequence of unsupported stability |
-|---|---|---|
-| FTP | Assigned funding life and stable/volatile split | Deposit credit can be overstated |
-| LCR and liquidity management | Relevant stability classification and permitted outflow assumptions | Stressed outflows can be understated |
-| EVE | Liability cash-flow and repricing treatment | Liability duration can overstate the offset to asset risk |
-
-**The connection is one governed view of behaviour, not one interchangeable number.** Behavioural maturity drives FTP tenor and EVE timing; the same stability evidence must support the LCR classification, while prescribed LCR factors retain their own rule basis.
-
-The specification must reference the upstream ALM model and version. Re-entering its assumptions independently in FTP and liquidity spreadsheets creates competing versions of the same liability.
-
-### 8.5 Origination rates and reset rates
-
-For fixed banking-book assets, **matched funding** aligns internal price with the agreed customer rate and life. A **vintage** is a dated input version.
-
-| Instrument | Curve vintage | Reason |
-|---|---|---|
-| New business | Applicable pricing-date curve | Current marginal cost |
-| Existing fixed-rate | Retained origination assignment | Stable internal price behind fixed yield |
-| Floating-rate | Approved customer-aligned reset treatment | Consistent rate transfer |
-
-**Trap — falling back to today’s curve on an existing fixed-rate loan manufactures a margin change.** A missing historical curve is an exception, not permission to substitute another date.
-
-### 8.6 The FTP charge components
-
-| Component | Pays for | Base |
-|---|---|---|
-| Base rate | Interest-rate value | Funded balance |
-| Term funding/liquidity premium | Securing funding beyond the base curve | Balance and life |
-| Contingent liquidity | Resources for possible drawings | Undrawn commitment |
-| Optionality | Customer rights altering cash flows | Relevant option exposure |
-
-The **term liquidity premium** is the incremental term-funding cost included within a combined curve’s spread.
-
-**Trap — do not add a liquidity premium twice.** A published all-in funding curve and a separate funding-spread field must have clearly different or explicitly overlapping scope.
-
-**Contingent liquidity** is potential drawing demand. **Cost of carry** is buffer funding cost less buffer income.
-
-$$\text{Annual contingent cost}=U\times d\times c$$
-U = undrawn commitment; d = assigned stressed drawdown fraction; c = annual cost of carrying the associated liquidity buffer.
-
-$$\text{Undrawn charge rate}=d\times c$$
-d = drawdown fraction; c = buffer cost of carry; the resulting rate is charged against the undrawn base under policy.
-
-This is a funding-cost component of a commitment fee, not necessarily its entire commercial price.
-
-**One undrawn amount produces converted credit exposure, stressed liquidity demand and FTP cost; each factor serves its own purpose.**
-
-**Optionality** values rights to change payment timing or terms. Prepayment and early deposit withdrawal can leave funding mismatched.
-
-**Trap — shortening average life is not automatically a complete price for an option.** Avoid both ignoring the option and charging twice for the same effect.
-
-### 8.7 Computing the amount and proving the allocation
-
-A **day-count convention** converts the accrual period to a year fraction.
-
-$$\text{FTP amount}=B\times r\times\alpha$$
-B = relevant balance; r = annual FTP rate as a decimal; α = year fraction under the specified day-count convention.
-
-Revolving products may need daily balances; month-end does not describe funding used throughout the month.
-
-$$\bar r=\frac{\sum_i B_i r_i}{\sum_i B_i}$$
-r̄ = balance-weighted FTP rate; Bi = balance in slice i; ri = assigned rate for that slice.
-
-**Trap — a rate applied to undrawn commitments is not applied to the drawn balance as well merely because the output is called “all-in”.** Preserve each component’s charging base.
-
-$$\sum_u\text{Unit NII contribution}_u=\text{Bank NII}$$
-u = each included business unit; unit NII contribution = external interest plus allocated internal interest on the agreed perimeter; bank NII = external net interest income on that same perimeter.
-
-Residuals indicate missing/duplicated balances, unmatched entries, accrual differences or inconsistent scope.
-
-The **equity credit rate** allocates funding benefit from equity under policy; other non-interest-bearing funding also affects Treasury’s result.
-
-**Trap — Treasury margin is not pure maturity-transformation profit.** Investment income, funding allocations, hedges and equity-credit policy can also affect it.
-
-### 8.8 Data and governance for FTP
-
-| Data | Required fields | Protects |
-|---|---|---|
-| Instrument | Product, currency, rate type, repayment, maturity | Method and curve |
-| Behaviour | Life, core split, prepayment, early breaks | Assigned tenor |
-| Balance | Drawn, relevant accruals, undrawn | Charging base |
-| Curve | Identifier, date, points, components | Rate and vintage |
-| Conventions | Origination, reset, reporting date, day count | Accrual |
-| Organisation | Business unit, cost centre, booking entity | Margin owner |
-
-A **cost centre** receives allocations; a **booking entity** legally records the transaction.
-
-Govern published FTP rates independently of the units priced, with controlled changes.
+---
 
 ## 9. Where the numbers come from
 
-Both balance-sheet sides and commitments need identified records before calculation.
+Everything so far has been a measure. This section is about the machinery that produces it, and it is where the business analyst actually lives.
 
-### 9.1 One exposure record, several measurement bases
+### 9.1 The chain
 
-A **data dictionary** defines meaning, unit, scope and source. **Granularity** is retained detail; **grain** states what one row represents.
+Every reported number travels the same path:
 
-| Record | Grain | Control |
+**Source system → extract → staging → transformation → calculation → reporting layer → return**
+
+A number is only as good as the weakest link, and the analyst's job is to know which link failed.
+
+### 9.2 BCBS 239
+
+**BCBS 239** is the Basel Committee's set of principles for risk data aggregation and reporting. Stripped to essentials, it requires that a bank can produce risk numbers that are **accurate**, **complete**, **timely** and **adaptable** — and that it can prove all four.
+
+The proof requirement is the hard part. It is not enough for the number to be right. The bank must be able to demonstrate why it is right.
+
+**Lineage** is that demonstration: the ability to walk a reported figure backwards through every transformation to the source records it came from. Without lineage, a challenge to a number cannot be answered, only asserted against.
+
+### 9.3 The three kinds of wrong
+
+When a number is wrong, it is wrong in one of three ways, and they belong to different people.
+
+| Kind | What happened | Who owns the fix |
 |---|---|---|
-| Position | Facility/instrument and date | Complete starting population |
-| Cash flow | Dated receipt/payment | Correct timing |
-| Collateral allocation | Protection linked to exposure | No duplicated recognition |
-| Result | Exposure, date, method, run | Reproducible measurement |
+| Source defect | The data was captured wrong at origin | The originating business |
+| Transformation defect | Correct data was mangled in the pipeline | Technology |
+| Definition defect | Everyone applied a different meaning to the same field | The data owner, through policy |
 
-**Trap — “one source of truth” does not mean one universal exposure amount.** Contractual principal, GCA, derivative market value, converted EAD and RWA answer different questions.
+The diagnostic question is always the same: **where is the first incorrect hand-off?** Everything downstream of that point is a symptom, and fixing symptoms produces a reconciliation that passes while the number stays wrong.
 
-**Keys** identify/link records. **Reference data** holds controlled classifications and mappings. A **golden source** is authoritative for a particular element.
+Definition defects are the most expensive, because nothing is technically broken. Two teams reporting different exposure figures may both be running correct code against a term that was never agreed.
 
-### 9.2 Risk-data governance
+### 9.4 Data quality dimensions
 
-The **Basel Committee on Banking Supervision (BCBS)** principles, **BCBS 239**, govern aggregation across products, entities and geographies.
-
-| Area | Requires | Evidence |
-|---|---|---|
-| Governance/infrastructure | Accountability and suitable design | Owners, policy, architecture |
-| Aggregation | Accuracy, completeness, timeliness, adaptability | Reconciliations and granular records |
-| Reporting | Clear, comprehensive, decision-relevant output | Content, recipients, timing |
-| Supervisory review | Demonstrated compliance/remediation | Tracked gaps and completed actions |
-
-Accuracy means correct values; completeness means required population and fields; timeliness means arriving early enough; adaptability means answering new questions without rebuilding.
-
-**Trap — a reliable fixed report does not prove adaptability.** Pre-aggregated totals can produce an existing return perfectly while making a new cross-product exposure question impossible.
-
-A **data owner** is the named person accountable for an element’s meaning and quality.
-
-### 9.3 Who owns the number
-
-| Owner | Accountability | Evidence |
-|---|---|---|
-| Treasury/ALM | Funding, behaviour, internal prices | Assumptions, curves, liquidity views |
-| Risk | Methods, limits, challenge | Definitions and model approvals |
-| Finance | Accounting basis | Ledger, journals, reconciliation |
-| Regulatory Reporting | Interpretation, mapping, submission | Methodology and attestation |
-| **Business as usual (BAU)** | Recurring production | Runs, exceptions, close evidence |
-| Technology | Pipeline, platform, release | Code and operational evidence |
-| Vendor | Supplied product | Capability, release content, fixes |
-
-The **general ledger (GL)** records accounting balances and transactions; a **journal** is an accounting entry.
-
-**Trap — the vendor owns a product, not the bank’s regulatory interpretation.** Configuration and input quality remain the bank’s responsibilities.
-
-### 9.4 The three kinds of wrong
-
-**Data quality (DQ)** controls protect the business meaning of reported positions.
-
-| Defect | Symptom | Owner | Fix |
-|---|---|---|---|
-| Source | Original wrong/missing | Source business | Correct record and capture control |
-| Transformation | Correct source, wrong target | Technology | Correct code against approved rule |
-| Definition | Competing defensible interpretations | Methodology owner | Resolve meaning, amend, retest |
-
-**Trap — a definition defect is not resolved by proving the code matches an ambiguous specification.** The implemented rule can be technically faithful and economically wrong.
-
-A DQ rule needs threshold, severity, owner and exception action.
-
-| Check | Evidence |
+| Dimension | Question |
 |---|---|
-| Completeness | Counts and amount totals |
-| Validity | Permitted categories/ranges |
-| Consistency | Related fields and links agree |
-| Accuracy | Independent-source/GL reconciliation |
-| Timeliness | Business dates and completion |
-| Uniqueness | No duplicates at required grain |
+| Completeness | Is every record and field present? |
+| Accuracy | Does the value match reality? |
+| Validity | Is it a permitted value in a permitted format? |
+| Consistency | Does it agree with the same fact held elsewhere? |
+| Timeliness | Did it arrive in time for the calculation? |
+| Uniqueness | Is the same thing recorded once, not twice? |
 
-### 9.5 One field, one reported consequence
+A **data quality rule** is a test against one of these, applied at a defined point, with a threshold and a named owner.
 
-| Field | Defect | Number affected | Rule |
-|---|---|---|---|
-| Deposit counterparty | Financial treated as retail | Outflow low; LCR high | Supported classification |
-| Origination risk | Missing history | SICR/horizon unreliable | Retain origination basis |
-| DPD/default | Null becomes zero | Classification/allowance low | Validate payments/triggers |
-| Recovery amount/date | Favourable stale value/missing delay | LGD/allowance low | Approved current value/timing |
-| EIR | Coupon substituted | Carrying value/loss distorted | Effective-yield source |
-| Undrawn amount | Missing becomes zero | EAD/liquidity/FTP understated | Limit/utilisation completeness |
-| Book | Wrong route | Wrong measure/return | Govern designation |
-| Eligibility/encumbrance | Unavailable asset included | HQLA high | Prove usable eligibility |
-| Maturity/reset | Interchanged | Funding/rate buckets wrong | Separate dates |
-| Behavioural life | Unsupported/defaulted | FTP/EVE distorted | Approved model/version |
-| Curve date | Current replaces origination | Fixed-loan margin distorted | Historical curve |
-| Currency/conversion | Wrong basis | INR exposure distorted | Dated conversion |
-| Entity/obligor keys | Missing/mismatched | Omission/duplication | Population and link checks |
+**Trap — a data quality rule exists to protect a named output, not to improve data in the abstract.** "Maturity date must be present" is a weak rule. "Maturity date must be present, because it determines the LCR bucket and the FTP tenor, and a missing value silently defaults the record to the shortest bucket" is a rule someone will fund and fix.
 
-**Trap — rejecting a record must not erase it from the bank’s exposure.** Hold the exception visibly, retain its amount and resolve or formally account for its treatment before submission.
+### 9.5 Controls
 
-Unsecured Stage 3 lending does not require collateral merely because it is impaired. Stage 1 beyond the SICR backstop requires examination of any permitted rebuttal.
+- **Control totals** — count and sum records at each stage and compare. The cheapest control that exists, and it catches the most common failure: silent record loss between stages.
+- **Reconciliation to the general ledger** — risk figures must tie to the accounting books.
+- **Exception queues** — failed records go somewhere visible and get worked. They are never dropped silently.
+- **Suspense treatment** — records that cannot be classified are held in a named bucket, reported, and cleared. An unclassified record must never vanish.
+- **Golden source** — for each critical field, one system is designated authoritative. Without this, two correct answers exist and neither can be defended.
 
-### 9.6 Exceptions and control totals
+**Trap — a reconciliation that always passes is usually not a control.** If it nets differences, tolerates unexplained variances, or reconciles a feed to itself, it proves nothing.
 
-At each hand-off, **control totals** establish source counts and amounts; an **exception queue** retains failed records.
+### 9.6 The data layer
 
-| Control | Required detail |
+Risk and treasury data is relational, and the analyst is expected to interrogate it directly.
+
+| Structure | What it holds |
 |---|---|
-| Capture | Key, rule, date, affected amount, cause |
-| Assignment | Owner and due date |
-| Resolution | Source, code or definition correction |
-| Override | Permitted treatment, approver, reason |
-| Ageing | Escalate old/material or recurring exceptions |
-| Prevention | Correct capture or upstream dependency |
+| Exposure or position table | One row per facility or instrument, per date |
+| Counterparty table | One row per borrower, with rating and group linkage |
+| Collateral table | Security held, with valuations and linkage to facilities |
+| Cash flow table | Dated contractual and behavioural cash flows |
+| Reference tables | Product codes, currencies, rate curves, mappings |
 
-**Trap — a technically successful batch can contain economically incomplete output.** Completion status and population completeness are different controls.
+The operations that matter in practice:
 
-Source totals reconcile to accepted records, held exceptions and documented exclusions without double counting. Match currency, amount basis and grain.
+- **Joins** — linking exposures to counterparties, collateral and reference data. A wrong join type is the most common cause of a number being silently too large or too small.
+- **Aggregation** — grouping and summing to portfolio, sector or bucket level.
+- **Filtering by date** — almost every risk table is dated, and picking the wrong as-of date produces a plausible, wrong answer.
+- **Null handling** — a missing value is not zero, and treating it as zero is how missing data becomes a wrong number instead of an exception.
+
+**Trap — an inner join silently drops exposures.** If a facility has no matching counterparty record, an inner join removes it from the total. The report balances, the sum is short, and nothing raises an error. Left joins plus a null check are how completeness is preserved and the gap made visible.
+
+### 9.7 Models
+
+Several numbers in this document are model outputs: PD, LGD, EAD, ECL, behavioural maturity, prepayment rates, VaR.
+
+A model has three parts: **inputs**, **methodology**, **assumptions**. Model risk is the risk of loss from any of the three being wrong or wrongly applied.
+
+- **Validation** is independent review before use and periodically after.
+- **Back-testing** compares what the model predicted with what subsequently happened.
+- **Benchmarking** compares it against an alternative approach.
+- **Overlays** are management adjustments applied on top of a model output, used when the model cannot capture current conditions. They must be documented, quantified and governed, because an undocumented overlay is indistinguishable from an arbitrary number.
+
+**Trap — a model's outputs inherit the quality of the data feeding it.** A validated methodology running on incomplete exposure data produces a precisely calculated wrong answer, and the validation will not catch it.
+
+---
 
 ## 10. How the numbers are proved and submitted
 
-A **regulatory return** submits defined supervisory information; management reports support decisions. The **reporting estate** inventories outputs, populations, owners, dependencies and deadlines.
-
 ### 10.1 The reporting estate
 
-| Output | What is produced | Production responsibility |
+| Report | Audience | Broad frequency |
 |---|---|---|
-| Capital adequacy | Capital, RWA, ratios | Reporting with Risk/Finance |
-| Classification/provisioning | Advances, NPAs, provisions | Reporting with Risk/Finance |
-| CRILC | Borrower exposure/stress | Reporting with credit-data owners |
-| Large exposures | Single/group exposures and limits | Reporting with Risk |
-| LCR | HQLA, outflows, inflows | Reporting with Treasury |
-| NSFR | ASF and RSF | Reporting with Treasury |
-| SLS | Bucket/cumulative gaps | Reporting with ALM |
-| Rate sensitivity | Repricing/sensitivities | ALM with Reporting |
-| Form A/reserve maintenance | NDTL and reserve evidence | Finance/Reporting |
-| Intraday liquidity | Usage, resources, timing | Treasury/payment-data owners |
-| Pillar 3 | Public risk/capital disclosure | Reporting with Risk/Finance |
-| Internal liquidity pack | Buffer, funding, concentration, limits | Treasury/BAU |
+| LCR return | RBI | Monthly, with daily internal monitoring |
+| NSFR return | RBI | Quarterly |
+| Structural liquidity statement | RBI | Periodic |
+| Form A — CRR and SLR position | RBI | Fortnightly |
+| Large exposures and concentration | RBI | Periodic |
+| Provisioning and asset classification | RBI | Quarterly |
+| ALCO pack | Internal — the asset-liability committee | Monthly |
 
-Reporting calendars retain entity-specific frequency, cut-off and filing deadline.
+The **ALCO** — asset-liability committee — is the internal body that sets and monitors balance sheet risk appetite. Its pack is internal, and in practice it attracts the most senior attention, so the analyst treats it with the same rigour as a regulatory return.
 
-| Output | Operating cadence | Recipient |
-|---|---|---|
-| Capital adequacy | Quarterly | RBI |
-| Classification/provisioning | Quarterly | RBI |
-| CRILC | Periodic; specified stress reporting weekly | RBI credit-information process |
-| Large exposures | Quarterly | RBI |
-| LCR | Monthly return; often daily internally | RBI; Treasury |
-| NSFR | Quarterly | RBI |
-| SLS | Fortnightly | RBI; ALM |
-| Rate sensitivity | Monthly | RBI; ALCO |
-| Form A/reserve maintenance | Fortnightly reporting; applicable maintenance monitoring | RBI |
-| Intraday liquidity | Monthly or on request | Supervisor; Treasury |
-| Pillar 3 | Half-yearly | Public |
-| Internal liquidity pack | Daily | Treasury; ALCO |
+### 10.2 One exposure, several returns
 
-Form A and CRR/SLR maintenance evidence require exact template mappings, not a generic reserve-reporting label.
+A single ₹50 crore corporate loan appears in the liquidity return as a dated inflow, in the capital return as a risk-weighted exposure, in the provisioning return with its classification and allowance, and in the large exposure return against the group limit.
 
-**Trap — do not infer a filing schedule from a ratio’s measurement horizon.** Thirty-day stress does not mean “report once every thirty days”.
+Each return applies a different basis, so the figures differ legitimately. What must be true is that they all trace to the same underlying record. When two returns disagree in a way that cannot be explained by their bases, the difference is a defect, not a presentation choice.
 
-| Overseas term | Scope |
-|---|---|
-| **Additional Liquidity Monitoring Metrics (ALMM)** | Additional liquidity, maturity and funding information |
-| **Prudential Regulation Authority (PRA) 110** | Relevant overseas cash-flow mismatch return |
-| **Internal Liquidity Adequacy Assessment Process (ILAAP)** | Internal liquidity adequacy |
-| **Common Reporting (COREP)** | Prudential reporting framework |
-| **Financial Reporting (FINREP)** | Accounting-oriented framework |
-
-These require their own mappings; they are not direct substitutes for Indian outputs.
-
-### 10.2 The same exposure in several returns
-
-| Loan destination | Derived measure | Common record/evidence |
-|---|---|---|
-| Accounting/provisioning | GCA, allowance, net amount, expense | Facility, EIR, stage, walk |
-| Capital | Exposure, weight, RWA | Facility, date, protection, classification |
-| CRILC | Borrower exposure/stress | Obligor/facility population |
-| Large exposures | Group claim against limit | Connected-counterparty structure |
-| Liquidity | Expected dated receipts | Repayment and impairment treatment |
-
-**Trap — consistency does not mean equal amounts.** The same facility can have different principal, carrying amount, EAD and RWA. The required proof is a controlled bridge between them.
-
-A government-security record likewise supports accounting, statutory eligibility, HQLA, RSF, realisation timing and rate sensitivity.
+**Trap — consistency does not mean identical numbers.** It means every difference is explainable by a documented difference in basis.
 
 ### 10.3 Reconciliation and movement analysis
 
-| Control | Comparison | Explanation |
+Two controls, constantly confused, both required.
+
+| | Reconciliation | Movement analysis |
 |---|---|---|
-| Population reconciliation | Source/target, same date | Missing, extra, held, excluded |
-| Accounting reconciliation | Risk/GL | Scope, accrual, valuation, adjustments |
-| Cross-return reconciliation | Related period outputs | Definitions and aggregation |
-| Movement analysis | Current/previous period | Business, method, data, correction |
+| Question | Does this agree with an independent source? | Why is this different from last period? |
+| Compares | Report against the general ledger or source | This period against the prior period |
+| Failure means | The number may be wrong | The number may be right and unexplained |
 
-**Reconciliation** explains differences between position views; **variance analysis** explains period changes.
+A number that reconciles but cannot be explained is not yet defensible. A movement of ₹14 crore in the allowance must decompose into new lending, stage migration, changes in inputs, write-offs and recoveries. If a residual remains, something is unidentified — and the residual is where errors hide.
 
-**Trap — RWA does not equal the ledger’s advances balance.** Reconcile the underlying exposure to the ledger, then explain conversion, mitigation and risk weighting.
+### 10.4 Ownership
 
-Reconciliation bases include gross/net, interest accrual, currency, commitments, entity and cut-off. Movements include lending, repayments, migration, defaults, parameters, market changes, overlays and approved corrections; label methodology changes explicitly.
+Every reported number has a named owner accountable for it. Not the team that runs the process — a person who can explain the figure, defend the assumptions, and authorise a change.
 
-**Trap — agreeing closing totals can conceal offsetting errors.** Analyse relevant categories and the underlying contributors.
+Where ownership is vague, three failures follow: no one challenges the number, no one funds the data fix, and no one can answer a supervisory question without a week of archaeology.
 
-### 10.4 Lineage and the first broken hand-off
+### 10.5 Submission discipline
 
-**Data lineage** traces a submitted amount through transformations to its source: key, date, extraction run, reference data, model/rule version and mapping.
+- **As-of date** — the position date the return describes
+- **Submission date** — when it must reach the regulator
+- **Cut-off** — the point after which late data goes into the next cycle, not this one
+- **Restatement** — the defined process for correcting a submitted figure, including notification
 
-A **snapshot** retains a date-and-run view; **cut-off** defines cycle inclusion. Late-entered valuations can leave a frozen snapshot stale despite a correct later live run.
-
-**Trap — a valuation-age check alone cannot detect every missed same-day update.** Update completeness and extract sequencing must also be controlled.
-
-A **downstream extract** leaves one platform layer for another.
-
-| Validation | Evidence | Failure isolated |
-|---|---|---|
-| Completeness | Counts/amounts including exceptions | Lost/duplicated population |
-| Reconciliation | Independent source/accounting | Wrong position/basis |
-| Rule | Independent recomputation | Wrong transformation/calculation |
-| Regression | Established behaviour retained | Unintended change |
-
-Find the first incorrect boundary, then fix capture, timing, mapping or methodology—not merely the current run.
-
-### 10.5 The controlled production cycle
-
-| Stage | Evidence | Gate |
-|---|---|---|
-| Cut-off/acceptance | Identified snapshot | Feeds/exceptions accounted for |
-| Compute | Versioned exposure results | Approved inputs/rules |
-| Reconcile | Explained differences | Material breaks resolved/treated |
-| Movement | Supported drivers | Changes understood |
-| Review | Independent challenge | Reviewer evidence |
-| Attest | Specific-output approval | Authorised sign-off |
-| Submit | Filed output/status | Deadline met |
-| Correct | Restatement/remediation record | Controlled follow-up |
-
-**Four-eyes review** separates preparer and reviewer. **Attestation** formally asserts accuracy/completeness. An **audit trail** records who, what, when and why; **restatement** corrects a prior period.
-
-Adjustments retain affected records/cells, amount, reason, preparer, approver and permanent fix reference; reproduce the submitted number including them.
-
-**Trap — a recurring adjustment is evidence about the system, not merely about the current return.** It can indicate that the production process depends on an unimplemented rule or unresolved source defect.
+**Trap — the calculation is rarely the binding constraint.** The timetable is. Data arriving after cut-off, a late feed, or an unresolved exception queue causes more late and wrong submissions than any formula.
+---
 
 ## 11. How the reporting machine is built and changed
 
-The design must preserve each balance-sheet and commitment record while implementing approved meaning.
+This section is the job description. Everything before it is the subject matter the job is about.
 
-### 11.1 The documents that make the build testable
+### 11.1 The shape of the work
 
-| Artefact | Contains | Signs |
+A treasury or credit risk reporting workstream is almost always one of four things:
+
+1. A **new return** the regulator has introduced
+2. A **changed definition** in an existing return
+3. A **new source** feeding an existing calculation
+4. A **remediation** — a number is wrong and must be fixed at its cause
+
+All four run the same sequence.
+
+### 11.2 The sequence
+
+| Stage | What it produces | Signed off by |
 |---|---|---|
-| Concept paper | Problem, target, scope, options, benefits, dependencies | Sponsor/business owners |
-| Methodology | Regulatory basis, calculation, assumptions, boundaries, limitations | Methodology owner/Reporting |
-| **Business requirements document (BRD)** | Behaviour, data, controls, outputs, timing, acceptance | Impacted business |
-| Mapping | Source, target, rules, exceptions | Rule owner |
-| Feed specification | Population, format, timing, history, totals | Source owner/Technology |
-| Test strategy/pack | Coverage, expected results, evidence, gates | Business/test owners |
+| Requirements | What the number must be and why | Number owner and risk |
+| Source assessment | Whether the data can support it | Data owners and technology |
+| Mapping specification | Field-by-field rules from source to target | Technology, risk, owner |
+| Build | The pipeline and calculation | Technology |
+| Test | Evidence the output is correct | Business and technology |
+| Parallel run | Old and new producing side by side | Number owner |
+| Cutover | The switch, with rollback defined | Governance forum |
 
-**Functional requirements** specify behaviour; **non-functional requirements** specify volume, timing, retention, availability and auditability. **Acceptance criteria** state observable pass conditions.
+### 11.3 Requirements
 
-A **traceability matrix** links requirement, methodology, mapping, implementation, test and evidence.
+A requirement for a reported number states four things: the **definition** (what is being measured), the **population** (which records are in and out), the **basis** (contractual or behavioural, gross or net, which date), and the **treatment of edge cases**.
 
-**Trap — a vendor release note is not the bank’s methodology paper.** Product behaviour still needs to be compared with the bank’s approved interpretation.
+Edge cases are where reporting projects fail. Undrawn commitments, pledged assets, intragroup balances, foreign currency positions, restructured loans, off-balance-sheet items — each has a defensible answer and none has an obvious one.
 
-### 11.2 Selecting a new source
+**Trap — ambiguity is discovered in testing, not in build.** A specification saying "include corporate exposures" without defining what counts as corporate will be built two different ways by two developers, and both will pass a review that asks only whether the code matches the spec.
 
-Confirm the output need; assess candidates; nominate authority; profile actual data; resolve gaps; specify delivery. **Profiling** measures source content and quality.
+### 11.4 Source assessment
 
-| Assessment | Evidence | Design consequence |
-|---|---|---|
-| Population/nulls | Counts and missing values | Usable coverage |
-| Maintenance | Named owner and operational use | Dependability |
-| Update rate/lag | Frequency and delay | Fitness for reporting cadence |
-| History | Depth and retained changes | Back-testing/parallel run |
-| Extract window | Completion relative to cut-off | Batch dependency |
-| Authority | Original versus copied field | Golden-source choice |
-| Corrections | Backdating/history behaviour | Restatement design |
+Before accepting a feed, establish:
 
-**Trap — an available column is not necessarily an available source.** Authority, quality, history and timing decide whether it can support the return.
-
-### 11.3 The pipeline and its physical layers
-
-**Extract, transform, load (ETL)** copies source data, applies mappings/enrichment and writes target structures.
-
-| Layer | Physically holds | Obligation |
-|---|---|---|
-| Source | Transaction/contract applications | Known population/cut-off |
-| Staging | Raw extracts as received | Immutable run-identified records |
-| Risk warehouse | Conformed granular tables and links | Consistent definitions/history |
-| Engines | Calculations and exposure results | Versioned methods/inputs |
-| Reporting | Aggregations, template cells, files | Traceable mapping/evidence |
-
-**Immutable** means retained data cannot silently be overwritten; a **warehouse** organises data for combined analysis.
-
-**Trap — overwriting last period’s source snapshot destroys the evidence needed to explain a movement.** Retaining only the latest balance is insufficient for restatement and parallel run.
-
-| Extract | Full | Incremental |
-|---|---|---|
-| Sends | Entire population | Changes since a defined point |
-| Benefit | Direct total comparison | Lower volume |
-| Risk | Processing window exceeded | Missed updates/deletions |
-| Proof | Source totals | Change capture plus population checks |
-
-Include closures, deletions and backdating. A **batch window** is available processing time: specify start, dependencies, latest finish and downstream start in a stated time zone. Define late-data and prior-period correction treatment explicitly.
-
-### 11.4 Database structure and investigation
-
-**Oracle** is a relational database platform; **relational databases** link tables by keys.
-
-| Object/control | Meaning | Reporting consequence |
-|---|---|---|
-| Schema | Named object collection | Layer/ownership |
-| View | Saved query presented as a table | Logic can sit in the view |
-| Partition | Physical table subdivision | Efficient date processing |
-| Stored procedure | Database-executed logic | Rules can sit outside engine |
-| Referential integrity | Valid related-record links | Prevents orphaned records |
-
-**Trap — partitioning by date does not by itself preserve history.** Retained snapshots, versioned rules and controlled restatements make a prior result reproducible.
-
-**Structured Query Language (SQL)** retrieves, joins and aggregates; **set-based processing** applies rules to record collections.
-
-| Investigation | Query evidence |
+| Question | Why it matters |
 |---|---|
-| Reconciliation | Same date/entity/basis totals |
-| Movement | Facility changes across periods |
-| Lineage | First layer divergence |
-| DQ | Nulls, duplicates, invalid links |
-| Control | Violations including exception conditions |
-| Acceptance | Independently calculated differences |
+| Is it complete? | A partial feed produces a plausible, understated number |
+| Is it timely? | Data after cut-off is useless regardless of quality |
+| Is it granular enough? | Aggregated data cannot be re-bucketed later |
+| Is it authoritative? | If it is a copy, the original may move without it |
+| How does it handle change? | Late corrections, backdated amendments, reversals |
 
-**Trap — a join that duplicates a facility can create an apparently valid higher total.** Check row counts and grain before and after joins, particularly for collateral and cash-flow relationships.
+Granularity is the one that cannot be fixed afterwards. If a feed arrives pre-summed, no downstream work recovers the detail needed to bucket it differently when a definition changes.
 
-### 11.5 The mapping contract
+### 11.5 Mapping specification
 
-| Element | Required precision |
+Field by field: **source field → transformation rule → target field**, plus defaults, permitted values, and what happens when the rule cannot be applied.
+
+That last column is the one that gets skipped and the one that matters. "What happens when this is null" must have a written answer — reject to an exception queue, apply a stated default, or fail the run. Left unanswered, the pipeline chooses silently, and silence becomes a wrong number.
+
+### 11.6 The pipeline
+
+**ETL — extract, transform, load** — is the movement of data from source to reporting layer.
+
+| Layer | What it physically is |
 |---|---|
-| Source | Exact authoritative system/field |
-| Target | Field and row grain |
-| Transformation | Rule, precedence, units, dates |
-| Null handling | Rejection, derivation or justified default |
-| Dependency | Reference, model, curve version |
-| Owner/reference | Accountable person and effective basis |
-| Control | Completeness and correctness proof |
+| Extract | A copy of source data, unchanged, timestamped |
+| Staging | The raw copy held for validation and reconciliation to source |
+| Transform | Rules applied — mapping, enrichment, derivation, bucketing |
+| Calculation | The measure computed from transformed data |
+| Reporting layer | The presented figures and the store behind the return |
 
-**Null** means absent/unknown; zero is known. Preserve raw evidence separately from derived classifications, contractual dates from behavioural dates and original valuations from recognised protection.
+Keeping the raw extract is what makes investigation possible. Transforming on arrival destroys the evidence that would show whether a defect was source or transformation.
 
-### 11.6 Dependencies, release planning and handover
+### 11.7 Testing
 
-A **dependency map** connects upstream inputs to affected outputs.
-
-| Change | Impact |
+| Stage | What it proves |
 |---|---|
-| Product/entity | Classification/population |
-| Behavioural model | Liquidity, rate risk, FTP |
-| Vendor release | Calculation |
-| Chart of accounts | GL reconciliation |
+| Unit | One rule behaves as specified |
+| Integration | Stages hand over correctly between systems |
+| System | End-to-end output is correct for known inputs |
+| User acceptance | The business agrees this is the number it asked for |
+| Regression | Existing correct outputs did not break |
 
-The **chart of accounts** structures ledger accounts.
+**Expected results are written before the test is run.** Otherwise the test documents whatever the system produced, which is not a test but a transcript.
 
-| Record | Meaning | Discipline |
-|---|---|---|
-| Risk | Might happen | Owner, impact, mitigation, review |
-| Assumption | Unproved belief | Validation date/escalation |
-| Issue | Has happened | Action owner/date |
-| Dependency | Needs another delivery | Owners on both sides/date |
+Test data must include the awkward cases: the null, the backdated amendment, the record at a bucket boundary, the negative balance, the foreign currency item, the record that fails a data quality rule. A pack of clean records proves only that the happy path works, and the happy path was never the risk.
 
-These form the **risks, assumptions, issues and dependencies (RAID)** log.
+### 11.8 Parallel run and cutover
 
-**Trap — an unvalidated source-quality assumption is unfinished analysis.** It can become a reporting defect as soon as production depends on it.
+**Parallel run**: the old process and the new one produce the same number, for the same date, side by side.
 
-**Change** implements capability; **run** produces recurring outputs. Protect cut-offs and batch windows; schedule reviews around close demands. Across centres, govern methodology, local variations, reference ownership and time zones.
+Every difference must be **explained**, not netted. A total that matches while components offset each other is two errors, not a pass.
 
-Prioritise deadline, current reporting risk, dependencies, benefit, then effort.
+Cutover requires the parallel run signed off by the number owner, a dated switch with a named decision-maker, a rollback plan that is actually executable, and heightened review of the first live submission.
 
-## 12. How the machine and its models are proved
+### 11.9 Dependencies
 
-Tests must prove the changed asset, funding or commitment calculation and its failure controls.
+What actually delays this work:
 
-### 12.1 Expected results before execution
+- **Upstream data** — a source system change that has not happened yet
+- **Definitional sign-off** — an edge case awaiting a policy decision
+- **Environment and access** — production-like test data arriving late
+- **Regulatory timing** — a submission date that will not move
+- **Competing change** — another project altering the same feed in the same window
 
-A **test case** ties defined input and expected behaviour to a requirement.
+The last is the most commonly missed. Two projects changing one source in parallel will each test successfully in isolation and break together in production.
 
-| Element | Required evidence |
-|---|---|
-| Requirement | Approved methodology link |
-| Input | Records, attributes, dates |
-| Expected | Independent category, amount, downstream effect |
-| Actual | Identified-run output |
-| Result | Comparison, pass/fail, defect |
+---
 
-Trace attribute → category → factor → amount → aggregation → return where affected.
+## 12. The connections that make this one subject
 
-**Trap — deriving the expected result from the engine output only proves that the output was copied.**
+Each of these is one fact appearing in several places. They are the links that separate someone who has read about the subject from someone who has worked in it.
 
-### 12.2 Coverage and test stages
+**1. One behavioural assumption, three consequences.** What you assume about how long deposits stay drives the FTP credit the branch receives, the outflow rate in the LCR, and the repricing bucket in EVE. One assumption, three numbers, three owners — each still applying its own calculation rules on top.
 
-**Coverage** establishes which requirements, branches and operating conditions were exercised.
+**2. One exposure record, several measures.** The same loan produces an ECL provision, a risk-weighted asset, a dated liquidity inflow and a line in a large exposure return. Different bases, legitimately different figures, one underlying record they must all trace to.
 
-| Coverage | Proves | Missing coverage risks |
-|---|---|---|
-| Requirement | All requirements tested | Omitted functionality |
-| Branch | Material rules exercised | Untested treatment |
-| Boundary | Threshold/date edges | Wrong inclusion |
-| Negative | Approved invalid-input path | Silent defaults |
-| Volume | Full run within window | Late result |
-| End to end | Record reaches correct return | Broken chain |
+**3. Deterioration hits capital from both ends.** A downgrade raises RWA and raises the provision. The denominator grows, the numerator shrinks, and it happens before any default.
 
-| Stage | Proves | Defect means |
-|---|---|---|
-| Unit | Component meets specification | Local rule error |
-| Integration | Components exchange/interpret data | Interface or hand-off error |
-| **User acceptance testing (UAT)** | Intended business outcome | Requirement not met |
-| Regression | Existing correct behaviour remains | Unintended break |
-| Parallel run | Old/new differences understood | Unexplained population, rule or result difference |
+**4. The book boundary decides everything downstream.** Banking or trading determines the valuation basis, the risk measure, the capital treatment and the return it lands in. Set at inception, rarely changeable.
 
-**Trap — the number of test cases does not establish coverage.** Missing reject-path testing can leave the most consequential DQ control unproved.
+**5. A missing field breaks a named number.** Maturity date missing means the LCR bucket is wrong and the FTP tenor is wrong. That is why the data quality rule exists, and it should be written that way.
 
-### 12.3 Defects and cutover
+**6. FTP and NSFR see the same deposit differently.** FTP prices its funding value; NSFR weights its stability. Same liability, two questions.
 
-**Severity** measures business consequence; a **backlog** is prioritised unfinished work.
+**7. Provisions and capital are not alternatives.** Provisions cover expected loss, capital covers unexpected loss. Raising one does not remove the need for the other.
 
-| Severity | Consequence | Treatment |
-|---|---|---|
-| Critical | Unavailable/materially wrong return | Fix before cutover |
-| High | Material affected-population error | Fix or explicit approved treatment |
-| Medium | Limited immaterial defect | Controlled deferral where permitted |
-| Low | Cosmetic | Backlog |
+**8. The allowance is a stock, the charge is a flow.** The walk between them is what must be explained, and the unexplained residual is where the error hides.
 
-Triage source/transformation/definition; retest independently against the original expected result.
+---
 
-**Trap — agreement with the old system is not proof of correctness.** An approved correction can deliberately change the result. An unexplained difference remains a defect until resolved.
+## 13. One-page compression
 
-**Cutover** switches production; **rollback** returns to the prior process if needed.
+1. Assets = Liabilities + Equity. Losses eat equity.
+2. Allowance, capital and cash are three different things.
+3. Expected loss is provisioned. Unexpected loss is capitalised.
+4. EL = PD × LGD × EAD — three inputs answering three different questions.
+5. Collateral lowers LGD, not PD.
+6. Collateral value is not recovery value — haircut, costs, delay.
+7. EAD includes undrawn limits, because distressed borrowers draw them.
+8. EIR is fixed at origination; market yield moves daily. Not the same rate.
+9. Stage 1 limits the default window to 12 months, not the losses to 12 months.
+10. SICR is measured against risk at origination, not an absolute level.
+11. IRAC Standard does not mean ECL Stage 1.
+12. A write-off does not create a loss; it removes an asset already provided against.
+13. Deterioration raises RWA and cuts capital at the same time.
+14. Yield up, price down. Spread up, price down. Same direction.
+15. Notional is not exposure. Market value is not exposure either.
+16. Maturity and repricing are different dates.
+17. Contractual and behavioural life are different, and behavioural is what gets used.
+18. A core percentage is not proof of a behavioural life.
+19. LCR is 30 days under stress. NSFR is one year and structural.
+20. LCR inflows are capped — you cannot assume you are paid while assuming you are run on.
+21. LCR can rise while HQLA falls in rupees. Read both halves.
+22. Pledged assets are not available assets.
+23. NII is earnings over a year; EVE is value over the whole life. Both, always.
+24. FTP allocates the spread into three margins; it does not create profit.
+25. FTP prices at the behavioural tenor, not the contractual one.
+26. Undrawn commitments cost something before they are drawn — the contingent liquidity charge.
+27. Wrong is source, transformation or definition. Find the first incorrect hand-off.
+28. A data quality rule protects a named reported number.
+29. Reconciliation asks "does it agree". Movement analysis asks "why did it change". Both.
+30. An inner join silently drops exposures and the report still balances.
+31. Expected results are written before the test runs.
+32. In a parallel run, explain every difference — never net them.
+33. Granularity lost at source cannot be recovered downstream.
+34. Every reported number has a named human owner.
 
-| Step | Required evidence | Gate/owner |
-|---|---|---|
-| Parallel production | Same period/population | Comparable runs |
-| Difference analysis | Line-level causes and intended corrections | Business/Reporting approval |
-| Readiness | UAT and material defects resolved | Business acceptance |
-| Rollback | Tested recovery route | Technology/run readiness |
-| Go/no-go | Named decision and accepted difference log | Sponsor/Reporting |
-| First cycle | Heightened review and controlled output | Production owners |
-| Handover | Instructions, ownership, limitations, exceptions | BAU acceptance |
+---
 
-### 12.4 The models supplying the fields
-
-A **model** estimates from data and assumptions; PD, LGD, CCF and deposit behaviour feed both balance-sheet sides.
-
-A **scorecard** combines borrower characteristics into a ranking/rating score. **Logistic regression** maps weighted inputs to a probability.
-
-$$PD=\frac{1}{1+\exp\left[-\left(\beta_0+\sum_i\beta_i x_i\right)\right]}$$
-PD = predicted default probability; β0 = intercept; βi = fitted weight on driver xi; exp = exponential function; i = each input driver.
-
-Document whether higher scores mean safer or riskier. Test economic direction, stability and reproducibility; method choice does not guarantee them. LGD/CCF methods must fit their target and boundaries.
-
-### 12.5 Ranking, levels and population fit
-
-| Property | Question | Evidence |
-|---|---|---|
-| Discrimination | Riskier borrowers ranked worse? | Default/non-default separation |
-| Calibration | Probability levels correct? | Predicted/observed rates |
-| Stability | Population still fits evidence? | Input/score distribution shift |
-
-The **receiver operating characteristic (ROC)** compares defaulters captured with non-defaulters flagged across cut-offs. **Area under the receiver operating characteristic curve (AUROC)** measures ranking separation: the probability a random defaulter ranks worse than a random non-defaulter.
-
-**Gini** rescales AUROC.
-
-$$Gini=2\times AUROC-1$$
-AUROC = area under the ROC curve; Gini = corresponding rescaled discrimination measure.
-
-The **Kolmogorov–Smirnov (KS)** statistic measures maximum cumulative-score separation.
-
-**Trap — strong discrimination does not establish correct PD levels.** A model can rank borrowers well while understating every allowance and capital input.
-
-An **obligor-year** is one borrower observed annually. Compare calibration by grade/segment with uncertainty; portfolio averages can hide offsetting failures. Match PIT/TTC horizons and observation conditions. Calibration can alter probability levels without changing ranking.
-
-The **population stability index (PSI)** measures distribution change.
-
-$$PSI=\sum_i(A_i-E_i)\times\ln\left(\frac{A_i}{E_i}\right)$$
-Ai = current population share in band i; Ei = reference share in that band; ln = natural logarithm; bands and treatment of zero shares must be specified.
-
-**Trap — PSI is not a loss estimate or an overlay amount.** Drift prompts investigation of cause and model suitability; it does not automatically quantify the financial correction.
-
-### 12.6 Model governance and implementation proof
-
-| Defence | Responsibility | Evidence |
-|---|---|---|
-| First | Develop, use, document, monitor | Owned model/performance records |
-| Second | Independently validate/challenge | Approval, conditions or rejection |
-| Third | Audit governance | Assurance over both lines |
-
-A **model inventory** retains purpose, owner, version, materiality and validation status. **Tiering** scales scrutiny. Validate concepts, data, implementation, outcomes, benchmarks and limitations.
-
-**Look-ahead information** was unavailable at prediction time and can inflate development performance.
-
-**Trap — a correct methodology can be implemented incorrectly.** Independent recomputation tests production code, including data transformations and parameter versions.
-
-A **challenger model** benchmarks production. Carry limitations into use; give monitoring breaches actions and owners; independent validation must be able to withhold approval.
-
-## 13. Consolidated acronyms
-
-Across advances, investments, funding and the reporting chain, these abbreviations identify the measures, institutions and controls.
+## 14. Acronyms
 
 | Acronym | Expansion |
 |---|---|
-| ALCO | Asset and liability committee |
+| ALCO | Asset-liability committee |
 | ALM | Asset and liability management |
-| ALMM | Additional Liquidity Monitoring Metrics |
 | ASF | Available stable funding |
-| AT1 | Additional Tier 1 |
-| AUROC | Area under the receiver operating characteristic curve |
-| BAU | Business as usual |
 | BCBS | Basel Committee on Banking Supervision |
-| BCBS 239 | BCBS principles for risk data aggregation and risk reporting |
-| bp | Basis point |
-| BRD | Business requirements document |
 | CCF | Credit conversion factor |
-| CCIL | Clearing Corporation of India Limited |
-| CET1 | Common Equity Tier 1 |
-| COREP | Common Reporting |
-| CRILC | Central Repository of Information on Large Credits |
+| CET1 | Common equity tier 1 |
 | CRR | Cash reserve ratio |
-| CSA | Credit support annex |
-| CVA | Credit valuation adjustment |
-| DF | Discount factor |
-| DPD | Days past due |
-| DQ | Data quality |
-| DRT | Debt Recovery Tribunal |
-| DV01 | Dollar value of one basis point; expressed in the position’s reporting currency |
+| DV01 | Rupee value of one basis point |
 | EAD | Exposure at default |
 | ECL | Expected credit loss |
 | EIR | Effective interest rate |
 | EL | Expected loss |
-| ES | Expected shortfall |
 | ETL | Extract, transform, load |
 | EVE | Economic value of equity |
-| FINREP | Financial Reporting |
 | FTP | Funds transfer pricing |
-| FVOCI | Fair value through other comprehensive income |
-| FVPL | Fair value through profit and loss |
-| FX | Foreign exchange |
-| GCA | Gross carrying amount |
-| GL | General ledger |
-| HHI | Herfindahl–Hirschman Index |
-| HQLA | High quality liquid assets |
-| IBC | Insolvency and Bankruptcy Code |
-| ICAAP | Internal Capital Adequacy Assessment Process |
-| ILAAP | Internal Liquidity Adequacy Assessment Process |
-| Ind AS | Indian Accounting Standard |
-| INR | Indian rupee |
-| IRAC | Income recognition, asset classification and provisioning |
-| IRB | Internal ratings based |
+| HQLA | High-quality liquid assets |
+| IRAC | Income recognition and asset classification |
 | IRRBB | Interest rate risk in the banking book |
-| KS | Kolmogorov–Smirnov |
-| LAF | Liquidity Adjustment Facility |
 | LCR | Liquidity coverage ratio |
 | LGD | Loss given default |
-| MIBOR | Mumbai Interbank Offered Rate |
-| MSF | Marginal Standing Facility |
-| NDTL | Net demand and time liabilities |
 | NII | Net interest income |
-| NOP | Net open position |
 | NPA | Non-performing asset |
 | NSFR | Net stable funding ratio |
-| OCI | Other comprehensive income |
-| OIS | Overnight indexed swap |
-| OTC | Over the counter |
-| P&L | Profit and loss |
 | PD | Probability of default |
-| PFE | Potential future exposure |
-| PIT | Point-in-time |
-| PRA | Prudential Regulation Authority |
-| PSI | Population stability index |
-| PV | Present value |
-| RAID | Risks, assumptions, issues and dependencies |
 | RBI | Reserve Bank of India |
-| ROC | Receiver operating characteristic |
+| RSA | Rate-sensitive assets |
 | RSF | Required stable funding |
+| RSL | Rate-sensitive liabilities |
 | RWA | Risk-weighted assets |
-| SARFAESI | Securitisation and Reconstruction of Financial Assets and Enforcement of Security Interest Act |
 | SICR | Significant increase in credit risk |
 | SLR | Statutory liquidity ratio |
-| SLS | Structural liquidity statement |
-| SMA | Special mention account |
-| SQL | Structured Query Language |
-| TREPS | Triparty Repo Dealing System |
-| TTC | Through-the-cycle |
-| UAT | User acceptance testing |
 | UL | Unexpected loss |
-| USD | United States dollar |
 | VaR | Value at risk |
-| WAL | Weighted average life |
-| YTM | Yield to maturity |
-
-## 14. One-page compression
-
-Across the whole balance sheet, the journey from one rupee of exposure to a submitted return reduces to these connections.
-
-1. **Assets are funded by liabilities and equity; losses reduce equity, while payments require cash.**
-2. **Book designation and accounting classification route the instrument to its measurement basis, risk framework and returns.**
-3. **Principal, GCA, market value, EAD and RWA are different measures of the same identified position.**
-4. **PD measures default likelihood; LGD measures loss severity; EAD measures the amount exposed.**
-5. **Recovery value falls when costs or collection delays rise; collateral value alone is not recovery.**
-6. **Undrawn commitments create credit exposure, stressed cash demand and a cost of supplying liquidity.**
-7. **Marginal PD weights period losses; conditional PD first needs survival weighting.**
-8. **Correlation changes aggregate tail risk; summing individual expected losses does not require independence.**
-9. **EIR carries the original lending yield; current market yield reprices a bond.**
-10. **Yield or credit spread up means conventional bond value down; DV01 expresses rate sensitivity in money.**
-11. **Rating and PD deterioration inform SICR; stage changes alter the allowance horizon and then the P&L charge.**
-12. **Stage 1 restricts the default window; it does not restrict resulting losses to twelve months.**
-13. **Stage 3 uses expected collections; interest moves to the net carrying amount.**
-14. **The allowance is a stock; impairment expense is a flow; the walk explains other movements separately.**
-15. **ECL and IRAC use different bases; Standard classification does not guarantee Stage 1.**
-16. **Deterioration can reduce capital and raise RWA together; falling RWA can follow a damaging loss.**
-17. **LCR measures stressed short-term coverage; NSFR measures structural funding support; intraday liquidity measures payment timing.**
-18. **A higher LCR can coexist with less HQLA in rupees; inspect numerator, denominator and cash timing.**
-19. **NII measures earnings sensitivity; EVE measures lifetime value sensitivity; neither replaces the other.**
-20. **Shared behavioural evidence affects FTP, liquidity outflows and EVE; each retains its own calculation rules.**
-21. **FTP prices the deposit’s funding value; NSFR weights its stability; both concern the same liability.**
-22. **FTP needs the right tenor, currency, curve vintage and charging base; internal entries must cancel.**
-23. **A missing field breaks a specific output; DQ controls protect that output and preserve visible exceptions.**
-24. **Source, transformation and definition defects need different owners; trace the first incorrect hand-off.**
-25. **Reconcile positions and explain movements; retain snapshots, rule versions, adjustments and approvals.**
-26. **Define expected results before execution; explain parallel-run differences before cutover; finish with a controlled production cycle.**
-
