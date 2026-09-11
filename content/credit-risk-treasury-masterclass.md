@@ -13,8 +13,6 @@ tags:
   - regulatory reporting
 ---
 
-This note covers what a credit risk, capital and regulatory reporting business analyst needs to hold in working memory. It assumes no banking background. Every term is defined before it is used. It follows one bank from the products it holds, through the risks those products create, to the returns it files with the regulator and the project work that produces them.
-
 Amounts are in Indian rupees, stated in ₹ crore. One crore is ten million.
 
 ---
@@ -185,17 +183,25 @@ Spread widens, price falls. Same direction as yield, because spread is part of y
 
 ### 2.6 Equities
 
-A **share** is ownership, not a promise to repay. There is no maturity and no contractual payment. A bank holds very little equity, because equity investments attract a punitive capital requirement.
+A **share** is ownership, not a promise to repay. There is no maturity, no contractual interest and no date on which anyone owes you anything. If the company does well the share is worth more; if it fails, shareholders are paid last, usually nothing.
+
+Banks hold very little equity, and the reason is the capital rules from section 5. Every asset is multiplied by a **risk weight** to produce the capital the bank must hold against it. A government bond might carry a weight of 0%, a good corporate loan 100%, an equity holding 250% or more. So ₹100 crore parked in shares forces the bank to hold several times the capital that the same ₹100 crore in loans would. The regulator is pricing the fact that equity has no floor and no repayment promise. The holding is not forbidden — it is made expensive enough that banks lend instead.
 
 ### 2.7 Foreign exchange
 
-Three shapes:
+Three shapes.
 
-- **Spot** — exchange at today's rate, settling in a couple of days
-- **Forward** — a rate agreed today for exchange on a future date
-- **FX swap** — a spot exchange combined with a reversing forward
+**Spot** — you exchange currency at today's rate, and the cash moves in a day or two. Ordinary conversion.
 
-A forward rate is not a prediction. It is today's spot adjusted for the interest rate difference between the two currencies.
+**Forward** — you agree today the rate at which you will exchange on a date months away. Nothing moves now. An importer who must pay dollars in six months uses one so the rupee cost is known today instead of being whatever the market does in the meantime.
+
+**FX swap** — two exchanges bolted together: you swap currencies now at the spot rate, and simultaneously agree to swap them back on a future date at an agreed forward rate. You have not taken a view on the exchange rate at all, because you end where you started. What you have done is borrow one currency and lend the other for that period. Treasury uses it to move surplus funding from a currency it has into a currency it needs, without changing the bank's overall currency position.
+
+The forward rate is not somebody's forecast. It is fixed by arithmetic, and here is the reasoning.
+
+Suppose rupee deposits earn 7% and dollar deposits earn 4%, and you want dollars in one year. You have two routes. Route one: convert to dollars today and earn 4% on them for the year. Route two: keep the rupees, earn 7%, and agree a forward rate now to convert at the end. Both routes start with the same rupees and end with dollars on the same day. If the forward rate made route two better, everyone would take route two, riskless, in unlimited size — so the forward rate must be set exactly where the two routes give the same answer. The 3% interest advantage on rupees is precisely offset by a weaker forward rate for the rupee.
+
+That is all the formula says.
 
 $$
 F = S \times \frac{1 + r_d}{1 + r_f}
@@ -208,32 +214,48 @@ where:
 - **r₍d₎** — domestic interest rate for the period
 - **r₍f₎** — foreign interest rate for the same period
 
-**Trap — a forward rate is not a forecast of future spot.** If it differed from the interest-rate-adjusted spot, a riskless profit would exist. The forward price is set by arbitrage, not by a view.
+The currency with the higher interest rate always trades weaker forward. That is a mechanical consequence, not a prediction that it will weaken.
+
+**Trap — a forward rate is not a forecast of future spot.** Actual spot in a year's time will be nothing like the forward, and that is not an error in the forward. The forward answers "what rate makes both routes equal today", not "where will the rupee be".
 
 ### 2.8 Derivatives
 
-A **derivative** takes its value from something else — a rate, a price, an index.
+A **derivative** is a contract whose value comes from something else — a rate, a price, an index. You are not buying the thing. You are buying an agreement about the thing.
 
-| Instrument | What it is |
-|---|---|
-| Forward | Obligation to transact later at an agreed price, privately agreed |
-| Future | The same, standardised, exchange-traded, margined daily |
-| Swap | Exchange of two payment streams over an agreed term |
-| Option | The right, not the obligation, to transact |
+**Forward.** An agreement made privately between two parties to buy something later at a price fixed today. Both sides are obliged. Whoever ends up on the wrong side of the market still has to perform. Because it is private, each side carries the risk that the other fails to settle.
 
-The **interest rate swap** is the one to actually know. One party pays a fixed rate, the other pays a floating rate, both calculated on an agreed **notional** amount, for an agreed term. Only the net difference changes hands each period. A bank uses it to convert fixed-rate exposure into floating or the reverse, which is why it reappears in the rate risk section.
+**Future.** The same economics, but standardised and traded on an exchange. The exchange sets the contract size and dates, stands between the two parties, and demands **margin** — cash posted up front and topped up daily as the position moves. The margining is the real difference: losses are settled every day, so nobody accumulates a large unpaid obligation. A forward accumulates; a future settles as it goes.
+
+**Swap.** An agreement to exchange two streams of payments over time. Nothing is bought, nothing is sold; two payment patterns are traded for each other.
+
+**Option.** The right, but not the obligation, to transact at an agreed price. The holder uses it only if it suits them, so the holder can never lose more than the premium paid at the start. The seller has the mirror image: they keep the premium and carry an obligation they cannot walk away from. That asymmetry is the whole instrument.
+
+| Instrument | Obliged? | Traded where | Settled how |
+|---|---|---|---|
+| Forward | Both sides | Privately | Once, at maturity |
+| Future | Both sides | Exchange | Margined daily |
+| Swap | Both sides | Mostly privately | Net, each period |
+| Option | Buyer chooses | Either | On exercise |
+
+### 2.9 The interest rate swap
+
+This is the one to actually understand, because it reappears in the rate risk section.
+
+Two parties agree a **notional** amount and a term. One pays a fixed rate on that notional each period; the other pays a floating rate that resets each period. Only the difference changes hands. The notional itself is never exchanged — it exists solely to size the payments.
+
+Why a bank uses it: suppose our bank has made a large book of fixed-rate loans, funded by deposits whose cost moves with the market. If rates rise, funding cost climbs while loan income stays fixed, and the margin is squeezed. By entering a swap where it pays fixed and receives floating, the bank converts that fixed income stream into a floating one that moves with its funding. The mismatch is neutralised without touching a single customer contract.
 
 **Trap — notional, market value and exposure are three different numbers.**
 
-| Number | Meaning |
-|---|---|
-| Notional | The reference amount used to calculate payments. Never exchanged. |
-| Market value | What the contract is worth today. Starts near zero, then moves. |
-| Credit exposure | What could be lost if the counterparty fails — market value plus an allowance for future movement |
+| Number | What it is | Rough size |
+|---|---|---|
+| Notional | Reference amount used to compute payments; never exchanged | ₹100 crore |
+| Market value | What the contract is worth today; starts near zero, then moves | A few crore either way |
+| Credit exposure | What could be lost if the counterparty fails — market value plus an allowance for future movement | Small relative to notional |
 
-Quoting notional as exposure overstates risk by orders of magnitude.
+Quoting notional as exposure overstates risk by orders of magnitude. A bank with ₹5,000 crore of swap notional does not have ₹5,000 crore at risk; it has the replacement cost of contracts currently in its favour.
 
-### 2.9 Market risk measures
+### 2.10 Market risk measures
 
 **Sensitivities** are first-order measures: how much value moves per unit move in the underlying. DV01 for rates, **delta** for options.
 
@@ -420,22 +442,41 @@ The move from Stage 1 to Stage 2 is the single largest driver of provision volat
 
 ### 4.5 The provision walk
 
-Two different things are constantly confused:
+Start with the two words that cause all the confusion.
 
-- **Allowance** is a **stock** — the balance sitting against the loan book at a date. Ours is ₹22 crore.
-- **Impairment expense** is a **flow** — the charge passing through profit in a period.
+- The **allowance** is a **balance**. It sits on the balance sheet, reducing the loan book. Ours is ₹22 crore. It is a number that exists at a point in time, like the level of water in a tank.
+- The **impairment charge** is a **movement**. It is what passes through the profit and loss account this quarter. It is the water flowing in.
+
+They are not the same thing and they are not the same size. The allowance can be ₹22 crore while this quarter's charge is ₹3 crore.
+
+The walk is simply the tank's arithmetic: what was in it, what flowed in, what drained out, what is in it now.
 
 $$
-\text{Closing allowance} = \text{Opening allowance} + \text{Charge} - \text{Write-offs} + \text{Recoveries} \pm \text{Other movements}
+\text{Closing allowance} = \text{Opening allowance} + \text{Charge} - \text{Write-offs} + \text{Recoveries}
 $$
 
 where:
 
-- **Charge** — the amount recognised in profit for the period
-- **Write-offs** — amounts removed as unrecoverable, which reduce both loan and allowance
+- **Opening allowance** — the balance at the start of the period
+- **Charge** — the amount recognised in profit this period, which raises the allowance
+- **Write-offs** — amounts removed from the books as unrecoverable, which drain the allowance
 - **Recoveries** — cash received on amounts previously written off
 
-A **write-off** does not create a loss. The loss was recognised when the allowance was raised. The write-off removes both the gross asset and the allowance, leaving the net figure unchanged. This surprises people every time.
+Take it one term at a time.
+
+**Opening.** Last quarter closed at ₹20 crore. That is where we begin.
+
+**Charge.** Over the quarter, some loans deteriorated, some new lending was written, some estimates were updated. The net effect is that the allowance needs to be bigger. Making it bigger costs profit — that cost is the charge. Say ₹4 crore.
+
+**Write-off.** A ₹2 crore loan is finally accepted as unrecoverable. Here is the part that surprises everyone: **the write-off does not create a loss.** The loss was already taken, quarters ago, when the allowance against that loan was raised. The write-off just cleans up the books — it removes ₹2 crore of gross loan and ₹2 crore of allowance at the same time. Gross falls, allowance falls, and the net loan figure does not move at all. Profit is untouched.
+
+**Recovery.** ₹0 crore this quarter. If money did come in on something previously written off, it would flow back in as a gain.
+
+**Closing.** 20 + 4 − 2 + 0 = **₹22 crore**. That is the ₹22 crore on our balance sheet.
+
+Why anyone cares: management and the regulator both want the ₹2 crore increase explained, not just stated. So the charge is decomposed further — how much came from new lending, how much from loans migrating between stages, how much from changed assumptions, how much simply from loans ageing. If the pieces do not add up to the total, there is an unexplained residual, and the residual is where errors live. This decomposition is one of the most common things a reporting analyst is asked to produce.
+
+**Trap — allowance is a stock, charge is a flow.** "Our provisions went up by ₹4 crore" and "we hold ₹22 crore of provisions" are answers to different questions. Being asked for one and giving the other is the fastest way to look like you have not done this work.
 
 ### 4.6 IRAC — the Indian prudential classification
 
@@ -496,7 +537,40 @@ where:
 | Data demand | Moderate | Heavy — long histories, validated models |
 | Supervisory approval | Not required for weights | Required, with ongoing validation |
 
-### 5.4 The leverage ratio
+### 5.4 The IRB formula and what it is called
+
+Under the internal ratings based approach, the bank's own PD, LGD and EAD are fed into a supervisory formula that produces the risk weight. That formula is the **asymptotic single risk factor (ASRF) model**, built on **Vasicek's** single-factor credit model. You will hear both names, and "the Basel IRB formula" refers to the same thing.
+
+The essential move is this. Regulatory capital covers **unexpected** loss, so the formula does not ask for the average PD. It asks: what would the default rate look like in a severely bad year? It takes the bank's ordinary PD and stresses it to a 99.9% adverse outcome of one common economic factor, then subtracts the expected loss that provisions already cover.
+
+$$
+K = \left[ LGD \times N\!\left( \frac{N^{-1}(PD) + \sqrt{R}\, N^{-1}(0.999)}{\sqrt{1-R}} \right) - PD \times LGD \right] \times M_{adj}
+$$
+
+where:
+
+- **K** — capital requirement per unit of exposure
+- **PD, LGD** — the bank's estimates
+- **R** — asset correlation, prescribed by the regulator, capturing how much borrowers move together
+- **N** and **N⁻¹** — the normal distribution function and its inverse
+- **0.999** — the supervisory confidence level, a one-in-a-thousand year
+- **M₍adj₎** — maturity adjustment, since longer exposures can deteriorate for longer
+
+$$
+RW = K \times 12.5
+$$
+
+where the 12.5 converts a capital requirement into a risk weight, being the reciprocal of the 8% minimum ratio.
+
+Three things to take from it, which is all you need:
+
+1. It is a **stressed** PD, not the normal one. Capital is for the bad year.
+2. **R**, the correlation, is prescribed rather than estimated, because correlation is what makes many borrowers fail at once and regulators will not let banks choose their own.
+3. Expected loss is explicitly subtracted, because provisions already cover it. The formula is doing the expected-versus-unexpected split from section 3.2 in algebra.
+
+**Trap — you are not expected to compute this.** You are expected to know what it is for, why the PD inside it is stressed, and that its inputs are exactly the data quality problem the rest of this note is about.
+
+### 5.5 The leverage ratio
 
 $$
 \text{Leverage ratio} = \frac{\text{Tier 1 capital}}{\text{Total exposure measure}}
@@ -509,7 +583,7 @@ where:
 
 It exists as a backstop. If risk weights are wrong or gamed, an unweighted measure still constrains the balance sheet.
 
-### 5.5 Why deterioration hurts twice
+### 5.6 Why deterioration hurts twice
 
 This is the connection to carry forward. When a borrower deteriorates:
 
@@ -591,7 +665,9 @@ The inflow cap is the part people forget: you cannot assume everyone pays you on
 
 ### 6.5 The net stable funding ratio
 
-The **net stable funding ratio (NSFR)** asks a structural question over one year: are long-lived assets funded by durable money?
+Where LCR asks "can we survive a month", NSFR asks a slower question over one year: **is the way we are funded sensible in the first place?**
+
+A bank could pass LCR every day and still be building a fragile balance sheet — twenty-year mortgages funded by three-month borrowing that has to be rolled over again and again. NSFR is the rule against that.
 
 $$
 NSFR = \frac{ASF}{RSF}
@@ -599,35 +675,28 @@ $$
 
 where:
 
-- **ASF** — available stable funding, the supply of durable funding
-- **RSF** — required stable funding, the amount the asset side needs
+- **ASF** — available stable funding: the funding the bank has, weighted by how durable it is
+- **RSF** — required stable funding: the funding the asset side needs, weighted by how long and illiquid the assets are
 
-$$
-ASF = \sum_i L_i \times a_i
-$$
+Both sides are just balances multiplied by prescribed factors and added up. The factors carry the entire idea:
 
-where:
-
-- **L₍i₎** — liability or capital amount in category i
-- **a₍i₎** — the ASF factor for that category, higher for more durable funding
-
-$$
-RSF = \sum_j A_j \times r_j
-$$
-
-where:
-
-- **A₍j₎** — asset or off-balance-sheet amount in category j
-- **r₍j₎** — the RSF factor, higher for assets that are long or illiquid
-
-Equity gets the highest ASF factor. Retail deposits score well. Short wholesale funding scores poorly. On the asset side, cash and HQLA need little stable funding; long illiquid loans need a lot.
-
-| Ratio | Horizon | Nature of the question |
+| Side | Item | Factor direction |
 |---|---|---|
-| LCR | 30 days | Survival under acute stress |
-| NSFR | 1 year | Structural soundness of the funding model |
+| ASF | Equity and long-term borrowing | Highest — it cannot run |
+| ASF | Retail deposits | High — sticky in practice |
+| ASF | Short wholesale funding | Low — it leaves first |
+| RSF | Cash and government securities | Low — sell them if needed |
+| RSF | Long corporate loans | High — cannot be liquidated |
+| RSF | Undrawn commitments | Small but not zero |
 
-Both must hold. They are not substitutes — one is about surviving a run, the other about not building a fragile balance sheet in the first place.
+Read as one sentence: **stable sources on top, hungry assets underneath, and the ratio must exceed the minimum.**
+
+| Ratio | Horizon | The question |
+|---|---|---|
+| LCR | 30 days | Can we survive a run? |
+| NSFR | 1 year | Is our funding model sound? |
+
+They are not substitutes, and both are reported. For a treasury reporting role these two returns are likely to be the bulk of the actual work, which is why they earn the space they get here.
 
 ### 6.6 Other liquidity controls
 
@@ -719,15 +788,36 @@ A balance sheet can look comfortable on earnings and be badly exposed on value, 
 
 ## 8. How the spread is split internally
 
-### 8.1 The problem FTP solves
+### 8.1 The problem, concretely
 
-The branch takes a deposit at 5%. The corporate desk lends at 9%. Who earned the 4%?
+A branch in Coimbatore takes a ₹10 crore deposit and pays the customer 5%.
 
-Without a mechanism, both claim it, and neither is accountable for the mismatch risk sitting between them. **Funds transfer pricing (FTP)** is that mechanism.
+A corporate desk in Mumbai lends ₹10 crore to a manufacturer at 9%.
+
+The bank earns 4%. Now answer a simple management question: **whose 4% is it?**
+
+The branch will say it raised the money. The desk will say it made the loan. Both are partly right, and if you let both book the full 4%, the bank's internal profit figures add up to twice its actual profit. Worse, a third problem is invisible: the deposit can leave next month while the loan runs five years. Somebody is carrying that mismatch, and under this arrangement nobody is paid for it or held responsible for it.
+
+**Funds transfer pricing (FTP)** is the mechanism that settles all three issues.
 
 ### 8.2 How it works
 
-Every asset is **charged** an internal rate for the funding it consumes. Every liability is **credited** an internal rate for the funding it supplies. Treasury sits in the middle, receiving all charges and paying all credits, and holds the mismatch.
+Treasury sits in the middle and acts as an internal bank to the rest of the bank.
+
+- Every business that **uses** funding is **charged** an internal rate for it.
+- Every business that **supplies** funding is **credited** an internal rate for it.
+- Treasury pays all the credits, receives all the charges, and is left holding the mismatch.
+
+Put numbers on our example. Say the internal rate for this maturity is 6.5%.
+
+| Party | Calculation | Margin |
+|---|---|---|
+| Branch (deposit) | Credited 6.5%, pays customer 5% | 1.5% |
+| Corporate desk (loan) | Charges customer 9%, charged 6.5% | 2.5% |
+| Treasury | Receives 6.5%, pays 6.5% on this pair | 0% here |
+| **Bank total** | | **4%** |
+
+The 4% is now split, once, with a reason. The branch is rewarded for raising cheap funding. The desk is rewarded for pricing credit well. Neither can claim the other's work.
 
 $$
 \text{Lending margin} = \text{Customer rate} - \text{FTP charge}
@@ -737,97 +827,138 @@ $$
 \text{Deposit margin} = \text{FTP credit} - \text{Customer rate}
 $$
 
-$$
-\text{Treasury margin} = \text{Total spread} - \text{Lending margin} - \text{Deposit margin}
-$$
-
 where:
 
 - **Customer rate** — the rate actually contracted with the customer
-- **FTP charge / credit** — the internal rate applied to the asset or liability
-- **Total spread** — the bank's overall interest margin
+- **FTP charge / credit** — the internal rate applied by treasury
 
-The three add to the total. Nothing is created or destroyed — FTP allocates, it does not generate.
+### 8.3 Where treasury's margin comes from
+
+In the table above treasury earned nothing, because both sides happened to be priced off the same point. In reality they are not.
+
+The deposit behaves like short money. The loan runs five years. Treasury credits the branch at the short rate and charges the desk at the five-year rate, and **keeps the difference** — which is exactly payment for carrying the maturity mismatch. If rates move against it, that same mismatch is where the loss appears. This is the third margin.
 
 | Margin | Owner | What it rewards |
 |---|---|---|
-| Lending margin | The asset business | Pricing and credit selection |
+| Lending margin | The asset business | Credit selection and pricing |
 | Deposit margin | The liability business | Raising durable funding |
-| Mismatch margin | Treasury | Bearing the maturity and rate mismatch |
+| Mismatch margin | Treasury | Bearing the maturity and rate risk |
 
-### 8.3 The curve
+The three add to the bank's total spread. **FTP allocates profit; it never creates it.**
 
-The **transfer pricing curve** is a term structure of internal rates — one rate for each tenor. A product is priced at the point on the curve that matches its **behavioural** life, not its contractual one.
+### 8.4 The curve, and the one decision that matters
 
-That single choice is why FTP cannot be separated from liquidity work. The behavioural life assumed for a savings book determines the credit the branch receives, and the same assumption determines the outflow treatment in LCR.
+Treasury does not use a single internal rate. It publishes a **transfer pricing curve** — an internal rate for each tenor: overnight, 1 month, 1 year, 5 years, and so on. Longer tenors cost more, because funding long is genuinely more expensive.
 
-### 8.4 The components
+A product is priced at the point on the curve matching its **behavioural** life, not its contractual one.
+
+That one choice is the hinge of the whole document. A savings account is contractually repayable on demand — overnight. If the branch were credited at the overnight rate, it would earn almost nothing for a deposit book that in practice sits there for years, and the branch would stop caring about deposits entirely. So treasury credits it at, say, the three-year point, because the behavioural evidence says that is how it acts.
+
+The moment that three-year assumption is made, it does not stay in FTP. The same assumption sets the run-off rate in LCR and the repricing bucket in EVE. One analytical judgement, three regulatory and management consequences.
+
+### 8.5 The four components
 
 | Component | What it charges for |
 |---|---|
-| Base rate for the tenor | The cost of funds for that maturity |
+| Base rate for the tenor | The plain cost of funds for that maturity |
 | Term liquidity premium | The extra cost of funding long rather than short |
-| Contingent liquidity charge | Standing ready to fund undrawn commitments |
+| Contingent liquidity charge | Standing ready to fund commitments not yet drawn |
 | Optionality charge | The customer's right to prepay or withdraw early |
 
 $$
-\text{FTP rate} = r_{\text{base}}(t) + \text{TLP}(t) + \text{CLC} + \text{OC}
+\text{FTP rate} = r_{base}(t) + TLP(t) + CLC + OC
 $$
 
 where:
 
-- **r₍base₎(t)** — base transfer rate for behavioural tenor t
+- **r₍base₎(t)** — base transfer rate at behavioural tenor t
 - **TLP(t)** — term liquidity premium for that tenor
-- **CLC** — contingent liquidity charge for committed but undrawn facilities
+- **CLC** — contingent liquidity charge on committed but undrawn facilities
 - **OC** — optionality charge for prepayment or early withdrawal rights
 
-The contingent liquidity charge is what makes our ₹108 crore of undrawn commitments cost something before anyone draws it. Without it, promising credit looks free.
+The last two are worth pausing on, because they are where FTP stops being accounting and starts changing behaviour.
 
-### 8.5 Governance
+**Contingent liquidity charge.** Our bank has promised ₹108 crore of credit that nobody has drawn. Not a rupee has left the building, so a naive system charges nothing. But the bank must be ready to fund it tomorrow, and readiness costs money. Charging for it means a relationship manager who hands out large unused limits sees the cost in their own margin. Without the charge, promising credit appears free, and banks discover in a crisis that free promises were drawn all at once.
 
-Internal charges and credits must net to zero across the bank. If they do not, profit is being manufactured or destroyed by the allocation mechanism, and someone's performance figures are wrong.
+**Optionality charge.** A borrower who can repay early will do so when rates fall — exactly when the bank least wants the money back. That right has a value, the customer received it, and the charge makes the business pay for handing it out.
 
-Curve changes are approved, dated and applied consistently. Rates are usually locked at origination for fixed-rate products, so that a later curve move does not retrospectively rewrite a business unit's margin.
+### 8.6 Governance
 
-**Trap — FTP is not a cost allocation.** It is a price for a real economic service: funding, liquidity and optionality. Treating it as an overhead invites gaming and destroys the incentive it was built to create.
+Charges and credits must net to zero across the bank. If they do not, the allocation mechanism is manufacturing or destroying profit, and someone's performance numbers are wrong.
 
----
+Rates are normally locked at origination for fixed-rate products, so a later curve move does not retrospectively rewrite a business unit's margin on a loan written two years ago.
+
+**Trap — FTP is not an overhead allocation.** It is a price for a real service: funding, liquidity and optionality. Treat it as a cost to be argued down and the incentives it exists to create disappear.
 
 ## 9. Where the numbers come from
 
-Everything so far has been a measure. This section is about the machinery that produces it, and it is where the business analyst actually lives.
+Everything up to here has been a measure. From this point on, the subject is the machinery that produces it — and this is where the job actually is.
 
-### 9.1 The chain
+### 9.1 Follow one number
 
-Every reported number travels the same path:
+Make it concrete. The bank must file an LCR return for 31 March. That return has a single headline figure, say 118%. Here is what physically had to happen for that number to exist.
 
-**Source system → extract → staging → transformation → calculation → reporting layer → return**
+1. The **core banking system** holds every deposit and loan account. Overnight, a file is produced listing every account, its balance, its type and its maturity date.
+2. The **treasury system** holds the securities portfolio and the interbank borrowings. It produces its own file.
+3. Both files land in a **staging area**, untouched.
+4. Checks run. Did we get 4.2 million account rows, as expected, or 3.9 million? Do the balances sum to the general ledger?
+5. Each deposit is **classified** — retail or wholesale, operational or not — because classification determines the run-off rate applied.
+6. Run-off rates are applied, securities are haircut, undrawn commitments are given a draw-down assumption, and the outflows are summed.
+7. The ratio is computed, reviewed by a named person, and submitted.
 
-A number is only as good as the weakest link, and the analyst's job is to know which link failed.
+Every concept in this section is about one of those seven steps failing.
 
-### 9.2 BCBS 239
+### 9.2 What staging actually is
 
-**BCBS 239** is the Basel Committee's set of principles for risk data aggregation and reporting. Stripped to essentials, it requires that a bank can produce risk numbers that are **accurate**, **complete**, **timely** and **adaptable** — and that it can prove all four.
+In step 3 the word **staging** appears, and it is worth defining precisely because it is used constantly and explained rarely.
 
-The proof requirement is the hard part. It is not enough for the number to be right. The bank must be able to demonstrate why it is right.
+**Staging is a holding area that keeps source data exactly as it arrived, before anything is done to it.** It is a set of database tables that mirror the incoming file, plus a timestamp and a batch identifier.
 
-**Lineage** is that demonstration: the ability to walk a reported figure backwards through every transformation to the source records it came from. Without lineage, a challenge to a number cannot be answered, only asserted against.
+Why it exists: suppose the LCR comes out at 118% and someone challenges it. The question is always "is the source wrong, or did we break it?" If you transformed the data the moment it arrived, you cannot answer — the original is gone. With staging you can compare the raw file against the source system, and the transformed data against the raw file, and say exactly which link failed.
 
-### 9.3 The three kinds of wrong
+Staging is also what makes reconciliation possible at all. You reconcile staging to the source system to prove nothing was lost in transmission, then reconcile the final output to staging to prove nothing was lost in processing.
+
+### 9.3 ETL, and what "load" means
+
+**ETL — extract, transform, load** — is the three-step movement of data from source to report.
+
+| Step | What physically happens |
+|---|---|
+| **Extract** | A copy is pulled from the source system, usually as a dated file or a database read. Nothing is changed. |
+| **Transform** | Rules are applied to the staged copy: mapping codes to standard values, joining to reference data, deriving fields, bucketing by date, filtering out what is not in scope. |
+| **Load** | The transformed result is written into the destination tables that the report and the calculation actually read from. |
+
+**Load** is simply the write step. It is the point at which data stops being work-in-progress and becomes the official version the reporting layer will use. It matters because of what surrounds it: a load either succeeds completely or is rolled back completely, so a report never reads half a day's data. If a load fails at 4 a.m., the reporting layer still holds yesterday's complete position rather than today's partial one, and somebody is paged.
+
+The sequencing is also why cut-off times are absolute. A feed that arrives after the transform has run does not get loaded, and its data is simply absent from the number — usually without any error appearing anywhere.
+
+### 9.4 BCBS 239 in plain terms
+
+**BCBS 239** is the Basel Committee's principle set for risk data. Strip away the language and it requires a bank to produce risk numbers that are **accurate**, **complete**, **timely** and **adaptable** — and to be able to prove it.
+
+The proof requirement is the hard part. It is not enough for 118% to be right. The bank must be able to demonstrate why it is right.
+
+**Lineage** is that demonstration: the ability to take the 118%, and walk it backwards — to the outflow total, to the deposit classification, to the staged file, to the account record in the core banking system. In practice lineage is documentation plus the staging tables that let you actually perform the walk.
+
+"Adaptable" is the one people underestimate. When the regulator asks on Friday what the ratio would be if wholesale deposits ran off twice as fast, a bank with good aggregation answers by Monday and a bank without it answers in three weeks.
+
+### 9.5 The three kinds of wrong
 
 When a number is wrong, it is wrong in one of three ways, and they belong to different people.
 
-| Kind | What happened | Who owns the fix |
+| Kind | What happened | Who fixes it |
 |---|---|---|
-| Source defect | The data was captured wrong at origin | The originating business |
-| Transformation defect | Correct data was mangled in the pipeline | Technology |
-| Definition defect | Everyone applied a different meaning to the same field | The data owner, through policy |
+| **Source defect** | The data was captured wrong at origin — a maturity date keyed incorrectly at the branch | The originating business |
+| **Transformation defect** | Correct data was mangled in the pipeline — a join dropped rows, a rule bucketed the wrong field | Technology |
+| **Definition defect** | Everyone applied a different meaning — two teams disagree on what counts as an operational deposit | The data owner, through written policy |
 
-The diagnostic question is always the same: **where is the first incorrect hand-off?** Everything downstream of that point is a symptom, and fixing symptoms produces a reconciliation that passes while the number stays wrong.
+The diagnostic question never changes: **where is the first incorrect hand-off?** Everything downstream of that point is a symptom. Fix a symptom and you get a report that reconciles while the number stays wrong.
 
-Definition defects are the most expensive, because nothing is technically broken. Two teams reporting different exposure figures may both be running correct code against a term that was never agreed.
+Definition defects are the most expensive, because nothing is technically broken. Two teams can report different exposure figures with both systems running correct code against a term nobody ever agreed.
 
-### 9.4 Data quality dimensions
+### 9.6 Data quality in practice
+
+The dimensions, each with the question it asks:
 
 | Dimension | Question |
 |---|---|
@@ -835,56 +966,61 @@ Definition defects are the most expensive, because nothing is technically broken
 | Accuracy | Does the value match reality? |
 | Validity | Is it a permitted value in a permitted format? |
 | Consistency | Does it agree with the same fact held elsewhere? |
-| Timeliness | Did it arrive in time for the calculation? |
+| Timeliness | Did it arrive before the cut-off? |
 | Uniqueness | Is the same thing recorded once, not twice? |
 
-A **data quality rule** is a test against one of these, applied at a defined point, with a threshold and a named owner.
+A **data quality rule** is a test on one of these, applied at a stated point, with a threshold and a named owner. In the system it looks like a condition, a severity, and an action: reject the record, flag it, or fail the batch.
 
-**Trap — a data quality rule exists to protect a named output, not to improve data in the abstract.** "Maturity date must be present" is a weak rule. "Maturity date must be present, because it determines the LCR bucket and the FTP tenor, and a missing value silently defaults the record to the shortest bucket" is a rule someone will fund and fix.
+**Trap — a rule exists to protect a named number, not to improve data in the abstract.** Compare two versions of the same rule:
 
-### 9.5 Controls
+- Weak: "Maturity date must not be null."
+- Strong: "Maturity date must not be null, because it determines the LCR time bucket and the FTP tenor; a null currently defaults the record to the overnight bucket, overstating 30-day outflows."
 
-- **Control totals** — count and sum records at each stage and compare. The cheapest control that exists, and it catches the most common failure: silent record loss between stages.
-- **Reconciliation to the general ledger** — risk figures must tie to the accounting books.
-- **Exception queues** — failed records go somewhere visible and get worked. They are never dropped silently.
-- **Suspense treatment** — records that cannot be classified are held in a named bucket, reported, and cleared. An unclassified record must never vanish.
-- **Golden source** — for each critical field, one system is designated authoritative. Without this, two correct answers exist and neither can be defended.
+The first gets deprioritised for two years. The second gets fixed, because someone can see what it costs.
 
-**Trap — a reconciliation that always passes is usually not a control.** If it nets differences, tolerates unexplained variances, or reconciles a feed to itself, it proves nothing.
+### 9.7 The controls that catch things
 
-### 9.6 The data layer
+- **Control totals** — count the rows and sum the balances at each stage and compare. The cheapest control that exists, and it catches the most common failure of all: records silently lost between two systems.
+- **Reconciliation to the general ledger** — risk figures must tie back to the accounting books. If the loan book in the risk system is ₹1,000 crore and the ledger says ₹1,004 crore, one of them is wrong and the difference must be identified, not netted.
+- **Exception queues** — records that fail a rule are written to a queue that a named person works through daily. They are never dropped silently.
+- **Suspense treatment** — records that cannot be classified are held in a visible bucket, reported, and cleared. An unclassifiable record must never simply vanish from the population.
+- **Golden source** — for each critical field, one system is designated authoritative. Without this you get two defensible answers and no way to choose.
 
-Risk and treasury data is relational, and the analyst is expected to interrogate it directly.
+**Trap — a reconciliation that always passes is usually not a control.** If it nets opposing differences, tolerates unexplained variances, or compares a feed to a copy of itself, it proves nothing and provides false comfort.
 
-| Structure | What it holds |
+### 9.8 The data you will actually query
+
+Risk and treasury data is relational, and an analyst is expected to interrogate it directly rather than waiting for a developer.
+
+| Table | One row per |
 |---|---|
-| Exposure or position table | One row per facility or instrument, per date |
-| Counterparty table | One row per borrower, with rating and group linkage |
-| Collateral table | Security held, with valuations and linkage to facilities |
-| Cash flow table | Dated contractual and behavioural cash flows |
-| Reference tables | Product codes, currencies, rate curves, mappings |
+| Exposure / position | Facility or instrument, per as-of date |
+| Counterparty | Borrower, with rating and group linkage |
+| Collateral | Security held, linked to facilities |
+| Cash flow | Dated contractual and behavioural cash flow |
+| Reference | Product codes, currencies, rate curves, mappings |
 
-The operations that matter in practice:
+Four things go wrong repeatedly:
 
-- **Joins** — linking exposures to counterparties, collateral and reference data. A wrong join type is the most common cause of a number being silently too large or too small.
-- **Aggregation** — grouping and summing to portfolio, sector or bucket level.
-- **Filtering by date** — almost every risk table is dated, and picking the wrong as-of date produces a plausible, wrong answer.
-- **Null handling** — a missing value is not zero, and treating it as zero is how missing data becomes a wrong number instead of an exception.
+- **The join.** Linking exposures to counterparties, collateral and reference data. The wrong join type silently changes the answer.
+- **The as-of date.** Almost every risk table is dated and holds many days of history. Filtering to the wrong date produces a completely plausible wrong number with no error at all.
+- **Nulls.** A missing value is not zero. Treating it as zero converts a visible data problem into an invisible reporting error.
+- **Grain.** Joining a facility table to a cash flow table multiplies rows. Summing a balance afterwards double-counts it, sometimes many times over.
 
-**Trap — an inner join silently drops exposures.** If a facility has no matching counterparty record, an inner join removes it from the total. The report balances, the sum is short, and nothing raises an error. Left joins plus a null check are how completeness is preserved and the gap made visible.
+**Trap — an inner join silently drops exposures.** If a facility has no matching counterparty record, an inner join removes it from the population entirely. The report still balances internally, the total is simply short, and nothing raises an error. A left join plus an explicit null check keeps the record and makes the gap visible — which is the whole point.
 
-### 9.7 Models
+### 9.9 Models
 
-Several numbers in this document are model outputs: PD, LGD, EAD, ECL, behavioural maturity, prepayment rates, VaR.
+Several numbers in this note are model outputs: PD, LGD, EAD, ECL, behavioural maturity, prepayment rates, VaR.
 
-A model has three parts: **inputs**, **methodology**, **assumptions**. Model risk is the risk of loss from any of the three being wrong or wrongly applied.
+A model has three parts — **inputs**, **methodology**, **assumptions** — and model risk is the risk that any of the three is wrong or wrongly applied.
 
-- **Validation** is independent review before use and periodically after.
-- **Back-testing** compares what the model predicted with what subsequently happened.
-- **Benchmarking** compares it against an alternative approach.
-- **Overlays** are management adjustments applied on top of a model output, used when the model cannot capture current conditions. They must be documented, quantified and governed, because an undocumented overlay is indistinguishable from an arbitrary number.
+- **Validation** — independent review before use and periodically afterwards.
+- **Back-testing** — comparing what the model predicted against what actually happened.
+- **Benchmarking** — comparing it against an alternative approach.
+- **Overlays** — management adjustments on top of a model output, used when conditions have moved beyond what the model saw in its data. They must be documented, quantified and approved, because an undocumented overlay is indistinguishable from someone picking a number.
 
-**Trap — a model's outputs inherit the quality of the data feeding it.** A validated methodology running on incomplete exposure data produces a precisely calculated wrong answer, and the validation will not catch it.
+**Trap — a validated model on bad data gives a precisely calculated wrong answer,** and validation will not catch it, because validation tests the methodology rather than the feed.
 
 ---
 
@@ -892,76 +1028,88 @@ A model has three parts: **inputs**, **methodology**, **assumptions**. Model ris
 
 ### 10.1 The reporting estate
 
-| Report | Audience | Broad frequency |
+"Estate" just means the full set of reports the team is responsible for. Knowing it cold is most of the job in the first month.
+
+| Report | Goes to | Broad frequency |
 |---|---|---|
-| LCR return | RBI | Monthly, with daily internal monitoring |
+| LCR return | RBI | Monthly, monitored daily |
 | NSFR return | RBI | Quarterly |
 | Structural liquidity statement | RBI | Periodic |
 | Form A — CRR and SLR position | RBI | Fortnightly |
-| Large exposures and concentration | RBI | Periodic |
+| Large exposures | RBI | Periodic |
 | Provisioning and asset classification | RBI | Quarterly |
 | ALCO pack | Internal — the asset-liability committee | Monthly |
 
-The **ALCO** — asset-liability committee — is the internal body that sets and monitors balance sheet risk appetite. Its pack is internal, and in practice it attracts the most senior attention, so the analyst treats it with the same rigour as a regulatory return.
+The **ALCO** is the internal committee that sets and monitors balance sheet risk appetite. Its pack is not a regulatory submission, and in practice it attracts the most senior attention in the building, so it is prepared with the same rigour.
 
 ### 10.2 One exposure, several returns
 
-A single ₹50 crore corporate loan appears in the liquidity return as a dated inflow, in the capital return as a risk-weighted exposure, in the provisioning return with its classification and allowance, and in the large exposure return against the group limit.
+Take the ₹50 crore corporate loan from earlier and follow it across the estate in the same month.
 
-Each return applies a different basis, so the figures differ legitimately. What must be true is that they all trace to the same underlying record. When two returns disagree in a way that cannot be explained by their bases, the difference is a defect, not a presentation choice.
+| Return | How the loan appears |
+|---|---|
+| Liquidity | A dated inflow in a maturity bucket, possibly discounted |
+| Capital | An exposure multiplied by a risk weight |
+| Provisioning | A classification, a stage and an allowance |
+| Large exposures | A number counted against the borrower group's limit |
 
-**Trap — consistency does not mean identical numbers.** It means every difference is explainable by a documented difference in basis.
+Four returns, four different figures, one loan. The differences are legitimate — each return asks a different question on a different basis. What must be true is that all four trace back to the same underlying record.
 
-### 10.3 Reconciliation and movement analysis
+**Trap — consistency does not mean identical numbers.** It means every difference is explainable by a documented difference in basis. An unexplainable difference is a defect, not a presentation choice.
 
-Two controls, constantly confused, both required.
+### 10.3 Reconciliation versus movement analysis
+
+Two controls, permanently confused, both required.
 
 | | Reconciliation | Movement analysis |
 |---|---|---|
 | Question | Does this agree with an independent source? | Why is this different from last period? |
-| Compares | Report against the general ledger or source | This period against the prior period |
-| Failure means | The number may be wrong | The number may be right and unexplained |
+| Compares | Report against ledger or source | This period against prior period |
+| Failure means | The number may be wrong | The number may be right but indefensible |
 
-A number that reconciles but cannot be explained is not yet defensible. A movement of ₹14 crore in the allowance must decompose into new lending, stage migration, changes in inputs, write-offs and recoveries. If a residual remains, something is unidentified — and the residual is where errors hide.
+A figure that reconciles perfectly and cannot be explained is not finished work. When the allowance moves ₹4 crore, that movement must break into new lending, stage migration, changed assumptions, write-offs and recoveries. If the pieces leave a residual, something is unidentified — and the residual is precisely where errors hide.
+
+This is the single most common task handed to a new analyst: "the number moved, find out why."
 
 ### 10.4 Ownership
 
-Every reported number has a named owner accountable for it. Not the team that runs the process — a person who can explain the figure, defend the assumptions, and authorise a change.
+Every reported number has a named owner — not a team, a person. Someone who can explain the figure, defend the assumptions behind it, and authorise a change to how it is produced.
 
-Where ownership is vague, three failures follow: no one challenges the number, no one funds the data fix, and no one can answer a supervisory question without a week of archaeology.
+Where ownership is vague, three things follow reliably: nobody challenges the number, nobody funds the data fix, and nobody can answer a supervisory question without a week of archaeology.
 
 ### 10.5 Submission discipline
 
 - **As-of date** — the position date the return describes
 - **Submission date** — when it must reach the regulator
-- **Cut-off** — the point after which late data goes into the next cycle, not this one
-- **Restatement** — the defined process for correcting a submitted figure, including notification
+- **Cut-off** — the point after which late data goes into the next cycle rather than this one
+- **Restatement** — the defined process for correcting a figure already submitted, including notifying the regulator
 
-**Trap — the calculation is rarely the binding constraint.** The timetable is. Data arriving after cut-off, a late feed, or an unresolved exception queue causes more late and wrong submissions than any formula.
+**Trap — the calculation is rarely the binding constraint. The timetable is.** Late feeds, data arriving after cut-off, and unworked exception queues cause far more late and wrong submissions than any formula ever has.
+
 ---
 
 ## 11. How the reporting machine is built and changed
 
-This section is the job description. Everything before it is the subject matter the job is about.
+Section 10 described the machine running. This section is what happens when it has to change — which is the actual project work, and the reason the role exists.
 
-### 11.1 The shape of the work
+### 11.1 The four shapes of the work
 
-A treasury or credit risk reporting workstream is almost always one of four things:
+| Shape | Typical trigger |
+|---|---|
+| A **new return** | The regulator introduces a reporting requirement |
+| A **changed definition** | An existing return's rules are amended |
+| A **new source** | An acquired portfolio or new product must feed an existing calculation |
+| A **remediation** | A number was found to be wrong and must be fixed at its cause |
 
-1. A **new return** the regulator has introduced
-2. A **changed definition** in an existing return
-3. A **new source** feeding an existing calculation
-4. A **remediation** — a number is wrong and must be fixed at its cause
-
-All four run the same sequence.
+All four run the same sequence, and the analyst is the person who owns the middle of it.
 
 ### 11.2 The sequence
 
 | Stage | What it produces | Signed off by |
 |---|---|---|
-| Requirements | What the number must be and why | Number owner and risk |
+| Requirements | What the number must be, and why | Number owner and risk |
 | Source assessment | Whether the data can support it | Data owners and technology |
-| Mapping specification | Field-by-field rules from source to target | Technology, risk, owner |
+| Mapping specification | Field-by-field rules, source to target | Technology, risk, number owner |
 | Build | The pipeline and calculation | Technology |
 | Test | Evidence the output is correct | Business and technology |
 | Parallel run | Old and new producing side by side | Number owner |
@@ -969,47 +1117,40 @@ All four run the same sequence.
 
 ### 11.3 Requirements
 
-A requirement for a reported number states four things: the **definition** (what is being measured), the **population** (which records are in and out), the **basis** (contractual or behavioural, gross or net, which date), and the **treatment of edge cases**.
+A requirement for a reported number states four things:
 
-Edge cases are where reporting projects fail. Undrawn commitments, pledged assets, intragroup balances, foreign currency positions, restructured loans, off-balance-sheet items — each has a defensible answer and none has an obvious one.
+- **Definition** — what is being measured
+- **Population** — which records are in scope and which are excluded
+- **Basis** — contractual or behavioural, gross or net, which as-of date, which currency treatment
+- **Edge cases** — what happens to the awkward records
 
-**Trap — ambiguity is discovered in testing, not in build.** A specification saying "include corporate exposures" without defining what counts as corporate will be built two different ways by two developers, and both will pass a review that asks only whether the code matches the spec.
+Edge cases are where reporting projects fail, and they are always the same list: undrawn commitments, pledged assets, intragroup balances, foreign currency positions, restructured loans, off-balance-sheet items, and accounts with missing key fields. Each has a defensible answer. None has an obvious one.
+
+**Trap — ambiguity is discovered in testing, not in build.** A specification saying "include corporate exposures" without defining what counts as corporate will be built two ways by two developers, and both will pass a review that asks only whether the code matches the specification.
 
 ### 11.4 Source assessment
 
-Before accepting a feed, establish:
+Before accepting a feed, establish five things.
 
 | Question | Why it matters |
 |---|---|
 | Is it complete? | A partial feed produces a plausible, understated number |
 | Is it timely? | Data after cut-off is useless regardless of quality |
-| Is it granular enough? | Aggregated data cannot be re-bucketed later |
-| Is it authoritative? | If it is a copy, the original may move without it |
-| How does it handle change? | Late corrections, backdated amendments, reversals |
+| Is it granular enough? | Pre-aggregated data cannot be re-bucketed later |
+| Is it authoritative? | If it is a copy, the original may change without it |
+| How does it handle change? | Backdated amendments, corrections, reversals |
 
-Granularity is the one that cannot be fixed afterwards. If a feed arrives pre-summed, no downstream work recovers the detail needed to bucket it differently when a definition changes.
+Granularity is the one that cannot be repaired afterwards. If a feed arrives already summed by product, no downstream work recovers the account-level detail needed to bucket it differently when a definition changes — and definitions change constantly.
 
 ### 11.5 Mapping specification
 
-Field by field: **source field → transformation rule → target field**, plus defaults, permitted values, and what happens when the rule cannot be applied.
+This is the analyst's core artefact. It is a table, usually a spreadsheet, with one row per target field:
 
-That last column is the one that gets skipped and the one that matters. "What happens when this is null" must have a written answer — reject to an exception queue, apply a stated default, or fail the run. Left unanswered, the pipeline chooses silently, and silence becomes a wrong number.
+**source system → source field → transformation rule → target field → default → exception handling**
 
-### 11.6 The pipeline
+The last two columns are the ones that get skipped and the ones that matter. "What happens when this field is null" must have a written answer — reject the record to an exception queue, apply a stated default, or fail the run. Left blank, the pipeline chooses silently, and silence becomes a wrong number that nobody sees for six months.
 
-**ETL — extract, transform, load** — is the movement of data from source to reporting layer.
-
-| Layer | What it physically is |
-|---|---|
-| Extract | A copy of source data, unchanged, timestamped |
-| Staging | The raw copy held for validation and reconciliation to source |
-| Transform | Rules applied — mapping, enrichment, derivation, bucketing |
-| Calculation | The measure computed from transformed data |
-| Reporting layer | The presented figures and the store behind the return |
-
-Keeping the raw extract is what makes investigation possible. Transforming on arrival destroys the evidence that would show whether a defect was source or transformation.
-
-### 11.7 Testing
+### 11.6 Testing
 
 | Stage | What it proves |
 |---|---|
@@ -1019,29 +1160,31 @@ Keeping the raw extract is what makes investigation possible. Transforming on ar
 | User acceptance | The business agrees this is the number it asked for |
 | Regression | Existing correct outputs did not break |
 
-**Expected results are written before the test is run.** Otherwise the test documents whatever the system produced, which is not a test but a transcript.
+**Expected results are written before the test runs.** Otherwise the test records whatever the system produced, which is not a test — it is a transcript with a tick next to it.
 
-Test data must include the awkward cases: the null, the backdated amendment, the record at a bucket boundary, the negative balance, the foreign currency item, the record that fails a data quality rule. A pack of clean records proves only that the happy path works, and the happy path was never the risk.
+The test pack must contain the awkward records: the null, the backdated amendment, the record sitting exactly on a bucket boundary, the negative balance, the foreign currency item, the one that fails a data quality rule. A pack of clean records proves only that the happy path works, and the happy path was never the risk.
 
-### 11.8 Parallel run and cutover
+### 11.7 Parallel run and cutover
 
-**Parallel run**: the old process and the new one produce the same number, for the same date, side by side.
+**Parallel run** means the old process and the new one produce the same number, for the same date, at the same time, and the outputs are compared.
 
-Every difference must be **explained**, not netted. A total that matches while components offset each other is two errors, not a pass.
+Every difference must be **explained**, not netted. A total that matches while two components offset each other is two errors wearing a disguise.
 
-Cutover requires the parallel run signed off by the number owner, a dated switch with a named decision-maker, a rollback plan that is actually executable, and heightened review of the first live submission.
+Cutover needs four things: the parallel run signed off by the number owner, a dated switch with a named decision-maker, a rollback plan that can actually be executed, and heightened review of the first live submission.
 
-### 11.9 Dependencies
+**Trap — a rollback plan that says "rerun the old process" is not a plan if the old process has already been decommissioned.** Confirm it still exists and still runs.
 
-What actually delays this work:
+### 11.8 Dependencies
 
-- **Upstream data** — a source system change that has not happened yet
-- **Definitional sign-off** — an edge case awaiting a policy decision
-- **Environment and access** — production-like test data arriving late
-- **Regulatory timing** — a submission date that will not move
+What actually delays this work, in rough order of frequency:
+
+- **Definitional sign-off** — an edge case waiting on a policy decision nobody wants to own
+- **Upstream data** — a source system change that has not been built yet
+- **Environment and access** — production-like test data arriving weeks late
+- **Regulatory timing** — a submission date that will not move for any reason
 - **Competing change** — another project altering the same feed in the same window
 
-The last is the most commonly missed. Two projects changing one source in parallel will each test successfully in isolation and break together in production.
+The last is the most commonly missed. Two projects changing one source in parallel will each test successfully in isolation and break together in production, on the same night.
 
 ---
 
@@ -1095,14 +1238,15 @@ Each of these is one fact appearing in several places. They are the links that s
 24. FTP allocates the spread into three margins; it does not create profit.
 25. FTP prices at the behavioural tenor, not the contractual one.
 26. Undrawn commitments cost something before they are drawn — the contingent liquidity charge.
-27. Wrong is source, transformation or definition. Find the first incorrect hand-off.
-28. A data quality rule protects a named reported number.
-29. Reconciliation asks "does it agree". Movement analysis asks "why did it change". Both.
-30. An inner join silently drops exposures and the report still balances.
-31. Expected results are written before the test runs.
-32. In a parallel run, explain every difference — never net them.
-33. Granularity lost at source cannot be recovered downstream.
-34. Every reported number has a named human owner.
+27. Staging holds source data untouched, which is what makes "source or us?" answerable.
+28. Wrong is source, transformation or definition. Find the first incorrect hand-off.
+29. A data quality rule protects a named reported number.
+30. Reconciliation asks "does it agree". Movement analysis asks "why did it change". Both.
+31. An inner join silently drops exposures and the report still balances.
+32. Expected results are written before the test runs.
+33. In a parallel run, explain every difference — never net them.
+34. Granularity lost at source cannot be recovered downstream.
+35. Every reported number has a named human owner.
 
 ---
 
@@ -1113,9 +1257,11 @@ Each of these is one fact appearing in several places. They are the links that s
 | ALCO | Asset-liability committee |
 | ALM | Asset and liability management |
 | ASF | Available stable funding |
+| ASRF | Asymptotic single risk factor (the Basel IRB model) |
 | BCBS | Basel Committee on Banking Supervision |
 | CCF | Credit conversion factor |
 | CET1 | Common equity tier 1 |
+| CLC | Contingent liquidity charge |
 | CRR | Cash reserve ratio |
 | DV01 | Rupee value of one basis point |
 | EAD | Exposure at default |
@@ -1126,6 +1272,7 @@ Each of these is one fact appearing in several places. They are the links that s
 | EVE | Economic value of equity |
 | FTP | Funds transfer pricing |
 | HQLA | High-quality liquid assets |
+| IRB | Internal ratings based |
 | IRAC | Income recognition and asset classification |
 | IRRBB | Interest rate risk in the banking book |
 | LCR | Liquidity coverage ratio |
@@ -1141,5 +1288,6 @@ Each of these is one fact appearing in several places. They are the links that s
 | RWA | Risk-weighted assets |
 | SICR | Significant increase in credit risk |
 | SLR | Statutory liquidity ratio |
+| TLP | Term liquidity premium |
 | UL | Unexpected loss |
 | VaR | Value at risk |
