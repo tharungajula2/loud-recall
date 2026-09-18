@@ -1,9 +1,9 @@
 ---
-title: "Credit Risk and Capital — Volume 1: The Asset Side"
-description: "One bank, one loan book, one borrower that fails. How a loan is valued, what can go wrong with it, how the loss is provisioned under Ind AS 109 and IRAC, and how much capital has to stand behind it."
+title: "Bank Risk and Regulatory Reporting — Volume 1: Credit Risk and Capital"
+description: "One bank, one loan book, one borrower that fails. How a loan is valued, what can go wrong with it, how the loss is provisioned under Ind AS 109, IRAC and RBI's 2027 expected credit loss directions, how much capital stands behind it, and how a credit function runs the book."
 series: masterclass
 status: live
-updated: 2026-09-10
+updated: 2026-09-18
 verified: false
 tags:
   - credit risk
@@ -12,6 +12,8 @@ tags:
   - irac
   - basel
   - capital
+  - risk appetite
+  - raroc
 ---
 
 ## Part 0 — The bank
@@ -63,9 +65,9 @@ Borrower 1, the steel manufacturer, is the one to watch. Over the next four year
 
 The volume works inwards from the loan and back out to the balance sheet.
 
-Parts 1 to 3 stay with a single exposure: what it is worth, what can go wrong with it, and how its quality changes over time. Part 4 zooms out to the whole book, because ten loans behave differently from ten times one loan. Parts 5 and 6 build the ₹22 crore allowance — first under the accounting standard, then under RBI's rules, which give different answers on the same exposure. Part 7 arrives at the ₹150 crore of capital and asks whether it is enough.
+Parts 1 to 3 stay with a single exposure: what it is worth, what can go wrong with it, and how its quality changes over time. Part 4 zooms out to the whole book, because ten loans behave differently from ten times one loan. Parts 5 and 6 build the ₹22 crore allowance — first under the accounting standard, then under RBI's rules, which give different answers on the same exposure. Part 7 arrives at the ₹150 crore of capital and asks whether it is enough. Part 8 steps back from the one borrower to the credit function that runs the whole book — appetite, limits, pricing, early warning, and how the same questions look on a retail book.
 
-Volume 2 reads the rest of the sheet — deposits, borrowings, investments, and the reporting machine that assembles all of it into returns.
+Volume 2 reads the rest of the sheet — deposits, borrowings, the investment and trading book, how the spread is priced internally, and the reporting machine and delivery work that assemble all of it into returns.
 
 ---
 
@@ -835,6 +837,42 @@ All figures ₹ crore. Three identities hold in every column, and they are the c
 
 Note what the gross carrying amount did through all of this: **nothing that credit caused.** It rolled from 98.00 to 99.09 on the EIR and the cash received, exactly as Part 1 said it would, while the borrower collapsed. All the credit deterioration lives in the second row.
 
+### Stock and flow — and what a write-off does
+
+Two words cause most of the confusion in impairment conversations, and the walk only works once they are separated.
+
+- The **allowance** is a **stock** — a balance at a point in time, like the level of water in a tank. On the whole book it is the ₹22 crore on the Part 0 balance sheet.
+- The **impairment charge** is a **flow** — what passed through profit in the period. It is the water flowing in.
+
+The steel walk above had only inflows. A full walk on the whole book also has water draining out.
+
+$$
+\text{Closing allowance} = \text{Opening allowance} + \text{Charge} - \text{Write-offs}
+$$
+
+where:
+
+- **Opening allowance** — the balance at the start of the period
+- **Charge** — the amount recognised in profit this period, which raises the allowance
+- **Write-offs** — amounts removed from the books as unrecoverable, which drain it
+
+One quarter on the whole book, landing on the Part 0 figure:
+
+| Line | ₹ crore |
+|---|---:|
+| Opening allowance | 20.00 |
+| Charge to profit — new lending, stage transfers, parameter changes | +4.00 |
+| Write-off of a fully provided ₹2 crore exposure | (2.00) |
+| **Closing allowance** | **22.00** |
+
+**The write-off does not create a loss.** The loss was taken quarters earlier, when the allowance against that exposure was raised. The write-off removes ₹2 crore of gross loan and ₹2 crore of allowance together, so the net carrying amount does not move and profit is untouched. Only the part of a write-off that was *not* already provided is charged at the time — which is why a large write-off with a small charge is normal, and a large write-off with an equally large charge means the allowance was too thin.
+
+**Recoveries do not refill the tank.** Cash later collected on something already written off is credited straight to profit. And writing an exposure off in the books does not give up the legal claim; Indian banks routinely keep pursuing recovery on accounts written off for accounting purposes. [verify]
+
+The charge itself is then decomposed — new lending, transfers between stages, parameter and model changes, overlays, write-offs not fully provided — and the pieces must add up to the total — the book-level version of the three-line steel walk above. An unexplained residual is where errors live, and producing this decomposition is one of the most common requests a reporting analyst receives.
+
+**Trap — "our provisions went up by ₹4 crore" and "we hold ₹22 crore of provisions" answer different questions.** One is the flow, the other the stock. Being asked for one and answering with the other is the fastest way to sound as though you have not done the work.
+
 ---
 
 ## Part 6 — The same loan under RBI's rules
@@ -845,7 +883,7 @@ Ind AS 109 asks a judgement question: has risk increased significantly? RBI's **
 
 The answer determines classification, classification determines the provision, and there is almost no discretion in between. That is deliberate. A rules regime is harder to game, easier to supervise across hundreds of banks, and produces numbers comparable between them. What it gives up is timeliness — it cannot act until the borrower actually misses payments.
 
-Indian banks report under IRAC. Ind AS 109 applies to NBFCs, to the consolidated accounts of groups reporting under Ind AS, and to overseas branches under IFRS 9; bank adoption has been deferred. [verify] In practice a bank of any size runs both, and reconciling them is a monthly production task.
+Until 31 March 2027 Indian banks provision under IRAC. Ind AS 109 applies to NBFCs, to the consolidated accounts of groups reporting under Ind AS, and to overseas branches under IFRS 9. From 1 April 2027 RBI moves commercial banks onto the expected credit loss model of Part 5 — the section before Block two sets out what changes. [verify] In practice a bank of any size already runs both, and reconciling them is a monthly production task.
 
 Two regimes, one loan. This part puts the second set of numbers next to the first.
 
@@ -998,6 +1036,23 @@ The framework's key lever is that **provisions escalate if resolution misses the
 
 The three-year enforcement timeline in Part 2 — the one that turned a 56% LGD into 67% — is why all of this machinery exists, and why Indian LGDs run materially higher than in jurisdictions with faster enforcement.
 
+### From 1 April 2027 — banks move to expected credit loss
+
+Everything in this part so far describes the regime Indian banks provision under today. It is ending.
+
+On 27 April 2026 RBI issued final directions moving commercial banks from the incurred-loss model of IRAC to the expected credit loss model of Part 5, **effective 1 April 2027**, for commercial banks other than small finance banks, payments banks, regional rural banks and local area banks. [verify]
+
+| | What it takes from Part 5 | What is specifically Indian |
+|---|---|---|
+| **Staging** | Three stages, assessed on significant increase in credit risk since origination | Days-past-due backstops sit alongside the judgement |
+| **Measurement** | 12-month ECL in Stage 1, lifetime in Stages 2 and 3; effective interest rate method | A three-year window to apply the EIR method to loans already on the book [verify] |
+| **Floors** | — | **Prudential floors** by exposure class and stage: the model's answer, but never less than a regulatory minimum — the same role the impairment reserve plays today. The final directions set, for example, a 0.25% Stage 1 floor on individual housing loans and a 2.5% Stage 2 floor on certain state-government exposures [verify] |
+| **Transition** | — | The one-time increase in provisions on 1 April 2027 may be spread over four years, to FY 2030-31 [verify] |
+
+Read the crossover table above through the new rules and the change is obvious. At T2 the bank would carry the ₹3.74 crore Stage 2 allowance, not the ₹0.40 crore standard provision — ₹3.34 crore more, charged a full year before IRAC would have noticed. At T3, ₹66.51 crore rather than ₹15.00 crore. **The lag that was the strongest argument for expected-loss provisioning is the thing the directions remove.**
+
+For anyone working in a bank through 2026 and 2027, this is the largest single piece of work on the desk, and every piece of it is in these volumes: origination ratings and dates stored per account so SICR can be assessed at all, lifetime PD term structures and macroeconomic scenarios, EIR fields for existing loans, a day-one impact assessment, and a parallel run of ECL against IRAC before cutover — the machine in Volume 2, Parts 4 to 8, pointed at this one change.
+
 ### Block two, assembled
 
 | | T0 | T1 | T2 | T3 |
@@ -1074,11 +1129,42 @@ Then the rest of the sheet, plus what is not on it:
 | Investments — corporate | 120 | 100% | 120 |
 | Fixed and other assets | 72 | 100% | 72 |
 | **Credit risk RWA** | | | **1,104** |
-| Market risk | | Trading book — Volume 2 | 40 |
-| Operational risk | | Business indicator based | 90 |
+| Market risk | | Trading book — derived below | 40 |
+| Operational risk | | Business indicator — derived below | 90 |
 | **Total RWA** | | | **1,234** |
 
 **The ₹108 crore of undrawn limits produced ₹54 crore of RWA.** They appear nowhere on the balance sheet, cost nothing to fund, and are genuinely available to the borrowers who would draw them at exactly the wrong moment. Same exposure the credit conversion factor in Part 2 was built to measure, and the reason off-balance-sheet items are the first thing a supervisor asks about.
+
+### Where the ₹40 crore and the ₹90 crore come from
+
+Two lines in that table were not built from exposures. Market and operational risk are computed as a capital charge in rupees and grossed up so they can sit in the same denominator as credit risk.
+
+$$
+\text{RWA} = \text{Capital charge} \times 12.5
+$$
+
+The 12.5 is the reciprocal of the 8% reference ratio, the same factor that turns an IRB capital requirement into a risk weight later in this part. [verify]
+
+**Operational risk** is the risk of loss from failed processes, people or systems, or from external events. It includes legal risk and excludes strategic and reputational risk. RBI's standardised approach does not try to model it; it uses the size of the business as a proxy, through a **business indicator (BI)** built from the income statement, each line a three-year average. [verify]
+
+| Component | Working | ₹ crore |
+|---|---|---:|
+| Interest income | Advances 98.0 + investments 34.3 + balances with RBI 4.4 | 136.70 |
+| Interest expense | Retail 45.0 + wholesale 26.0 + borrowings 15.6 | 86.60 |
+| Net interest income | 136.70 − 86.60 | 50.10 |
+| Cap — 2.25% of interest-earning assets | 2.25% × (1,000 + 520 + 130) | 37.13 |
+| **Interest, leases and dividend component** | The lower of the two | **37.13** |
+| **Services component** | Fee and commission income 17.50 + other operating income 2.50 | **20.00** |
+| **Financial component** | Trading book net gain 1.90 + banking book securities gains 0.97 | **2.87** |
+| **Business indicator** | 37.13 + 20.00 + 2.87 | **60.00** |
+| **Business indicator component** | 12% × 60.00 — the rate for the smallest bucket | **7.20** |
+| **Operational risk RWA** | 7.20 × 12.5 | **90.0** |
+
+Income lines other than net interest income, and the bucket threshold, are illustrative. [verify]
+
+Three readings. **The interest cap bites**: net interest income of ₹50.1 crore is capped at ₹37.13 crore, so a bank earning an unusually wide margin is not charged for all of it. **Size, not losses, drives the charge**: for a bank in the smallest bucket the internal loss multiplier is set at 1, so the requirement equals the business indicator component whatever its loss history. [verify] And the ₹50.1 crore is the same net interest income that Volume 2 splits across the bank's units with funds transfer pricing — the income statement feeds the capital calculation directly.
+
+**Market risk** is the trading desk's ₹60 crore of government securities and a ₹15 crore net open foreign exchange position: a ₹1.845 crore interest rate charge and a ₹1.350 crore currency charge, ₹3.195 crore in total, which × 12.5 is ₹39.94 crore, carried as ₹40 crore. The interest rate line needs duration, so it is derived in full in Volume 2, Part 3.
 
 ### The ratios
 
@@ -1110,6 +1196,20 @@ Under the **internal ratings based (IRB)** approach the bank supplies its own pa
 | **Advanced IRB** | PD, LGD, EAD | The risk weight function itself |
 
 The formula looks forbidding written out in one line. It is four ideas in sequence, and each one is a question you can already answer.
+
+It has a name you will hear in every capital conversation: the **asymptotic single risk factor (ASRF)** model, built on **Vasicek's** one-factor model of portfolio default, and "the Basel IRB formula" means the same thing. *Single risk factor* because one common economic factor drives every borrower. *Asymptotic* because it assumes a book so finely granular that no single name matters — exactly the assumption our ten-borrower book violates, which is why concentration is pushed to Pillar 2 at the end of this part. Written in one line:
+
+$$
+K = \left[LGD \times N\!\left(\frac{G(PD) + \sqrt{R}\;G(0.999)}{\sqrt{1-R}}\right) - PD \times LGD\right] \times \frac{1 + (M - 2.5)\,b}{1 - 1.5\,b}
+$$
+
+where:
+
+- **K** — capital requirement per rupee of exposure
+- **N** and **G** — the standard normal distribution and its inverse
+- **R** — asset correlation, prescribed; **M** — effective maturity; **b** — the maturity adjustment coefficient
+
+Steps 1 to 5 take it apart.
 
 **Step 1 — how tied is this borrower to the economy?**
 
@@ -1255,6 +1355,167 @@ The exposure measure is **unweighted** — on-balance-sheet assets plus off-bala
 
 The contrast is the point. A bank stuffed with government securities and residential mortgages can show a magnificent risk-based ratio while holding very little capital against a very large balance sheet, because those assets weight at or near zero. The leverage ratio is deliberately blind to risk weighting so it cannot be optimised the same way. The two constraints bind different banks: risk-based ratios bind banks with risky books, leverage binds banks with large low-weight ones.
 
+### What changes on 1 April 2027 — the revised standardised approach
+
+The same day ECL arrives, the denominator changes too. RBI's directions on the standardised approach for credit risk, issued on 27 April 2026 and effective **1 April 2027**, are India's implementation of the final Basel III reforms — what the industry has been calling Basel IV. [verify]
+
+| Change | Before | From 1 April 2027 |
+|---|---|---|
+| Corporate rated BBB | 100% | **75%** |
+| Large unrated corporates — threshold for the penal weight | ₹200 crore | ₹500 crore |
+| Conversion factors on undrawn commitments | Maturity-based | Recalibrated; unconditionally cancellable commitments on a glide path to 10% |
+| External ratings | Mapped to weights | Mapped, plus a due diligence requirement — a rating may not be used blindly |
+
+All subject to the final directions. [verify]
+
+Run the first row alone through the capital table earlier in this part, holding everything else as it is — which the directions do not, so this isolates one effect rather than forecasting the ratio.
+
+| | Before | After |
+|---|---:|---:|
+| Steel at T0, BBB | ₹100 crore RWA | ₹75 crore RWA |
+| All four BBB borrowers, ₹480 crore | ₹480 crore RWA | ₹360 crore RWA |
+| Total RWA | ₹1,234 crore | ₹1,114 crore |
+| **CET1 ratio** | **12.16%** | **13.46%** |
+
+One date, both halves of the ratio. **ECL raises provisions and cuts the numerator; the revised standardised approach lowers several weights and cuts the denominator.** A bank's capital plan for FY 2027-28 has to run both through the same book at the same time, which is the "same downgrade assumptions for ECL and capital" point from Block three, now on a regulatory calendar.
+
+---
+
+## Part 8 — Running the book
+
+Parts 1 to 7 followed one book, and one borrower in it through one failure. A credit function does not run a book one borrower at a time. It decides in advance what book it is willing to hold, turns that into limits a credit officer can apply, prices each loan for the capital it consumes, and watches for T2 before T2 arrives. This part is that machinery, built from numbers already on the page.
+
+### The credit lifecycle, and where each part of this volume sits
+
+| Stage | What happens | What it uses from this volume | Who owns it |
+|---|---|---|---|
+| **Origination** | A relationship manager sources the proposal | — | Business, first line |
+| **Appraisal** | Financial analysis, cash flow and debt service cover, industry and management assessment, security | Collateral tests, Part 4 | Credit underwriting |
+| **Rating** | Internal rating model assigns a grade and PD | Parts 2 and 3; the scorecard in Volume 2, Part 7 | Credit risk, second line |
+| **Sanction** | Approved at the level the delegation of authority sets for its size and rating | Limits and appetite, below | Credit committee |
+| **Documentation** | Charges created and perfected, covenants written | "Perfected", Part 4 | Credit administration |
+| **Disbursement** | Money out; the asset goes on at ₹98 crore | EIR and amortised cost, Part 1 | Operations |
+| **Monitoring** | Annual review, covenant tests, stock statements, early warning | Early warning, below | Credit monitoring |
+| **Stress and resolution** | SMA flags, Stage 2 and 3, restructuring or enforcement | Parts 5 and 6 | Credit, recovery |
+| **Write-off** | Removed from the books, recovery continues | Stock and flow, Part 5 | Finance, recovery |
+
+Three lines of defence run across all of it: the business and underwriting own the risk they take, an independent credit risk function sets the framework and challenges, and internal audit tests that both did what they said.
+
+### Risk appetite — the book the board is willing to hold
+
+A **risk appetite statement** is the board saying, in numbers, how much risk it will accept in pursuit of its plan. It is the top of the chain every limit below descends from.
+
+| Metric | Board appetite | Our bank at T0 | At T3 |
+|---|---:|---:|---:|
+| CET1 ratio, floor | ≥ 10.0% | 12.16% | **7.07%** |
+| Gross NPA ratio, ceiling | ≤ 3.0% | 0.0% | **10.0%** |
+| Expected loss rate on the book | ≤ 0.50% | 0.29% | — |
+| Largest single-name exposure, % of Tier 1 | ≤ 15% | **133%** | **133%** |
+| Largest sector, % of advances | ≤ 15% | **20%** | **20%** |
+| Effective number of names | ≥ 20 | **8.4** | **8.4** |
+
+Board thresholds are illustrative internal choices, not regulatory figures.
+
+The first three rows were comfortable until T3. **The last three were breached on day one** — the ₹200 crore road construction exposure is 133% of Tier 1 capital and 20% of the book, and the Part 4 concentration numbers say the same thing in portfolio terms. A risk appetite statement read properly would have flagged this bank's failure mode before the steel borrower was ever downgraded. That is its purpose: the metrics that look fine are a lagging view of the ones that do not.
+
+### Limits — how appetite reaches a credit officer's desk
+
+The board's numbers are too coarse to approve a loan against, so they cascade.
+
+| Level | Example | Set by |
+|---|---|---|
+| **Appetite** | CET1 ≥ 10%; effective names ≥ 20 | Board |
+| **Portfolio limits** | No sector above 15% of advances; sub-investment grade below 25% of the book | Risk committee |
+| **Group and single-name limits** | The regulatory 20% of Tier 1, ₹30 crore; an internal limit inside it | Credit policy, regulation |
+| **Facility limit** | The sanctioned amount on each account | Sanctioning authority |
+| **Utilisation** | What is drawn against the facility | The borrower, within the limit |
+
+Each limit carries two thresholds: an **early warning trigger**, at which the owner must explain and propose action, and the **hard limit**, beyond which new business stops and the breach is escalated. A limit with no trigger is only discovered once breached.
+
+### Pricing for risk — RAROC on the steel loan
+
+A loan's price has to cover three things: the funding it consumes, the loss it is expected to cause, and a return on the capital it ties up. **Risk-adjusted return on capital (RAROC)** puts them in one ratio.
+
+$$
+RAROC = \frac{\text{Credit spread} - \text{Expected loss} - \text{Operating cost}}{\text{Capital}}
+$$
+
+where:
+
+- **Credit spread** — customer rate less the funding charge, so funding is already paid for
+- **Expected loss** — PD × LGD × EAD, the cost of business from Part 2
+- **Operating cost** — the cost of originating and running the loan
+- **Capital** — the capital the loan consumes, here the IRB requirement K × EAD from Part 7
+
+| Input | At origination | At T2, downgraded | Where it comes from |
+|---|---:|---:|---|
+| Credit spread ₹ crore | 2.50 | 2.50 | 10.00% customer rate less the 7.50% five-year funding charge — Volume 2, Part 2 |
+| Expected loss ₹ crore | 0.22 | 1.25 | 0.50% × 45% × 99.09; then 2.30% × 55% × 99.09 |
+| Operating cost ₹ crore | 0.50 | 0.50 | Assumed |
+| **Risk-adjusted return** | **1.78** | **0.75** | |
+| Capital ₹ crore | 5.52 | 11.57 | K of 5.569%, then 145.9% ÷ 12.5 = 11.67%, each × 99.09 |
+| **RAROC** | **32.3%** | **6.5%** | |
+| Hurdle rate | 15% | 15% | The bank's cost of equity — illustrative |
+
+**The same contract went from twice the hurdle to less than half of it.** Nothing about the loan's terms changed. The expected loss rose five-fold and the capital doubled — the migration of Part 3 and the IRB curve of Part 7, arriving in the pricing.
+
+Solve for the spread that would restore the hurdle at T2.
+
+| Step | Working | ₹ crore |
+|---|---|---:|
+| Required return on capital | 15% × 11.57 | 1.74 |
+| Plus expected loss and cost | 1.25 + 0.50 | 1.75 |
+| **Spread required** | | **3.49** |
+| **Customer rate required** | 7.50% funding + 3.49% | **10.99%** |
+
+That is the conversation at renewal: price the loan at about 11%, take more security to lower LGD and capital, shorten the tenor, or reduce the exposure. And note what made the arithmetic possible — the 7.50% funding charge. **Get FTP wrong and every RAROC in the bank is wrong by the same error**, which is why Volume 2 spends a part on it.
+
+### Early warning — seeing T2 before T2
+
+The steel borrower was downgraded at T2. The evidence existed well before, in places a credit function can watch.
+
+| Signal family | What is watched | On our steel borrower before T2 | Source |
+|---|---|---|---|
+| **Financial** | Interest cover, leverage, covenant headroom | Interest cover fell from 3.1× towards 0.9× | Quarterly results, covenant certificates |
+| **Account conduct** | Limit utilisation, overdrawals, delayed stock statements, returned cheques | Cash credit running at its limit for months | Core banking |
+| **Market** | Bond spreads, share price, rating agency outlooks | Spreads on steel issuers widening | Market data |
+| **Sector and external** | Import volumes, commodity prices, tax filings | The import surge and falling steel prices | Industry data |
+| **Other lenders** | CRILC classification and SMA flags | Any other lender's SMA flag, visible to all | CRILC, Part 6 |
+
+A signal is a trigger for a review, not a verdict. The review puts the name on a **watchlist** with an action plan — tighten covenants, reduce limits, take more security, or plan an exit — and that watchlist decision is exactly the qualitative evidence the SICR assessment in Part 5 needs. Early warning is also the one place in credit where machine learning is freely used (Volume 2, Part 7): it ranks attention, and no customer is refused on its say-so.
+
+### The same questions on a retail book
+
+This volume's book is ten corporate names, each rated individually. A retail book is thousands of small loans, and the same questions are answered in pools.
+
+| Question | Corporate — this volume | Retail |
+|---|---|---|
+| Who is rated? | The obligor, one at a time | A pool: product × score band × origination month |
+| Where PD comes from | A rating model plus analyst judgement | Application and behaviour scorecards, automated |
+| How deterioration shows | Rating migration, Part 3 | Days-past-due buckets and **roll rates** |
+| How underwriting quality shows | Annual review of each name | **Vintage curves** — each month's originations tracked by months on book |
+| LGD | Collateral-specific workout | Pool-level recovery curves |
+| Early warning | Signals on the name | Behaviour score changes |
+
+**Roll rates** are the retail transition matrix. Each month, what share of each days-past-due bucket moves one bucket worse?
+
+| From | To | Monthly roll rate |
+|---|---|---:|
+| Current | 1–30 days | 3% |
+| 1–30 days | 31–60 days | 30% |
+| 31–60 days | 61–90 days | 50% |
+| 61–90 days | 90+ — non-performing | 70% |
+
+Illustrative.
+
+$$
+100 \times 3\% \times 30\% \times 50\% \times 70\% = 0.315
+$$
+
+**Of every ₹100 crore current today, about ₹0.32 crore reaches non-performing four months later** if nothing changes. It is the same Markov chain as Part 3, run on days past due instead of ratings, with the same two false assumptions: that a loan's next step depends only on its current bucket, and that the rates hold steady. A collections team that cuts the roll rate out of the 31–60 bucket from 50% to 40% cuts that flow by a fifth — which is how a collections strategy is valued.
+
+**Vintage curves** answer Part 5's question for a pool. Plot cumulative default rate against months on book for each month's originations. If this quarter's loans are defaulting faster at month six than last year's did, underwriting has loosened — "has it got worse than we underwrote?" asked of a whole cohort rather than one borrower.
+
 ---
 
 ## The whole thing, on one table
@@ -1312,11 +1573,13 @@ Read down any column and you have a bank's complete position on one exposure on 
 | ECL allowance, T2 | ₹3.74 crore | 5 |
 | ECL allowance, T3 | ₹66.51 crore | 5 |
 | Impairment charge, year 3 | ₹62.77 crore | 5 |
+| Book-level walk — opening, charge, write-off, closing | 20.00 + 4.00 − 2.00 = ₹22.00 crore | 5 |
 | Interest revenue, year 4, on gross vs net | ₹10.45 / ₹3.43 crore | 5 |
 | IRAC provision, standard | 0.40% | 6 |
 | IRAC provision, T3 | ₹15.00 crore | 6 |
 | Impairment reserve, T0 and T1 | ₹0.20 crore | 6 |
 | Modification test threshold | 10% | 6 |
+| ECL for commercial banks effective | 1 April 2027 | 6 |
 | Total risk-weighted assets | ₹1,234 crore | 7 |
 | Asset correlation R at PD 0.50% | 0.2135 | 7 |
 | Conditional PD in a 1-in-1,000 year | 9.77% | 7 |
@@ -1325,8 +1588,14 @@ Read down any column and you have a bank's complete position on one exposure on 
 | CET1 ratio, T0 | 12.16% | 7 |
 | CET1 ratio, T3 | 7.07% | 7 |
 | Leverage ratio | 8.55% | 7 |
+| Business indicator / its component | ₹60.00 crore / ₹7.20 crore | 7 |
+| Operational / market risk RWA | ₹90 crore / ₹40 crore | 7 |
+| BBB weight from 1 April 2027, and CET1 on that change alone | 75%, 13.46% | 7 |
+| RAROC — origination / T2 | 32.3% / 6.5% | 8 |
+| Customer rate restoring a 15% hurdle at T2 | 10.99% | 8 |
+| Four-month roll to NPA per ₹100 crore current | ₹0.315 crore | 8 |
 
-Regulatory minima, risk weights, provisioning percentages and reporting thresholds are subject to change and are marked **[verify]** where they appear.
+Regulatory minima, risk weights, provisioning percentages and floors, reporting thresholds and effective dates are subject to change and are marked **[verify]** where they appear.
 
 ---
 
@@ -1334,29 +1603,38 @@ Regulatory minima, risk weights, provisioning percentages and reporting threshol
 
 | Term | Expansion |
 |---|---|
+| ASRF | Asymptotic single risk factor model |
 | AT1 | Additional Tier 1 capital |
+| BI | Business indicator |
+| BIC | Business indicator component |
 | CCF | Credit conversion factor |
+| CERSAI | Central Registry of Securitisation Asset Reconstruction and Security Interest of India |
 | CET1 | Common equity Tier 1 |
 | CRILC | Central Repository of Information on Large Credits |
 | DRT | Debt Recovery Tribunal |
 | EAD | Exposure at default |
 | ECL | Expected credit loss |
 | EIR | Effective interest rate |
+| EL | Expected loss |
+| FTP | Funds transfer pricing |
 | GCA | Gross carrying amount |
 | HHI | Herfindahl-Hirschman Index |
 | IBC | Insolvency and Bankruptcy Code |
 | ICAAP | Internal capital adequacy assessment process |
+| ILM | Internal loss multiplier |
 | IRAC | Income recognition, asset classification and provisioning |
 | IRB | Internal ratings based approach |
 | LGD | Loss given default |
 | NPA | Non-performing asset |
 | PD | Probability of default |
 | PIT | Point-in-time |
+| RAROC | Risk-adjusted return on capital |
 | RWA | Risk-weighted assets |
 | SARFAESI | Securitisation and Reconstruction of Financial Assets and Enforcement of Security Interest Act |
 | SICR | Significant increase in credit risk |
 | SMA | Special mention account |
 | TTC | Through-the-cycle |
+| UL | Unexpected loss |
 
 ---
 
@@ -1379,6 +1657,18 @@ Regulatory minima, risk weights, provisioning percentages and reporting threshol
 15. The same BBB borrower, same collateral, gets 69.6% at 2.5 years and 98.7% at 5 years. What does the standardised table charge, and what is it missing?
 16. The downgrade at T2 cost 75 basis points of CET1 before any default. Through which two channels?
 17. RWA *fell* between T2 and T3 while the bank lost ₹62.77 crore. Explain.
+18. A fully provided ₹2 crore loan is written off. What happens to gross loans, the allowance, the net carrying amount and profit?
+19. From 1 April 2027, what does the steel loan's provision look like at T2, and why is that the whole point of the change?
+20. What is a prudential floor under the 2027 ECL directions, and which feature of today's regime already plays the same role?
+21. Build the business indicator from the income statement. Why is net interest income capped, and why does the loss history not matter for a small bank?
+22. What do ASRF and Vasicek refer to, and which assumption behind "asymptotic" does our ten-borrower book violate?
+23. From 1 April 2027 a BBB corporate weighs 75%. What does that alone do to CET1, and why must it be planned together with ECL?
+24. Three risk appetite metrics were breached on day one while the CET1 ratio looked comfortable. Which three, and what does that say about the metrics that look fine?
+25. RAROC falls from 32.3% to 6.5% on an unchanged contract. Name the two channels, and derive the customer rate that restores a 15% hurdle.
+26. Why does a wrong FTP rate corrupt every RAROC in the bank?
+27. Name four early warning signals visible on the steel borrower before T2, and say what a signal triggers.
+28. Roll rates of 3%, 30%, 50% and 70%. Of ₹100 crore current, how much is non-performing four months later, and which Part 3 assumptions does that inherit?
+29. This quarter's vintage curve sits above last year's at month six. What does it tell you?
 
 ---
 
@@ -1396,4 +1686,8 @@ Between allowance and capital sits the argument the whole industry is having: **
 
 Follow one borrower and all of it connects. Written at ₹98 crore. Provided ₹0.20 crore on day one, against an IRAC floor of ₹0.40 crore. Downgraded, still classified Standard, provided ₹3.74 crore. Defaulted, provided ₹66.51 crore while IRAC still asked for ₹15 crore. And the bank's CET1 ratio fell from 12.16% to 7.07% — through the numerator because the provision hit profit, and through the denominator because a worse borrower carries more weight.
 
-Volume 2 turns to the other side of the balance sheet: where the ₹1,300 crore of funding comes from, what happens when it wants to leave, how the two sides reprice against each other, and how every number in both volumes is assembled into the returns that go to the regulator.
+From 1 April 2027 regulation settles that argument for Indian banks. They move to expected credit loss, with prudential floors doing the job the impairment reserve does today — and on the same date the standardised weights change, BBB corporates falling from 100% to 75%. Provisions rise and several weights fall on one day, so the numerator and the denominator have to be planned together.
+
+And a book is run, not just measured. The board states its appetite in numbers, and ours was breached on concentration from the first day while every headline ratio looked fine. Limits carry that appetite down to a single facility. Each loan is priced to earn its cost of capital after funding, expected loss and running cost — the steel loan cleared its hurdle twice over at origination and fell to less than half of it on downgrade without a word of the contract changing. Early warning exists to see T2 before T2. On a retail book the same questions are asked of pools: roll rates for migration, vintages for underwriting.
+
+Volume 2 turns to the other side of the balance sheet: where the ₹1,300 crore of funding comes from, what happens when it wants to leave, how the two sides reprice against each other, how the spread is split internally, what the traded book is and what it costs in capital, and how every number in both volumes is assembled into the returns that go to the regulator.
