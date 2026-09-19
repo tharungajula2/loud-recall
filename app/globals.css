@@ -358,11 +358,11 @@ html::-webkit-scrollbar, body::-webkit-scrollbar {
 }
 
 /* Author-written inline SVG figures scale up to column width while preserving inline max-width */
-article > svg:not(.mermaid-container *),
-.prose > svg:not(.mermaid-container *),
-.prose p > svg:not(.mermaid-container *),
-.prose figure svg:not(.mermaid-container *),
-article figure svg:not(.mermaid-container *) {
+article > svg:not(.mermaid-container *):not(.mermaid-diagram *),
+.prose > svg:not(.mermaid-container *):not(.mermaid-diagram *),
+.prose p > svg:not(.mermaid-container *):not(.mermaid-diagram *),
+.prose figure svg:not(.mermaid-container *):not(.mermaid-diagram *),
+article figure svg:not(.mermaid-container *):not(.mermaid-diagram *) {
   max-width: 100%;
   height: auto;
   display: block;
@@ -370,17 +370,18 @@ article figure svg:not(.mermaid-container *) {
 }
 
 /* Mermaid diagram container */
-.mermaid-container {
+.mermaid-container,
+.mermaid-diagram {
   max-width: 100%;
   overflow-x: auto;
   overflow-y: visible;
 }
 
-/* Mermaid diagrams stay at intrinsic width up to column max-width (useMaxWidth: false) */
+/* Mermaid diagrams stay at intrinsic width up to column max-width */
+.mermaid-diagram svg,
 .mermaid-container svg {
-  max-width: 100%;
-  width: auto;
-  height: auto;
+  max-width: min(100%, var(--mermaid-natural-w, 100%)) !important;
+  height: auto !important;
   display: block;
   margin: 0 auto;
 }
