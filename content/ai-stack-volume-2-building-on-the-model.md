@@ -1,9 +1,9 @@
 ---
 title: "The AI Stack — Volume 2: Building on the Model"
-description: "The same support assistant, from the model outwards. Context engineering, retrieval that survives production, tools and MCP, workflows, agents and the harness, evaluation, guardrails and prompt injection, operating it in production, and the forward-deployed engineer's job of making it work for a real customer."
+description: "The same support assistant, from the model outwards. Context engineering, retrieval that survives production, tools and MCP, workflows, agents and the harness, evaluation, guardrails and prompt injection, operating it in production, and the forward-deployed engineer's job of making it work for a real customer — then context rot, memory beyond the window, MCP as it stands and its registry, and what changed in evaluation and security, with everything time-sensitive in a final State of play."
 series: masterclass
 status: live
-updated: 2026-09-18
+updated: 2026-09-19
 verified: false
 tags:
   - context engineering
@@ -15,6 +15,9 @@ tags:
   - guardrails
   - llmops
   - forward deployed engineering
+  - context rot
+  - agent memory
+  - mcp registry
 ---
 
 ## Part 0 — Where Volume 1 left the assistant
@@ -60,6 +63,34 @@ Every box except one is ordinary software, and every box except one can be teste
 | **6** | What stops the system being turned against its users? |
 | **7** | How is it operated, versioned and reproduced? |
 | **8** | How does a forward-deployed engineer make it work for a real customer? |
+| **9** | Why is a bigger window not a better one? |
+| **10** | What should be remembered beyond one window, and how? |
+| **11** | What is MCP now, and how are servers found and controlled? |
+| **12** | What changed in evaluation and security? |
+| **13** | What is true today, and will change? |
+
+### The series, and the ticket that runs through it
+
+This volume sits between the model and the agent. It inherits Volume 1's numbers and hands its own to Volume 3.
+
+| From Volume 1 | Recall hint | Used here in |
+|---|---|---|
+| The 20,000-token stable block, re-sent 5,000 times a day | *"100 million of the 141 million daily input tokens, Volume 1, Part 0"* | Part 1's budget, Part 9's cost of stuffing the window |
+| USD 963 a month after caching and routing | *"one-sixth of the bill, Volume 1, Part 8"* | Part 0 above, Part 8's business case |
+| The KV cache, 4.62 GB per ticket | *"160 KB a token, Volume 1, Part 5"* | Part 9 — why a longer window is also a heavier one |
+| Temperature 0 is not deterministic | *"batched arithmetic diverges on a near-tie, Volume 1, Part 2"* | Parts 7 and 12 |
+
+Volume 3 follows one ticket, **T-48213**, through the agent built on top of this volume: a duplicate-charge dispute naming invoices INV-2025-44817 and INV-2025-45102, with a bank statement attached whose hidden white-on-white line asks the assistant to record the customer as pre-approved for refunds. Every component of this volume touches it before the agent does.
+
+| Component in this volume | What it does to T-48213 | Where Volume 3 builds on it |
+|---|---|---|
+| The router, Volume 1, Part 8 | Classes it as a multi-invoice dispute, one of 4% | Part 1 — 200 disputes a day |
+| Lexical search, Part 2 | Finds both invoice numbers by exact match, which embeddings cannot | Part 2 — the `get_order` calls |
+| The current-only filter, Part 2 | Returns only the duplicate-charge policy now in force, with its effective date | Part 3 — the skill cites that date |
+| Labelled untrusted content, Parts 1 and 6 | Wraps the statement as data, not instruction | Part 11 — the attack, walked through |
+| Risk classes, Part 4 | Makes any refund a proposal for a person; `issue_refund` becomes `propose_refund` | Parts 1 and 6 |
+| The evaluation set, Part 5 | Gains the hidden-line attachment as a permanent adversarial case | Part 10 — graded on outcomes |
+| Five versioned artefacts, Part 7 | Record what answered it | Part 3 — skills become a sixth |
 
 ---
 
@@ -97,7 +128,7 @@ The order of blocks serves two masters, and fortunately they agree.
 | Middle | Retrieved documents, each labelled with source and date | Changes per ticket; after the stable block so the cache survives |
 | Last | The ticket itself, then the specific instruction for this turn | Models attend most reliably to the beginning and end of long contexts |
 
-That last row reflects a well-documented effect: in long contexts, information placed in the middle is used less reliably than information at either end — **lost in the middle**. [verify] The practical rules are to keep the window no longer than needed, to put the question and the immediate instruction at the end, and to put the most relevant retrieved chunk first or last rather than fifth of ten.
+That last row reflects a well-documented effect: in long contexts, information placed in the middle is used less reliably than information at either end — **lost in the middle**. [verify — Part 13] The practical rules are to keep the window no longer than needed, to put the question and the immediate instruction at the end, and to put the most relevant retrieved chunk first or last rather than fifth of ten.
 
 Assembly is ordinary code, and it should be boring code:
 
@@ -402,7 +433,7 @@ Four habits are visible there, and they carry most tool reliability.
 
 Errors are written for the model, not for a log file. *"Error 404"* teaches it nothing. *"No order INV-2025-44871 exists. Invoice numbers have five final digits; check for a transposition, or ask the customer to confirm"* lets it try again sensibly.
 
-**Fewer, broader tools usually beat many narrow ones.** Every definition costs tokens on every call — here, a third of the input — and every extra tool is another option to choose wrongly. The reflex when an assistant fails at something is to give it a tool for exactly that thing; repeated, it produces a registry of dozens of near-duplicates and an assistant that picks badly among them. One reported case: an operations agent moved from over a hundred bespoke tools to a handful of general ones — read a file, search, run a command over its runbooks and past investigations — and its success rate on novel incidents rose from 45% to 75%. [verify] A specific tool encodes the path someone anticipated; general tools compose into paths nobody did.
+**Fewer, broader tools usually beat many narrow ones.** Every definition costs tokens on every call — here, a third of the input — and every extra tool is another option to choose wrongly. The reflex when an assistant fails at something is to give it a tool for exactly that thing; repeated, it produces a registry of dozens of near-duplicates and an assistant that picks badly among them. One reported case: an operations agent moved from over a hundred bespoke tools to a handful of general ones — read a file, search, run a command over its runbooks and past investigations — and its success rate on novel incidents rose from 45% to 75%. [verify — Part 13] A specific tool encodes the path someone anticipated; general tools compose into paths nobody did.
 
 ### The Model Context Protocol
 
@@ -421,10 +452,10 @@ A server exposes three kinds of thing, and a client can offer the server a few i
 | **Tools** | Server | Functions the model may request |
 | **Resources** | Server | Data the host may read into context — a document, a record |
 | **Prompts** | Server | Reusable templates for common tasks |
-| **Sampling** | Client | The server asks the host's model to generate something |
-| **Elicitation** | Client | The server asks the person for input or approval mid-task |
+| **Sampling** | Client | The server asks the host's model to generate something — deprecated in the current revision, Part 11 |
+| **Elicitation** | Client | The server asks the person for input or approval mid-task — now carried as a multi-round-trip request, Part 11 |
 
-Messages are JSON-RPC, carried over **stdio** for a server running as a local process, or over **HTTP** for a remote one, with authorisation for remote servers built on OAuth. [verify] MCP was introduced by Anthropic in November 2024 and placed under the Linux Foundation's Agentic AI Foundation in December 2025 as a vendor-neutral standard; later specification revisions have moved towards stateless operation so servers can scale behind ordinary load balancers. [verify]
+Messages are JSON-RPC, carried over **stdio** for a server running as a local process, or over **HTTP** for a remote one, with authorisation for remote servers built on OAuth. MCP is governed as a vendor-neutral standard, and its current revision is stateless, so a server scales behind an ordinary load balancer; what changed is in Part 11, and the history, dates and version are in Part 13. [verify — Part 13]
 
 A server is short to write. The documentation search, exposed once for every assistant in the company:
 
@@ -443,7 +474,7 @@ if __name__ == "__main__":
     mcp.run()          # stdio by default
 ```
 
-SDK interfaces change between versions. [verify]
+SDK interfaces change between versions, and serving the current, stateless revision over HTTP is an explicit opt-in — Part 11. [verify — Part 13]
 
 Note what MCP does **not** do: it does not decide whether a call is allowed. A standard way of connecting a tool is also a standard way of connecting a dangerous one. Three MCP-specific risks belong in any review.
 
@@ -525,7 +556,7 @@ Every line outside the `llm()` call is the **harness**, and each failure of an a
 
 ### The harness is the other half of the agent
 
-An agent is a model plus a harness: the program around a frozen model that decides what enters the context, which tools exist, whether each call is permitted, what the budget is and when to stop. The field's emphasis has moved accordingly — from how to word the prompt, to what to put in the context, to **what governs execution**. [verify]
+An agent is a model plus a harness: the program around a frozen model that decides what enters the context, which tools exist, whether each call is permitted, what the budget is and when to stop. The field's emphasis has moved accordingly — from how to word the prompt, to what to put in the context, to **what governs execution**. [verify — Part 13]
 
 | Component | Decides | Prevents |
 |---|---|---|
@@ -719,7 +750,7 @@ Indirect injection is the dangerous one, because the attacker need not be the us
 
 ### The lethal combination
 
-A widely used framing identifies three capabilities that, **together**, make injection able to cause serious harm: access to **private data**, exposure to **untrusted content**, and a way to **send data out** or act externally. [verify]
+A widely used framing identifies three capabilities that, **together**, make injection able to cause serious harm: access to **private data**, exposure to **untrusted content**, and a way to **send data out** or act externally. [verify — Part 13]
 
 | Capability | The assistant as first deployed | As redesigned |
 |---|---|---|
@@ -731,7 +762,7 @@ The first two are the job; they cannot be removed. **The third is the one design
 
 ### The known failure classes
 
-The OWASP project's list of the top risks for applications built on large language models is the checklist security reviewers will use. [verify]
+The OWASP project's list of the top risks for applications built on large language models is the checklist security reviewers will use. [verify — Part 13]
 
 | Risk | In this system | Control |
 |---|---|---|
@@ -745,6 +776,8 @@ The OWASP project's list of the top risks for applications built on large langua
 | Vector and embedding weaknesses | Retrieval returning documents across permission boundaries | Filter by the requester's permissions at query time |
 | Misinformation | The withdrawn policy, stated confidently | Grounding, citations, current-only retrieval |
 | Unbounded consumption | A loop, or an attacker driving up token use | Budgets, rate limits per customer |
+
+The rows follow the list's 2025 edition. The 2026 edition renames and reorders several of them; Part 12 maps the changes onto this table.
 
 ### Layers, placed where they cannot be argued with
 
@@ -762,7 +795,7 @@ The OWASP project's list of the top risks for applications built on large langua
 
 ### Personal data, under Indian law
 
-Tickets are full of personal data: names, phone numbers, addresses, order histories, occasionally payment details. India's **Digital Personal Data Protection Act, 2023**, with its implementing rules notified in November 2025 and phased in over the following eighteen months, sets obligations on the company as a data fiduciary — a lawful purpose, notice, security safeguards, breach reporting and limits on retention. [verify]
+Tickets are full of personal data: names, phone numbers, addresses, order histories, occasionally payment details. India's **Digital Personal Data Protection Act, 2023**, with its implementing rules notified in November 2025 and phased in over the following eighteen months, sets obligations on the company as a data fiduciary — a lawful purpose, notice, security safeguards, breach reporting and limits on retention. [verify — Part 13]
 
 For the assistant that turns into concrete engineering decisions.
 
@@ -775,7 +808,7 @@ For the assistant that turns into concrete engineering decisions.
 
 ### Capability and permission are now separate axes
 
-A structural change in how frontier models are released reinforces everything above. Providers increasingly separate a model's **capability** from **who may use it and how**. Anthropic, for example, offers its Mythos-tier model only to a small set of vetted organisations, while the same underlying model is generally available as Fable 5.1 with additional safeguards in sensitive domains such as biology and cybersecurity.
+A structural change in how frontier models are released reinforces everything above. Providers increasingly separate a model's **capability** from **who may use it and how**. Anthropic's Mythos tier is the current example: one underlying model offered under different eligibility and different safeguards in sensitive domains; the specifics and dates are in Part 13. [verify — Part 13]
 
 For a builder this changes procurement rather than architecture. The same capability may come under different terms, eligibility and contractual duties. And it mirrors this Part's lesson from the provider's side: **capability is what a model can do; permission is what the system around it allows.**
 
@@ -801,7 +834,7 @@ Model versions deserve a specific warning. Providers retire models on a publishe
 
 ### Tracing — where the time and the money went
 
-Each request produces a **trace**: a tree of **spans**, one per step, each with timing, tokens, cost and the versions above. Open standards exist for this — OpenTelemetry has semantic conventions for generative AI calls — so traces flow into the monitoring tools the company already runs. [verify]
+Each request produces a **trace**: a tree of **spans**, one per step, each with timing, tokens, cost and the versions above. Open standards exist for this — OpenTelemetry has semantic conventions for generative AI calls — so traces flow into the monitoring tools the company already runs. [verify — Part 13]
 
 One request, end to end:
 
@@ -922,6 +955,278 @@ Every consequential choice — why this model, why retrieval rather than fine-tu
 
 ---
 
+## Part 9 — Context rot: why a bigger window is not a better one
+
+Part 1 treated the context window as a budget and placed the question last because long contexts are read least reliably in the middle. Since then the evidence has hardened into a name, and it changes how the budget is set.
+
+### What the window does not promise
+
+**Context rot** is the decline in a model's reliability as its input grows longer, even when everything needed is present and the window is nowhere near full. A controlled study of eighteen models found every one of them degraded as input length rose, on tasks kept deliberately simple; details and date in Part 13.
+
+| Finding | What it means for the assistant |
+|---|---|
+| Performance falls with length even on trivial tasks | An advertised window is a capacity, not a quality guarantee — Volume 1, Part 1's point that the reliable length is shorter than the advertised one |
+| Position matters — **lost in the middle** | Part 1's ordering rule stands |
+| **Distractors** hurt most — passages close in topic to the answer but wrong | The worst possible neighbour for the current refund policy is the withdrawn one |
+| The effect is uneven and model-specific | It must be measured on your own tickets, per model |
+
+### The two policies, again
+
+Part 2 fixed the withdrawn-policy incident with a filter rather than a better ranking. Context rot explains why that was the right fix and not merely a tidy one. A retrieved set that contains both the 2024 and 2025 refund policies is not a set with one extra chunk; it is a set with the most damaging distractor there is — near-identical text, one number changed. Ranking the current one first still leaves the other in the window to be blended. **Removing distractors beats ranking them.** Filters, metadata and deduplication are quality controls, not just cost controls.
+
+### What stuffing the window costs
+
+The tempting response to a missed answer is to retrieve more. Suppose the pipeline retrieved 50 chunks instead of 10.
+
+| Line | Working | Value |
+|---|---|---:|
+| Extra retrieved tokens per ticket | (50 − 10) × 800 | 32,000 |
+| Extra cost per ticket — uncached, because retrieved text changes every ticket | 32,000 × 1.32 ÷ 10⁶ | USD 0.0422 |
+| **Extra cost per month** | × 5,000 × 30 | **USD 6,336** |
+| Extra prefill on the self-hosted path | 32,000 × 1.4 × 10¹¹ ÷ 10¹⁵ FLOP/s | ~4.5 s |
+
+**Six and a half times the whole system's monthly bill, and a slower first word — to make the answers worse.** Volume 1, Part 8's lesson that traffic shape decides the bill meets this Part's lesson that context length decides the quality, and they point the same way.
+
+### Finding the knee on your own tickets
+
+Context rot is measured, not assumed. Run the evaluation set of Part 5 at several retrieval depths, measuring retrieval and answers separately. Illustrative:
+
+| Chunks retrieved | Input tokens retrieved | Recall@k | Answer pass rate |
+|---:|---:|---:|---:|
+| 5 | 4,000 | 0.70 | 0.78 |
+| **10** | **8,000** | **0.80** | **0.84** |
+| 20 | 16,000 | 0.86 | 0.83 |
+| 40 | 32,000 | 0.90 | 0.79 |
+
+Retrieval recall rises all the way; answer quality peaks and falls. Past the knee, each extra chunk adds a little chance of containing the answer and a larger chance of distracting from it. **Choose the depth at the knee, and re-run the sweep whenever the model changes** — a different model has a different curve.
+
+### Context rot in the agent
+
+A workflow's window is bounded by design. An agent's grows with every step, which is why Volume 3's countermeasures exist: skills and tool search keep the start small (Volume 3, Parts 3 and 6); a subagent keeps fourteen screenshots out of the main window (*"~423,000 tokens inline, Volume 3, Part 5"*); context editing clears old tool results on long runs (Volume 3, Part 9). Each is a context-rot control as much as a cost control.
+
+**Rule — the right amount of context is the smallest that holds the answer.** Measure the knee; filter distractors before ranking; treat a bigger window as headroom, not as a place to put things.
+
+---
+
+## Part 10 — Memory beyond the window
+
+Part 1's table listed four kinds of state. Two of them outlive one conversation — facts about a customer, and the organisation's knowledge — and this Part is about the first: what an assistant should remember about a customer across months, and how.
+
+### Three things called long-term memory
+
+| Kind | Plain meaning | In our system |
+|---|---|---|
+| **Episodic** — what happened | Records of past interactions | Earlier tickets and how they were resolved |
+| **Semantic** — what is true | Durable facts distilled from those interactions | "Prefers replies in English"; "partial refund for a failed delivery, August 2025" |
+| **Procedural** — how to do things | Methods, not facts about anyone | Volume 3's skills — the billing-dispute procedure |
+
+### The size of the problem
+
+| Line | Working | Value |
+|---|---|---:|
+| Tickets a year | 5,000 × 365 | 1.825 million |
+| A frequent customer's last year, illustrative | 14 tickets × 2,000 tokens | 28,000 tokens |
+| Cost of pasting that history into every call | 28,000 × 1.32 ÷ 10⁶ | USD 0.037 |
+| Against the whole hard ticket, Volume 2, Part 7 | | USD 0.016 |
+
+One customer's history fits in a window. Paying for it on every call costs more than the ticket, adds distractors — Part 9 — and still fails at the second customer with forty tickets. **Memory beyond the window is a retrieval problem**, and it inherits every lesson of Part 2.
+
+### Memory is retrieval with a clock
+
+A benchmark for long-term conversational memory tests five abilities; details in Part 13. Each maps onto a design decision here.
+
+| Ability | Question it tests | Design decision for the assistant |
+|---|---|---|
+| **Information extraction** | Can a fact from an old conversation be found? | Index semantic facts, not only raw transcripts |
+| **Multi-session reasoning** | Can facts from several conversations be combined? | Retrieve by customer across tickets, not per ticket |
+| **Temporal reasoning** | Does it know when things happened? | Every memory line carries a date |
+| **Knowledge updates** | Does the newer fact win over the older? | Supersession metadata — the withdrawn-policy problem again |
+| **Abstention** | Does it say "I don't know" when nothing was stored? | The draft says what it could not confirm |
+
+The fourth row is Part 2's incident in a new place. A customer changed their billing address in March; the September ticket must use March's, not last year's. **Similarity cannot tell the two addresses apart any better than it could tell the two refund policies apart.** The fix is the same: metadata and a filter.
+
+| Field | Purpose |
+|---|---|
+| `customer_id` | Scope: a memory line is never retrieved for another customer — Part 6's disclosure risk |
+| `fact` | The line itself, short and specific |
+| `source_ticket`, `established_by` | Which ticket, and which tool result, established it — Volume 3, Part 4's validation rule |
+| `valid_from`, `superseded_by` | The clock: the newest valid line wins |
+| `expires_on` | Stale facts leave on their own |
+
+```sql
+SELECT fact, source_ticket, valid_from
+FROM   customer_memory
+WHERE  customer_id = :customer_id
+  AND  superseded_by IS NULL
+  AND  (expires_on IS NULL OR expires_on > CURRENT_DATE)
+ORDER  BY valid_from DESC
+LIMIT  20;
+```
+
+T-48213's customer has three lines (*"300 tokens, Volume 3, Part 4"*); the query returns all of them, and none changes the dispute — the normal case. Its value is the ticket where a past promise or past refund does.
+
+### What is never memory, and what memory must forget
+
+Volume 3, Part 4 set the write rules: a memory write is a validated tool call, it must cite a tool result from the run, and nothing resembling a permission or a limit may be stored. Two further obligations come from the data, not the agent.
+
+| Obligation | Consequence |
+|---|---|
+| Memory lines about a customer are personal data | Retention periods and erasure apply to them — Part 6 and Part 12 |
+| Summaries are derived personal data | An erasure request deletes the summaries and embeddings built from the erased lines, not only the lines |
+
+### Summaries are lossy memory
+
+Compaction in Part 1 summarised a conversation to save space. Doing the same across months — summarising summaries — drifts: each pass drops what seemed unimportant, and after three passes a customer's reason for a past refund may be gone. **Keep the source records and the dated facts; treat summaries as a cache that can be rebuilt**, never as the record.
+
+**Rule — remember facts with a date and a source, retrieve them like documents, and let the newest valid fact win.**
+
+---
+
+## Part 11 — MCP as it stands, and the registry
+
+Part 3 introduced the Model Context Protocol: hosts, clients and servers, with servers exposing tools, resources and prompts. The mechanics hold. The protocol's current revision changed how it runs, and a public directory now exists for finding servers. Dates, versions and sources are in Part 13.
+
+### What changed, in plain words
+
+| Change | Plain meaning | Consequence for the three servers |
+|---|---|---|
+| **Stateless core** | No opening handshake and no protocol session; every request carries its own protocol version, client details and capabilities; a discovery call tells a client what a server supports | Any server instance can answer any request — ordinary web scaling |
+| **Multi-round-trip requests** | When a server needs something mid-request — the person's input, say — it answers with a request for it, and the client sends the original request again with the answer, instead of the server calling back | Elicitation, in Part 3's table, now travels this way |
+| **Header-based routing** and **cacheable list results** | Load balancers can route on standard headers; the list of tools can be cached like any web response | The tool list stops being re-fetched on every connection |
+| **Extensions** — Tasks for long-running work; MCP Apps for server-supplied interface panels | Optional features versioned separately from the core | Volume 3, Part 6's processor query uses the Tasks pattern |
+| **Authorisation hardening** — client ID metadata documents replace dynamic client registration | A client publishes a document at a web address describing itself, instead of registering itself afresh with every server | Fewer registrations to audit |
+| **Deprecations** — Roots, Sampling, Logging; the legacy HTTP-plus-streaming transport | Still working for at least twelve months; new servers should not adopt them | Part 3's Sampling row is marked deprecated |
+
+### A stateless server, sized
+
+Volume 1, Part 6's Little's law applies to an MCP server directly now that it is an ordinary web service. For the documentation server:
+
+| Step | Working | Value |
+|---|---|---:|
+| Peak ticket arrivals | Volume 1, Part 6 | 0.42 a second |
+| Searches per ticket, including the agent path | Illustrative | ~1.2 |
+| Peak search calls | 0.42 × 1.2 | ~0.50 a second |
+| Time per search | Part 7's trace | 0.04 s |
+| **Requests in flight** | 0.50 × 0.04 | **~0.02** |
+
+One small instance carries it; a second exists only for availability. Statelessness adds what sessions prevented: **rolling upgrades with no sessions to drain**, and a failed instance that loses nothing.
+
+### Moving the three servers
+
+The SDKs keep old and new working together: a new client falls back to the old handshake when it meets an old server, and a server offers the new revision over HTTP only when it explicitly opts in to stateless operation. So the migration is incremental — server by server, behind the Part 7 release stages — and Volume 3, Part 9 has the team's coding agent do it overnight as forty-two tested features.
+
+### The registry
+
+The **MCP Registry** is a public, community-run directory of MCP servers. A publisher describes a server in a small metadata file and publishes it under a **namespace** that proves ownership — a code-hosting account or a domain name the publisher controls.
+
+| The registry tells you | It does not tell you |
+|---|---|
+| The server exists, and who published it | That the server is safe |
+| Which versions exist, and how to install or reach them | That its tool descriptions are free of hidden instructions — Part 3's tool poisoning |
+| That the namespace owner is who they claim | That the owner's intentions are good |
+
+The registry's strongest use is not discovery but control. **An organisation can run or mirror its own registry and point its hosts only at that**, so the list of approved servers is enforced by configuration rather than by memo — the same move as Volume 3, Part 11's internal plugin marketplace.
+
+**Rule, updated — read-only first, pinned versions, from a registry you control.** A public registry is where review starts, not where it ends.
+
+---
+
+## Part 12 — What changed in evaluation and security
+
+Parts 5 and 6 still stand. This Part records what has sharpened since they were written: a settled vocabulary for evaluating agents, a better statistical test than the one Part 5 described, judges that reason, a new edition of the security checklist, design patterns that remove injection's reach structurally, and data-protection dates that are now engineering deadlines.
+
+### Evaluation: the vocabulary settled
+
+| Term | Meaning | For the assistant |
+|---|---|---|
+| **Task** | One test case with inputs and success criteria | One of the 200 tickets |
+| **Trial** | One attempt at a task | One run; several per task |
+| **Grader** | Code, a model or a person that scores a trial | Part 5's programmatic checks and calibrated judge |
+| **Transcript** | Everything the system said and did | The trace of Part 7 |
+| **Outcome** | The state the system left behind | The draft, the metadata, any proposal |
+| **Evaluation harness** | The code that runs tasks, collects transcripts and applies graders | `make eval` in Volume 3, Part 7 |
+
+Two kinds of suite now sit side by side. A **regression suite** is expected to pass — the 200 cases, run before every release. A **capability suite** holds hard cases the system is expected to fail today — multi-currency disputes, three-issue tickets — and measures progress on them. When a capability case starts passing reliably, it moves into the regression suite.
+
+### The paired comparison, derived
+
+Part 5 compared version A (164 of 200) with version B (172 of 200) as two independent percentages and found a 1.1-standard-error difference — noise. It then said a paired comparison on the same cases is far more sensitive. Here it is. Only the cases where the versions **disagree** carry information.
+
+| | B passes | B fails |
+|---|---:|---:|
+| **A passes** | 160 | 4 |
+| **A fails** | 12 | 24 |
+
+$$
+z = \frac{b - c}{\sqrt{b + c}}
+$$
+
+where:
+
+- **b** — cases B passes and A fails, 12
+- **c** — cases A passes and B fails, 4
+- **z** — how many standard errors the net difference lies from zero, if the two versions were really equal
+
+$$
+z = \frac{12 - 4}{\sqrt{16}} = 2.0
+$$
+
+**The same four points that were 1.1 standard errors unpaired are 2.0 paired** — past the 1.96 threshold. Pairing removes the variation between tickets, which dwarfs the variation between versions. Two cautions remain: the four cases B broke still need reading, because Part 5's gate blocks any financial or adversarial regression regardless of the total; and with sixteen discordant cases, one or two flips move the verdict.
+
+### Repeated trials, even for a workflow
+
+Volume 1, Part 2 noted that temperature 0 is not deterministic; Volume 1, Part 9 notes that reasoning modes may not accept a temperature at all. So even a workflow case gives different answers on different runs, and a single run per case over-states or under-states quality by luck. **Run each case several times and report the share passed on every run**, the pass^k of Volume 3, Part 10 — for a system that answers each customer once, consistency is the quality.
+
+### The judge now reasons
+
+Part 5's judge is increasingly a reasoning model, which changes its cost and its calibration. Illustratively, at Volume 1's prices:
+
+| Line | Working | USD |
+|---|---|---:|
+| Judge input per case — reply, retrieved chunks, rubric | 9,600 × 1.32 ÷ 10⁶ | 0.0127 |
+| Judge output per case — verdict plus thinking | 1,300 × 3.96 ÷ 10⁶ | 0.0051 |
+| **Per case** | | **0.0178** |
+| One pass of the 200-case suite | × 200 | 3.56 |
+| Three trials per case | × 3 | **10.7** |
+
+Cheap against any release decision. The discipline that changes is calibration: **the judge's effort level is part of the judge**, and Part 5's kappa is re-measured whenever the judge model or its effort changes.
+
+### Security: the checklist's new edition
+
+The OWASP list Part 6 used has a 2026 edition, and a separate agentic list and an agent control standard now sit beside it; Part 13 has dates and sources. Read against Part 6's table:
+
+| What moved | Reading for the assistant |
+|---|---|
+| **Excessive agency** rose towards the top of the list | Part 4's risk classes are now the headline control, not a detail |
+| **System prompt leakage** was broadened into **hidden context exposure** | Everything the user cannot see is at risk of disclosure — retrieved documents, memory lines, tool results — not only the prompt |
+| **Prompt injection** stays first, with delivery surfaces now named explicitly: images, audio, invisible content, intermediate reasoning, persistent memory | T-48213's white-on-white line is the textbook case — Volume 1, Part 10 |
+
+### Design patterns that cut the leg structurally
+
+Part 6's lethal combination and Volume 3, Part 8's rule of two say which capability to remove. Published design patterns now say how, by structure rather than by instruction.
+
+| Pattern | How it works | In our system |
+|---|---|---|
+| **Plan, then execute** | The plan — which tools, in what order — is fixed before any untrusted content is read; untrusted content can change values, not actions | The workflow: route, rewrite, retrieve, draft is fixed in code, so a ticket cannot add a tool |
+| **Dual model** — a privileged model and a quarantined one | The privileged model plans from the trusted request and never reads untrusted text; the quarantined model reads it but cannot call tools; values pass between them as references | A candidate design for the dispute agent's attachment handling |
+| **Capability tracking** | Every value carries a label of where it came from; a policy blocks untrusted values from reaching sensitive actions | The memory-write rule — a line must cite a tool result, never the attachment |
+| **Context minimisation** | The user's raw text is dropped once intent is extracted | The rewritten search query, not the ticket, drives retrieval |
+
+**Rule — prefer a pattern that makes the attack impossible over an instruction that makes it unlikely.** It is Part 6's rule — anything consequential lives in code — applied to the architecture itself.
+
+### Personal data: the dates become deadlines
+
+India's data-protection rules come into force in phases; the substantive obligations on data fiduciaries apply from May 2027 (Part 13). For the assistant, each obligation is an engineering task with a lead time.
+
+| Obligation | Task |
+|---|---|
+| Retention limits | A retention period on traces (Part 7), memory lines (Part 10) and evaluation cases drawn from real tickets |
+| Erasure on request | Deleting a customer's memory lines, derived summaries and embeddings — Part 10 |
+| Security safeguards and breach reporting | Access control on traces; a breach runbook beside Part 7's failure table |
+| Notice and consent | What the customer is told about automated drafting — the business owns the words, engineering owns the evidence |
+
+---
+
 ## Reference numbers
 
 | Figure | Value | Part |
@@ -947,8 +1252,15 @@ Every consequential choice — why this model, why retrieval rather than fine-tu
 | Canary share | 5% | 7 |
 | Handle time 9 → 6 minutes | 250 agent-hours a day saved | 8 |
 | Monthly saving against monthly AI cost | ₹30 lakh against ₹0.83 lakh | 8 |
+| Retrieving 50 chunks instead of 10 | +32,000 tokens; +USD 6,336 a month; ~4.5 s more prefill | 9 |
+| Retrieval-depth knee, illustrative | 10 chunks: recall 0.80, answers 0.84 | 9 |
+| Pasting a year of one customer's history | 28,000 tokens; USD 0.037 a call | 10 |
+| Tickets a year | 1.825 million | 10 |
+| Documentation server requests in flight at peak | ~0.02 | 11 |
+| Paired comparison, 12 against 4 discordant | z = 2.0, against 1.1 SE unpaired | 12 |
+| Reasoning judge, one suite / three trials | USD 3.56 / 10.7 | 12 |
 
-Figures marked **[verify]** where they appear are current facts or reported results that age; the mechanics do not.
+Figures marked **[verify]** where they appear are current facts or reported results that age; the mechanics do not. Their current values and sources are in Part 13.
 
 ---
 
@@ -997,6 +1309,17 @@ Figures marked **[verify]** where they appear are current facts or reported resu
 23. Decode is 6 of 8 seconds. What does that say about where to optimise next?
 24. State the readiness ratio and use it to rank drafting, sending and refunding.
 25. The AI costs under 3% of the saving. Where, then, is the real risk to the business case?
+26. Name T-48213's path through this volume's components. Which one finds its invoice numbers, and why not embeddings?
+27. Define context rot. Why is the withdrawn 2024 policy the worst distractor the current one could have?
+28. Derive the USD 6,336 a month of retrieving 50 chunks instead of 10. What does the depth sweep say about answer quality?
+29. Why is memory beyond the window a retrieval problem? Derive the USD 0.037 of pasting a year's history into every call.
+30. Map LongMemEval's "knowledge updates" onto the assistant. Which fields and which query make the newest valid fact win?
+31. An erasure request arrives. What must be deleted besides the memory lines?
+32. Name four changes in the current MCP revision. Size the documentation server with Little's law, and say what statelessness adds.
+33. What does the MCP Registry prove, what does it not, and how does an organisation turn it into a control?
+34. From the paired table, derive z = 2.0. Why is the paired test sharper than Part 5's unpaired 1.1 standard errors?
+35. Name two ways the OWASP list changed in its 2026 edition, and one design pattern that removes an attack rather than discouraging it.
+36. Which DPDP obligations become engineering tasks for traces and memory, and by when?
 
 ---
 
@@ -1014,4 +1337,115 @@ Without evaluation every change is a guess. A few hundred real, stratified ticke
 
 Security follows from one fact: instructions and data share a channel, so injection cannot be eliminated, only made harmless. Keep the private data and untrusted content the job needs, and take away unsupervised external action. Anything consequential lives in code, never only in the prompt.
 
+A bigger window is not a better one. Every model grows less reliable as its input lengthens, and worst of all when the extra text is nearly right, so the right amount of context is the smallest that holds the answer — found by sweeping retrieval depth on real tickets, not assumed. Memory across months is the same problem with a clock: dated, sourced facts retrieved like documents, the newest valid one winning, and summaries treated as a cache rather than a record. MCP has become an ordinary stateless web protocol that scales and upgrades like any service, and a public registry now says who published a server — never whether it is safe, which is why the registry to trust is one you control. Evaluation has a settled vocabulary and a sharper test: compare versions on the same cases and only disagreements count. And security now names its delivery surfaces — images, hidden text, memory — and offers patterns that make an attack impossible rather than unlikely.
+
 And a deployment succeeds when a wrong output is cheaper to catch than to cause. The forward-deployed engineer's work is mostly lowering that checking cost, measuring the customer's number before and after, meeting the people who can say no before they do, and handing over a system the customer can run, evaluate and change without them.
+
+Volume 3 takes the one part of this system whose steps cannot be known in advance — the billing dispute — and follows ticket T-48213 through it as an agent: the loop, the skills, the memory, the screen with no API, and the harness that keeps each of them in bounds.
+
+---
+
+## Part 13 — State of play, as at 19 September 2026
+
+Everything in this Part changes on the scale of months. Parts 1 to 12 do not depend on any row here being current; they point here for the specifics. Every row is **[verify]**, as at 19 September 2026, against the linked source before it is relied on. Where sources disagree, both are given. Rows marked *secondary* come from third-party reporting rather than the vendor, standards body or paper. Model prices and hardware are in Volume 1, Part 14; agent products, skills, A2A and agent benchmarks are in Volume 3, Part 13.
+
+### MCP
+
+| Fact | Practical consequence | Source |
+|---|---|---|
+| MCP was introduced by Anthropic in November 2024 and contributed to the Linux Foundation's Agentic AI Foundation at its formation in December 2025. [verify] | Neutral governance; Part 3's "vendor-neutral standard" | linuxfoundation.org press release |
+| Specification 2026-07-28, final on 28 July 2026 after a release candidate locked on 21 May: stateless core, multi-round-trip requests, header-based routing, cacheable list results, authorisation hardening, a formal extensions framework, updated Tier 1 SDKs. [verify] | Part 11's table | blog.modelcontextprotocol.io — 2026-07-28 specification; release candidate |
+| The initialise handshake is removed; each request carries protocol version, client information and capabilities; a `server/discover` call replaces up-front negotiation. Tasks moved into the `io.modelcontextprotocol/tasks` extension with polling. [verify] | Part 11's sizing and migration | github.com/modelcontextprotocol — specification blog source; go-sdk releases |
+| Roots, Sampling and Logging are deprecated and supported for at least twelve months; dynamic client registration is deprecated in favour of client ID metadata documents. [verify] | Part 3's Sampling row | modelcontextprotocol specification blog |
+| SDKs negotiate down to 2025-11-25 with older peers; the Go SDK serves 2026-07-28 over streamable HTTP only when stateless mode is set. [verify] | Part 11's incremental migration | github.com/modelcontextprotocol/go-sdk releases |
+| Tier 1 SDKs see close to half a billion downloads a month; TypeScript and Python each passed a billion in total. [verify] | MCP is infrastructure to plan around | blog.modelcontextprotocol.io |
+
+### The MCP Registry
+
+| Fact | Practical consequence | Source |
+|---|---|---|
+| Launched in preview on 8 September 2025; the registry API entered a v0.1 freeze on 24 October 2025 ahead of general availability. No general-availability announcement was found as at this date. [verify] | Treat it as preview infrastructure | github.com/modelcontextprotocol/registry README |
+| Publishers are verified through GitHub sign-in or workflow identity, or by proving control of a DNS or HTTP domain; namespaces encode ownership. Organisations can point clients at a registry to allowlist servers. [verify, partly secondary] | Part 11's internal-registry control | dsebastien.net; registry README |
+
+### Context and memory
+
+| Fact | Practical consequence | Source |
+|---|---|---|
+| Chroma's technical report "Context Rot" (14 July 2025) evaluated 18 models and found performance growing less reliable as input length increases, even on simple tasks, with distractors and needle–question similarity mattering. [verify] | Part 9 | trychroma.com/research/context-rot |
+| "Lost in the middle": models use information at the start and end of long contexts more reliably than in the middle (Liu et al., 2023). [verify] | Part 1's ordering; Part 9 | arxiv.org/abs/2307.03172 |
+| LongMemEval (ICLR 2025) tests five long-term memory abilities — information extraction, multi-session reasoning, temporal reasoning, knowledge updates, abstention — over 500 questions; commercial assistants and long-context models showed about a 30% accuracy drop over sustained interactions. [verify] | Part 10's ability table | arxiv.org/abs/2410.10813 |
+| Anthropic's memory tool, context editing and compaction settings are recorded in Volume 3, Part 13. | Part 10 relies on the mechanism, not the product | Volume 3, Part 13 |
+
+### Evaluation and observability
+
+| Fact | Practical consequence | Source |
+|---|---|---|
+| Anthropic's "Demystifying evals for AI agents" (January 2026) defines tasks, trials, graders, transcripts, outcomes and the evaluation harness; separates capability and regression evaluations; recommends grading outcomes and reading transcripts. [verify] | Part 12's vocabulary | anthropic.com/engineering/demystifying-evals-for-ai-agents |
+| OpenTelemetry's generative-AI semantic conventions remain at Development status; in June 2026 they moved to a dedicated repository with no tagged release as at August 2026. One secondary source reports them stable; the specification does not. [verify, partly secondary — sources disagree] | Part 7's tracing: adopt with version awareness; attribute names may change | github.com/open-telemetry/semantic-conventions-genai; dash0.com |
+| Public benchmark contamination and saturation are recorded in Volume 3, Part 13. | Part 5's point that public benchmarks shortlist and do not decide | Volume 3, Part 13 |
+
+### Security
+
+| Fact | Practical consequence | Source |
+|---|---|---|
+| The OWASP Top 10 for LLM Applications 2026 was published in early August 2026 (dated 3 and 4 August on different pages), announced on 2 September with a new Agent Control Standard. [verify] | Part 12; Part 6's table follows the 2025 edition | genai.owasp.org; owasp.org project page |
+| Reported 2026 order: prompt injection; sensitive information disclosure; excessive agency; supply chain; data and model poisoning; unbounded consumption; misinformation; hidden context exposure; vector and embedding weaknesses; improper output handling. [verify, secondary] | Part 12's "what moved" | realpython.com; respan.ai |
+| OWASP's Top 10 for Agentic Applications (December 2025) is recorded in Volume 3, Part 13. | Agent-specific risks | Volume 3, Part 13 |
+| CaMeL (Google DeepMind, 2025) separates a privileged planner from a quarantined reader and tracks capabilities on values; "Design Patterns for Securing LLM Agents against Prompt Injections" (2025) sets out plan-then-execute, dual-model, action-selector and context-minimisation patterns. [verify] | Part 12's design patterns | arxiv.org/abs/2503.18813; arxiv.org/abs/2506.08837 |
+| The OWASP 2025 list is the source of Part 6's table, including system prompt leakage. [verify] | Part 6 | genai.owasp.org — Top 10 for LLM Applications 2025 |
+
+### Personal data under Indian law
+
+| Fact | Practical consequence | Source |
+|---|---|---|
+| The Digital Personal Data Protection Rules, 2025 were notified in November 2025 — sources give 13 or 14 November — with the Data Protection Board constituted at once; consent-manager provisions apply after twelve months, November 2026; the substantive obligations on data fiduciaries after eighteen months, 13 or 14 May 2027. [verify] | Part 12's deadlines; Part 6's obligations | azbpartners.com; amsshardul.com; cyrilshroff.com |
+
+### Capability and permission
+
+| Fact | Practical consequence | Source |
+|---|---|---|
+| Anthropic's Mythos tier: Claude Mythos 5.1 and Claude Fable 5.1 share one underlying model, Fable adding safeguards for biology, cybersecurity and model research and development; Mythos 5.1 is limited availability and Claude Mythos Preview is restricted to a small set of organisations. [verify] | Part 6: capability and permission are separate axes | Anthropic product information; platform.claude.com — pricing |
+| Access to Fable 5 and Mythos 5 was suspended from 12 June to 1 July 2026 to comply with US export controls. [verify] | Part 7's fallback to a second evaluated model | anthropic.com/news/fable-mythos-access |
+
+### Reported results kept in the body
+
+| Fact | Practical consequence | Source |
+|---|---|---|
+| An operations agent reported moving from over a hundred bespoke tools to a handful of general ones, raising success on novel incidents from 45% to 75%. [verify — reported case; no primary source located] | Part 3's fewer, broader tools | Reported case |
+| The field's emphasis moving from prompt wording to context to execution governance is a characterisation, not a measurement. [verify] | Part 4's framing | — |
+
+### Refreshing this Part
+
+| Each quarter | How | Practical note |
+|---|---|---|
+| Check the MCP changelog and the registry README | New revisions, deprecations, general availability | Deprecations run at least twelve months; plan migrations as in Part 11 |
+| Check OWASP's GenAI project pages | New editions, renamed categories | Update Part 12's mapping, not Part 6's historical table |
+| Check the DPDP commencement dates | Board notices, amendments | Each date is an engineering deadline — Part 12 |
+| Update the as-at date in this heading | | Keep `verified: false` until an independent check |
+
+### Sources consulted for this Part
+
+| Source | Link | Backs |
+|---|---|---|
+| MCP blog — the 2026-07-28 specification | https://blog.modelcontextprotocol.io/posts/2026-07-28/ | Spec contents, SDK downloads |
+| MCP blog — release candidate | https://blog.modelcontextprotocol.io/posts/2026-07-28-release-candidate/ | Timeline |
+| MCP specification blog source | https://github.com/modelcontextprotocol/modelcontextprotocol/blob/main/blog/content/posts/2026-07-28-spec-ga/index.md | Deprecations, Tasks, CIMD |
+| MCP Go SDK releases | https://github.com/modelcontextprotocol/go-sdk/releases | Stateless opt-in, negotiation |
+| MCP Registry README, mirrored copy of the official repository | https://github.com/vincigit00/registry | Preview, API freeze |
+| Model Context Protocol Registry notes | https://www.dsebastien.net/model-context-protocol-registry/ | Verification, allowlisting |
+| Chroma — Context Rot | https://trychroma.com/research/context-rot | Part 9 |
+| Lost in the Middle | https://arxiv.org/abs/2307.03172 | Part 1, Part 9 |
+| LongMemEval | https://arxiv.org/abs/2410.10813 | Part 10 |
+| Anthropic — Demystifying evals for AI agents | https://anthropic.com/engineering/demystifying-evals-for-ai-agents | Part 12 |
+| OpenTelemetry GenAI conventions repository | https://github.com/open-telemetry/semantic-conventions-genai | Status |
+| Dash0 — GenAI conventions explained | https://www.dash0.com/knowledge/opentelemetry-genai-semantic-conventions-explained | Development status |
+| OWASP GenAI — LLM Top 10 2026 | https://genai.owasp.org/resource/owasp-genai-llm-top-10-2026/ | Edition |
+| OWASP GenAI — 2 September 2026 announcement | https://genai.owasp.org/2026/09/01/owasp-genai-security-project-unveils-2026-top-10-for-llm-applications-new-agent-control-standard-and-sponsors-as-community-tops-30000-members/ | Agent Control Standard |
+| Real Python — OWASP LLM Top 10 | https://realpython.com/ref/ai-coding-glossary/owasp-llm-top-10/ | Reported 2026 order |
+| Respan — OWASP LLM Top 10 | https://www.respan.ai/articles/owasp-llm-top-10 | Reported 2026 order, delivery surfaces |
+| CaMeL | https://arxiv.org/abs/2503.18813 | Dual model, capabilities |
+| Design patterns for securing LLM agents | https://arxiv.org/abs/2506.08837 | Patterns |
+| AZB & Partners — DPDP phased rollout | https://www.azbpartners.com/bank/indias-digital-personal-data-protection-act-phased-rollout-and-key-compliance-milestones/ | Dates |
+| AMS Shardul — DPDP enforcement | https://www.amsshardul.com/insight/enforcement-of-the-dpdp-act-and-notification-of-the-dpdp-rules/ | Dates |
+| Anthropic — Fable and Mythos access | https://www.anthropic.com/news/fable-mythos-access | Suspension |
+| Claude pricing | https://platform.claude.com/docs/en/about-claude/pricing | Mythos 5.1 availability |
