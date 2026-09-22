@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useEffect, useRef, useState, useId } from 'react';
-import mermaid from 'mermaid';
 
 interface MermaidDiagramProps {
   chart: string;
@@ -17,20 +16,23 @@ export function MermaidDiagram({ chart }: MermaidDiagramProps) {
   const uniqueId = useId().replace(/:/g, '_');
 
   useEffect(() => {
-    if (!mermaidInitialized) {
-      mermaid.initialize({
-        startOnLoad: false,
-        theme: 'neutral',
-        themeVariables: { fontSize: '14px', fontFamily: 'inherit' },
-        flowchart: { useMaxWidth: true, htmlLabels: true },
-        sequence: { useMaxWidth: true },
-      });
-      mermaidInitialized = true;
-    }
-
     let isMounted = true;
     const renderDiagram = async () => {
       try {
+        const mermaidModule = await import('mermaid');
+        const mermaid = mermaidModule.default;
+
+        if (!mermaidInitialized) {
+          mermaid.initialize({
+            startOnLoad: false,
+            theme: 'neutral',
+            themeVariables: { fontSize: '14px', fontFamily: 'inherit' },
+            flowchart: { useMaxWidth: true, htmlLabels: true },
+            sequence: { useMaxWidth: true },
+          });
+          mermaidInitialized = true;
+        }
+
         const id = `mermaid-${uniqueId}-${Math.random().toString(36).substring(2, 9)}`;
         const cleanChart = chart
           .replace(/&quot;/g, '"')
@@ -80,9 +82,10 @@ export function MermaidDiagram({ chart }: MermaidDiagramProps) {
           setNaturalWidth(natW);
           setError(null);
         }
-      } catch (err: any) {
+      } catch (err: unknown) {
         if (isMounted) {
-          setError(err?.message || 'Failed to render Mermaid diagram');
+          const errMsg = err && typeof err === 'object' && 'message' in err ? String(err.message) : 'Failed to render Mermaid diagram';
+          setError(errMsg);
         }
       }
     };

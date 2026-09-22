@@ -2,6 +2,9 @@
 title: "Machine Learning — Volume 3: Neural Networks and Production"
 description: "The same Indian lender, from model to live system. A neuron and a network built by hand, backpropagation worked through one applicant, a neural network trained from scratch on the loan book, what makes training work, embeddings and the bridge to transformers, whether the network beats the scorecard on profit, then deployment, monitoring with PSI and early-warning indicators, a 2025 cohort that drifts, recalibration against refitting, model risk management and validation under RBI's draft guidance, and a bandit for collections — with every number produced by the code shown."
 series: masterclass
+track: guest
+subject: "Machine Learning"
+order: 3
 status: live
 updated: 2026-09-19
 verified: false

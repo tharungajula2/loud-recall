@@ -2,9 +2,10 @@ import React from 'react';
 
 interface MarkProps extends React.SVGProps<SVGSVGElement> {
   className?: string;
+  animated?: boolean;
 }
 
-export function Mark({ className = "h-4 w-auto", ...props }: MarkProps) {
+export function Mark({ className = "h-4 w-auto", animated = false, ...props }: MarkProps) {
   return (
     <svg
       viewBox="0 0 108 88"
@@ -19,8 +20,15 @@ export function Mark({ className = "h-4 w-auto", ...props }: MarkProps) {
         strokeWidth="8"
         strokeLinecap="butt"
         strokeLinejoin="miter"
+        className={animated ? "animate-draw-spiral" : undefined}
       />
-      <circle cx="64" cy="44" r="9" fill="currentColor" />
+      <circle
+        cx="64"
+        cy="44"
+        r="9"
+        fill="currentColor"
+        className={animated ? "animate-fade-in-circle" : undefined}
+      />
     </svg>
   );
 }

@@ -2,6 +2,9 @@
 title: "Bank Risk and Regulatory Reporting — Volume 1: Credit Risk and Capital"
 description: "One bank, one loan book, one borrower that fails. How a loan is valued, what can go wrong with it, how the loss is provisioned under Ind AS 109, IRAC and RBI's 2027 expected credit loss directions, how much capital stands behind it, and how a credit function runs the book."
 series: masterclass
+track: guest
+subject: "Bank Risk and Regulatory Reporting"
+order: 1
 status: live
 updated: 2026-09-18
 verified: false

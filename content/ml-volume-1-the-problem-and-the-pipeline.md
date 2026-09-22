@@ -2,6 +2,9 @@
 title: "Machine Learning — Volume 1: The Problem and the Pipeline"
 description: "One Indian lender's personal-loan book, followed from question to decision. What machine learning is, how to frame a default model, the data and its traps, leakage and out-of-time splits, baselines and business metrics, linear and logistic regression built from scratch, features, overfitting and regularisation, evaluation, turning a probability into an approve-or-decline, and the pipeline as code — with every number produced by the code shown."
 series: masterclass
+track: guest
+subject: "Machine Learning"
+order: 1
 status: live
 updated: 2026-09-19
 verified: false

@@ -6,12 +6,16 @@ const contentDirectory = path.join(process.cwd(), 'content');
 
 export type ContentFormat = 'md' | 'html';
 export type ContentSeries = 'masterclass' | 'portfolio' | 'article' | 'newsletter';
+export type ContentTrack = 'ai' | 'guest';
 export type ContentStatus = 'draft' | 'live';
 
 export interface DocumentMeta {
   slug: string;
   title: string;
   series: ContentSeries;
+  track: ContentTrack;
+  subject?: string;
+  order: number;
   status: ContentStatus;
   updated: string;
   description: string;
@@ -45,7 +49,7 @@ function calculateReadTime(text: string): { readTime: string; wordCount: number 
   };
 }
 
-function parseTags(rawTags: any): string[] {
+function parseTags(rawTags: unknown): string[] {
   if (Array.isArray(rawTags)) {
     return rawTags.map((t) => String(t).trim()).filter(Boolean);
   }
@@ -55,7 +59,7 @@ function parseTags(rawTags: any): string[] {
   return [];
 }
 
-function formatDateString(val: any): string {
+function formatDateString(val: unknown): string {
   if (!val) return '';
   if (val instanceof Date) {
     return val.toISOString().split('T')[0];
@@ -77,18 +81,34 @@ function parseFrontmatter(fileContents: string) {
   return matter(fileContents);
 }
 
-function parseSeries(raw: any): ContentSeries {
+function parseSeries(raw: unknown): ContentSeries {
   const allowed: ContentSeries[] = ['masterclass', 'portfolio', 'article', 'newsletter'];
-  if (allowed.includes(raw)) return raw;
+  if (typeof raw === 'string' && allowed.includes(raw as ContentSeries)) return raw as ContentSeries;
   return 'masterclass';
 }
 
-function parseStatus(raw: any): ContentStatus {
+function parseTrack(raw: unknown): ContentTrack {
+  if (raw === 'guest') return 'guest';
+  return 'ai';
+}
+
+function parseSubject(raw: unknown): string | undefined {
+  if (typeof raw === 'string' && raw.trim()) return raw.trim();
+  return undefined;
+}
+
+function parseOrder(raw: unknown): number {
+  if (typeof raw === 'number') return raw;
+  const parsed = parseInt(String(raw), 10);
+  return isNaN(parsed) ? 999 : parsed;
+}
+
+function parseStatus(raw: unknown): ContentStatus {
   if (raw === 'draft') return 'draft';
   return 'live';
 }
 
-function parseVerified(raw: any): string {
+function parseVerified(raw: unknown): string {
   if (typeof raw === 'boolean') {
     return raw ? 'verified' : 'unverified';
   }
@@ -121,6 +141,9 @@ export function getSortedDocumentsData(): DocumentMeta[] {
         : (matterResult.data.format ? matterResult.data.format : (isHtml ? 'html' : 'md'));
 
       const series = parseSeries(matterResult.data.series);
+      const track = parseTrack(matterResult.data.track);
+      const subject = parseSubject(matterResult.data.subject);
+      const order = parseOrder(matterResult.data.order);
       const status = parseStatus(matterResult.data.status);
       const verified = parseVerified(matterResult.data.verified);
 
@@ -131,6 +154,9 @@ export function getSortedDocumentsData(): DocumentMeta[] {
         verified,
         format,
         series,
+        track,
+        subject,
+        order,
         status,
         tags: parseTags(matterResult.data.tags),
         created: formatDateString(matterResult.data.created),
@@ -178,6 +204,9 @@ export function getDocumentData(slug: string): DocumentData | null {
     : (matterResult.data.format ? matterResult.data.format : (isHtml ? 'html' : 'md'));
 
   const series = parseSeries(matterResult.data.series);
+  const track = parseTrack(matterResult.data.track);
+  const subject = parseSubject(matterResult.data.subject);
+  const order = parseOrder(matterResult.data.order);
   const verified = parseVerified(matterResult.data.verified);
 
   return {
@@ -187,6 +216,9 @@ export function getDocumentData(slug: string): DocumentData | null {
     verified,
     format,
     series,
+    track,
+    subject,
+    order,
     status,
     tags: parseTags(matterResult.data.tags),
     created: formatDateString(matterResult.data.created),

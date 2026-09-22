@@ -2,6 +2,9 @@
 title: "Machine Learning — Volume 2: The Models"
 description: "The same Indian lender's loan book, now with bureau-tradeline and bank-statement data. Decision trees from nothing, pruning, bagging and random forests, gradient boosting built by hand then with XGBoost and LightGBM, k-NN and SVMs, class imbalance, tuning with cross-validation, calibration, explaining models with permutation importance and SHAP, fairness, clustering and PCA — ending in a champion–challenger decision judged on profit, with every number produced by the code shown."
 series: masterclass
+track: guest
+subject: "Machine Learning"
+order: 2
 status: live
 updated: 2026-09-19
 verified: false

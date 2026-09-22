@@ -2,6 +2,9 @@
 title: "Bank Risk and Regulatory Reporting — Volume 2: Treasury, Markets and the Reporting Machine"
 description: "The same bank, read from the right-hand side and then through the machine. Liquidity, interest rate risk and funds transfer pricing; bonds, currencies and derivatives and what they cost in capital; then risk data, regulatory returns, delivery, models, and the liquidity reporting workstream a business analyst actually runs."
 series: masterclass
+track: guest
+subject: "Bank Risk and Regulatory Reporting"
+order: 2
 status: live
 updated: 2026-09-18
 verified: false
