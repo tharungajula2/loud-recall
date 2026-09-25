@@ -394,40 +394,18 @@ html::-webkit-scrollbar, body::-webkit-scrollbar {
   }
 }
 
-/* Author-written inline SVG figures scale up to column width while preserving inline max-width */
-article > svg:not(.mermaid-container *):not(.mermaid-diagram *),
-.prose > svg:not(.mermaid-container *):not(.mermaid-diagram *),
-.prose p > svg:not(.mermaid-container *):not(.mermaid-diagram *),
-.prose figure svg:not(.mermaid-container *):not(.mermaid-diagram *),
-article figure svg:not(.mermaid-container *):not(.mermaid-diagram *) {
-  max-width: 100%;
-  height: auto;
-  display: block;
-  margin: 0 auto;
+/* Diagram frame container & scrollbar styling */
+.scrollbar-thin::-webkit-scrollbar {
+  height: 6px;
 }
-
-/* Mermaid diagram container */
-.mermaid-container,
-.mermaid-diagram {
-  max-width: 100%;
-  overflow-x: auto;
-  overflow-y: visible;
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent;
 }
-
-/* Mermaid diagrams stay at intrinsic width up to column max-width */
-.mermaid-diagram svg,
-.mermaid-container svg {
-  max-width: min(100%, var(--mermaid-natural-w, 100%)) !important;
-  height: auto !important;
-  display: block;
-  margin: 0 auto;
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 3px;
 }
-
-.prose figure, article figure {
-  max-width: 100%;
-  width: 100%;
-  overflow-x: auto;
-  overflow-y: visible;
-  margin: 1.5rem 0;
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.25);
 }
 

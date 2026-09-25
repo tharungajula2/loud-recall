@@ -15,20 +15,23 @@ import { visit } from 'unist-util-visit';
 import { MermaidDiagram } from '@/components/MermaidDiagram';
 import { Callout, CalloutType } from '@/components/Callout';
 import { ScrollTable } from '@/components/ScrollTable';
+import { DiagramFrame } from '@/components/DiagramFrame';
+import { renderToStaticMarkup } from 'react-dom/server';
+import Slugger from 'github-slugger';
 
 function getCodeString(children: React.ReactNode): string {
   if (typeof children === 'string') return children;
   if (typeof children === 'number') return String(children);
   if (Array.isArray(children)) return children.map(getCodeString).join('');
-  if (React.isValidElement(children) && children.props && (children.props as any).children) {
-    return getCodeString((children.props as any).children);
+  if (React.isValidElement<{ children?: React.ReactNode }>(children) && children.props && children.props.children) {
+    return getCodeString(children.props.children);
   }
   return '';
 }
 
 function remarkDirectiveTransform() {
-  return (tree: any) => {
-    visit(tree, (node: any) => {
+  return (tree: Record<string, unknown>) => {
+    visit(tree as import('unist').Node, (node: Record<string, unknown>) => {
       if (
         node.type === 'containerDirective' ||
         node.type === 'leafDirective' ||
@@ -55,9 +58,9 @@ function remarkDirectiveTransform() {
           let currentHalf: 'left' | 'right' | null = null;
           let leftTitle = 'First Concept';
           let rightTitle = 'Second Concept';
-          let leftChildren: any[] = [];
-          let rightChildren: any[] = [];
-          let unassignedChildren: any[] = [];
+          const leftChildren: unknown[] = [];
+          const rightChildren: unknown[] = [];
+          const unassignedChildren: unknown[] = [];
           let hasLeft = false;
           let hasRight = false;
 
@@ -70,61 +73,50 @@ function remarkDirectiveTransform() {
             if (isDir && child.name === 'left') {
               hasLeft = true;
               currentHalf = 'left';
-              leftTitle = (
-                child.children?.[0]?.value ||
-                child.attributes?.title ||
-                child.attributes?.['0'] ||
-                'First Concept'
-              ).trim();
-              if (child.children && child.children.length > 1) {
-                leftChildren.push(...child.children.slice(1));
+              if (child.children && child.children.length > 0) {
+                leftTitle = child.children[0]?.value || leftTitle;
               }
-            } else if (isDir && child.name === 'right') {
+              continue;
+            }
+
+            if (isDir && child.name === 'right') {
               hasRight = true;
               currentHalf = 'right';
-              rightTitle = (
-                child.children?.[0]?.value ||
-                child.attributes?.title ||
-                child.attributes?.['0'] ||
-                'Second Concept'
-              ).trim();
-              if (child.children && child.children.length > 1) {
-                rightChildren.push(...child.children.slice(1));
+              if (child.children && child.children.length > 0) {
+                rightTitle = child.children[0]?.value || rightTitle;
               }
+              continue;
+            }
+
+            if (currentHalf === 'left') {
+              leftChildren.push(child);
+            } else if (currentHalf === 'right') {
+              rightChildren.push(child);
             } else {
-              if (currentHalf === 'left') {
-                leftChildren.push(child);
-              } else if (currentHalf === 'right') {
-                rightChildren.push(child);
-              } else {
-                unassignedChildren.push(child);
-              }
+              unassignedChildren.push(child);
             }
           }
 
           if (!hasLeft && !hasRight) {
-            leftChildren = unassignedChildren;
+            const halfLength = Math.ceil(children.length / 2);
+            leftChildren.push(...children.slice(0, halfLength));
+            rightChildren.push(...children.slice(halfLength));
           } else if (unassignedChildren.length > 0) {
-            leftChildren = [...unassignedChildren, ...leftChildren];
+            leftChildren.unshift(...unassignedChildren);
           }
 
           const leftHalfNode = {
-            type: 'containerDirective',
-            name: 'left',
-            data: {
-              hName: 'div',
-              hProperties: {
-                className: 'never-confuse-half never-confuse-left p-3.5 rounded-lg bg-background/60 border border-border/40 min-w-0 flex flex-col gap-2',
-              },
+            type: 'element',
+            tagName: 'div',
+            properties: {
+              className: 'flex-1 min-w-0 flex flex-col gap-2 bg-foreground/[0.02] dark:bg-foreground/[0.04] p-3 rounded-md border border-border/40',
             },
             children: [
               {
-                type: 'paragraph',
-                data: {
-                  hName: 'div',
-                  hProperties: {
-                    className: 'font-semibold font-sans text-xs uppercase tracking-wide text-foreground/85 mb-1 border-b border-border/30 pb-1 shrink-0',
-                  },
+                type: 'element',
+                tagName: 'h4',
+                properties: {
+                  className: 'font-semibold font-sans text-xs uppercase tracking-wide text-foreground/85 mb-1 border-b border-border/30 pb-1 shrink-0',
                 },
                 children: [{ type: 'text', value: leftTitle }],
               },
@@ -133,22 +125,17 @@ function remarkDirectiveTransform() {
           };
 
           const rightHalfNode = {
-            type: 'containerDirective',
-            name: 'right',
-            data: {
-              hName: 'div',
-              hProperties: {
-                className: 'never-confuse-half never-confuse-right p-3.5 rounded-lg bg-background/60 border border-border/40 min-w-0 flex flex-col gap-2',
-              },
+            type: 'element',
+            tagName: 'div',
+            properties: {
+              className: 'flex-1 min-w-0 flex flex-col gap-2 bg-foreground/[0.02] dark:bg-foreground/[0.04] p-3 rounded-md border border-border/40',
             },
             children: [
               {
-                type: 'paragraph',
-                data: {
-                  hName: 'div',
-                  hProperties: {
-                    className: 'font-semibold font-sans text-xs uppercase tracking-wide text-foreground/85 mb-1 border-b border-border/30 pb-1 shrink-0',
-                  },
+                type: 'element',
+                tagName: 'h4',
+                properties: {
+                  className: 'font-semibold font-sans text-xs uppercase tracking-wide text-foreground/85 mb-1 border-b border-border/30 pb-1 shrink-0',
                 },
                 children: [{ type: 'text', value: rightTitle }],
               },
@@ -164,28 +151,28 @@ function remarkDirectiveTransform() {
 }
 
 // Custom component for tables
-const ResponsiveTable = (props: any) => (
+const ResponsiveTable = (props: React.ComponentPropsWithoutRef<'table'>) => (
   <ScrollTable>
     <table {...props} />
   </ScrollTable>
 );
 
 // Custom component for pre blocks
-const ResponsivePre = (props: any) => {
+const ResponsivePre = (props: React.ComponentPropsWithoutRef<'pre'> & { 'data-language'?: string }) => {
   const children = React.Children.toArray(props.children);
   const codeChild = children.find(
-    (child: any) => React.isValidElement(child)
+    (child) => React.isValidElement(child)
   );
 
-  const isMermaid = 
+  const isMermaid =
     props['data-language'] === 'mermaid' ||
-    (codeChild && React.isValidElement(codeChild) && (
-      (codeChild.props as any)['data-language'] === 'mermaid' ||
-      (typeof (codeChild.props as any)?.className === 'string' && (codeChild.props as any).className.includes('language-mermaid'))
+    (codeChild && React.isValidElement<Record<string, unknown>>(codeChild) && (
+      codeChild.props['data-language'] === 'mermaid' ||
+      (typeof codeChild.props.className === 'string' && codeChild.props.className.includes('language-mermaid'))
     ));
 
-  if (isMermaid && codeChild && React.isValidElement(codeChild)) {
-    const rawChart = getCodeString((codeChild.props as any).children).trim();
+  if (isMermaid && codeChild && React.isValidElement<{ children?: React.ReactNode }>(codeChild)) {
+    const rawChart = getCodeString(codeChild.props.children).trim();
     return <MermaidDiagram chart={rawChart} />;
   }
 
@@ -196,7 +183,14 @@ const ResponsivePre = (props: any) => {
   );
 };
 
-import Slugger from 'github-slugger';
+const ResponsiveSvg = (props: React.ComponentPropsWithoutRef<'svg'>) => {
+  if (props['data-diagram-inner' as keyof typeof props]) {
+    return <svg {...props} />;
+  }
+
+  const rawSvg = renderToStaticMarkup(React.createElement('svg', props));
+  return <DiagramFrame svgContent={rawSvg} />;
+};
 
 export function extractHeadings(content: string) {
   const headings: { id: string; text: string }[] = [];
@@ -243,12 +237,15 @@ export async function renderMarkdown(content: string) {
     })
     .use(rehypeReact, {
       Fragment: React.Fragment,
-      jsx: (jsxRuntime as any).jsx,
-      jsxs: (jsxRuntime as any).jsxs,
+      jsx: jsxRuntime.jsx,
+      jsxs: jsxRuntime.jsxs,
       components: {
         table: ResponsiveTable,
         pre: ResponsivePre,
-        callout: (props: any) => <Callout type={props.type as CalloutType}>{props.children}</Callout>,
+        svg: ResponsiveSvg,
+        callout: (props: { type?: string; children?: React.ReactNode }) => (
+          <Callout type={props.type as CalloutType}>{props.children}</Callout>
+        ),
       },
     });
 

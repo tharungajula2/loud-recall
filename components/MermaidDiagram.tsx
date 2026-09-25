@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useEffect, useRef, useState, useId } from 'react';
+import React, { useEffect, useState, useId } from 'react';
+import { DiagramFrame } from '@/components/DiagramFrame';
 
 interface MermaidDiagramProps {
   chart: string;
@@ -9,9 +10,7 @@ interface MermaidDiagramProps {
 let mermaidInitialized = false;
 
 export function MermaidDiagram({ chart }: MermaidDiagramProps) {
-  const containerRef = useRef<HTMLDivElement>(null);
   const [svgContent, setSvgContent] = useState<string>('');
-  const [naturalWidth, setNaturalWidth] = useState<number>(0);
   const [error, setError] = useState<string | null>(null);
   const uniqueId = useId().replace(/:/g, '_');
 
@@ -26,9 +25,21 @@ export function MermaidDiagram({ chart }: MermaidDiagramProps) {
           mermaid.initialize({
             startOnLoad: false,
             theme: 'neutral',
-            themeVariables: { fontSize: '14px', fontFamily: 'inherit' },
-            flowchart: { useMaxWidth: true, htmlLabels: true },
-            sequence: { useMaxWidth: true },
+            themeVariables: { fontSize: '15px', fontFamily: 'inherit' },
+            securityLevel: 'strict',
+            flowchart: { useMaxWidth: false, htmlLabels: true },
+            sequence: { useMaxWidth: false },
+            gantt: { useMaxWidth: false },
+            journey: { useMaxWidth: false },
+            class: { useMaxWidth: false },
+            state: { useMaxWidth: false },
+            er: { useMaxWidth: false },
+            pie: { useMaxWidth: false },
+            quadrantChart: { useMaxWidth: false },
+            xyChart: { useMaxWidth: false },
+            requirement: { useMaxWidth: false },
+            mindmap: { useMaxWidth: false },
+            timeline: { useMaxWidth: false },
           });
           mermaidInitialized = true;
         }
@@ -41,45 +52,10 @@ export function MermaidDiagram({ chart }: MermaidDiagramProps) {
           .replace(/&lt;/g, '<')
           .replace(/&gt;/g, '>')
           .replace(/&amp;/g, '&');
-        let { svg } = await mermaid.render(id, cleanChart);
-        
-        let natW = 0;
-        let natH = 0;
-
-        const viewBoxMatch = svg.match(/viewBox=["']\s*([\d.-]+)\s+([\d.-]+)\s+([\d.-]+)\s+([\d.-]+)\s*["']/i);
-        if (viewBoxMatch) {
-          natW = parseFloat(viewBoxMatch[3]);
-          natH = parseFloat(viewBoxMatch[4]);
-        } else {
-          const wMatch = svg.match(/\bwidth=["']([\d.-]+)(?:px)?["']/i);
-          const hMatch = svg.match(/\bheight=["']([\d.-]+)(?:px)?["']/i);
-          if (wMatch) natW = parseFloat(wMatch[1]);
-          if (hMatch) natH = parseFloat(hMatch[1]);
-        }
-
-        if (svg.includes('<svg')) {
-          svg = svg.replace(/<svg\b([^>]*)>/i, (match, attrs) => {
-            let newAttrs = attrs;
-            newAttrs = newAttrs.replace(/\s+(width|height)=["'][^"']*["']/gi, '');
-            newAttrs = newAttrs.replace(/\s+style=["'][^"']*["']/gi, '');
-
-            let styleStr = natW > 0 
-              ? `max-width: min(100%, ${natW}px); height: auto; display: block; margin: 0 auto;`
-              : `max-width: 100%; height: auto; display: block; margin: 0 auto;`;
-
-            if (natH > 640) {
-              styleStr += ' max-height: 70vh; width: auto;';
-            }
-
-            const widthAttr = natW > 0 ? ` width="${natW}"` : '';
-
-            return `<svg${widthAttr} style="${styleStr}"${newAttrs}>`;
-          });
-        }
+        const { svg } = await mermaid.render(id, cleanChart);
 
         if (isMounted) {
           setSvgContent(svg);
-          setNaturalWidth(natW);
           setError(null);
         }
       } catch (err: unknown) {
@@ -114,17 +90,5 @@ export function MermaidDiagram({ chart }: MermaidDiagramProps) {
     );
   }
 
-  return (
-    <div
-      className="mermaid-diagram my-6 w-full max-w-full overflow-x-auto overflow-y-visible py-4 px-2 rounded-lg border border-border/60 bg-background"
-      style={{ '--mermaid-natural-w': naturalWidth > 0 ? `${naturalWidth}px` : '100%' } as React.CSSProperties}
-    >
-      <div
-        ref={containerRef}
-        className="w-full flex justify-center items-center [&_foreignObject]:overflow-visible [&_foreignObject_div]:whitespace-normal [&_foreignObject_div]:break-words"
-        dangerouslySetInnerHTML={{ __html: svgContent }}
-      />
-    </div>
-  );
+  return <DiagramFrame svgContent={svgContent} />;
 }
-
