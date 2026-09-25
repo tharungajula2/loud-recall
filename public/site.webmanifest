@@ -1,7 +1,7 @@
 {
   "name": "Loud Recall",
   "short_name": "Loud Recall",
-  "description": "Notes on risk, finance and AI. One subject at a time, taken deep enough to defend.",
+  "description": "Learning out loud. One subject at a time, explained badly until it isn't. Finance, risk, and AI — whatever I'm studying that week.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#FFFFFF",

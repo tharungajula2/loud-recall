@@ -11,7 +11,7 @@ export async function generateStaticParams() {
   }));
 }
 
-const DEFAULT_DESCRIPTION = "Notes on risk, finance and AI. One subject at a time, taken deep enough to defend.";
+const DEFAULT_DESCRIPTION = "Learning out loud. One subject at a time, explained badly until it isn't. Finance, risk, and AI — whatever I'm studying that week.";
 
 function truncateDescription(desc: string, maxLen = 155): string {
   if (!desc || !desc.trim()) {

@@ -47,12 +47,11 @@ reappear in any document, filename, class, or piece of copy.
 |---|---|
 | Name | Loud Recall |
 | Tagline | learning out loud |
-| Site description | Notes on risk, finance and AI. One subject at a time, taken deep enough to defend. |
+| Site description | Learning out loud. One subject at a time, explained badly until it isn't. Finance, risk, and AI — whatever I'm studying that week. Rough by design. |
 | Site | loud-recall.vercel.app |
 | Repository | github.com/tharungajula2/loud-recall |
 
-**What it is.** A personal learning library, built to replace doom-scrolling with
-structured reading. The library is the source material for recall practice performed out loud.
+**What it is.** A personal learning library for finance, risk, and AI. Built on the principle of learning out loud: one subject at a time, explained badly until it isn't. Imperfect by design — learning as I go, consistency over polish.
 
 **Design.** Pure white background, black text and icons, hairline rules,
 geometric sans with letterspacing for the wordmark, serif for document body type.

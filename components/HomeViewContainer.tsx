@@ -61,8 +61,11 @@ export function HomeViewContainer({ documents }: HomeViewContainerProps) {
             </h1>
           </div>
 
-          <p className="text-base text-foreground/90 leading-relaxed mb-4">
-            Notes on AI, learned out loud. One subject at a time, taken deep enough to defend.
+          <p className="text-base text-foreground/90 leading-relaxed mb-2">
+            Learning out loud. One subject at a time, explained badly until it isn&apos;t.
+          </p>
+          <p className="text-sm text-foreground/80 leading-relaxed mb-4">
+            Finance, risk, and AI &mdash; whatever I&apos;m studying that week. Rough by design. Consistency over polish.
           </p>
 
           <div className="space-y-0.5 mb-3.5">
@@ -70,7 +73,7 @@ export function HomeViewContainer({ documents }: HomeViewContainerProps) {
               By <span className="font-medium">Tharun Gajula</span>
             </p>
             <p className="text-xs text-muted">
-              Learning AI in public
+              Learning out loud &middot; Imperfect by design, learning as I go
             </p>
           </div>
 

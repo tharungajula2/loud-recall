@@ -16,14 +16,16 @@ export const viewport: Viewport = {
   colorScheme: "light",
 };
 
+const SITE_DESCRIPTION =
+  "Learning out loud. One subject at a time, explained badly until it isn't. Finance, risk, and AI — whatever I'm studying that week. Rough by design. Consistency over polish.";
+
 export const metadata: Metadata = {
   metadataBase: new URL("https://loud-recall.vercel.app"),
   title: {
     default: "Loud Recall",
     template: "%s — Loud Recall",
   },
-  description:
-    "Notes on risk, finance and AI. One subject at a time, taken deep enough to defend.",
+  description: SITE_DESCRIPTION,
   applicationName: "Loud Recall",
   authors: [{ name: "Tharun Gajula" }],
   alternates: {
@@ -35,8 +37,7 @@ export const metadata: Metadata = {
     locale: "en_IN",
     url: "/",
     title: "Loud Recall",
-    description:
-      "Notes on risk, finance and AI. One subject at a time, taken deep enough to defend.",
+    description: SITE_DESCRIPTION,
     images: [
       {
         url: "/og-image.png",
@@ -49,8 +50,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Loud Recall",
-    description:
-      "Notes on risk, finance and AI. One subject at a time, taken deep enough to defend.",
+    description: SITE_DESCRIPTION,
     images: ["/og-image.png"],
   },
   robots: {
