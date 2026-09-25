@@ -3,56 +3,77 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 
 interface DiagramFrameProps {
-  svgContent: string;
+  svgContent?: string;
+  svgProps?: React.ComponentPropsWithoutRef<'svg'>;
   className?: string;
 }
 
-function parseSvgMetrics(svgString: string) {
+function parseSvgMetrics(svgString?: string, svgProps?: React.ComponentPropsWithoutRef<'svg'>) {
   let naturalWidth = 0;
   let naturalHeight = 0;
   let minAuthoredFontSize = 14;
 
-  if (!svgString) return { naturalWidth: 600, naturalHeight: 400, minAuthoredFontSize: 14 };
-
-  const viewBoxMatch = svgString.match(/viewBox=["']\s*([\d.-]+)\s+([\d.-]+)\s+([\d.-]+)\s+([\d.-]+)\s*["']/i);
-  if (viewBoxMatch) {
-    const vbW = parseFloat(viewBoxMatch[3]);
-    const vbH = parseFloat(viewBoxMatch[4]);
-    if (!isNaN(vbW) && vbW > 0) naturalWidth = vbW;
-    if (!isNaN(vbH) && vbH > 0) naturalHeight = vbH;
-  }
-
-  if (naturalWidth === 0) {
-    const wMatch = svgString.match(/\bwidth=["']([\d.-]+)(?:px)?["']/i);
-    if (wMatch) {
-      const w = parseFloat(wMatch[1]);
+  if (svgProps) {
+    if (svgProps.viewBox) {
+      const parts = String(svgProps.viewBox).trim().split(/[\s,]+/);
+      if (parts.length >= 4) {
+        const vbW = parseFloat(parts[2]);
+        const vbH = parseFloat(parts[3]);
+        if (!isNaN(vbW) && vbW > 0) naturalWidth = vbW;
+        if (!isNaN(vbH) && vbH > 0) naturalHeight = vbH;
+      }
+    }
+    if (naturalWidth === 0 && svgProps.width) {
+      const w = parseFloat(String(svgProps.width));
       if (!isNaN(w) && w > 0) naturalWidth = w;
     }
-  }
-
-  if (naturalHeight === 0) {
-    const hMatch = svgString.match(/\bheight=["']([\d.-]+)(?:px)?["']/i);
-    if (hMatch) {
-      const h = parseFloat(hMatch[1]);
+    if (naturalHeight === 0 && svgProps.height) {
+      const h = parseFloat(String(svgProps.height));
       if (!isNaN(h) && h > 0) naturalHeight = h;
     }
   }
 
-  const fontSizes: number[] = [];
-  const fontSizeAttrMatches = svgString.matchAll(/\bfont-size=["']\s*([\d.]+)(?:px)?\s*["']/gi);
-  for (const match of fontSizeAttrMatches) {
-    const val = parseFloat(match[1]);
-    if (!isNaN(val) && val > 0) fontSizes.push(val);
-  }
+  if (svgString) {
+    const viewBoxMatch = svgString.match(/viewBox=["']\s*([\d.-]+)\s+([\d.-]+)\s+([\d.-]+)\s+([\d.-]+)\s*["']/i);
+    if (viewBoxMatch) {
+      const vbW = parseFloat(viewBoxMatch[3]);
+      const vbH = parseFloat(viewBoxMatch[4]);
+      if (!isNaN(vbW) && vbW > 0) naturalWidth = vbW;
+      if (!isNaN(vbH) && vbH > 0) naturalHeight = vbH;
+    }
 
-  const styleFontSizeMatches = svgString.matchAll(/\bfont-size\s*:\s*([\d.]+)(?:px)?/gi);
-  for (const match of styleFontSizeMatches) {
-    const val = parseFloat(match[1]);
-    if (!isNaN(val) && val > 0) fontSizes.push(val);
-  }
+    if (naturalWidth === 0) {
+      const wMatch = svgString.match(/\bwidth=["']([\d.-]+)(?:px)?["']/i);
+      if (wMatch) {
+        const w = parseFloat(wMatch[1]);
+        if (!isNaN(w) && w > 0) naturalWidth = w;
+      }
+    }
 
-  if (fontSizes.length > 0) {
-    minAuthoredFontSize = Math.min(...fontSizes);
+    if (naturalHeight === 0) {
+      const hMatch = svgString.match(/\bheight=["']([\d.-]+)(?:px)?["']/i);
+      if (hMatch) {
+        const h = parseFloat(hMatch[1]);
+        if (!isNaN(h) && h > 0) naturalHeight = h;
+      }
+    }
+
+    const fontSizes: number[] = [];
+    const fontSizeAttrMatches = svgString.matchAll(/\bfont-size=["']\s*([\d.]+)(?:px)?\s*["']/gi);
+    for (const match of fontSizeAttrMatches) {
+      const val = parseFloat(match[1]);
+      if (!isNaN(val) && val > 0) fontSizes.push(val);
+    }
+
+    const styleFontSizeMatches = svgString.matchAll(/\bfont-size\s*:\s*([\d.]+)(?:px)?/gi);
+    for (const match of styleFontSizeMatches) {
+      const val = parseFloat(match[1]);
+      if (!isNaN(val) && val > 0) fontSizes.push(val);
+    }
+
+    if (fontSizes.length > 0) {
+      minAuthoredFontSize = Math.min(...fontSizes);
+    }
   }
 
   return {
@@ -62,7 +83,7 @@ function parseSvgMetrics(svgString: string) {
   };
 }
 
-export function DiagramFrame({ svgContent, className = '' }: DiagramFrameProps) {
+export function DiagramFrame({ svgContent, svgProps, className = '' }: DiagramFrameProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const frameRef = useRef<HTMLDivElement>(null);
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
@@ -72,7 +93,7 @@ export function DiagramFrame({ svgContent, className = '' }: DiagramFrameProps) 
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const [dragStart, setDragStart] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
 
-  const { naturalWidth, minAuthoredFontSize } = parseSvgMetrics(svgContent);
+  const { naturalWidth, minAuthoredFontSize } = parseSvgMetrics(svgContent, svgProps);
 
   // Calculate 11px readable floor: minimum width so text never drops below 11px
   const minReadableScale = 11 / minAuthoredFontSize;
@@ -105,6 +126,17 @@ export function DiagramFrame({ svgContent, className = '' }: DiagramFrameProps) 
       return `<svg data-diagram-inner="true" width="${naturalWidth}" style="${styleStr}"${newAttrs}>`;
     });
   }, [svgContent, naturalWidth]);
+
+  // Clean props for React inline SVG element
+  const cleanedSvgProps = React.useMemo(() => {
+    if (!svgProps) return {};
+    const copy = { ...svgProps };
+    delete copy.style;
+    delete copy.width;
+    delete copy.height;
+    delete copy.className;
+    return copy;
+  }, [svgProps]);
 
   // Check if frame is scrollable horizontally
   const checkScrollable = useCallback(() => {
@@ -205,8 +237,25 @@ export function DiagramFrame({ svgContent, className = '' }: DiagramFrameProps) 
           <div
             ref={containerRef}
             className="w-full flex justify-center items-center [&_foreignObject]:overflow-visible [&_foreignObject_div]:whitespace-normal [&_foreignObject_div]:break-words"
-            dangerouslySetInnerHTML={{ __html: processedSvg }}
-          />
+          >
+            {svgProps ? (
+              <svg
+                data-diagram-inner="true"
+                width={naturalWidth}
+                style={{
+                  width: '100%',
+                  minWidth: `${calculatedMinWidth}px`,
+                  maxWidth: `${naturalWidth}px`,
+                  height: 'auto',
+                  display: 'block',
+                  margin: '0 auto',
+                }}
+                {...cleanedSvgProps}
+              />
+            ) : (
+              <div dangerouslySetInnerHTML={{ __html: processedSvg }} />
+            )}
+          </div>
         </div>
 
         {/* Scroll Hint Badge */}
@@ -286,8 +335,24 @@ export function DiagramFrame({ svgContent, className = '' }: DiagramFrameProps) 
                 transition: isDragging ? 'none' : 'transform 0.1s ease-out',
               }}
               className="max-w-none max-h-none pointer-events-auto"
-              dangerouslySetInnerHTML={{ __html: modalSvg }}
-            />
+            >
+              {svgProps ? (
+                <svg
+                  data-diagram-inner="true"
+                  width={naturalWidth}
+                  style={{
+                    width: `${naturalWidth}px`,
+                    maxWidth: 'none',
+                    height: 'auto',
+                    display: 'block',
+                    margin: '0 auto',
+                  }}
+                  {...cleanedSvgProps}
+                />
+              ) : (
+                <div dangerouslySetInnerHTML={{ __html: modalSvg }} />
+              )}
+            </div>
           </div>
 
           {/* Footer instruction */}

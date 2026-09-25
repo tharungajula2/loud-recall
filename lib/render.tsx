@@ -16,7 +16,6 @@ import { MermaidDiagram } from '@/components/MermaidDiagram';
 import { Callout, CalloutType } from '@/components/Callout';
 import { ScrollTable } from '@/components/ScrollTable';
 import { DiagramFrame } from '@/components/DiagramFrame';
-import { renderToStaticMarkup } from 'react-dom/server';
 import Slugger from 'github-slugger';
 
 function getCodeString(children: React.ReactNode): string {
@@ -29,15 +28,25 @@ function getCodeString(children: React.ReactNode): string {
   return '';
 }
 
+interface DirectiveNode {
+  type?: string;
+  name?: string;
+  attributes?: Record<string, unknown>;
+  children?: DirectiveNode[];
+  data?: Record<string, unknown>;
+  [key: string]: unknown;
+}
+
 function remarkDirectiveTransform() {
-  return (tree: Record<string, unknown>) => {
-    visit(tree as import('unist').Node, (node: Record<string, unknown>) => {
+  return (tree: unknown) => {
+    visit(tree as never, (node: unknown) => {
+      const n = node as DirectiveNode;
       if (
-        node.type === 'containerDirective' ||
-        node.type === 'leafDirective' ||
-        node.type === 'textDirective'
+        n.type === 'containerDirective' ||
+        n.type === 'leafDirective' ||
+        n.type === 'textDirective'
       ) {
-        const name = node.name;
+        const name = n.name;
         if (
           name === 'permanent-rule' ||
           name === 'never-confuse' ||
@@ -45,22 +54,22 @@ function remarkDirectiveTransform() {
           name === 'mental-model' ||
           name === 'key-insight'
         ) {
-          const data = node.data || (node.data = {});
+          const data = n.data || (n.data = {});
           data.hName = 'callout';
           data.hProperties = {
             type: name,
-            ...node.attributes,
+            ...(n.attributes || {}),
           };
         }
 
         if (name === 'never-confuse') {
-          const children = node.children || [];
+          const children = (n.children || []) as DirectiveNode[];
           let currentHalf: 'left' | 'right' | null = null;
           let leftTitle = 'First Concept';
           let rightTitle = 'Second Concept';
-          const leftChildren: unknown[] = [];
-          const rightChildren: unknown[] = [];
-          const unassignedChildren: unknown[] = [];
+          const leftChildren: DirectiveNode[] = [];
+          const rightChildren: DirectiveNode[] = [];
+          const unassignedChildren: DirectiveNode[] = [];
           let hasLeft = false;
           let hasRight = false;
 
@@ -74,7 +83,7 @@ function remarkDirectiveTransform() {
               hasLeft = true;
               currentHalf = 'left';
               if (child.children && child.children.length > 0) {
-                leftTitle = child.children[0]?.value || leftTitle;
+                leftTitle = String((child.children[0] as DirectiveNode)?.value || leftTitle);
               }
               continue;
             }
@@ -83,7 +92,7 @@ function remarkDirectiveTransform() {
               hasRight = true;
               currentHalf = 'right';
               if (child.children && child.children.length > 0) {
-                rightTitle = child.children[0]?.value || rightTitle;
+                rightTitle = String((child.children[0] as DirectiveNode)?.value || rightTitle);
               }
               continue;
             }
@@ -143,7 +152,7 @@ function remarkDirectiveTransform() {
             ],
           };
 
-          node.children = [leftHalfNode, rightHalfNode];
+          n.children = [leftHalfNode as unknown as DirectiveNode, rightHalfNode as unknown as DirectiveNode];
         }
       }
     });
@@ -188,8 +197,7 @@ const ResponsiveSvg = (props: React.ComponentPropsWithoutRef<'svg'>) => {
     return <svg {...props} />;
   }
 
-  const rawSvg = renderToStaticMarkup(React.createElement('svg', props));
-  return <DiagramFrame svgContent={rawSvg} />;
+  return <DiagramFrame svgProps={props} />;
 };
 
 export function extractHeadings(content: string) {
