@@ -229,14 +229,11 @@ And one new kind of model worth watching: models that return **decisions** — a
 
 ## Where to go deeper
 
-This article is the map. The AI masterclass is the territory, in four volumes that follow the same support assistant from the inside out:
+This article is the map. The AI masterclass is the territory:
 
-| Volume | Read it for |
+| Masterclass | Read it for |
 |---|---|
-| [**The AI Stack — Volume 1: The Model and the Machine**](/ai-stack-volume-1-the-model-and-the-machine) | What a model is, why it makes things up, how it's made and aligned, thinking models, images and video, what running it costs, choosing one |
-| [**The AI Stack — Volume 2: Building on the Model**](/ai-stack-volume-2-building-on-the-model) | Context, search, tools, MCP, memory, the harness, evaluation, security, data law, running it in production |
-| [**The AI Stack — Volume 3: The Agent**](/ai-stack-volume-3-the-agent) | The agent loop, skills, memory files, subagents, computer use, coding agents, sandboxes, long-running work, agent security |
-| [**The AI Stack — Volume 4: The Operator**](/ai-stack-volume-4-the-operator) | Briefs, context packs, delegating to agents, verification, your own toolkit, keeping up — the daily craft |
+| [**Building with AI — The Practical Masterclass**](/building-with-ai-practical-masterclass) | How to build real software with AI as a beginner, and then do it at enterprise grade |
 
 ---
 

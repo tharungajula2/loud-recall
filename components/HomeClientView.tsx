@@ -24,7 +24,7 @@ function formatDateDisplay(dateStr: string): string {
 
 function stripMasterclassPrefix(title: string): string {
   return title
-    .replace(/^The AI Stack\s*—\s*/i, '')
+    .replace(/^(Building with AI|The AI Stack)\s*—\s*/i, '')
     .replace(/^Volume\s+\d+[:—\s]*/i, '');
 }
 
