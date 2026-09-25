@@ -50,12 +50,9 @@ reappear in any document, filename, class, or piece of copy.
 | Site description | Notes on risk, finance and AI. One subject at a time, taken deep enough to defend. |
 | Site | loud-recall.vercel.app |
 | Repository | github.com/tharungajula2/loud-recall |
-| Channel | youtube.com/@loudrecall |
 
 **What it is.** A personal learning library, built to replace doom-scrolling with
-structured reading, and the knowledge base behind a learning-in-public YouTube
-channel of the same name. The library is the source material; the channel is the
-recall practice performed out loud.
+structured reading. The library is the source material for recall practice performed out loud.
 
 **Design.** Pure white background, black text and icons, hairline rules,
 geometric sans with letterspacing for the wordmark, serif for document body type.

@@ -70,15 +70,7 @@ export function HomeViewContainer({ documents }: HomeViewContainerProps) {
               By <span className="font-medium">Tharun Gajula</span>
             </p>
             <p className="text-xs text-muted">
-              Learning AI in public &middot; YouTube{' '}
-              <a
-                href="https://www.youtube.com/@loudrecall"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="underline hover:text-foreground transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-foreground focus-visible:outline-offset-2 rounded-xs"
-              >
-                @loudrecall
-              </a>
+              Learning AI in public
             </p>
           </div>
 
@@ -100,17 +92,6 @@ export function HomeViewContainer({ documents }: HomeViewContainerProps) {
         {/* Footer */}
         <footer className="mt-16 pt-8 pb-12 border-t border-border text-xs text-muted space-y-1">
           <div>Loud Recall &mdash; notes learned out loud, by Tharun Gajula</div>
-          <div>
-            Watch along on YouTube{' '}
-            <a
-              href="https://www.youtube.com/@loudrecall"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="underline hover:text-foreground transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-foreground focus-visible:outline-offset-2 rounded-xs"
-            >
-              @loudrecall
-            </a>
-          </div>
         </footer>
       </main>
     </div>
