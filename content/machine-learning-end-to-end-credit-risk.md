@@ -1,10 +1,9 @@
 ---
 title: "Machine Learning, End to End — on a Real Credit Risk Project"
 description: "Every step of a machine learning project as a cheatsheet — framing, cleaning, EDA, leakage and splits, features, baselines and metrics, linear and logistic regression, trees and ensembles, the other classic algorithms, class imbalance, neural networks, tuning, calibration, explainability, monitoring and production — taught on one real project: a retail credit risk system on 466,285 LendingClub loans, with its credit risk workflow (PD, LGD, EAD, IFRS 9, CECL, Basel) side by side, a bank churn neural network, and side-lines for every technique the project did not use. Every number comes from code that was run."
-series: masterclass
-track: guest
-subject: "Machine Learning"
-order: 1
+subject: ai
+format: masterclass
+order: 2
 status: live
 updated: 2026-09-25
 verified: false

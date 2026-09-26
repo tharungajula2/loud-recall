@@ -27,19 +27,19 @@ export function HomeViewContainer({ documents }: HomeViewContainerProps) {
 
   // Compute stats line dynamically from documents with clean wrapping segments
   const statsSegments = useMemo(() => {
-    const masterclassCount = documents.filter((d) => d.track === 'ai' && d.series === 'masterclass').length;
-    const articleCount = documents.filter((d) => d.track === 'ai' && d.series === 'article').length;
-    const guestCount = documents.filter((d) => d.track === 'guest').length;
+    const masterclassCount = documents.filter((d) => d.format === 'masterclass').length;
+    const articleCount = documents.filter((d) => d.format === 'article').length;
 
     const dates = documents.map((d) => d.updated).filter(Boolean).sort().reverse();
     const latestDateStr = dates[0] ? formatDateDisplay(dates[0]) : '';
 
-    const segments = [
-      `${masterclassCount} masterclass volume${masterclassCount === 1 ? '' : 's'}`,
-      `${articleCount} article${articleCount === 1 ? '' : 's'}`,
-      `${guestCount} guest lecture${guestCount === 1 ? '' : 's'}`,
-    ];
-
+    const segments: string[] = [];
+    if (masterclassCount > 0) {
+      segments.push(`${masterclassCount} masterclass${masterclassCount === 1 ? '' : 'es'}`);
+    }
+    if (articleCount > 0) {
+      segments.push(`${articleCount} article${articleCount === 1 ? '' : 's'}`);
+    }
     if (latestDateStr) {
       segments.push(`updated ${latestDateStr}`);
     }

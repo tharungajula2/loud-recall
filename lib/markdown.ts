@@ -1,27 +1,25 @@
 import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
+import { SubjectId, ContentFormat, SUBJECT_MAP } from './subjects';
 
 const contentDirectory = path.join(process.cwd(), 'content');
 
-export type ContentFormat = 'md' | 'html';
-export type ContentSeries = 'masterclass' | 'portfolio' | 'article' | 'newsletter';
-export type ContentTrack = 'ai' | 'guest';
+export type { SubjectId, ContentFormat };
 export type ContentStatus = 'draft' | 'live';
 
 export interface DocumentMeta {
   slug: string;
   title: string;
-  series: ContentSeries;
-  track: ContentTrack;
-  subject?: string;
-  order: number;
+  subject: SubjectId;
+  format: ContentFormat;
+  order?: number;
   status: ContentStatus;
   updated: string;
   description: string;
   verified?: string;
   created?: string;
-  format: ContentFormat;
+  fileFormat: 'md' | 'html';
   tags: string[];
   readTime: string;
   wordCount: number;
@@ -81,26 +79,32 @@ function parseFrontmatter(fileContents: string) {
   return matter(fileContents);
 }
 
-function parseSeries(raw: unknown): ContentSeries {
-  const allowed: ContentSeries[] = ['masterclass', 'portfolio', 'article', 'newsletter'];
-  if (typeof raw === 'string' && allowed.includes(raw as ContentSeries)) return raw as ContentSeries;
-  return 'masterclass';
+function parseSubject(raw: unknown, fileName: string): SubjectId {
+  const clean = typeof raw === 'string' ? (raw.trim().toLowerCase() as SubjectId) : ('' as SubjectId);
+  if (clean in SUBJECT_MAP) {
+    return clean;
+  }
+  throw new Error(
+    `Unknown or missing subject "${raw}" in note "${fileName}". Allowed subjects: ${Object.keys(SUBJECT_MAP).join(', ')}.`
+  );
 }
 
-function parseTrack(raw: unknown): ContentTrack {
-  if (raw === 'guest') return 'guest';
-  return 'ai';
+function parseFormat(raw: unknown, fileName: string): ContentFormat {
+  if (raw === 'masterclass' || raw === 'article') {
+    return raw as ContentFormat;
+  }
+  throw new Error(
+    `Unknown or missing format "${raw}" in note "${fileName}". Allowed formats: masterclass, article.`
+  );
 }
 
-function parseSubject(raw: unknown): string | undefined {
-  if (typeof raw === 'string' && raw.trim()) return raw.trim();
-  return undefined;
-}
-
-function parseOrder(raw: unknown): number {
+function parseOrder(raw: unknown): number | undefined {
   if (typeof raw === 'number') return raw;
-  const parsed = parseInt(String(raw), 10);
-  return isNaN(parsed) ? 999 : parsed;
+  if (typeof raw === 'string' && raw.trim()) {
+    const parsed = parseInt(raw.trim(), 10);
+    return isNaN(parsed) ? undefined : parsed;
+  }
+  return undefined;
 }
 
 function parseStatus(raw: unknown): ContentStatus {
@@ -136,13 +140,9 @@ export function getSortedDocumentsData(): DocumentMeta[] {
       const matterResult = parseFrontmatter(fileContents);
       const { readTime, wordCount } = calculateReadTime(matterResult.content);
 
-      const format: ContentFormat = matterResult.data.format === 'markdown'
-        ? 'md'
-        : (matterResult.data.format ? matterResult.data.format : (isHtml ? 'html' : 'md'));
-
-      const series = parseSeries(matterResult.data.series);
-      const track = parseTrack(matterResult.data.track);
-      const subject = parseSubject(matterResult.data.subject);
+      const fileFormat: 'md' | 'html' = isHtml ? 'html' : 'md';
+      const subject = parseSubject(matterResult.data.subject, fileName);
+      const format = parseFormat(matterResult.data.format, fileName);
       const order = parseOrder(matterResult.data.order);
       const status = parseStatus(matterResult.data.status);
       const verified = parseVerified(matterResult.data.verified);
@@ -152,9 +152,8 @@ export function getSortedDocumentsData(): DocumentMeta[] {
         title: matterResult.data.title || slug,
         description: matterResult.data.description || '',
         verified,
+        fileFormat,
         format,
-        series,
-        track,
         subject,
         order,
         status,
@@ -199,13 +198,9 @@ export function getDocumentData(slug: string): DocumentData | null {
 
   const { readTime, wordCount } = calculateReadTime(matterResult.content);
 
-  const format: ContentFormat = matterResult.data.format === 'markdown'
-    ? 'md'
-    : (matterResult.data.format ? matterResult.data.format : (isHtml ? 'html' : 'md'));
-
-  const series = parseSeries(matterResult.data.series);
-  const track = parseTrack(matterResult.data.track);
-  const subject = parseSubject(matterResult.data.subject);
+  const fileFormat: 'md' | 'html' = isHtml ? 'html' : 'md';
+  const subject = parseSubject(matterResult.data.subject, `${slug}.${isHtml ? 'html' : 'md'}`);
+  const format = parseFormat(matterResult.data.format, `${slug}.${isHtml ? 'html' : 'md'}`);
   const order = parseOrder(matterResult.data.order);
   const verified = parseVerified(matterResult.data.verified);
 
@@ -214,9 +209,8 @@ export function getDocumentData(slug: string): DocumentData | null {
     title: matterResult.data.title || slug,
     description: matterResult.data.description || '',
     verified,
+    fileFormat,
     format,
-    series,
-    track,
     subject,
     order,
     status,

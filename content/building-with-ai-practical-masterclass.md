@@ -1,9 +1,8 @@
 ---
 title: "Building with AI — The Practical Masterclass"
 description: "How to build real software with AI as a beginner, and then do it at enterprise grade — the working loop between Claude and an agentic IDE, memory files, briefs, plans and artifacts, skills, hooks, subagents and MCP, Claude Code and Google Antigravity side by side, the Next.js and Supabase stack you need to read, data without disasters, AI inside your app, RAG and agents in practice, verification, shipping, security, notebooks, and what changes inside a company — taught on a live app, with templates you can use today."
-series: masterclass
-track: ai
-subject: "Building with AI"
+subject: ai
+format: masterclass
 order: 1
 status: live
 updated: 2026-09-25

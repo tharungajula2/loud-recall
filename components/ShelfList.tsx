@@ -2,7 +2,7 @@
 
 import React, { useState, useMemo } from 'react';
 import Link from 'next/link';
-import { DocumentMeta, ContentSeries } from '@/lib/markdown';
+import { DocumentMeta, ContentFormat } from '@/lib/markdown';
 
 interface ShelfListProps {
   documents: DocumentMeta[];
@@ -20,11 +20,9 @@ function formatDateDisplay(dateStr: string): string {
   return `${dayNum} ${months[monthIdx]} ${year}`;
 }
 
-const SECTION_ORDER: { key: ContentSeries; title: string }[] = [
+const SECTION_ORDER: { key: ContentFormat; title: string }[] = [
   { key: 'masterclass', title: 'Masterclass' },
-  { key: 'portfolio', title: 'Portfolio' },
   { key: 'article', title: 'Article' },
-  { key: 'newsletter', title: 'Newsletter' },
 ];
 
 export function ShelfList({ documents }: ShelfListProps) {
@@ -42,18 +40,18 @@ export function ShelfList({ documents }: ShelfListProps) {
     });
   }, [documents, searchQuery]);
 
-  // Group live documents by series in defined order: Masterclass, Portfolio, Article, Newsletter
+  // Group live documents by format: Masterclass, Article
   const sections = useMemo(() => {
     return SECTION_ORDER.map(({ key, title }) => {
       const sectionDocs = filteredDocuments
-        .filter((doc) => doc.series === key)
+        .filter((doc) => doc.format === key)
         .sort((a, b) => b.updated.localeCompare(a.updated));
       return {
         key,
         title,
         docs: sectionDocs,
       };
-    }).filter((section) => section.docs.length > 0); // Hide section completely if 0 live docs
+    }).filter((section) => section.docs.length > 0);
   }, [filteredDocuments]);
 
   return (

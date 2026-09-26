@@ -1,9 +1,8 @@
 ---
 title: "Credit Risk, End to End — The Complete Cheatsheet"
 description: "Credit risk from zero, for business analysts: how banks lend to retail, SME and corporate borrowers; PD, LGD and EAD; collateral; IFRS 9 provisions; Basel capital and the move to Basel 3.1; counterparty risk and CVA; model validation from the confusion matrix to Hosmer–Lemeshow; portfolio monitoring; the data, reporting and controls machine; and the analyst's toolkit — with interview questions throughout."
-series: masterclass
-track: guest
-subject: "Credit Risk"
+subject: finance
+format: masterclass
 order: 1
 status: live
 updated: 2026-09-26

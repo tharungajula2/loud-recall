@@ -1,8 +1,8 @@
 ---
 title: "AI in 2026: What Everyone Should Know"
 description: "A calm, plain-language guide to AI as it stands in September 2026 — what a model is, why it makes things up, what it costs, what gets built around it, what agents are, how to work with it well, what is happening right now, and a one-week plan to start."
-series: article
-track: ai
+subject: ai
+format: article
 status: live
 updated: 2026-09-22
 verified: false

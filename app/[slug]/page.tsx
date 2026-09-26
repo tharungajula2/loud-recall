@@ -105,7 +105,7 @@ export default async function DocumentPage({ params }: { params: Promise<{ slug:
 
   const headings = extractHeadings(doc.content);
 
-  if (doc.format === 'html') {
+  if (doc.fileFormat === 'html') {
     const cleanContent = processHtmlNoteContent(doc.content);
     return (
       <ClientReader doc={doc} headings={headings}>

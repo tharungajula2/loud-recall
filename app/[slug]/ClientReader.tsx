@@ -210,7 +210,7 @@ export default function ClientReader({ doc, headings, children }: ClientReaderPr
           <header className="mb-12 max-w-2xl">
             <div className="flex items-center gap-2 mb-3">
               <span className="text-[10px] font-medium uppercase tracking-wider px-2 py-0.5 rounded bg-black/5 text-muted shrink-0">
-                {doc.series}
+                {doc.format}
               </span>
               {doc.tags.length > 0 && (
                 <span className="text-xs text-muted/60 truncate">
@@ -246,7 +246,7 @@ export default function ClientReader({ doc, headings, children }: ClientReaderPr
           </header>
 
           {/* Rendered Body: Markdown notes structurally receive .prose typography styles; HTML notes render inside unstyled wrapper container holding .loud-recall-html-note */}
-          <article className={clsx("w-full min-w-0 max-w-none", doc.format !== 'html' && "prose")}>
+          <article className={clsx("w-full min-w-0 max-w-none", doc.fileFormat !== 'html' && "prose")}>
             {children}
           </article>
         </main>
