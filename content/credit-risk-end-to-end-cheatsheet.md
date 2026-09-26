@@ -1,6 +1,6 @@
 ---
 title: "Credit Risk, End to End — The Complete Cheatsheet"
-description: "Credit risk from zero, for business analysts: how banks lend to retail, SME and corporate borrowers; PD, LGD and EAD; collateral; IFRS 9 provisions; Basel capital and the move to Basel 3.1; counterparty risk and CVA; model validation from the confusion matrix to Hosmer–Lemeshow; portfolio monitoring; the data, reporting and controls machine; and the analyst's toolkit — with interview questions throughout."
+description: "Credit risk from zero, for business analysts: how banks lend to retail, SME and corporate borrowers; who writes the rules; PD, LGD and EAD; collateral; IFRS 9 provisions; Basel capital and the move to Basel 3.1; derivatives, counterparty risk and CVA from first principles; model validation from the confusion matrix to Hosmer–Lemeshow; portfolio monitoring; the data, reporting and controls machine; and the analyst's toolkit."
 subject: finance
 format: masterclass
 order: 1
@@ -13,58 +13,23 @@ tags:
   - ifrs 9
   - basel 3.1
   - capital
+  - derivatives
   - counterparty credit risk
   - cva
   - model validation
   - data quality
-  - interview preparation
 ---
 
-## Part 0 — Who this is for, and how to read it
+## Part 0 — The map
 
-### Who this is for
-
-This note is for anyone preparing for — or starting — a business analyst role in credit risk. The role sits between the people who own credit risk (credit officers, risk managers, model teams, finance) and the people who build the systems that measure it (technology and data teams). The analyst turns rules and business needs into requirements, data definitions, calculation logic and tests, then proves the new system gives the right numbers.
-
-You'll find the role in a bank's risk change team, in a global bank's capability centre, at a consultancy, or at a firm that sells risk software. The note is just as useful if you are a credit analyst moving into change work, or a data or technology professional moving into risk.
-
-### What you'll be able to do
-
-- Explain how a bank lends to individuals, small businesses and large companies — how each loan is approved, watched and, sometimes, recovered.
-- Read a set of financial statements the way a credit analyst does.
-- Measure credit risk with PD, LGD and EAD, and explain expected versus unexpected loss.
-- Explain IFRS 9 provisions and Basel capital, and what changes with Basel 3.1.
-- Explain counterparty credit risk on derivatives, and CVA.
-- Read a model validation report: confusion matrix, AUROC, Gini, KS, calibration tests, PSI.
-- Describe how risk numbers flow from source systems to regulatory returns, and the controls around them.
-- Write requirements, business rules, user stories and test cases for credit risk systems.
-- Answer the theory questions credit risk interviews ask.
-
-### What it assumes
-
-Nothing. Every term is explained where it first appears, and the acronyms table at the end catches anything you forget.
-
-### How to read it
-
-In order. Each part uses only what came before it. The examples change with the topic — a personal loan for scorecards, a trader's cash-credit line for working capital, a manufacturer's accounts for ratios, a swap for counterparty risk — so every idea lands on the kind of loan where it matters most.
-
-Each part ends with **Check yourself**: interview-style questions with the answers folded away. Try first, then open. Part 13 is a rapid-fire bank of the questions interviews ask most.
-
-### Conventions
-
-- Worked numbers are in rupees: 1 lakh = 100,000; 1 crore = 100 lakh = 10 million.
-- Regulatory figures are quoted in the rule's own terms — percentages, or euros for Basel thresholds.
-- **[verify]** marks figures and dates that change with regulation. Check the current rule before relying on them.
-- The global Basel standard is the base. The UK, EU, US and India appear side by side only where they genuinely differ.
-
-### The ecosystem on one page
+Credit risk in one picture. Every part of this note is one box below, in the order things happen in a bank.
 
 <svg viewBox="0 0 400 850" width="400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Map of the credit risk ecosystem: business, measurement, mitigation, provisions and capital, derivatives, models, monitoring, the data machine and the analyst&#x27;s toolkit" style="width:100%;max-width:400px;height:auto;display:block;margin:1rem auto">
 <g font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="15" fill="#1f2937">
 <text x="200" y="24" font-size="16" text-anchor="middle" font-weight="700">The credit risk ecosystem on one page</text>
 <rect x="12" y="44" width="376" height="70" rx="8" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5"/>
 <text x="200" y="64" text-anchor="middle" font-weight="600" fill="#1d4ed8">The business</text>
-<text x="200" y="84" text-anchor="middle">borrowers, products, the loan&#x27;s life</text>
+<text x="200" y="84" text-anchor="middle">borrowers, products, rules, the loan&#x27;s life</text>
 <text x="200" y="104" text-anchor="middle">Parts 1–2</text>
 <rect x="12" y="132" width="376" height="70" rx="8" fill="#f0fdfa" stroke="#14b8a6" stroke-width="1.5"/>
 <text x="200" y="152" text-anchor="middle" font-weight="600" fill="#0f766e">Measure</text>
@@ -127,6 +92,24 @@ Each part ends with **Check yourself**: interview-style questions with the answe
 </svg>
 
 Read it top to bottom. Lending creates risk; measurement turns it into three numbers; mitigation shrinks them; the expected part becomes provisions and the unexpected part becomes capital; derivatives add a twist; models produce the numbers and validation proves them; monitoring keeps the portfolio inside the bank's appetite; a data machine produces all of it; and change work — the analyst's job — keeps the machine right as rules and products change.
+
+<details>
+<summary>About this note — who it's for, how to read it</summary>
+
+**Who it's for.** The business analyst in credit risk: the person between the people who own credit risk (credit officers, risk managers, model teams, finance) and the people who build the systems that measure it (technology and data teams). The analyst turns rules and business needs into requirements, data definitions, calculation logic and tests, then proves the system gives the right numbers. The job sits in a bank's risk change team, a global bank's capability centre, a consultancy or a risk software firm.
+
+**What it covers.** How banks lend and read borrowers; who writes the rules; PD, LGD and EAD; collateral; IFRS 9 provisions; Basel capital and Basel 3.1; derivatives, counterparty risk and CVA; model validation; portfolio monitoring; the data, reporting and controls machine; and the analyst's own toolkit — requirements, stories, testing, SQL.
+
+**How to read it.** In order. Each part uses only what came before it, and every term is explained where it first appears. The examples change with the topic — a personal loan for scorecards, a trader's cash-credit line for working capital, a manufacturer's accounts for ratios, a swap for derivatives — so each idea lands on the loan where it matters most. The acronyms table at the end catches anything you forget.
+
+**Conventions.**
+
+- Worked numbers are in rupees: 1 lakh = 100,000; 1 crore = 100 lakh = 10 million.
+- Regulatory figures are quoted in the rule's own terms — percentages, or euros for Basel thresholds.
+- **[verify]** marks figures and dates that change with regulation. Check the current rule before relying on them.
+- The global Basel standard is the base. The UK, EU, US and India appear side by side only where they genuinely differ.
+
+</details>
 
 ## Part 1 — The business of lending
 
@@ -218,79 +201,113 @@ Banks also lend to, and trade with, other banks, governments and non-bank financ
 
 **Funded** exposure is money already out of the door. **Non-funded** exposure is a promise that may become money out of the door — so it gets a conversion factor (Part 3). **Derivative** exposure moves with markets — so it gets its own part (Part 8).
 
-### Check yourself
+### Who writes the rules
 
-1. A loan earns 2.5% a year after funding and operating costs, and a default would lose 45% of it. How many years of profit does one default wipe out, and what follows for pricing?
-2. Classify each as funded, non-funded or derivative: an undrawn overdraft limit, a performance guarantee, a five-year interest rate swap, a home loan.
-3. Why are retail loans managed as pools and corporate loans name by name?
+Job specs throw names at you — Basel, PRA, EBA, CRR3, SR 11-7, COREP, FINREP, Ind AS 109. They all fit one chain:
 
-<details>
-<summary>Answers</summary>
+<svg viewBox="0 0 400 392" width="400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="How banking rules flow: global standard setters write standards, each country turns them into law and supervises banks, banks send regulatory returns and publish disclosures" style="width:100%;max-width:400px;height:auto;display:block;margin:1rem auto">
+<g font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="15" fill="#1f2937">
+<text x="200" y="24" font-size="16" text-anchor="middle" font-weight="700">How a rule reaches a bank</text>
+<rect x="12" y="44" width="376" height="70" rx="8" fill="#f5f3ff" stroke="#8b5cf6" stroke-width="1.5"/>
+<text x="200" y="66" text-anchor="middle" font-weight="600" fill="#6d28d9">1 · Global standard</text>
+<text x="200" y="86" text-anchor="middle">BCBS writes Basel · IASB writes IFRS 9</text>
+<text x="200" y="104" text-anchor="middle" fill="#4b5563">not law on its own</text>
+<line x1="200" y1="115" x2="200" y2="123" stroke="#6b7280" stroke-width="1.6"/>
+<polygon points="200,131 204,123 196,123" fill="#6b7280"/>
+<rect x="12" y="132" width="376" height="70" rx="8" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5"/>
+<text x="200" y="154" text-anchor="middle" font-weight="600" fill="#1d4ed8">2 · National rulebook</text>
+<text x="200" y="174" text-anchor="middle">RBI Directions · PRA Rulebook · CRR3 · US rules</text>
+<text x="200" y="192" text-anchor="middle" fill="#4b5563">this is what binds the bank</text>
+<line x1="200" y1="203" x2="200" y2="211" stroke="#6b7280" stroke-width="1.6"/>
+<polygon points="200,219 204,211 196,211" fill="#6b7280"/>
+<rect x="12" y="220" width="376" height="70" rx="8" fill="#f0fdfa" stroke="#14b8a6" stroke-width="1.5"/>
+<text x="200" y="242" text-anchor="middle" font-weight="600" fill="#0f766e">3 · Supervisor</text>
+<text x="200" y="262" text-anchor="middle">RBI · PRA · ECB · Fed, OCC, FDIC</text>
+<text x="200" y="280" text-anchor="middle" fill="#4b5563">inspects, challenges, adds capital</text>
+<line x1="200" y1="291" x2="200" y2="299" stroke="#6b7280" stroke-width="1.6"/>
+<polygon points="200,307 204,299 196,299" fill="#6b7280"/>
+<rect x="12" y="308" width="376" height="70" rx="8" fill="#fffbeb" stroke="#f59e0b" stroke-width="1.5"/>
+<text x="200" y="330" text-anchor="middle" font-weight="600" fill="#b45309">4 · Returns and disclosures</text>
+<text x="200" y="350" text-anchor="middle">COREP, FINREP · RBI returns · FR Y-9C</text>
+<text x="200" y="368" text-anchor="middle" fill="#4b5563">the bank proves it complied</text>
+</g>
+</svg>
 
-1. Eighteen (45 ÷ 2.5). The price must cover the expected loss plus a return on the capital held against the unexpected one — and no single name can be allowed to grow large enough to hurt.
-2. Non-funded (a commitment); non-funded (a contingent); derivative; funded.
-3. Retail loans are small, numerous and alike, so statistics predict a pool's behaviour well, and reviewing each by hand would cost more than the loan earns. Corporate loans are large, few and all different; each one matters, so each gets an analyst.
+**The standard setters** — they write the global recipe, but it binds nobody until a country adopts it.
 
-</details>
+| Name | What it is, in plain words | Where it bites in this note |
+|---|---|---|
+| BCBS — Basel Committee on Banking Supervision | Central banks and supervisors from about 28 jurisdictions, meeting at the Bank for International Settlements in Basel. Writes the Basel standards: how much capital, how to measure risk | Parts 3, 6, 7, 8 |
+| IASB — International Accounting Standards Board | Writes IFRS, the accounting rules most of the world uses; IFRS 9 says how to provide for loan losses | Part 5 |
+| BCBS 239 | A short Basel paper of 14 principles on risk data: accurate, complete, traceable, fast | Part 11 |
+
+**The regulators and their rulebooks** — the ones that actually bind a bank.
+
+| Country | Regulator, in plain words | Its rulebook for capital | Its rulebook for loan losses |
+|---|---|---|---|
+| India | **RBI** — Reserve Bank of India: central bank and bank regulator in one | RBI Master Circulars and Directions; the new standardised approach from 1 April 2027 | IRAC norms today; ECL from 1 April 2027. Large NBFCs already use **Ind AS 109**, India's copy of IFRS 9 |
+| UK | **PRA** — Prudential Regulation Authority, part of the Bank of England. "Prudential" means it cares whether banks stay safe and solvent; conduct towards customers is the FCA's job | PRA Rulebook; "Basel 3.1" is the PRA's name for the latest Basel package | IFRS 9 |
+| EU | **EBA** — European Banking Authority: writes the detailed technical rules and the reporting templates for all EU banks. **ECB** — European Central Bank: directly supervises the euro area's largest banks | **CRR3** — the Capital Requirements Regulation, a law applying word for word in every EU country — plus **CRD6**, a directive each country copies into its own law | IFRS 9 |
+| US | Three regulators split the banks: the **Fed** (Federal Reserve — bank holding companies), the **OCC** (Office of the Comptroller of the Currency — national banks) and the **FDIC** (Federal Deposit Insurance Corporation — deposit insurance and state banks) | The US capital rule; "Basel III endgame" is the unfinished US version of the latest package | **CECL** — current expected credit loss, the US accounting standard: lifetime loss from day one |
+
+**The documents job specs name most** — each is one line of the chain above.
+
+| Name | What it is | Whose |
+|---|---|---|
+| CRR3 / CRD6 | The EU's Basel 3.1 in law | EU |
+| COREP | Common Reporting: the EU's standard templates for **capital** — own funds, RWA, large exposures, leverage | EBA |
+| FINREP | Financial Reporting: the EU's standard templates for the **accounts** — balance sheet, P&L, IFRS 9 stages and provisions | EBA |
+| SR 11-7 | The US model risk guidance of 2011 — the most-copied model risk document in the world. Replaced on 17 April 2026 by **SR 26-2**, which keeps the same core disciplines; job specs still say "SR 11-7" | Fed and OCC |
+| SS1/23 | The UK's model risk principles, in force since May 2024 | PRA |
+| FR Y-9C, FR Y-14 | US returns: consolidated financials and capital; stress-test data | Fed |
+| CRILC | India's database of large borrowers, fed monthly by every bank | RBI |
+
+The memory hook for the two most confused names: **COREP is capital, FINREP is financials.** One reports the Basel numbers, the other the accounting numbers — and the analyst's job is to make them agree (Part 11).
 
 ## Part 2 — How a loan is made: retail, SME, corporate
 
 Every loan passes through the same eight stages. What changes by segment is who decides, and on what data.
 
-<svg viewBox="0 0 400 480" width="400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The eight stages of a loan: origination, underwriting, approval, documentation, disbursement, monitoring, collections and closure" style="width:100%;max-width:400px;height:auto;display:block;margin:1rem auto">
+To remember the eight, hang them on three verbs — **Decide, Deliver, Defend** — in groups of **3, 2, 3**:
+
+<svg viewBox="0 0 400 470" width="400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The eight stages of a loan grouped as Decide (origination, underwriting, approval), Deliver (documentation, disbursement) and Defend (monitoring, collections, closure)" style="width:100%;max-width:400px;height:auto;display:block;margin:1rem auto">
 <g font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="15" fill="#1f2937">
-<text x="200" y="24" font-size="16" text-anchor="middle" font-weight="700">Eight stages in the life of a loan</text>
-<rect x="12" y="44" width="376" height="40" rx="8" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5"/>
-<text x="24" y="69" font-weight="600" fill="#1d4ed8">1 Origination</text>
-<text x="376" y="69" text-anchor="end" fill="#4b5563">application, KYC</text>
-<line x1="200.0" y1="85.0" x2="200.0" y2="89.0" stroke="#6b7280" stroke-width="1.6"/>
-<polygon points="200.0,97.0 204.0,89.0 196.0,89.0" fill="#6b7280"/>
-<rect x="12" y="98" width="376" height="40" rx="8" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5"/>
-<text x="24" y="123" font-weight="600" fill="#1d4ed8">2 Underwriting</text>
-<text x="376" y="123" text-anchor="end" fill="#4b5563">can and will they pay?</text>
-<line x1="200.0" y1="139.0" x2="200.0" y2="143.0" stroke="#6b7280" stroke-width="1.6"/>
-<polygon points="200.0,151.0 204.0,143.0 196.0,143.0" fill="#6b7280"/>
-<rect x="12" y="152" width="376" height="40" rx="8" fill="#f5f3ff" stroke="#8b5cf6" stroke-width="1.5"/>
-<text x="24" y="177" font-weight="600" fill="#6d28d9">3 Approval</text>
-<text x="376" y="177" text-anchor="end" fill="#4b5563">within delegated authority</text>
-<line x1="200.0" y1="193.0" x2="200.0" y2="197.0" stroke="#6b7280" stroke-width="1.6"/>
-<polygon points="200.0,205.0 204.0,197.0 196.0,197.0" fill="#6b7280"/>
-<rect x="12" y="206" width="376" height="40" rx="8" fill="#f5f3ff" stroke="#8b5cf6" stroke-width="1.5"/>
-<text x="24" y="231" font-weight="600" fill="#6d28d9">4 Documentation</text>
-<text x="376" y="231" text-anchor="end" fill="#4b5563">contracts, security</text>
-<line x1="200.0" y1="247.0" x2="200.0" y2="251.0" stroke="#6b7280" stroke-width="1.6"/>
-<polygon points="200.0,259.0 204.0,251.0 196.0,251.0" fill="#6b7280"/>
-<rect x="12" y="260" width="376" height="40" rx="8" fill="#ecfdf5" stroke="#10b981" stroke-width="1.5"/>
-<text x="24" y="285" font-weight="600" fill="#047857">5 Disbursement</text>
-<text x="376" y="285" text-anchor="end" fill="#4b5563">money or limit released</text>
-<line x1="200.0" y1="301.0" x2="200.0" y2="305.0" stroke="#6b7280" stroke-width="1.6"/>
-<polygon points="200.0,313.0 204.0,305.0 196.0,305.0" fill="#6b7280"/>
-<rect x="12" y="314" width="376" height="40" rx="8" fill="#f0fdfa" stroke="#14b8a6" stroke-width="1.5"/>
-<text x="24" y="339" font-weight="600" fill="#0f766e">6 Monitoring</text>
-<text x="376" y="339" text-anchor="end" fill="#4b5563">for the loan&#x27;s whole life</text>
-<line x1="200.0" y1="355.0" x2="200.0" y2="359.0" stroke="#6b7280" stroke-width="1.6"/>
-<polygon points="200.0,367.0 204.0,359.0 196.0,359.0" fill="#6b7280"/>
-<rect x="12" y="368" width="376" height="40" rx="8" fill="#fffbeb" stroke="#f59e0b" stroke-width="1.5"/>
-<text x="24" y="393" font-weight="600" fill="#b45309">7 Collections</text>
-<text x="376" y="393" text-anchor="end" fill="#4b5563">arrears, recovery</text>
-<line x1="200.0" y1="409.0" x2="200.0" y2="413.0" stroke="#6b7280" stroke-width="1.6"/>
-<polygon points="200.0,421.0 204.0,413.0 196.0,413.0" fill="#6b7280"/>
-<rect x="12" y="422" width="376" height="40" rx="8" fill="#f3f4f6" stroke="#6b7280" stroke-width="1.5"/>
-<text x="24" y="447" font-weight="600" fill="#374151">8 Closure</text>
-<text x="376" y="447" text-anchor="end" fill="#4b5563">repaid or written off</text>
+<text x="200" y="24" font-size="16" text-anchor="middle" font-weight="700">Decide · Deliver · Defend (3 · 2 · 3)</text>
+<rect x="12" y="40" width="376" height="140" rx="10" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5"/>
+<text x="24" y="64" font-weight="700" fill="#1d4ed8">DECIDE — should we lend?</text>
+<text x="24" y="92" font-weight="600">1 Origination</text><text x="376" y="92" text-anchor="end" fill="#4b5563">application, KYC</text>
+<text x="24" y="120" font-weight="600">2 Underwriting</text><text x="376" y="120" text-anchor="end" fill="#4b5563">can and will they pay?</text>
+<text x="24" y="148" font-weight="600">3 Approval</text><text x="376" y="148" text-anchor="end" fill="#4b5563">the right person says yes</text>
+<text x="24" y="170" fill="#4b5563" font-size="13">ends in a yes or a no</text>
+<line x1="200" y1="181" x2="200" y2="189" stroke="#6b7280" stroke-width="1.6"/>
+<polygon points="200,197 204,189 196,189" fill="#6b7280"/>
+<rect x="12" y="198" width="376" height="112" rx="10" fill="#f5f3ff" stroke="#8b5cf6" stroke-width="1.5"/>
+<text x="24" y="222" font-weight="700" fill="#6d28d9">DELIVER — hand over the money</text>
+<text x="24" y="250" font-weight="600">4 Documentation</text><text x="376" y="250" text-anchor="end" fill="#4b5563">sign, register security</text>
+<text x="24" y="278" font-weight="600">5 Disbursement</text><text x="376" y="278" text-anchor="end" fill="#4b5563">money out, limit live</text>
+<text x="24" y="300" fill="#4b5563" font-size="13">two D-words: documents, disburse</text>
+<line x1="200" y1="311" x2="200" y2="319" stroke="#6b7280" stroke-width="1.6"/>
+<polygon points="200,327 204,319 196,319" fill="#6b7280"/>
+<rect x="12" y="328" width="376" height="130" rx="10" fill="#f0fdfa" stroke="#14b8a6" stroke-width="1.5"/>
+<text x="24" y="352" font-weight="700" fill="#0f766e">DEFEND — get it back</text>
+<text x="24" y="380" font-weight="600">6 Monitoring</text><text x="376" y="380" text-anchor="end" fill="#4b5563">watch payments, health</text>
+<text x="24" y="408" font-weight="600">7 Collections</text><text x="376" y="408" text-anchor="end" fill="#4b5563">chase, recover</text>
+<text x="24" y="436" font-weight="600">8 Closure</text><text x="376" y="436" text-anchor="end" fill="#4b5563">repaid or written off</text>
 </g>
 </svg>
 
-| Stage | What happens | Data it leaves behind |
-|---|---|---|
-| Origination | Lead, application, identity and anti-money-laundering checks (KYC, AML) | Customer, application and KYC records |
-| Underwriting | Can they pay (capacity)? Will they pay (character)? | Bureau report, spread accounts, scores, rating |
-| Approval | A decision within delegated authority | Decision, approver, conditions, exceptions |
-| Documentation | Agreements signed; security created and registered | Facility, limits, collateral, charges |
-| Disbursement | Money released, or a limit made available | Drawn balance, repayment schedule |
-| Monitoring | Payments and financial health watched | Days past due, behaviour scores, covenant tests, reviews |
-| Collections and recovery | Arrears chased, security enforced | Collection actions, recoveries, costs |
-| Closure | Repaid, or the loss written off | Closure or write-off records |
+Say it as a sentence: *first we decide, then we deliver, then we defend.* Each verb is a question the bank is answering — should we lend, how do we hand it over safely, how do we get it back.
+
+| Phase | Stage | What happens | Data it leaves behind |
+|---|---|---|---|
+| Decide | Origination | Lead, application, identity and anti-money-laundering checks (KYC, AML) | Customer, application and KYC records |
+| Decide | Underwriting | Can they pay (capacity)? Will they pay (character)? | Bureau report, spread accounts, scores, rating |
+| Decide | Approval | A decision within delegated authority | Decision, approver, conditions, exceptions |
+| Deliver | Documentation | Agreements signed; security created and registered | Facility, limits, collateral, charges |
+| Deliver | Disbursement | Money released, or a limit made available | Drawn balance, repayment schedule |
+| Defend | Monitoring | Payments and financial health watched | Days past due, behaviour scores, covenant tests, reviews |
+| Defend | Collections and recovery | Arrears chased, security enforced | Collection actions, recoveries, costs |
+| Defend | Closure | Repaid, or the loss written off | Closure or write-off records |
 
 Every item in the right-hand column becomes a table in the bank's risk data (Part 11). An analyst who knows which stage created a field knows who owns it — and why it might be wrong.
 
@@ -389,34 +406,80 @@ SMA stands for special mention account — the RBI's labels for early stress. A 
 
 ### SME: cash flow plus judgement
 
-Take a textile trader projecting ₹8 crore of annual turnover and asking for a cash-credit line — a revolving working-capital limit.
+Take a textile trader with ₹8 crore of expected sales this year, asking for a **cash-credit line**.
 
-The data: GST returns (turnover the tax system has seen), bank statements (turnover actually banked), income tax returns, basic accounts, a bureau report on each promoter, a commercial bureau rank for the business, and usually a site visit. In India, account aggregators let the borrower share bank data digitally, with consent.
+**First, why a trader needs this at all.** The trader buys cloth, holds it in the godown, sells it — and the buyer pays a couple of months later. For all that time the trader's money is stuck in cloth and in unpaid bills. That stuck money is **working capital**, and a cash-credit line funds it.
 
-**How big a limit.** For smaller SMEs, Indian banks often use the turnover method: the working capital need is 25% of projected turnover, of which the promoter funds 5% and the bank 20% [verify].
+A cash-credit line works like an overdraft on a current account:
 
-| | ₹ crore |
+- The bank sets a **limit**, say ₹1.60 crore.
+- The trader draws any amount up to it, repays whenever cash comes in, and draws again.
+- Interest is charged only on what is drawn, day by day.
+- It is renewed every year, not repaid on a schedule.
+
+**What the bank looks at.** GST returns (sales the tax system has seen), bank statements (sales actually banked), income tax returns, basic accounts, a bureau report on each promoter, a commercial bureau rank for the business, and usually a visit to the shop and godown. In India, account aggregators let the borrower share bank data digitally, with consent.
+
+#### Step 1 — How big should the limit be?
+
+For smaller borrowers, Indian banks often use the **turnover method** [verify]:
+
+| Line | Rule | ₹ crore | Why |
+|---|---|---|---|
+| Expected sales | Given | 8.00 | The business plan |
+| Working capital needed | 25% of sales | 2.00 | Money is typically stuck for about three months — a quarter of the year |
+| Trader's own money | 5% of sales | 0.40 | The owner must put in a share — a fifth of the need |
+| **Bank's limit** | **20% of sales** | **1.60** | **The rest** |
+
+Larger borrowers are sized more carefully: on a projected balance sheet (the **MPBF** method — maximum permissible bank finance) or on a month-by-month cash budget.
+
+#### Step 2 — How much can they draw this month?
+
+The limit is a ceiling on paper. What the trader can actually draw is set every month by what is really backing the line — the stock in the godown and the bills customers owe. That figure is the **drawing power (DP)**. The trader sends a **stock statement** each month, and the bank works it out:
+
+| Step | ₹ crore | What the bank is thinking |
+|---|---|---|
+| Stock in the godown | 1.20 | What the statement shows |
+| Less: stock not yet paid for | − 0.20 | That part really belongs to the suppliers |
+| **Stock that is the trader's own** | **1.00** | |
+| Lend 75% of it (a 25% margin) | **0.75** | Stock can be damaged, go out of fashion or sell below cost — keep a cushion |
+| Bills customers owe, under 90 days old | 0.80 | Older bills may never be paid, so they are ignored |
+| Lend 60% of them (a 40% margin) | **0.48** | Some customers will pay late or not at all |
+| **Drawing power** | **1.23** | 0.75 + 0.48 |
+
+As one line, where own stock is stock less unpaid creditors and fresh bills are those under 90 days old:
+
+$$
+\text{DP} = \text{own stock} \times (1 - \text{stock margin}) + \text{fresh bills} \times (1 - \text{bills margin})
+$$
+
+Then the rule that matters:
+
+$$
+\text{Can draw} = \min(\text{limit},\ \text{DP}) = \min(1.60,\ 1.23) = 1.23\ \text{crore}
+$$
+
+So the trader has a ₹1.60 crore line but can use only ₹1.23 crore this month. If the godown fills up next month, DP rises and more of the line opens; if stock runs down, the line shrinks with it. The line always stays backed by real goods and real bills.
+
+#### Step 3 — Security
+
+| Security | Plain meaning |
 |---|---|
-| Projected turnover | 8.00 |
-| Working capital need (25%) | 2.00 |
-| Promoter's margin (5% of turnover) | 0.40 |
-| Bank's cash-credit limit (20%) | 1.60 |
+| Hypothecation of stock and receivables | The goods stay with the trader, but the bank holds a registered legal claim over them |
+| Mortgage of property | Extra cover — a shop or house the bank can sell if all else fails |
+| Personal guarantee of the promoters | The owners are personally liable if the business can't pay |
+| CGTMSE cover | The Credit Guarantee Fund Trust for Micro and Small Enterprises, a government-backed trust, guarantees much of an eligible loan — cutting both the bank's loss and the capital it must hold (Part 4) |
 
-Larger borrowers are sized on a projected balance sheet (the MPBF method) or a monthly cash budget.
+#### Step 4 — Monitoring
 
-**How much they can actually draw.** A cash-credit line is backed by stock and receivables, so the borrower may draw only what those currently support — the **drawing power (DP)**:
+SME trouble shows in the **account** before it shows in the **accounts**. The signs, and what each is telling you:
 
-$$
-\text{DP} = \text{net stock} \times (1 - \text{stock margin}) + \text{receivables} \times (1 - \text{receivables margin})
-$$
-
-where net stock is stock less unpaid creditors, receivables counts only bills under 90 days old, and the margins are the bank's haircuts.
-
-With stock of ₹1.20 crore, unpaid creditors of ₹0.20 crore, receivables of ₹0.80 crore and margins of 25% and 40%: DP = 1.00 × 0.75 + 0.80 × 0.60 = **₹1.23 crore**. The limit is ₹1.60 crore, but this month the trader can draw only ₹1.23 crore — the stock statement sets the ceiling.
-
-**Security.** Usually a charge on stock and receivables, often property as extra cover, and personal guarantees from the promoters. In India, the Credit Guarantee Fund Trust for Micro and Small Enterprises (CGTMSE) guarantees much of an eligible loan, which cuts both the loss and the capital needed (Part 4).
-
-**Monitoring.** SME trouble shows in the account before it shows in the accounts: the line sits at its limit for weeks, cheques bounce, stock statements arrive late, GST filings stop, and turnover through the account falls below GST turnover.
+| Sign | What it means |
+|---|---|
+| The line sits at its limit for weeks | The business needs more cash than it makes — no money is coming back in |
+| Cheques bounce | Payments are being made with money that isn't there |
+| Stock statements arrive late | Often, there is less stock than there should be |
+| GST filings stop | Sales have fallen, or the business is hiding them |
+| Sales through the account fall below GST sales | Customers are paying into another bank — the trader is moving money away |
 
 ### Corporate: analyst, memo, committee
 
@@ -502,22 +565,61 @@ EBITDA is earnings before interest, tax, depreciation and amortisation — a rou
 
 Two habits separate analysts from readers. **Trends beat levels**: interest cover falling from 5× to 3× over three years says more than 3× today. **Cash beats profit**: compare operating cash flow with EBITDA — profit that never turns into cash is usually sitting in rising receivables or inventory.
 
-### Check yourself
+#### How the working-capital ratios fit together
 
-1. An applicant earns ₹80,000 a month after tax and pays ₹20,000 in EMIs. The new loan's EMI is ₹16,000. What is the FOIR, and does it pass a 50% cap?
-2. A cash-credit limit is ₹2 crore, but drawing power this month is ₹1.4 crore. How much can the borrower draw, and why?
-3. A company's debt is ₹600 crore and its EBITDA ₹120 crore. Its covenant says net debt to EBITDA at most 4.0×. Is it in breach, and what can the bank do?
-4. Why is a first payment default treated differently from a default after two years of payments?
+The last four rows of the table are one story: the life of a rupee inside the business.
 
-<details>
-<summary>Answers</summary>
+<svg viewBox="0 0 400 330" width="400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Timeline of the cash conversion cycle: stock sits 65 days, customers pay 61 days after sale, so cash returns on day 126; suppliers are paid on day 52; the 74-day gap between paying suppliers and collecting from customers must be funded" style="width:100%;max-width:400px;height:auto;display:block;margin:1rem auto">
+<g font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="15" fill="#1f2937">
+<text x="200" y="24" font-size="16" text-anchor="middle" font-weight="700">The life of a rupee, in days</text>
+<rect x="20" y="56" width="186" height="36" rx="6" fill="#fffbeb" stroke="#f59e0b" stroke-width="1.5"/>
+<text x="113" y="79" text-anchor="middle" fill="#b45309" font-weight="600">stock sits 65</text>
+<rect x="206" y="56" width="174" height="36" rx="6" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5"/>
+<text x="293" y="79" text-anchor="middle" fill="#1d4ed8" font-weight="600">customer pays in 61</text>
+<text x="20" y="48" fill="#4b5563" font-size="13">buy goods</text>
+<text x="206" y="48" fill="#4b5563" font-size="13" text-anchor="middle">sell</text>
+<text x="380" y="48" fill="#4b5563" font-size="13" text-anchor="end">cash in</text>
+<rect x="20" y="112" width="149" height="36" rx="6" fill="#ecfdf5" stroke="#10b981" stroke-width="1.5"/>
+<text x="94" y="135" text-anchor="middle" fill="#047857" font-weight="600">supplier waits 52</text>
+<text x="169" y="170" fill="#4b5563" font-size="13" text-anchor="middle">pay supplier</text>
+<rect x="169" y="186" width="211" height="36" rx="6" fill="#fff1f2" stroke="#f43f5e" stroke-width="1.5"/>
+<text x="274" y="209" text-anchor="middle" fill="#be123c" font-weight="600">gap to fund: 74 days</text>
+<line x1="20" y1="248" x2="380" y2="248" stroke="#9ca3af" stroke-width="1.2"/>
+<text x="20" y="268" fill="#4b5563" text-anchor="middle">0</text>
+<text x="169" y="268" fill="#4b5563" text-anchor="middle">52</text>
+<text x="206" y="286" fill="#4b5563" text-anchor="middle">65</text>
+<text x="380" y="268" fill="#4b5563" text-anchor="end">126</text>
+<text x="200" y="318" text-anchor="middle" fill="#4b5563">65 + 61 − 52 = 74</text>
+</g>
+</svg>
 
-1. (20,000 + 16,000) ÷ 80,000 = 45%. It passes.
-2. ₹1.4 crore. The line is backed by stock and receivables, so drawing power, not the sanctioned limit, is the ceiling at any moment.
-3. 600 ÷ 120 = 5.0× before deducting any cash — above 4.0×, so in breach unless cash brings net debt down. The bank can waive the breach (usually for a fee), reset the covenant, reprice, take more security or, in the end, call the loan.
-4. A borrower who never paid once was probably never going to. It points to fraud or a failed underwriting check rather than a change in circumstances, and it is fixed in origination, not in collections.
+- **Inventory days (65)** — goods arrive and sit in stock for 65 days before they are sold.
+- **Debtor days (61)** — after the sale, the customer takes 61 days to pay. Cash comes home on day 126.
+- **Creditor days (52)** — but the supplier waited only 52 days to be paid. Cash left on day 52.
+- **Cash conversion cycle (74)** — between paying the supplier and being paid by the customer, 74 days pass in which the company's own money is locked up.
 
-</details>
+In rupees, the same gap sits on the balance sheet: receivables 200 + inventory 150 − payables 120 = **₹230 crore of money stuck in the cycle**. It must come from somewhere — the owners, long-term loans, or a working-capital line. That is why the manufacturer is asking for one.
+
+What moves each number, and when to worry:
+
+| Ratio | Goes up when… | Worry if… |
+|---|---|---|
+| Debtor days | Customers pay slower, or sales are pushed out on easy credit to hit targets | It rises while sales rise — sales may be bought, not earned |
+| Inventory days | Stock is piling up, unsold or obsolete | It rises in a falling market — the stock may be worth less than the books say |
+| Creditor days | The company pays suppliers later | A sudden jump — it may be stretching suppliers because it can't pay |
+| Cash conversion cycle | Any of the above | It lengthens year after year — the business needs ever more funding to stand still |
+
+The whole ratio table, grouped by the question each answers:
+
+| Group | Ratios | Question | The C it serves |
+|---|---|---|---|
+| Leverage | Debt ÷ EBITDA, debt ÷ equity | How much has it borrowed? | Capital |
+| Coverage | Interest cover, DSCR | Can this year's cash pay this year's debt? | Capacity |
+| Liquidity | Current ratio | Can it pay bills due within a year? | Capacity |
+| Profitability | EBITDA margin, ROCE | Is the business any good? | Capacity |
+| Efficiency | Debtor, inventory, creditor days; cash cycle | How much cash does the business swallow? | Capacity |
+
+One distinction worth fixing: **interest cover** asks whether profit covers the *interest*; **DSCR** asks whether cash covers interest *and* the principal due. A company can pay its interest comfortably and still be unable to repay — DSCR is the lender's real question. Here: (71 + 40 + 45) ÷ (60 + 45) = 156 ÷ 105 = 1.49×.
 
 ## Part 3 — Measuring the risk: PD, LGD, EAD
 
@@ -527,15 +629,35 @@ Underwriting ends in a yes or a no. Measurement asks the portfolio question: acr
 
 Every model and every report hangs on one definition. If it is applied inconsistently, PDs, provisions and capital all go wrong together.
 
-| Rulebook | A borrower is in default when… |
-|---|---|
-| Basel | A material obligation is more than 90 days past due, or the bank judges the borrower unlikely to pay in full without selling collateral |
-| EU | As Basel, with a materiality test — €100 for retail or €500 otherwise, and 1% of the borrower's exposure — and at least three months' probation before a default cures [verify] |
-| UK | As Basel, with the PRA's materiality thresholds [verify] |
-| US | Generally 90 days past due or on non-accrual; charge-off by 120 days for instalment loans and 180 days for cards [verify] |
-| India | Non-performing asset (NPA): interest or principal overdue more than 90 days; a cash-credit account "out of order" for 90 days; bills overdue 90 days; farm loans by crop season |
+The global core is short. A borrower is in default when **either** test is met:
 
-**Unlikeliness to pay (UTP)** signs include: the bank stops accruing interest, raises a specific provision, sells the loan at a material credit loss, agrees a distressed restructuring — or the borrower files for insolvency.
+- **The days test** — a material amount is more than **90 days past due**.
+- **The judgement test** — the bank thinks the borrower is **unlikely to pay** in full without the bank selling its collateral.
+
+Each country then adds detail. Read the last column first:
+
+| Rulebook | Who sets it | The rule | In plain words |
+|---|---|---|---|
+| Basel | The Basel Committee (Part 1) | 90 days past due on a material obligation, or unlikely to pay | The two tests above. Everything below is a local version |
+| EU | EBA, the EU's rule-writer | 90 days past due, counted only once the overdue amount passes **both** €100 (retail) or €500 (others) **and** 1% of everything the borrower owes; after default, at least **three months of good behaviour** before the borrower is clean again (a year after a distressed restructuring) [verify] | A few euros overdue on a large company's account shouldn't trip default — so tiny amounts don't count. And a borrower can't pay once and be declared healthy the next day |
+| UK | PRA, the Bank of England's bank regulator | Retail: **any** amount overdue counts — no threshold. Others: same €500 and 1% test as the EU [verify] | The same rule as the EU for companies, stricter for individuals |
+| US | Fed, OCC, FDIC | A loan goes **non-accrual** at 90 days past due; retail loans are **charged off** — written off — by 120 days for instalment loans and 180 days for cards [verify] | Non-accrual: the bank stops counting unpaid interest as income. Charge-off: the bank takes the loss on its books |
+| India | RBI | A loan becomes a **non-performing asset (NPA)** when interest or principal is overdue for more than 90 days; a cash-credit line is an NPA when it stays **out of order** for 90 days; farm loans follow crop seasons | "Out of order": the balance stays above the limit or drawing power for 90 days in a row, or the money coming in doesn't even cover the interest |
+
+The common thread: **90 days, or clearly not going to pay.** The local detail only decides how small an overdue amount can be ignored and how long a borrower must behave before being called healthy again.
+
+**Unlikeliness to pay (UTP)** exists because the days test is slow — it waits three months. Some borrowers are plainly going under long before that:
+
+| Signal | What it means in plain words |
+|---|---|
+| Non-accrual | The bank no longer believes the interest will be paid, so it stops counting it as income |
+| Specific provision | The bank has already set money aside against this particular loan |
+| Distressed sale | The bank sold the loan at a real loss because of the borrower's credit quality |
+| Distressed restructuring | The bank changed the terms — lower rate, longer tenor, a haircut — because the borrower couldn't pay the original deal |
+| Bankruptcy or insolvency filing | The borrower, or a creditor, has gone to court |
+| Fraud | The borrower obtained the loan dishonestly |
+
+Any one of these makes the borrower a defaulter today, whatever the days count says.
 
 ### Three numbers and one formula
 
@@ -551,6 +673,21 @@ $$
 | EL — expected loss | The average loss per year | All three |
 
 A corporate term loan with PD 2%, LGD 40% and EAD ₹100 crore: EL = 0.02 × 0.40 × 100 = **₹0.8 crore a year**. Across a portfolio, EL simply adds up loan by loan.
+
+### Where these numbers go: SA and IRB
+
+Before going deeper, know where PD, LGD and EAD end up. Basel gives a bank two ways to turn a loan into a capital requirement (the full detail is Part 6):
+
+| | Standardised approach (SA) | Internal ratings-based approach (IRB) |
+|---|---|---|
+| The idea | The regulator publishes a risk-weight table; the bank looks up each loan | The bank estimates the risk with its own models, inside a regulator's formula |
+| Uses the bank's PD? | No — an external rating or the loan type sets the weight | Yes |
+| Uses the bank's LGD? | No | Only under the advanced version |
+| Uses EAD and CCF? | Yes — with the regulator's CCFs | Yes — the regulator's CCFs, or the bank's own under the advanced version |
+| Who uses it | Most banks in the world, and **every bank in India** | Large banks in the UK, EU and elsewhere, after regulator approval |
+| Trade-off | Simple, but blunt: all unrated companies look alike | Risk-sensitive, but costly to build, prove and maintain |
+
+So in an Indian bank, PD and LGD models still matter — for approval, pricing, early warning and, from April 2027, for provisions (Part 5) — but not for regulatory capital. In a UK or EU IRB bank, they drive capital too.
 
 ### PD: grades and the master scale
 
@@ -666,7 +803,7 @@ A ₹100 crore revolving facility with ₹60 crore drawn and a 40% CCF: EAD = 60
 
 Guarantees and letters of credit are entirely undrawn until they are called, so EAD = amount × CCF.
 
-The standardised CCFs are among the most-asked interview tables:
+**How to read the CCF table below.** Each row is a kind of promise the bank has made but not yet paid out on. Each number is the share of that promise the rules assume will have turned into a real loan by the time the customer defaults. Read down a column to see how the rules rank the promises; read across a row to see how a promise's treatment changed.
 
 | Off-balance-sheet item | Basel 3 | Basel 3.1 | India today [verify] |
 |---|---|---|---|
@@ -679,9 +816,37 @@ The standardised CCFs are among the most-asked interview tables:
 | Direct credit substitutes: financial guarantees, standby LCs backing debt, acceptances | 100% | 100% | 100% |
 | Securities lent or posted, asset sales with recourse, forward asset purchases | 100% | 100% | 100% |
 
-The logic: the more a promise behaves like a loan, the higher its CCF. A financial guarantee *is* a loan the moment the borrower fails (100%). A performance guarantee pays only if the client fails to deliver on a contract — rarer, and often partial (50%). A trade LC is short and backed by the goods (20%). Basel 3.1 ended the free ride for "cancellable" limits (0% to 10%) because banks rarely cancel customers' lines in practice.
+What to take from it — the observations, not the numbers:
 
-India's revised standardised approach from 1 April 2027 updates its treatment [verify]. Under IRB (Part 6), foundation-IRB banks use the standardised CCFs under Basel 3.1, and advanced-IRB banks may estimate their own CCFs only for revolving facilities, floored at half the standardised figure [verify].
+- **The ladder.** The more a promise behaves like a loan, the higher its CCF. A financial guarantee *is* a loan the moment the borrower fails (100%). A performance guarantee pays only if the client fails to deliver on a contract — rarer, and often partial (50%). A trade LC is short and backed by the goods being shipped (20%). An undrawn line sits at the bottom, because a customer may never use it.
+- **Only the commitment rows moved.** Basel 3.1 left every guarantee, LC and contingent untouched. It changed only undrawn lines.
+- **Cancellable is no longer free.** Banks almost never cancel a customer's card limit or overdraft in practice — it would destroy the relationship — so Basel 3.1 stopped pretending they would: 0% became 10%.
+- **Maturity stopped mattering.** Basel 3 charged short commitments 20% and long ones 50%. Basel 3.1 uses one rate, 40%, because a borrower heading for default draws a one-year line just as hard as a five-year one.
+- **India sits in the Basel 3 column today.** The RBI's new standardised approach from 1 April 2027 revises its treatment [verify].
+
+A ₹10 crore undrawn, unconditionally cancellable card book needs EAD of ₹0 under Basel 3 but ₹1 crore under Basel 3.1 — capital appears on lines that used to be free.
+
+### PD, LGD and CCF under each approach — and what Basel 3.1 changed
+
+The same three parameters are filled in differently depending on the approach (Part 6 explains the approaches in full):
+
+| Parameter | SA | Foundation IRB | Advanced IRB |
+|---|---|---|---|
+| PD | Not used — the risk weight table stands in for it | Bank's own model | Bank's own model |
+| LGD | Not used — built into the risk weight | Set by the regulator | Bank's own model |
+| CCF | The regulator's table above | The regulator's table above | Bank's own model — revolving lines only under Basel 3.1 |
+
+And what Basel 3.1 changed in each — the reform touched all three, not just CCFs:
+
+| Parameter | Basel 3 | Basel 3.1 | Why |
+|---|---|---|---|
+| PD | Floor of 0.03% | Floor of **0.05%**; 0.10% for revolving retail such as cards | No borrower is ever that safe; floors stop models claiming zero risk |
+| LGD, foundation IRB | 45% for senior unsecured loans | **40%** for non-financial companies; 45% stays for banks and other financials | Recalibrated to observed recoveries |
+| LGD, advanced IRB | Bank's estimate, few limits | Bank's estimate, but at least **25%** for unsecured corporate loans, **5%** for mortgages, **50%** for cards, **30%** for other unsecured retail; secured corporate loans 0–15% by collateral | Stops models claiming implausibly low losses |
+| Who may use own LGD | Anyone approved | Not for large companies (revenue above €500 million) or for banks and financial firms — foundation IRB only | Too few defaults to estimate LGD reliably |
+| CCF | SA table, or own estimates under advanced IRB | New SA table (above); own estimates only for revolving lines, and never below **half** the SA CCF | Same logic: floor the model |
+
+In India none of this touches capital today, because every bank is on the SA. The PDs, LGDs and CCFs Indian banks model feed pricing, ratings and — from 1 April 2027 — ECL provisions.
 
 ### Maturity
 
@@ -730,32 +895,24 @@ EL is an average, and some years are far worse than average — because defaults
 </g>
 </svg>
 
-For a portfolio with PD 2%, LGD 45% and moderate correlation between borrowers, the expected loss is 0.9% of exposure. In the worst year in a thousand, losses reach 6.6%. The gap — 5.7% — is the **unexpected loss (UL)**.
+**How to read the chart.** The horizontal axis is next year's loss on a loan book, as a share of the book. The height of the curve is how likely each loss is. Most years land on the tall hump on the left; a few land far out on the right.
 
-| Loss | Covered by | Part |
-|---|---|---|
-| Expected loss | Provisions — charged to profit in advance and priced into the loan | 5 |
-| Unexpected loss, up to a chosen confidence level (99.9% for Basel) | Capital — the bank's own money | 6 |
-| Beyond that | Stress testing, recovery and resolution plans | 10 |
+Take a ₹1,000 crore book with PD 2%, LGD 45% and moderate correlation between borrowers:
 
-**Concentration** fattens the tail further. A book of 20 large loans loses in lumps; a book of 20,000 small ones loses smoothly. Correlation and concentration, not EL, decide how much capital a bank needs.
+| Line on the chart | Share | ₹ crore | Plain meaning | Paid for by |
+|---|---|---|---|---|
+| **EL** — expected loss | 0.9% | 9 | The average year: PD × LGD = 2% × 45% | **Provisions** — set aside from profit, and priced into the loan rate |
+| **99.9% loss** | 6.6% | 66 | The worst year in a thousand | — |
+| **UL** — unexpected loss | 5.7% | 57 | How much worse than average that bad year is: 66 − 9 | **Capital** — the owners' money (Part 6) |
+| **Tail** | beyond 6.6% | more than 66 | The disaster beyond Basel's 1-in-1,000 line | **Stress tests** and recovery plans (Part 10) |
 
-### Check yourself
+Three ideas to hold on to:
 
-1. A ₹50 crore guarantee carries a 50% CCF. The borrower has PD 3% and LGD 45%. What are EAD and EL, and what kind of guarantee carries that CCF?
-2. Why does Basel ask for downturn LGD when IFRS 9 does not?
-3. A bank's grades barely move through a recession. Is its rating system PIT or TTC, and what problem does that create for IFRS 9?
-4. Name three signs of unlikeliness to pay that don't depend on days past due.
+- **EL is a cost, not a risk.** It is as certain as rent across a big book, so it is charged against profit in advance and built into the price.
+- **UL is the risk.** Nobody knows which year will be bad, so the bank holds capital to survive one without failing.
+- **The tail comes from correlation.** Borrowers don't default independently — a recession hits many at once. That is what drags losses far to the right. **Concentration** does the same: 20 large loans lose in lumps; 20,000 small ones lose smoothly.
 
-<details>
-<summary>Answers</summary>
-
-1. EAD = 50 × 0.5 = ₹25 crore; EL = 0.03 × 0.45 × 25 = ₹0.34 crore. A 50% CCF fits a transaction-related contingent, such as a performance guarantee.
-2. Capital must survive a bad year, and recoveries are worst when defaults are highest, so capital uses downturn LGD. IFRS 9 wants an unbiased, probability-weighted estimate for the accounts, so it uses a best estimate across scenarios.
-3. TTC. IFRS 9 needs point-in-time, forward-looking PDs, so the bank must add a macroeconomic adjustment — otherwise its provisions lag the cycle.
-4. Any three of: non-accrual status; a specific provision; sale of the loan at a material credit loss; a distressed restructuring; a bankruptcy or insolvency filing; fraud.
-
-</details>
+The memory line: **provisions for the average year, capital for the bad year, stress tests for the disaster.**
 
 ## Part 4 — Reducing the risk: collateral, guarantees, netting
 
@@ -807,9 +964,27 @@ PD belongs mostly to the borrower. LGD and EAD belong partly to the lender, beca
 | Netting | Amounts owed each way are set off, so only the net is at risk | A netting agreement enforceable in every relevant jurisdiction |
 | Covenants | Give the bank the right to act early | Not a capital mitigant: they cut losses in practice, not in the formula |
 
+### Which approaches exist
+
+Before any formula: the rules recognise mitigation in different ways, depending on the mitigant and on the bank's capital approach (SA or IRB, from Part 3). Two families cover almost everything:
+
+- **Swap the risk weight.** Treat the protected part as if it were owed by the protector — the collateral's issuer or the guarantor. Used for guarantees and, under the simple approach, for collateral.
+- **Shrink the number.** Cut the exposure (SA) or the LGD (IRB) by the value of the protection, after a safety discount called a **haircut**.
+
+| Mitigant | SA banks | Foundation IRB banks | Advanced IRB banks |
+|---|---|---|---|
+| Financial collateral — cash, bonds, shares | **Simple approach**: the covered part takes the collateral's risk weight (floor 20%). Or **comprehensive approach**: haircuts, then the exposure shrinks | Comprehensive approach: haircuts, then a lower effective LGD | Own LGD models reflect it |
+| Physical collateral — property, machinery, stock | Not treated as mitigation; property loans are their own exposure classes, weighted by loan-to-value (Part 6) | Recognised through a lower supervisory LGD, after haircuts | Own LGD models reflect it |
+| Guarantees and credit derivatives | **Substitution**: the guaranteed part takes the guarantor's risk weight | Substitution | May instead adjust PD or LGD |
+| Netting | Loans against deposits with the same customer; master netting agreements for derivatives and repos | The same | The same |
+
+Indian banks, all on the SA, use the **comprehensive approach** for financial collateral [verify], plus substitution for guarantees — including the government-backed ones such as CGTMSE.
+
 ### Financial collateral and haircuts
 
-Under the **comprehensive approach**, both the exposure and the collateral are adjusted for how their values could move before the bank can act:
+The **simple approach** is the blunt one: if a ₹10 crore loan is backed by ₹8 crore of government bonds, the ₹8 crore part takes the bonds' risk weight and the ₹2 crore rest keeps the borrower's.
+
+The **comprehensive approach** asks a sharper question: how much could the collateral lose in value before the bank manages to sell it? It discounts the collateral by a **haircut** for that fall — bigger for riskier assets — and then subtracts it from the exposure:
 
 $$
 E^{*} = \max\left(0,\; E \times (1 + H_e) - C \times (1 - H_c - H_{fx})\right)
@@ -834,8 +1009,6 @@ The riskier the collateral's price, the less of it counts. Selected supervisory 
 | Main-index equities | 20% |
 | Other listed equities | 30% |
 | Currency mismatch | Add 8% |
-
-The alternative **simple approach** gives the covered part the collateral's risk weight instead of the borrower's, with a 20% floor.
 
 ### Physical collateral and real estate
 
@@ -864,21 +1037,6 @@ If a bank has lent ₹10 crore to a company that keeps ₹3 crore on deposit wit
 - **Currency mismatch.** Dollar collateral against a rupee loan moves with the exchange rate.
 
 To an analyst, collateral is a data model. Each item needs an identifier, type, value, valuation date and source, haircut, legal charge details, and an allocation to the facilities it secures. When one item secures several facilities, a rule must split it — pro rata, or to minimise capital.
-
-### Check yourself
-
-1. A ₹20 crore loan is secured by listed shares worth ₹15 crore, not in a main index, in the same currency. How much remains exposed?
-2. Why doesn't a guarantee from the borrower's own parent company always help?
-3. Covenants let the bank act early. Why don't they reduce capital?
-
-<details>
-<summary>Answers</summary>
-
-1. Haircut 30%, so collateral counted = 15 × 0.70 = 10.5. Still exposed: 20 − 10.5 = ₹9.5 crore.
-2. Parent and subsidiary tend to fail together — the guarantee is correlated with the very risk it covers. It counts only if the guarantor is eligible and independently strong.
-3. They lower the chance of loss in practice by triggering action, but they neither move the loss to someone else nor give the bank an asset to sell. Capital recognises only mitigants that pay out when the borrower doesn't.
-
-</details>
 
 ## Part 5 — Provisions for expected loss: IFRS 9
 
@@ -993,9 +1151,57 @@ In Stage 1 the provision is the first year only: **₹0.73 crore**. Move the sam
 </g>
 </svg>
 
-### Lifetime PD and forward-looking information
+### The PD family: which PD does what
 
-Lifetime PDs come from a **term structure** — how cumulative PD builds up year by year — built from rating migration matrices, survival models or vintage data.
+"PD" means several related numbers. IFRS 9 uses all of them, so fix them now with the same three-year loan (marginal PDs of 2.0%, 2.8% and 3.2%):
+
+| PD | Question it answers | Year 1 | Year 2 | Year 3 | Used for |
+|---|---|---|---|---|---|
+| **Marginal** | Seen from today, what's the chance it defaults *in* this year? | 2.0% | 2.8% | 3.2% | The ECL formula — each year's slice of loss |
+| **Cumulative** | Seen from today, what's the chance it has defaulted *by the end of* this year? | 2.0% | 4.8% | 8.0% | Lifetime PD (the last column), SICR tests |
+| **Survival** | Chance it is still alive at year end: 1 − cumulative | 98.0% | 95.2% | 92.0% | Linking the others |
+| **Conditional** (hazard) | *Given it survived to the start of the year*, the chance it defaults during it: marginal ÷ survival at the start | 2.0% | 2.86% | 3.36% | Models and macro adjustments work in these |
+| **12-month** | Default within the next 12 months | 2.0% | — | — | Stage 1, and Basel capital |
+| **Lifetime** | Default before the loan ends | 8.0% | | | Stages 2 and 3 |
+
+The links, in one line each:
+
+- Cumulative = the marginals added up: 2.0 + 2.8 + 3.2 = 8.0%.
+- Marginal = this year's cumulative − last year's: 4.8 − 2.0 = 2.8%.
+- Conditional = marginal ÷ the survival it started the year with: 2.8 ÷ 98.0 = 2.86%.
+
+The ECL formula multiplies each year's loss by the **marginal** PD, because each year's default can happen only once — a loan that defaulted in year 1 cannot default again in year 2.
+
+### Term structures and transition matrices
+
+A **term structure** is the full set of those numbers over a loan's life — how cumulative PD builds year by year. Banks build them three ways:
+
+| Method | How it works | Best for |
+|---|---|---|
+| Transition matrices | Track how borrowers move between grades each year, then chain the years | Corporates with ratings |
+| Vintage curves or survival models | Follow cohorts of loans by months on book and read off how many default at each age | Retail books |
+| Scaling a long-run curve | Take a standard curve and shift it up or down with the economy | Thin data |
+
+A **transition matrix** shows, for each grade today, where borrowers are one year later (illustrative):
+
+| From ↓ To → | A | B | C | Default |
+|---|---|---|---|---|
+| A | 90% | 8% | 1.5% | 0.5% |
+| B | 5% | 85% | 8% | 2% |
+| C | 1% | 9% | 80% | 10% |
+| Default | 0% | 0% | 0% | 100% |
+
+Read a row: of borrowers graded B today, 85% are still B a year later, 5% improved to A, 8% slipped to C and 2% defaulted. So B's 12-month PD is 2%.
+
+Two years out, a B borrower can default in several ways — stay B then default, slip to C then default, and so on. Add up every path:
+
+$$
+\text{2-year PD}_B = 5\% \times 0.5\% + 85\% \times 2\% + 8\% \times 10\% + 2\% \times 100\% = 4.53\%
+$$
+
+The last term is the borrowers already in default after year 1 — default is permanent, so they stay there. Chaining year after year (multiplying the matrix by itself) gives the whole term structure: cumulative PDs of 2.0%, 4.5% and 7.4% for grade B over three years; 10.0%, 18.2% and 25.0% for grade C. For a downturn scenario, the matrix is tilted — more downgrades, more defaults — and the chain re-run.
+
+Across grades, the cumulative curves look like this — the riskier the grade, the steeper the climb:
 
 <svg viewBox="0 0 400 352" width="400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Chart: cumulative probability of default over ten years for three grades; the riskier the grade, the steeper the curve" style="width:100%;max-width:400px;height:auto;display:block;margin:1rem auto">
 <g font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="15" fill="#1f2937">
@@ -1037,6 +1243,8 @@ Lifetime PDs come from a **term structure** — how cumulative PD builds up year
 <text x="104" y="88">Grade A — 0.3% a year</text>
 </g>
 </svg>
+
+### Forward-looking information
 
 IFRS 9 also demands **forward-looking information**: PDs and LGDs must reflect forecasts of the economy — GDP growth, unemployment, interest rates, house prices. Banks build **satellite models** linking default rates to these variables, forecast three to five years ahead, then revert to long-run averages.
 
@@ -1106,8 +1314,8 @@ The same three letters mean different things in the accounts and in capital:
 | | IFRS 9 | US GAAP — CECL | India — commercial banks |
 |---|---|---|---|
 | Who | UK, EU and most of the world; Indian NBFCs under Ind AS 109 | US banks | Commercial banks |
-| Approach | Staged: 12-month, then lifetime | Lifetime ECL from day one; no stages | Today: IRAC rules — NPA at 90 days, fixed provision percentages. From 1 April 2027: ECL under the RBI's directions of 27 April 2026, with prudential floors and the NPA definition retained [verify] |
-| In force | 2018 | 2020 for large public banks; 2023 for the rest | ECL from 1 April 2027 [verify] |
+| Approach | Staged: 12-month, then lifetime | Lifetime ECL from day one; no stages | Today: IRAC rules — NPA at 90 days, fixed provision percentages. From 1 April 2027: ECL under the RBI's directions of 27 April 2026, with prudential floors and the NPA definition retained |
+| In force | 2018 | 2020 for large public banks; 2023 for the rest | ECL from 1 April 2027 |
 
 Indian banks' provisioning today, for reference [verify]:
 
@@ -1122,24 +1330,7 @@ Indian banks' provisioning today, for reference [verify]:
 
 - **Standardised banks**: general provisions (broadly Stages 1 and 2) count as Tier 2 capital, up to 1.25% of credit RWA.
 - **IRB banks**: compare total eligible provisions with regulatory EL. A shortfall is deducted from CET1; an excess counts as Tier 2, up to 0.6% of credit RWA.
-- **Transition**: the EU and UK let banks phase IFRS 9's day-one hit into capital; those arrangements have largely run off [verify]. India's move to ECL comes with its own transition [verify].
-
-### Check yourself
-
-1. How can a loan move to Stage 2 without a single missed payment?
-2. ECL is 50, 70 and 130 under upside, base and downside scenarios weighted 25%, 50% and 25%. What is the reported ECL, and why isn't it simply 70?
-3. What is the cliff effect, and how do banks soften it?
-4. Give two differences between the PD used in IFRS 9 and the PD used in IRB capital.
-
-<details>
-<summary>Answers</summary>
-
-1. SICR is judged against the risk at origination. A downgrade, a watchlist flag or a large rise in lifetime PD is enough — the 30-days-past-due backstop is the last trigger, not the first.
-2. 0.25 × 50 + 0.5 × 70 + 0.25 × 130 = 80. Losses respond more to bad scenarios than to good ones, so the probability-weighted answer sits above the base case.
-3. The jump from 12-month to lifetime ECL when a loan crosses into Stage 2. Banks soften it with well-calibrated SICR thresholds, probation periods that stop loans flickering between stages, and early monitoring that acts before the move.
-4. IFRS 9 PD is point-in-time and forward-looking, and lifetime for Stages 2 and 3. IRB PD is a long-run average over one year, with a regulatory floor.
-
-</details>
+- **Transition**: the EU and UK let banks phase IFRS 9's day-one hit into capital; those arrangements have largely run off [verify]. India lets banks spread the day-one increase in provisions over four years, 25% a year from 2027–28 to 2030–31 [verify].
 
 ## Part 6 — Capital for unexpected loss: Basel
 
@@ -1280,21 +1471,60 @@ With supervisory approval, a bank may use its own models for some of the inputs:
 | EAD and CCF | Supervisory | Bank, with floors | Bank |
 | Maturity | Supervisory or bank | Bank | Not used |
 
-The capital requirement per unit of exposure, K, comes from the **asymptotic single risk factor (ASRF)** model, often called the Vasicek formula:
+The capital formula comes from the **asymptotic single risk factor (ASRF)** model, often called the Vasicek formula. The name tells you its two assumptions:
+
+- **Single risk factor** — one thing drives every borrower's fortunes together: the state of the economy.
+- **Asymptotic** — the portfolio has so many small loans that each borrower's own bad luck averages out. Only the economy is left. (Real portfolios are lumpier, which is why concentration is handled separately, in Pillar 2.)
+
+It runs in three steps.
+
+**Step 1 — stress the PD.** Ask: what does this borrower's 1% average PD become in the worst year in a thousand?
 
 $$
-K = \left[\text{LGD} \times \Phi\!\left(\frac{\Phi^{-1}(\text{PD}) + \sqrt{R}\,\Phi^{-1}(0.999)}{\sqrt{1-R}}\right) - \text{PD} \times \text{LGD}\right] \times \frac{1 + (M - 2.5)\,b}{1 - 1.5\,b}
+\text{stressed PD} = \Phi\!\left(\frac{\Phi^{-1}(\text{PD}) + \sqrt{R} \times \Phi^{-1}(0.999)}{\sqrt{1 - R}}\right)
 $$
+
+**Step 2 — keep only the unexpected part, adjusted for maturity.**
+
+$$
+K = \left(\text{LGD} \times \text{stressed PD} - \text{LGD} \times \text{PD}\right) \times \text{MA}
+$$
+
+**Step 3 — turn capital into RWA.**
 
 $$
 \text{RWA} = K \times 12.5 \times \text{EAD}
 $$
 
-where Φ is the standard normal distribution and Φ⁻¹ its inverse; R is the borrower's correlation with the economy (12–24% for corporates, higher for safer names; 15% for mortgages; 4% for revolving retail; 3–16% for other retail); M is the effective maturity; and b = (0.11852 − 0.05478 × ln PD)² is the maturity adjustment.
+What each symbol means:
 
-In words: take the PD and push it to what it would become in a 1-in-1,000 bad year (the fraction); multiply by LGD to get the loss in that year; subtract the expected part, already covered by provisions; adjust for maturity. What remains is the unexpected loss — the capital.
+| Symbol | Meaning |
+|---|---|
+| Φ | The standard normal distribution: turns a score into a probability |
+| Φ⁻¹ | Its inverse: turns a probability into a score |
+| Φ⁻¹(0.999) = 3.09 | How far into the bad side of the economy a 1-in-1,000 year sits |
+| R | How strongly the borrower moves with the economy: 12–24% for companies (higher for safer, larger names), 15% for mortgages, 4% for cards, 3–16% for other retail — set by the regulator |
+| K | Capital needed per rupee of exposure |
+| MA | The maturity adjustment: (1 + (M − 2.5) × b) ÷ (1 − 1.5 × b), where M is effective maturity in years (1 to 5) and b = (0.11852 − 0.05478 × ln PD)². Retail has none |
+| 12.5 | 1 ÷ 8%: converts capital back into RWA, so every approach meets in one ratio |
 
-For a corporate with PD 1%, LGD 45% and M 2.5 years: R = 19.3%, K = 7.39%, and the **risk weight is 92%**.
+Now the walk for a company loan with PD 1%, LGD 45%, M 2.5 years:
+
+| Step | Working | Result | In words |
+|---|---|---|---|
+| Correlation | Regulator's formula for PD 1% | R = 19.3% | This company moves fairly strongly with the economy |
+| PD as a score | Φ⁻¹(1%) | −2.33 | Its normal-year distance from default |
+| Push into the bad year | −2.33 + √0.193 × 3.09 = −2.33 + 1.36 | −0.97 | The recession moves it much closer to the edge |
+| Rescale | −0.97 ÷ √(1 − 0.193) = −0.97 ÷ 0.90 | −1.08 | |
+| Back to a probability | Φ(−1.08) | **stressed PD = 14.0%** | In the bad year, one borrower in seven like it defaults — not one in a hundred |
+| Bad-year loss | 45% × 14.0% | 6.31% | |
+| Minus the expected loss | 6.31% − 45% × 1% | 5.86% | The average part is already covered by provisions |
+| Maturity | × 1.26 (b = 0.137 at PD 1%) | **K = 7.39%** | Longer loans have more time to be downgraded |
+| Risk weight | 7.39% × 12.5 | **92%** | A ₹100 crore loan carries ₹92 crore of RWA |
+
+Under Basel 3, IRB credit RWA was multiplied by a further 1.06, giving 98%. Basel 3.1 removed that multiplier.
+
+The memory line: **stress the PD, take away the average, adjust for time, scale by 12.5.**
 
 <svg viewBox="0 0 400 352" width="400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Chart: the IRB corporate risk weight climbs from about 20% at PD 0.05% to over 200% at PD 20%, crossing the flat standardised 100% line near PD 1.2%" style="width:100%;max-width:400px;height:auto;display:block;margin:1rem auto">
 <g font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="15" fill="#1f2937">
@@ -1342,7 +1572,7 @@ For a corporate with PD 1%, LGD 45% and M 2.5 years: R = 19.3%, K = 7.39%, and t
 
 That is the point of IRB. A borrower with a 0.1% PD gets a weight of about 30%, and one with a 10% PD about 190%, where the SA would give either of them, unrated, 100%.
 
-Basel 3.1 narrowed IRB [verify]: no A-IRB for large corporates (revenue above €500 million) or for banks and other financial institutions; no IRB at all for equities; floors on the inputs — PD at least 0.05% (0.1% for revolving retail), LGD floors from 0% to 50% by collateral and product, own-estimate CCFs at least half the SA value; and the old 1.06 scaling factor removed.
+Basel 3.1 narrowed IRB: no advanced IRB for large companies or financial firms, no IRB at all for equities, floors on PD, LGD and CCF, and the 1.06 multiplier removed. The parameter-by-parameter detail is in Part 3.
 
 ### What counts as capital
 
@@ -1394,13 +1624,62 @@ Basel 3.1 narrowed IRB [verify]: no A-IRB for large corporates (revenue above �
 </g>
 </svg>
 
-| Tier | What it is | Instruments and features | Deductions and triggers |
-|---|---|---|---|
-| Common Equity Tier 1 (CET1) | The purest loss absorber — the owners' money | Ordinary shares, share premium, retained earnings, accumulated other comprehensive income, disclosed reserves | Deduct goodwill and intangibles, deferred tax assets that rely on future profits, any IRB shortfall of provisions against EL, gains from the bank's own worsening credit, defined-benefit pension surpluses, own shares held, and large investments in other financial firms above set thresholds |
-| Additional Tier 1 (AT1) | Absorbs losses while the bank is still running (going concern) | Perpetual and subordinated, with no step-ups; coupons fully discretionary and non-cumulative; callable only after five years and only with supervisory approval; converts to equity or is written down at a CET1 trigger, or at the point of non-viability | Minimum trigger 5.125% of CET1 under Basel; 6.125% in India [verify] |
-| Tier 2 (T2) | Absorbs losses once the bank has failed (gone concern) | Subordinated debt with at least five years' original maturity, recognised 20% less in each of its last five years; general provisions up to 1.25% of credit RWA (SA) or excess provisions up to 0.6% (IRB) | Written down or converted at the point of non-viability |
+Capital comes in three layers. What separates them is **when each one absorbs a loss**:
 
-Two AT1 stories every interviewer knows:
+- **Going concern** — the bank is still open and trading. Losses are absorbed without anyone being wound up.
+- **Gone concern** — the bank has failed, or is at the **point of non-viability**: the regulator decides it cannot survive without a rescue. Losses now fall on the layers that were waiting for this moment.
+
+The memory line: **CET1 is the owners' money; AT1 is a bond that behaves like a share; Tier 2 is a bond that pays out last.**
+
+#### Common Equity Tier 1 (CET1) — the owners' money
+
+Absorbs losses first and automatically, every day, just by making the owners poorer.
+
+| Made of | Plain meaning |
+|---|---|
+| Ordinary shares | The shareholders' money, at the shares' face value |
+| Share premium | What investors paid above face value when the shares were issued |
+| Retained earnings | Past profits kept in the bank rather than paid out as dividends |
+| Accumulated other comprehensive income | Gains and losses booked straight to equity, outside profit — for example, value changes on some bonds |
+| Disclosed reserves | Other reserves built from profits |
+
+Then **deductions** — items on the balance sheet that would be worth little or nothing in a crisis:
+
+| Deduction | Why it is taken out |
+|---|---|
+| Goodwill and intangibles | Brand value and software can't be sold to pay depositors when the bank is failing |
+| Deferred tax assets that rely on future profits | Worth something only if the bank makes profits — exactly what it won't do in trouble |
+| IRB shortfall of provisions against expected loss | The bank should have set aside more; the gap comes out of capital (Part 5) |
+| Gains from the bank's own worsening credit | When a bank's creditworthiness falls, its own debt looks cheaper — a paper gain from getting riskier |
+| Defined-benefit pension fund surpluses | The bank can rarely get that money back |
+| Its own shares held | Buying your own shares returns capital; it isn't capital |
+| Large holdings in other banks and financial firms | The same capital must not prop up two banks at once |
+
+#### Additional Tier 1 (AT1) — bonds that behave like shares
+
+A bond investors buy for a higher coupon, accepting that it can be turned into shares or wiped out while the bank is still open.
+
+| Feature | Plain meaning |
+|---|---|
+| Perpetual | No repayment date — like shares, it never has to be paid back |
+| Subordinated | Paid after depositors and ordinary creditors |
+| Discretionary, non-cumulative coupons | The bank can skip an interest payment, and never owes it later |
+| Callable after five years, only with approval | The bank may repay it, but only if the regulator agrees |
+| Trigger | If CET1 falls below a set level — at least 5.125% of RWA under Basel; 6.125% in India [verify] — it is converted into shares or written down. It is also written down at the point of non-viability |
+
+#### Tier 2 — bonds that pay out last
+
+Absorbs losses only once the bank has failed.
+
+| Made of | Plain meaning |
+|---|---|
+| Subordinated debt, at least five years' original maturity | Long-term borrowing that ranks behind depositors. In its last five years it counts 20% less each year, because debt about to be repaid can't absorb losses for long |
+| General provisions — SA banks | Provisions not tied to any specific bad loan, up to 1.25% of credit RWA (Part 5) |
+| Excess provisions — IRB banks | Provisions above regulatory expected loss, up to 0.6% of credit RWA (Part 5) |
+
+At the point of non-viability, Tier 2 too is written down or converted into shares.
+
+Two AT1 stories that shaped the market:
 
 - **Yes Bank, March 2020.** As part of its RBI-led rescue, ₹8,415 crore of AT1 bonds were written off — a decision later fought in the courts [verify].
 - **Credit Suisse, March 2023.** In the UBS takeover, about CHF 16 billion of AT1 was written down to zero while shareholders still received something — reversing the usual order of losses and shaking the global AT1 market.
@@ -1435,44 +1714,58 @@ Tier 1 of ₹900 crore against an exposure measure of ₹22,000 crore gives 4.09
 
 ### Large exposures
 
-No single counterparty — counting together all counterparties connected through ownership or economic dependence — may exceed 25% of Tier 1 under Basel (15% between two G-SIBs). India's limits are 20% for a single counterparty and 25% for a group [verify]. With Tier 1 of ₹900 crore, that means ₹180 crore per counterparty and ₹225 crore per group.
+**The problem.** Capital is built for a diversified book. If one borrower is huge, its failure alone can sink the bank — however good the ratios look.
+
+**The rule.** Cap what a bank may lend to any one borrower, measured against its Tier 1 capital. "One borrower" includes everyone **connected** to it — through ownership (a parent and its subsidiaries) or economic dependence (a supplier that lives off one customer) — because they tend to fail together.
+
+| | Basel | India [verify] |
+|---|---|---|
+| A "large exposure" — must be reported | 10% of Tier 1 or more | 10% of Tier 1 or more |
+| Limit — one counterparty or connected group | 25% of Tier 1 | 20% for a single counterparty (25% with board approval in exceptional cases); 25% for a connected group |
+| Between the world's biggest banks | 15% between two G-SIBs | — |
+
+With Tier 1 of ₹900 crore, an Indian bank may lend at most ₹180 crore to one company and ₹225 crore to its group.
 
 ### Market and operational risk, in one screen
 
+Credit risk is not the only thing that uses capital. Two other risks sit in the same ratio (the denominator in Part 6's capital ratio):
+
+**Market risk** — the risk of losing money when market prices move, on positions the bank holds to trade: bonds, currencies, shares, derivatives. These sit in the **trading book**; loans held to maturity sit in the **banking book**, and a firm line between the two stops banks moving positions to whichever side needs less capital.
+
+| | Before Basel 3.1 | Basel 3.1 — FRTB |
+|---|---|---|
+| Measure | **Value-at-risk (VaR)**: the loss not exceeded on 99% of days, over 10 days — plus a stressed VaR from a crisis period | **Expected shortfall**: the *average* loss in the worst 2.5% of days — it looks into the tail that VaR ignores |
+| Models | Bank-wide model approval | Model approval desk by desk, with tests the models must keep passing |
+| Standard method | A simple rule-based charge | A sensitivities-based approach: capital from how much each position moves when rates, prices or spreads move |
+
+FRTB stands for the Fundamental Review of the Trading Book.
+
+**Operational risk** — the risk of loss from failed processes, people or systems, or from outside events: fraud, a systems outage, a mis-selling fine, a flood at the data centre.
+
 | | Before Basel 3.1 | Basel 3.1 |
 |---|---|---|
-| Market risk (trading book) | Basel 2.5: value-at-risk plus stressed value-at-risk, or a standardised method | FRTB: expected-shortfall models by trading desk, a sensitivities-based standardised approach, and a firmer boundary between trading and banking books |
-| Operational risk | Basic indicator, standardised or advanced (internal-model) approaches | One standardised measurement approach: a business indicator scaled by 12–18%, multiplied by a factor for the bank's own loss history |
+| Methods | Three: basic indicator (15% of income), standardised (a percentage by business line), advanced (the bank's own models) | One **standardised approach** for everyone |
+| How it works | | Start with a **business indicator** — a measure of the bank's size built from its income. Multiply by 12%, 15% or 18%, rising with size, because bigger banks have disproportionately bigger losses. Then scale by the bank's own loss history — though many regulators, India's included, set that scaling to 1 [verify] |
 
-Basel III also introduced liquidity rules — the liquidity coverage ratio and the net stable funding ratio — which sit outside this note.
+**Liquidity** has its own ratios, outside capital: the **liquidity coverage ratio** (enough easily-sold assets to survive 30 days of stress) and the **net stable funding ratio** (long-term assets funded by stable money). They sit outside this note.
 
 ### Pillar 2 and Pillar 3
 
-- **Pillar 2.** The bank runs its own **internal capital adequacy assessment process (ICAAP)**, covering every material risk — including those Pillar 1 ignores, such as concentration, interest rate risk in the banking book and strategic risk — and the supervisor reviews it (the SREP, in the EU and India). Extra capital can follow.
-- **Pillar 3.** Public disclosures in standard templates — capital, RWA by approach, credit quality, counterparty risk, leverage — so the market can compare banks.
+Pillar 1 is the formula every bank applies. The other two pillars cover what a formula can't:
 
-### Check yourself
+| Pillar | Who does it | What happens | Plain meaning |
+|---|---|---|---|
+| **Pillar 2 — ICAAP** | The bank | The **internal capital adequacy assessment process**: the bank works out its own capital need for every material risk — including those Pillar 1 ignores, such as concentration, interest-rate risk in the banking book, and strategic risk — and stress-tests it | "Here's what we think we really need, and why" |
+| **Pillar 2 — SREP** | The supervisor | The **supervisory review and evaluation process** (the name used in the EU and India) reviews the ICAAP and can demand extra capital on top of Pillar 1 | "We've checked your homework — hold more" |
+| **Pillar 3 — disclosure** | The bank, publicly | Standard templates published every quarter or half-year: capital, RWA by approach, credit quality, counterparty risk, leverage | Lets investors compare banks, so the market disciplines the weak ones |
 
-1. What makes AT1 different from Tier 2?
-2. An unrated corporate loan of ₹200 crore under the SA: what are the RWA, and the minimum total capital at 8%?
-3. Why does the IRB formula subtract PD × LGD?
-4. A bank's CET1 ratio falls into its conservation buffer. Is it in breach? What happens?
-
-<details>
-<summary>Answers</summary>
-
-1. AT1 absorbs losses while the bank is still a going concern — it is perpetual, its coupons can be cancelled, and a trigger converts or writes it down. Tier 2 is dated subordinated debt that absorbs losses only at the point of non-viability, in resolution or liquidation.
-2. RWA = 200 × 100% = ₹200 crore; minimum capital = 8% × 200 = ₹16 crore.
-3. Because expected loss is already covered by provisions and pricing. Capital covers only the unexpected part.
-4. No — buffers are there to be used. But the MDA rules restrict dividends, bonuses and AT1 coupons until the ratio is rebuilt, and the bank must submit a capital conservation plan.
-
-</details>
+The memory line: **Pillar 1 is the formula, Pillar 2 is the conversation, Pillar 3 is the shop window.**
 
 ## Part 7 — From Basel 3 to Basel 3.1
 
 Basel III (2010) answered the 2008 crisis by fixing the top of the capital ratio: more capital, better capital, buffers, leverage and liquidity. But the bottom — RWA — stayed unreliable. The Basel Committee found banks computing wildly different RWA for the same hypothetical portfolio, mostly because of their internal models. Basel 3.1 — the 2017 package that finalised the post-crisis reforms — fixes the bottom.
 
-**Basel 3 fixed the numerator; Basel 3.1 fixes the denominator.** That one line answers half the interview questions on the subject.
+**Basel 3 fixed the numerator; Basel 3.1 fixes the denominator.** That one line is the whole reform: Basel 3 made the capital on top of the ratio bigger and better; Basel 3.1 makes the RWA underneath it believable.
 
 ### One reform, several names
 
@@ -1483,6 +1776,8 @@ Basel III (2010) answered the 2008 crisis by fixing the top of the capital ratio
 | Basel 3.1 | The UK's PRA |
 | CRR3 and CRD6 | The EU's implementing laws |
 | Basel III endgame | US regulators |
+
+So **Basel IV is not a fourth accord.** It is the industry's nickname for the same 2017 package that the UK calls Basel 3.1, the EU writes as CRR3 and the US calls the endgame.
 
 <svg viewBox="0 0 400 484" width="400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Timeline of the Basel accords from Basel I in 1988 to Basel 3.1 agreed in 2017 and implemented from 2025" style="width:100%;max-width:400px;height:auto;display:block;margin:1rem auto">
 <g font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="15" fill="#1f2937">
@@ -1602,47 +1897,100 @@ The floor applies to the whole bank, not loan by loan, so a bank can still hold 
 |---|---|
 | Basel Committee | Agreed 2017; implementation date 1 January 2023; output floor phased in to 72.5% by 2028 |
 | EU (CRR3) | Applies from 1 January 2025; floor starts at 50% in 2025 and reaches 72.5% in 2030, with some transitions running to 2032; FRTB market risk from 1 January 2027, with temporary relief [verify] |
-| UK (Basel 3.1) | From 1 January 2027, after two delays; fully implemented, floor included, by 1 January 2030 [verify] |
-| US (endgame) | The 2023 proposal was withdrawn; a re-proposal of 19 March 2026 has an "expanded risk-based approach" for the largest banks and revisions to the standardised approach for the rest; final rule and dates pending [verify] |
-| India (RBI) | Standardised approach only — no bank uses IRB. Revised credit risk SA from 1 April 2027; SA-CCR proposed from 1 April 2027; a new operational risk approach issued, with its start date not yet notified [verify] |
+| UK (Basel 3.1) | From 1 January 2027, after two delays, with rules finalised in January 2026; the FRTB internal-model approach follows on 1 January 2028; output floor reaches 72.5% by 1 January 2030 [verify] |
+| US (endgame) | The 2023 proposal was withdrawn. A re-proposal of 19 March 2026 — an "expanded risk-based approach" for the largest banks and a revised standardised approach for the rest — closed for comments on 18 June 2026; final rule and dates pending [verify] |
+| India (RBI) | Standardised approach only — no bank uses IRB. Credit risk: new standardised approach issued 27 April 2026, in force 1 April 2027. Market risk: final directions issued September 2026, in force 1 April 2027. Operational risk: new standardised approach adopted [verify]. SA-CCR: draft issued June 2026. Output floor and new CVA rules: not yet issued [verify] |
 
-### Check yourself
+## Part 8 — Derivatives, counterparty credit risk and CVA
 
-1. In one sentence, how does Basel 3.1 differ from Basel 3?
-2. Models give RWA of ₹10,000 crore; the SA would give ₹12,000 crore. Does a 72.5% floor bind?
-3. Why did Basel 3.1 remove A-IRB for banks and large corporates?
+Everything so far was a loan: the bank hands over money, and the risk is that it doesn't come back. Banks also sign **derivatives** with companies and with each other — and those create credit risk of a stranger kind. This part starts from zero: what a derivative is, why it is a credit risk at all, how the exposure is measured and shrunk, and how its price moves with the other side's health.
 
-<details>
-<summary>Answers</summary>
+### First, what a derivative is
 
-1. Basel 3 raised the quantity and quality of capital; Basel 3.1 makes the risk-weighted assets it is measured against more credible and comparable, by limiting internal models and making the standardised approaches more risk-sensitive.
-2. 72.5% × 12,000 = ₹8,700 crore, which is below ₹10,000 crore — so no; the modelled RWA stands.
-3. They are low-default portfolios: too few defaults to estimate LGD and EAD reliably, which produced the widest differences in RWA between banks.
+A **derivative** is a contract whose value comes from something else — an interest rate, an exchange rate, a share price, a commodity. No money is lent. The two sides simply promise to make payments to each other in future, and the size of those payments depends on where that "something else" goes.
 
-</details>
+Companies use derivatives mostly to **remove uncertainty** — to **hedge**. An importer who must pay dollars in six months doesn't know what the rupee will be then; a derivative can fix the rate today.
 
-## Part 8 — Counterparty credit risk and CVA
+| Type | What it is | Everyday version |
+|---|---|---|
+| **Forward** | Agree today to buy or sell something on a future date at a price fixed today | Booking a hotel room now at today's rate for a trip next season |
+| **Future** | A forward with standard terms, traded on an exchange | The same booking, bought and sold on a marketplace |
+| **Swap** | Exchange one stream of payments for another over several years — most often fixed interest for floating | Swapping a variable electricity tariff for a fixed monthly bill |
+| **Option** | The *right*, but not the obligation, to buy or sell at a set price, for which the buyer pays a premium up front | Paying a deposit to hold a flat at today's price, and walking away if prices fall |
 
-A loan's exposure is known: it is the balance. A derivative's exposure depends on markets. That one difference needs its own toolkit.
+Three words used throughout:
+
+- **Notional** — the reference amount the payments are calculated on. For most derivatives it never changes hands.
+- **Value**, or **mark-to-market** — what the contract is worth today to one side: what someone would pay to take it over. At the start it is usually zero to both sides — a fair deal.
+- **In the money** — the contract is worth something to you: the other side owes you, on today's prices.
+
+### Two derivatives, worked through
+
+**An FX forward.** An importer must pay $1 million in six months. The bank agrees to sell it the dollars then at ₹88 each — ₹8.8 crore in all. Today the deal is fair and worth nothing to either side. Six months later:
+
+| Rupee at maturity | Dollars are worth | Importer pays | Contract is worth | Who is exposed to whom |
+|---|---|---|---|---|
+| ₹92 per dollar | ₹9.2 crore | ₹8.8 crore | ₹40 lakh **to the importer** | The importer is exposed to the bank: if the bank failed, the importer would lose its cheap dollars |
+| ₹84 per dollar | ₹8.4 crore | ₹8.8 crore | ₹40 lakh **to the bank** | The bank is exposed to the importer: if the importer failed, the bank would lose ₹40 lakh |
+
+Two lessons are already here. The **exposure is the value, not the notional** — a ₹8.8 crore contract puts ₹40 lakh at risk, not ₹8.8 crore. And **either side can end up exposed**, depending on where the market moves.
+
+**An interest rate swap.** A company has a ₹500 crore five-year loan at a floating rate — it resets every quarter with market rates. It fears rates will rise, so it signs a swap with the bank:
+
+<svg viewBox="0 0 400 340" width="400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Interest rate swap: the company pays floating interest to its lenders, receives floating from the bank and pays the bank a fixed 7%, so its net cost is fixed" style="width:100%;max-width:400px;height:auto;display:block;margin:1rem auto">
+<g font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="15" fill="#1f2937">
+<text x="200" y="24" font-size="16" text-anchor="middle" font-weight="700">An interest rate swap, notional ₹500 crore</text>
+<rect x="100" y="44" width="200" height="50" rx="8" fill="#f3f4f6" stroke="#6b7280" stroke-width="1.5"/>
+<text x="200" y="66" text-anchor="middle" font-weight="600" fill="#374151">Company's lenders</text>
+<text x="200" y="85" text-anchor="middle" fill="#4b5563">the ₹500 crore loan</text>
+<line x1="200" y1="150" x2="200" y2="102" stroke="#f59e0b" stroke-width="2"/>
+<polygon points="200,95 205,105 195,105" fill="#f59e0b"/>
+<text x="212" y="130" fill="#b45309">floating interest</text>
+<rect x="100" y="152" width="200" height="50" rx="8" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5"/>
+<text x="200" y="174" text-anchor="middle" font-weight="600" fill="#1d4ed8">Company</text>
+<text x="200" y="193" text-anchor="middle" fill="#4b5563">wants a fixed cost</text>
+<line x1="150" y1="204" x2="150" y2="258" stroke="#8b5cf6" stroke-width="2"/>
+<polygon points="150,265 155,255 145,255" fill="#8b5cf6"/>
+<text x="140" y="238" text-anchor="end" fill="#6d28d9">fixed 7%</text>
+<line x1="250" y1="265" x2="250" y2="211" stroke="#f59e0b" stroke-width="2"/>
+<polygon points="250,204 255,214 245,214" fill="#f59e0b"/>
+<text x="260" y="238" fill="#b45309">floating</text>
+<rect x="100" y="266" width="200" height="50" rx="8" fill="#f5f3ff" stroke="#8b5cf6" stroke-width="1.5"/>
+<text x="200" y="288" text-anchor="middle" font-weight="600" fill="#6d28d9">Bank</text>
+<text x="200" y="307" text-anchor="middle" fill="#4b5563">the swap counterparty</text>
+<text x="200" y="334" text-anchor="middle" fill="#4b5563">floating in, floating out: net cost fixed 7%</text>
+</g>
+</svg>
+
+- The company pays the bank a **fixed** 7% a year on ₹500 crore.
+- The bank pays the company the **floating** rate on ₹500 crore.
+- The company passes the floating payment on to its lenders. Floating in, floating out: its net cost is a fixed 7%.
+- The ₹500 crore itself never moves. Only the difference between the two interest amounts is actually paid each period.
+
+Now follow the value. Suppose rates **fall**, so floating is below 7% for years to come. The bank keeps receiving 7% and paying less — the swap is worth money **to the bank**. If the company fails now, the bank loses that stream and must pay a new counterparty to replace it. If rates **rise**, the swap is worth money to the company instead, and the company is the one exposed.
+
+That is the whole of counterparty credit risk: **the risk that the other side of a derivative defaults while the contract is worth money to you.** What you lose is the cost of replacing the contract at today's prices.
+
+### Why it is harder than a loan
 
 | | Loan | Derivative |
 |---|---|---|
 | Exposure today | The balance | What the contract is worth to you now, if positive |
-| Exposure tomorrow | Follows a known schedule | Uncertain — moves with rates, currencies and prices |
-| Who is at risk | Only the lender | Either side, depending on who is owed money |
-| Measured with | Drawn balance plus CCF | Exposure simulation, or SA-CCR |
-
-Take a five-year interest rate swap on ₹500 crore with a company: the bank pays a fixed rate and receives a floating one. On day one the swap is worth nothing to either side. If rates rise, the floating payments the bank receives grow, and the swap becomes worth money to the bank — so if the company then defaults, the bank loses that value. If rates fall, the bank owes the company, and it is the company that is exposed.
+| Exposure tomorrow | Follows a known repayment schedule | Unknown — moves with rates, currencies and prices |
+| Who is at risk | Only the lender | Either side, depending on who is in the money |
+| Measured with | Drawn balance plus CCF (Part 3) | Exposure simulation, or SA-CCR (below) |
 
 ### Measuring exposure
 
-| Measure | Meaning |
-|---|---|
-| Current exposure (CE), or replacement cost | Today's value if positive: max(value, 0) |
-| Expected exposure (EE) | The average positive exposure at a future date, across simulated market paths |
-| Potential future exposure (PFE) | A high percentile — say 95% — of exposure at a future date: a bad-but-plausible case, used for limits |
-| Expected positive exposure (EPE) | EE averaged over time |
-| Effective EPE (EEPE) | EPE with the profile not allowed to fall — used for internal-model capital |
+Because tomorrow's value is unknown, banks simulate thousands of possible market paths and read the exposure off them:
+
+| Measure | Plain meaning | Used for |
+|---|---|---|
+| **Current exposure (CE)**, or replacement cost | Today's value, if positive: max(value, 0). Negative values count as zero — if you owe them, their failure doesn't cost you | Today's loss if they fail now |
+| **Expected exposure (EE)** | The average positive exposure at a future date across all simulated paths | Pricing (CVA, below) |
+| **Potential future exposure (PFE)** | A high percentile — say the 95th — of exposure at a future date: a bad-but-plausible case | **Credit limits** on derivatives |
+| **Expected positive exposure (EPE)** | EE averaged over time | Capital under internal models |
+| **Effective EPE (EEPE)** | EPE with the profile not allowed to fall | Capital under internal models |
 
 <svg viewBox="0 0 400 352" width="400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Chart: expected exposure and 95% potential future exposure of a five-year interest rate swap rise, peak around years one to two, and fall to zero at maturity" style="width:100%;max-width:400px;height:auto;display:block;margin:1rem auto">
 <g font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="15" fill="#1f2937">
@@ -1683,11 +2031,11 @@ Take a five-year interest rate swap on ₹500 crore with a company: the bank pay
 </g>
 </svg>
 
-A swap's exposure is hump-shaped: it grows as rates have time to move, then falls as fewer payments remain, reaching zero at maturity. An FX forward's exposure only grows, because the whole notional is exchanged at the end.
+The shape comes from two forces. As time passes, rates have longer to move, so the possible value spreads wider — exposure grows. But each payment date takes one payment out of the contract, so less value is left to lose — exposure shrinks. For a swap the two combine into a **hump**: rising, peaking in the early years, falling to zero at maturity. An **FX forward** has only the first force, because the whole amount is exchanged at the very end — its exposure keeps growing until that day.
 
-### Netting and collateral
+### Shrinking exposure: netting, then collateral
 
-Under an **ISDA master agreement**, all the trades with one counterparty form a single **netting set**. On default they are closed out together and only the net amount is owed.
+**Netting.** Banks and companies sign an **ISDA master agreement** — the industry's standard contract, from the International Swaps and Derivatives Association — once, and every trade between them falls under it. All those trades form a single **netting set**: if one side defaults, they are all closed out together, and only the **net** amount is owed.
 
 <svg viewBox="0 0 400 276" width="400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Bars: three derivative trades create 13 crore of exposure without netting, 7 crore once netted, and 2 crore after collateral" style="width:100%;max-width:400px;height:auto;display:block;margin:1rem auto">
 <g font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="15" fill="#1f2937">
@@ -1705,74 +2053,87 @@ Under an **ISDA master agreement**, all the trades with one counterparty form a 
 </g>
 </svg>
 
-Three trades worth +10, −6 and +3 to the bank: without netting, the exposure is 10 + 3 = 13; with netting, 10 − 6 + 3 = 7. A **credit support annex (CSA)** adds collateral:
+Three trades worth +10, −6 and +3 to the bank. Without netting, the bank would lose the two positive trades (10 + 3 = 13) and still owe the 6 on the negative one. With netting, it loses only the net: 10 − 6 + 3 = **7**.
 
-| CSA term | Meaning |
+**Collateral.** A **credit support annex (CSA)** — an add-on to the ISDA agreement — makes the side that is out of the money post collateral:
+
+| CSA term | Plain meaning |
 |---|---|
-| Variation margin (VM) | Collateral exchanged daily to cover the current value |
-| Initial margin (IM) | Extra collateral against the value moving before a defaulter's trades can be closed out |
-| Threshold | The exposure allowed before any collateral is called |
-| Minimum transfer amount (MTA) | The smallest call worth making |
-| Margin period of risk (MPOR) | The time from the last good collateral exchange to closing out — typically 10 business days |
-| Eligible collateral and haircuts | What may be posted, and how its value is discounted |
+| **Variation margin (VM)** | Settling up as you go: each day, whoever is out of the money posts collateral equal to the current value. Exposure resets close to zero every day |
+| **Initial margin (IM)** | A security deposit, posted up front by both sides, to cover how far the value could move in the days it would take to close out a defaulter's trades |
+| Threshold | Exposure allowed before any collateral is called |
+| Minimum transfer amount (MTA) | The smallest call worth the paperwork |
+| Margin period of risk (MPOR) | The time between the last good collateral payment and closing out a defaulter's trades — typically 10 business days. Exposure can grow in that gap |
+| Eligible collateral and haircuts | What may be posted, and how its value is discounted (Part 4's haircuts again) |
 
-With ₹5 crore of collateral held, the netted exposure of 7 falls to 2. Margin rules for **non-centrally cleared derivatives** now make VM — and, for larger firms, IM — compulsory in the major markets, including India since 2024 [verify].
-
-### SA-CCR
-
-The **standardised approach for counterparty credit risk** sets the regulatory EAD for derivatives:
-
-$$
-\text{EAD} = \alpha \times (\text{RC} + \text{PFE})
-$$
-
-where α is 1.4; RC is the replacement cost (the net value less collateral, floored at zero); and PFE is a multiplier times an aggregate add-on. Each trade's add-on is its adjusted notional × a supervisory factor × a maturity factor, aggregated by asset class and hedging set. The multiplier gives credit for over-collateralisation and for positions that are out of the money.
-
-For the swap, unmargined, worth ₹8 crore to the bank, with five years left:
-
-| Step | Value |
-|---|---|
-| Supervisory duration = (1 − e^(−0.05 × 5)) ÷ 0.05 | 4.424 |
-| Adjusted notional = 500 × 4.424 | 2,212 |
-| Add-on = 2,212 × 0.5% (the interest rate supervisory factor) × maturity factor 1 | 11.06 |
-| PFE, with a multiplier of 1 because the trade is in the money | 11.06 |
-| RC | 8.00 |
-| **EAD = 1.4 × (8.00 + 11.06)** | **₹26.68 crore** |
-
-The older **current exposure method (CEM)** gives 8 + 0.5% × 500 = ₹10.5 crore. SA-CCR is more risk-sensitive — it properly rewards margining and netting — and for unmargined trades it often comes out higher.
-
-Supervisory factors [verify]: interest rates 0.5%; FX 4%; single-name credit 0.38–6% by rating; single-name equity 32%; equity indices 20%; commodities 18% (electricity 40%).
-
-India still uses CEM; SA-CCR is proposed from 1 April 2027 [verify].
+With ₹5 crore of collateral held, the netted exposure of 7 falls to **2**. Margin rules for derivatives not cleared through a central counterparty now make variation margin — and, for larger firms, initial margin — compulsory in the major markets; India's directions date from 2024 [verify].
 
 ### Central clearing
 
-Since the G20 commitments of 2009, standardised OTC derivatives must be cleared through **central counterparties (CCPs)**, which stand between the two sides and hold margin and default funds. Trade exposures to a qualifying CCP carry a 2% risk weight; contributions to its default fund get a separate charge.
+Since the G20 commitments of 2009, standardised derivatives must be **cleared** through a **central counterparty (CCP)** — in India, the Clearing Corporation of India (CCIL) plays this role for many rupee rate swaps and FX forwards [verify]. The CCP steps into the middle of every trade: each side faces the CCP, not each other. It collects margin from everyone and keeps a **default fund** that members pay into. Exposure to a qualifying CCP carries a 2% risk weight; contributions to its default fund get a separate charge.
+
+### SA-CCR: the regulator's exposure number
+
+Simulations are for pricing and limits. For capital, most banks use the **standardised approach for counterparty credit risk (SA-CCR)**, which gives each netting set an EAD — the same EAD as in Part 3, so the rest of the capital machinery works unchanged:
+
+$$
+\text{EAD} = 1.4 \times (\text{RC} + \text{PFE})
+$$
+
+| Piece | Plain meaning |
+|---|---|
+| **RC** — replacement cost | What you'd lose if they failed today: the net value, less collateral held, floored at zero |
+| **PFE** — potential future exposure | An add-on for how much worse it could get, from a supervisory formula: each trade's adjusted notional × a supervisory factor for its asset class × a maturity factor, then combined across trades that hedge each other. A multiplier gives some credit for excess collateral and for trades that are out of the money |
+| **1.4** — alpha | A safety factor the Basel Committee added on top |
+
+The bank's swap, unmargined, now worth ₹8 crore to it after rates fell, with five years left:
+
+| Step | Working | Value |
+|---|---|---|
+| Supervisory duration | (1 − e^(−0.05 × 5)) ÷ 0.05 — a regulator's way of saying longer swaps carry more rate risk | 4.424 |
+| Adjusted notional | 500 × 4.424 | 2,212 |
+| Add-on | 2,212 × 0.5% (the interest rate supervisory factor) × maturity factor 1 | 11.06 |
+| PFE | Multiplier 1, because the trade is in the money | 11.06 |
+| RC | The swap's value, no collateral | 8.00 |
+| **EAD** | **1.4 × (8.00 + 11.06)** | **₹26.68 crore** |
+
+The older **current exposure method (CEM)**: value plus a flat 0.5% of notional = 8 + 2.5 = ₹10.5 crore. SA-CCR is more risk-sensitive — it rewards netting and margining properly — and for unmargined trades it often comes out higher.
+
+Supervisory factors [verify]: interest rates 0.5%; FX 4%; single-name credit 0.38–6% by rating; single-name equity 32%; equity indices 20%; commodities 18% (electricity 40%).
+
+India still uses CEM. The RBI issued draft SA-CCR directions in June 2026 [verify].
 
 ### Wrong-way risk
 
-Wrong-way risk is exposure to a counterparty rising exactly as its credit quality falls.
+**Wrong-way risk** is exposure to a counterparty rising exactly as that counterparty weakens — the worst possible combination.
 
-- **General** — through the market. An Indian company with rupee revenues has sold dollars forward to the bank. If the rupee collapses, the bank's exposure to the company soars at the very moment the company, earning rupees and owing dollars, is at its weakest.
-- **Specific** — through a legal or structural link. A company posts its own shares as collateral; or a bank buys protection on a company from that company's own affiliate.
+- **General** — through the market. A company earning only rupees has agreed to deliver dollars to the bank at a fixed rate. If the rupee collapses, the contract becomes very valuable to the bank — just as the company, earning rupees and owing dollars, is at its weakest.
+- **Specific** — through a direct link. A company posts its own shares as collateral; or the bank buys credit protection on a company from that company's own affiliate.
 
 Wrong-way risk must be identified, reported and — for specific wrong-way trades — capitalised as though the counterparty had already defaulted.
 
 ### Securities financing
 
-Repos and securities lending are short, collateralised loans of cash or securities. The exposure is what was lent less the collateral, both adjusted with haircuts — the comprehensive formula from Part 4 again.
+A **repo** — repurchase agreement — is a loan in disguise: sell a bond today and agree to buy it back tomorrow at a slightly higher price. The seller has borrowed cash against the bond; the price difference is the interest. **Securities lending** is the mirror image: lend a security, take cash or other securities as collateral. Both are short and collateralised, so the exposure is what was lent less the collateral, both with haircuts — Part 4's comprehensive formula again.
 
-### CVA
+### CVA: the price of the other side's credit risk
 
-A derivative with a risky counterparty is worth less than the same derivative with a risk-free one. The difference is the **credit valuation adjustment (CVA)** — the market value of counterparty default risk.
+A swap with a shaky company is worth less than the same swap with a rock-solid one — because the shaky one might not pay. The **credit valuation adjustment (CVA)** is that difference: the market value of counterparty default risk, deducted from the derivative's value.
+
+Two market words first:
+
+- **Credit spread** — the extra interest investors demand to lend to a company rather than to the government. The riskier the company, the wider the spread.
+- **Credit default swap (CDS)** — insurance against a company defaulting: the buyer pays a yearly premium, the **CDS spread**, and is paid out if the company defaults. Its price is the market's live view of that company's default risk.
+
+A rough rule links them: yearly default rate ≈ spread ÷ LGD. A 2% spread with a 60% LGD implies about 3.33% a year.
 
 $$
 \text{CVA} \approx \text{LGD} \times \sum_{i} \text{EE}(t_i) \times \text{PD}(t_{i-1}, t_i) \times \text{DF}(t_i)
 $$
 
-where, for each period i: EE is the expected exposure; PD is the counterparty's chance of defaulting in that period, implied from its credit spread in the market; and DF discounts to today.
+where, for each year i: EE is the expected exposure from the simulation; PD is the chance the counterparty defaults during that year, implied from its spread; and DF discounts back to today. In words: **for each future year, how much could I lose × how likely they fail that year × today's value of a rupee then — added up.**
 
-The swap's counterparty has a credit default swap spread of 2% and an assumed LGD of 60%, which implies a default rate of about 3.33% a year. Discounting at 6%:
+The swap's counterparty has a CDS spread of 2% and an assumed LGD of 60%. Discounting at 6%:
 
 | Year | EE, ₹ crore | PD in the year | Discount factor | LGD × EE × PD × DF |
 |---|---|---|---|---|
@@ -1783,19 +2144,17 @@ The swap's counterparty has a credit default swap spread of 2% and an assumed LG
 | 5 | 2 | 2.87% | 0.741 | 0.026 |
 | **CVA** | | | | **₹0.45 crore** |
 
-The bank marks the swap about ₹45 lakh below its risk-free value. If the company's credit spread widens, CVA rises and the bank books a loss — even though nobody has defaulted.
+The bank marks the swap about ₹45 lakh below its risk-free value. If the company's spread widens, CVA rises and the bank books a loss — **even though nobody has defaulted**. That is the strange part: counterparty risk hits the profit and loss account every day, through prices, long before any default.
 
-**Why CVA has its own capital charge.** The Basel Committee found that in 2008 about two-thirds of counterparty credit losses came from CVA mark-to-market losses, and only a third from actual defaults. So Basel III added a CVA risk capital charge.
+**Why CVA has its own capital charge.** The Basel Committee found that in 2008 about two-thirds of counterparty credit losses came from CVA mark-to-market losses, and only a third from actual defaults. So Basel III added a capital charge for CVA risk — the risk that CVA itself jumps.
 
 | | Basel 3 | Basel 3.1 |
 |---|---|---|
-| Methods | Standardised; or advanced, using internal models for exposure and VaR for credit spreads | Basic approach, BA-CVA (reduced, or full with hedges recognised); standardised approach, SA-CVA (sensitivity-based, needs approval) |
+| Methods | Standardised; or advanced, using internal models | **BA-CVA**, the basic approach — reduced, or full with hedges recognised; **SA-CVA**, the standardised approach — sensitivity-based, needs approval. No internal models |
 | Small-book option | — | Banks with up to €100 billion notional of non-centrally cleared derivatives may set CVA capital equal to their counterparty credit risk capital [verify] |
 | Scope | Derivatives | Derivatives, and securities financing held at fair value |
 
-The EU exempts trades with non-financial corporates, pension funds and sovereigns from CVA capital [verify].
-
-**The XVA family.** CVA has relatives: **DVA** (debit valuation adjustment — the bank's own default risk, which paradoxically becomes a gain when its own credit worsens, so regulators strip it out of capital), **FVA** (the funding cost of uncollateralised trades), **ColVA** (collateral terms), **KVA** (the cost of capital) and **MVA** (the cost of initial margin).
+The EU exempts trades with non-financial companies, pension funds and sovereigns from CVA capital [verify].
 
 | | Accounting CVA | Regulatory CVA risk |
 |---|---|---|
@@ -1803,13 +2162,23 @@ The EU exempts trades with non-financial corporates, pension funds and sovereign
 | Rulebook | IFRS 13, fair value measurement | The Basel CVA framework |
 | Output | A profit-and-loss number | RWA and capital |
 
+**The XVA family** — CVA's relatives, all adjustments to a derivative's price:
+
+| Adjustment | Prices… |
+|---|---|
+| **DVA** — debit valuation adjustment | The bank's *own* default risk. It creates a gain when the bank's own credit worsens — so regulators strip it out of capital |
+| **FVA** — funding | The cost of funding uncollateralised trades |
+| **ColVA** — collateral | The terms of the collateral agreement |
+| **KVA** — capital | The cost of the capital the trade uses up |
+| **MVA** — margin | The cost of posting initial margin |
+
 ### Where credit meets market risk
 
-Counterparty risk joins the two disciplines. Exposure simulation runs on the market risk team's models for rates, FX and prices. CVA is a market risk position, hedged with credit default swaps. Collateral values move with markets. And a derivative's credit limit is a PFE limit, not a loan amount. The data spans both worlds — trades, netting sets, CSAs, collateral balances, market data and counterparty ratings — and all of it must join correctly.
+Counterparty risk joins the two disciplines. Exposure simulation runs on the market risk team's models for rates, FX and prices. CVA is a market risk position, hedged with CDS. Collateral values move with markets. And a derivative's credit limit is a PFE limit, not a loan amount. The data spans both worlds — trades, netting sets, CSAs, collateral balances, market data and counterparty ratings — and all of it must join correctly.
 
 ### Assessing financial counterparties
 
-Banks, NBFCs, insurers and funds are rated like corporates, but on different measures, often summarised as **CAMELS**:
+Most derivative counterparties are banks, NBFCs, insurers and funds. They are rated like companies, but on different measures, often summarised as **CAMELS**:
 
 | Letter | Checks |
 |---|---|
@@ -1822,22 +2191,15 @@ Banks, NBFCs, insurers and funds are rated like corporates, but on different mea
 
 For investment funds the questions shift to strategy, leverage, the liquidity of the assets, redemption terms and transparency.
 
-### Check yourself
+### The part on one screen
 
-1. Why is the exposure on an FX forward shaped differently from the exposure on an interest rate swap?
-2. Three trades are worth +12, −9 and +2. What is the exposure with and without netting?
-3. What is CVA, and why did regulators give it a capital charge?
-4. Give one general and one specific example of wrong-way risk.
-
-<details>
-<summary>Answers</summary>
-
-1. The FX forward exchanges its whole notional at the end, so the uncertainty keeps growing to maturity. The swap's remaining payments shrink over time, so its exposure rises, peaks and falls.
-2. Without netting, 12 + 2 = 14. With netting, 12 − 9 + 2 = 5.
-3. The market price of counterparty default risk — how much a derivative's value is marked down for the chance the counterparty defaults. It moves every day with credit spreads, and in 2008 CVA losses were about twice as large as losses from actual defaults.
-4. General: a company with rupee revenues that has sold dollars forward to the bank — a rupee collapse raises the exposure and weakens the company together. Specific: accepting a counterparty's own shares as collateral.
-
-</details>
+- A **derivative** is a promise of future payments driven by a market price; no money is lent.
+- **Exposure = replacement cost** — the contract's value to you if the other side fails, never the notional.
+- It moves with markets, so it is **simulated**: EE for pricing, PFE for limits.
+- **Netting** and **collateral** shrink it; **CCPs** stand in the middle.
+- For capital, **SA-CCR** turns it into an EAD: 1.4 × (RC + PFE).
+- **Wrong-way risk** is exposure rising as the counterparty weakens.
+- **CVA** prices the other side's default risk every day, and has its own capital charge.
 
 ## Part 9 — Models, and how to prove them
 
@@ -1958,14 +2320,14 @@ Two more words from scorecard work. **Reject inference** estimates how declined 
 </g>
 </svg>
 
-| Framework | Where |
-|---|---|
-| SR 11-7, supervisory guidance on model risk management (2011) | US — Federal Reserve and OCC |
-| SS1/23, model risk management principles (effective May 2024) | UK — PRA |
-| ECB guide to internal models | Euro area |
-| RBI guidance on model risk in credit [verify] | India |
+| Framework | Where | Status |
+|---|---|---|
+| SR 11-7, supervisory guidance on model risk management (2011) | US — Federal Reserve and OCC | Replaced on 17 April 2026 by **SR 26-2**, revised interagency guidance from the Fed, OCC and FDIC: the same disciplines, applied in proportion to each model's risk, with generative AI left out of scope. Job specs will say "SR 11-7" for years |
+| SS1/23, model risk management principles | UK — PRA | In force since May 2024 |
+| ECB guide to internal models | Euro area | Applies to banks using IRB and other internal models |
+| RBI guidance on model risk management | India | Draft issued June 2026, covering all models including AI and machine learning; not yet final [verify] |
 
-The common ground: a complete **model inventory**; **tiering** by materiality; **independent validation** before first use and periodically afterwards; clear ownership; documented limitations; and board-level oversight of model risk.
+The common ground, whichever rulebook: a complete **model inventory**; **tiering** by how much harm a model could do; **independent validation** before first use and periodically afterwards, with **effective challenge** — review by people with the skill, independence and standing to push back; clear ownership; documented limitations; and board-level oversight of model risk.
 
 What validators check:
 
@@ -2214,28 +2576,49 @@ One year of outcomes by grade:
 </g>
 </svg>
 
-**The binomial test, grade by grade.** If the PD is right and defaults are independent, the number of defaults in a grade follows a binomial distribution. The normal approximation:
+**The binomial test, grade by grade.** The question: if grade D's PD of 10% were right, how surprising would 98 defaults out of 800 be? Three steps:
 
 $$
-z = \frac{D - N \times \text{PD}}{\sqrt{N \times \text{PD} \times (1 - \text{PD})}}
+\text{expected defaults} = N \times \text{PD} = 800 \times 10\% = 80
 $$
 
-where D is the observed defaults and N the number of borrowers. For grade D: z = (98 − 80) ÷ √(800 × 0.10 × 0.90) = 18 ÷ 8.49 = 2.12, a one-sided p-value of about 0.02. There is only about a 2% chance of seeing so many defaults if the 10% PD were right — grade D is **under-predicting** risk.
-
-**Hosmer–Lemeshow (HL), across all grades at once:**
-
 $$
-\text{HL} = \sum_{g=1}^{G} \frac{(O_g - E_g)^2}{E_g \times (1 - \text{PD}_g)}
+\text{typical wobble} = \sqrt{N \times \text{PD} \times (1 - \text{PD})} = \sqrt{800 \times 0.10 \times 0.90} = 8.49
 $$
 
-where, for each grade g, O is the observed and E the expected number of defaults. HL follows a chi-squared distribution with G − 2 degrees of freedom on development data, or G on fresh data. Here HL = 0.20 + 0.36 + 0.47 + 4.50 + 0.11 = 5.64; with 3 degrees of freedom, p = 0.13. The model **passes overall**, even though grade D fails on its own.
+$$
+z = \frac{\text{observed} - \text{expected}}{\text{typical wobble}} = \frac{98 - 80}{8.49} = 2.12
+$$
 
-That is the lesson: a portfolio-level test can hide a broken grade. Validators read both.
+where N is the number of borrowers in the grade. The "typical wobble" is the standard deviation: even with a perfect PD, default counts bounce around the expected number by about this much from year to year.
 
-Two more tests you'll meet:
+So z asks: **how many typical wobbles away from the expectation did we land?** One or so is normal noise. Beyond about two, the PD is probably wrong. Grade D is 2.12 wobbles high — the chance of that happening by luck is about 2% (the one-sided p-value: 0.017 from this shortcut, 0.022 from the exact binomial, as in the table). Grade D is **under-predicting** risk.
 
-- **The Jeffreys test**, favoured by the ECB, is a Bayesian cousin of the binomial test: it treats the true default rate as a Beta(D + ½, N − D + ½) distribution. For grade D it gives p = 0.019 — the same verdict.
-- **The Brier score** is the mean squared difference between each borrower's PD and what happened, where the outcome y is 1 for a default and 0 otherwise. Lower is better; it blends calibration and discrimination into one number.
+**Hosmer–Lemeshow (HL): all grades at once.** The binomial test judges one grade. HL asks whether the *whole* model is calibrated, by adding up each grade's miss:
+
+$$
+\text{HL} = \sum_{g} \frac{(O_g - E_g)^2}{E_g \times (1 - \text{PD}_g)}
+$$
+
+where, for each grade g, O is the observed and E the expected number of defaults. Each term is a grade's miss, squared so over- and under-shoots both count, and scaled by how much that grade would wobble anyway:
+
+| Grade | Observed − expected | Contribution |
+|---|---|---|
+| A | 18 − 20 = −2 | 0.20 |
+| B | 49 − 45 = 4 | 0.36 |
+| C | 86 − 80 = 6 | 0.47 |
+| D | 98 − 80 = 18 | **4.50** |
+| E | 52 − 50 = 2 | 0.11 |
+| **HL** | | **5.64** |
+
+How to read it: compare HL against a chi-squared table with as many degrees of freedom as grades — 5 here, because this is fresh data the model was not built on (on the development sample, use grades minus 2). The p-value is 0.34, far above 5%: **the model passes overall** — even though grade D fails on its own, and D alone supplies 80% of the HL score.
+
+**The lesson: a portfolio-level test can hide a broken grade.** Validators always read both.
+
+Two more calibration measures you'll meet, in one line each:
+
+- **The Jeffreys test** — favoured by the ECB — asks the same question as the binomial test in a Bayesian way. For grade D it gives p = 0.019: the same verdict.
+- **The Brier score** — the average squared gap between each borrower's PD and what happened (1 for a default, 0 otherwise). Lower is better; it blends calibration and discrimination into one number.
 
 $$
 \text{Brier} = \frac{1}{N} \sum_{i=1}^{N} (\text{PD}_i - y_i)^2
@@ -2305,16 +2688,28 @@ where, for each score band i, E is the development population's share and A the 
 
 Below 0.1 is stable. From 0.1 to 0.25 is a shift worth investigating — here, perhaps a marketing campaign pulling in better-scoring applicants. Above 0.25 is a significant shift: the model may no longer apply. The **characteristic stability index (CSI)** runs the same formula on each input variable, to find what moved.
 
-### Other checks
+### The full check-list, stage by stage
 
-| Check | Why |
-|---|---|
-| Variance inflation factor (VIF) | Inputs too correlated with each other make the coefficients unstable; a VIF above 5–10 is a flag |
-| Override rate | Frequent overrides mean the model isn't trusted — or isn't right |
-| Grade concentration | Too many borrowers in one grade weakens differentiation |
-| Migration matrix | Grades should move gradually; wild jumps suggest instability |
-| LGD and EAD back-testing | Realised against predicted, by segment and over time |
-| Sensitivity | Do the outputs move sensibly when the inputs move? |
+Discrimination, calibration and stability are the big three. Around them sit smaller checks, each catching a different way a model goes wrong. They belong to the stage of the model's life where they bite:
+
+| Stage | Check | What it catches | Rule of thumb |
+|---|---|---|---|
+| Build | **Information value** (above) | Variables too weak to use — or suspiciously strong | Keep 0.1–0.5; above 0.5, check for leakage |
+| Build | **WoE trend** | Bins whose bad rates don't rise and fall in a sensible order | Monotonic, or explained |
+| Build | **Coefficient signs** | A variable pushing the score the wrong way — higher debt making a borrower look *safer* | Every sign makes business sense |
+| Build | **Correlation between inputs** | Two variables saying the same thing | Drop or combine above about 0.7 |
+| Build | **Variance inflation factor (VIF)** | Inputs that can be predicted from the *other* inputs together, which makes coefficients unstable | Flag above 5; act above 10 |
+| Validate | Discrimination, calibration, stability | Wrong order, wrong levels, changed population | As above |
+| Validate | **Benchmarking** | A model far from challenger models or agency ratings | Differences explained |
+| Validate | **Sensitivity** | Outputs that jump or don't move when inputs move | Moves are sensible in size and direction |
+| Use | **Override rate** | Underwriters ignoring the model | Below about 5–10% |
+| Use | **Grade concentration** | Too many borrowers in one grade — the model has stopped telling them apart | No grade above about 20–30% of the book |
+| Use | **Migration matrix** | Grades jumping wildly between years | Most borrowers stay put or move one grade |
+| Use | **LGD and EAD back-testing** | Realised losses or drawdowns off from predictions | Checked by segment and over time |
+
+**VIF in one line.** Regress one input on all the others; if they explain R² of its variation, VIF = 1 ÷ (1 − R²). A VIF of 5 means 80% of that input is already said by the others — so the model can't tell which one deserves the credit, and small data changes swing the coefficients.
+
+Put together, the checks answer one question in order: **is it built soundly, does it work, and is it still working?**
 
 ### The monitoring pack
 
@@ -2330,25 +2725,6 @@ The thresholds are illustrative; each bank sets its own in its model risk policy
 ### The analyst's view
 
 In production, a model is data plus logic: the bins and points held as **reference data**, the score formula as a specified calculation, and test cases that recompute scores for applicants on every boundary. Monitoring packs are queries run every quarter. An analyst who can read Gini, calibration and PSI can write the requirements to build them — and can spot when a system change, not the economy, has moved the numbers.
-
-### Check yourself
-
-1. A model has an AUC of 0.72. What is its Gini, and what does 0.72 mean in plain words?
-2. Why is accuracy a poor metric for a default model?
-3. A model ranks well, but every grade's observed default rate is about half its PD. What is wrong, how do you fix it, and what does it cost the bank in the meantime?
-4. The HL test passes, but one grade fails the binomial test. What do you conclude?
-5. PSI is 0.32. What do you do?
-
-<details>
-<summary>Answers</summary>
-
-1. Gini = 2 × 0.72 − 1 = 0.44. Pick a random defaulter and a random non-defaulter: 72% of the time, the model scores the defaulter as riskier.
-2. Defaults are rare, so a model that predicts "no default" for everyone is highly accurate and completely useless. Use recall, the false positive rate, AUC, Gini and KS, weighed by the cost of each kind of error.
-3. It discriminates well but is mis-calibrated — too conservative. Recalibrate the PD levels, which is a quick fix. Meanwhile the bank holds too much capital and too many provisions, and prices its loans too high.
-4. The model is broadly calibrated, but one grade under-predicts risk. Investigate that grade — a segment, a policy change or a data issue — and consider recalibrating it. An overall pass does not clear it.
-5. It is a significant population shift. Find the cause with CSI on each variable, check whether performance has degraded on recent outcomes, and escalate for recalibration or redevelopment under the model risk policy.
-
-</details>
 
 ## Part 10 — Watching the portfolio
 
@@ -2592,23 +2968,6 @@ $$
 
 The SME loan earns more money, but less per rupee of capital. Against a 15% hurdle, both pass; if capital is scarce, the corporate loan is the better use of it.
 
-### Check yourself
-
-1. What is the difference between an active and a passive limit breach?
-2. Gross advances ₹5,000 crore, gross NPAs ₹200 crore, provisions on NPAs ₹150 crore. Work out the GNPA ratio, PCR and NNPA ratio.
-3. Newer cohorts show more 30+ DPD at six months on book than older cohorts did. What might explain it, and why does vintage analysis show it sooner than the NPA ratio?
-4. Why can a higher-yielding loan be the worse deal?
-
-<details>
-<summary>Answers</summary>
-
-1. An active breach comes from a new transaction and needs approval in advance. A passive breach comes from a market move, a downgrade or a limit cut, and needs a plan to cure it.
-2. GNPA = 200 ÷ 5,000 = 4.0%; PCR = 150 ÷ 200 = 75%; NNPA = 50 ÷ 4,850 = 1.03%.
-3. Looser underwriting, a new channel or product, a fraud ring, or a turning economy. Vintages compare loans of the same age; the NPA ratio mixes old loans with new ones, and fresh stress takes months to reach 90 days.
-4. It can use up far more capital and carry far more expected loss, leaving a lower return per unit of capital than a safer, lower-yielding loan.
-
-</details>
-
 ## Part 11 — The machine: data, reporting and controls
 
 Every number in this note is produced by a chain of systems, every month, against deadlines — and every number must reconcile, trace back to its source and survive an audit. This is where a credit risk business analyst spends most days.
@@ -2773,7 +3132,7 @@ In practice it means a data dictionary; lineage from every report back to source
 
 ### Regulatory reporting
 
-| Jurisdiction | Main credit risk and capital returns [verify] |
+| Jurisdiction | Main credit risk and capital returns — who's who in Part 1 [verify] |
 |---|---|
 | EU | COREP — own funds and ratios, SA and IRB credit risk, counterparty risk, CVA, large exposures, leverage; and FINREP for financial information, including IFRS 9 stages and allowance movements |
 | UK | PRA returns built on COREP and FINREP, with new templates under Basel 3.1 |
@@ -2856,23 +3215,6 @@ Controls come in two kinds — **preventive** (maker-checker, system validations
 
 **Auditors and regulators** want evidence, not assurances: policies and their approvals, committee minutes, model documentation and validation reports, reconciliations with every break explained, DQ logs, test evidence and sign-offs for every change, and access reviews. The analyst's own documents — requirements, traceability, test results — are part of that evidence.
 
-### Check yourself
-
-1. Why must reference data be effective-dated?
-2. The ECL engine shows 12,450 exposures, but core banking extracted 12,500. What do you check?
-3. Name the four groups of BCBS 239 principles.
-4. A report figure is wrong because a product was mapped to the wrong exposure class. Where do you fix it?
-
-<details>
-<summary>Answers</summary>
-
-1. So that any past calculation can be reproduced exactly, with the parameters that were in force at the time — essential for audit, restatements and explaining movements.
-2. The reconciliation at each hop: the staging load (record counts), transformation rejects (which 50 records failed which rule), and scope filters (products deliberately excluded). Then decide whether the difference is explained and approved, or a break to fix.
-3. Governance and infrastructure; risk data aggregation; risk reporting; supervisory review.
-4. At source — in the product-to-exposure-class mapping in reference data — with an issue logged and the root cause fixed. Never with a manual adjustment in the report.
-
-</details>
-
 ## Part 12 — The BA toolkit
 
 The analyst's job is to make change safe: capture exactly what the business and the rules need, specify it so it can be built and tested, and prove it works before and after it goes live.
@@ -2941,7 +3283,7 @@ Agile teams carry the same content as epics and user stories, with acceptance cr
 
 | Technique | Best for |
 |---|---|
-| Interviews | Individual experts: a model owner, a credit officer |
+| Stakeholder interviews | Individual experts: a model owner, a credit officer |
 | Workshops | Agreeing rules across risk, finance and technology |
 | Document analysis | Regulations, policies, existing specifications |
 | Observation | How the process really runs, workarounds included |
@@ -3160,6 +3502,25 @@ Add a decision log, clear escalation paths, and status reports whose RAG colours
 
 Moving to a new framework — Basel 3.1, ECL, SA-CCR — changes jobs, not only systems. Plan business readiness (processes, controls and procedures updated), training by role (hands-on in a test environment, quick-reference guides, train-the-trainer for large groups), communications, and hypercare with a named contact.
 
+### One change, end to end
+
+Everything in this part, traced through a single real change: *off-balance-sheet commitments move to the Basel 3.1 CCFs.*
+
+| Step | Who | What gets produced | Where it ends up |
+|---|---|---|---|
+| 1 Read the rule | Regulatory policy, with the analyst | An interpretation note: which products, which rows of the CCF table, from which date | Policy library |
+| 2 Assess the impact | Analyst, with finance | RWA before and after, by product — the size of the change | Steering committee pack |
+| 3 Capture the need | Analyst | BRD line: "Commitments use Basel 3.1 CCFs from 1 January 2027" | BRD |
+| 4 Specify it | Analyst | Rule TR-CCF-004 as a decision table; data mapping for the cancellability flag | FSD, reference data |
+| 5 Fix the data | Data owners | The cancellability flag populated for every facility; gaps logged | Source systems, DQ log |
+| 6 Build | Technology | Reference-data update; engine change | Calculation engine |
+| 7 Prove it | Testers and analyst | Test cases per decision-table row; SIT, UAT, parallel run against the old CCFs | Test evidence, traceability matrix |
+| 8 Go live | Release management | CAB approval, cut-over, hypercare | Production |
+| 9 Report | Regulatory reporting | New CCFs flowing into the capital return | COREP or the RBI return |
+| 10 Check | Analyst and business | PPV: first live RWA reconciled, differences explained | Sign-off pack |
+
+Every row leaves evidence an auditor can ask for (Part 11). If a step has no artefact, it didn't happen.
+
 ### SQL, Python and Excel
 
 A handful of patterns covers most credit risk data work.
@@ -3247,360 +3608,19 @@ psi([0.10, 0.20, 0.40, 0.20, 0.10], [0.04, 0.14, 0.36, 0.28, 0.18])  # 0.1545
 
 In BI tools the same logic lives in measures over a star schema: a fact table of exposures by date, joined to dimensions for counterparty, product, sector and date.
 
-### Check yourself
-
-1. What belongs in a BRD but not in an FSD?
-2. Write the boundary test cases for the rule "SICR if lifetime PD is at least twice its value at origination".
-3. Give an example of a defect with high severity but low priority.
-4. The backlog is 300 points, velocity is 25, and the regulatory date is 10 sprints away. What do you do?
-
-<details>
-<summary>Answers</summary>
-
-1. The business need and its rationale: objectives, scope, stakeholders, current and future process, business rules in business language, success measures. The FSD specifies system behaviour: mappings, calculations, validations, interfaces.
-2. A PD ratio of 1.99 stays in Stage 1; exactly 2.00 goes to Stage 2 ("at least"); 2.01 goes to Stage 2. Add a case for a missing origination PD: the defined fallback applies and a data-quality exception is raised.
-3. A calculation error in a legacy report that nobody uses and that is being decommissioned next month: severe if it were used, but low priority.
-4. 300 ÷ 25 = 12 sprints of work in 10. Cut to the must-haves with MoSCoW, check whether capacity can grow, sequence the regulatory must-haves first, and escalate the gap early through the RAID log. Don't plan on hope.
-
-</details>
-
-## Part 13 — Rapid-fire interview bank
-
-The questions interviews ask most, with short answers you can say out loud. Open one only after answering it yourself.
-
-### Lending and measurement
-
-<details>
-<summary>What is credit risk?</summary>
-
-The risk of loss because a borrower or counterparty fails to meet its obligations, or becomes less likely to. It includes default, migration, counterparty, concentration, settlement and country risk.
-
-</details>
-
-<details>
-<summary>Define PD, LGD and EAD, and give the expected loss formula.</summary>
-
-PD is the probability of default within a horizon, usually a year. LGD is the share of the exposure lost if default happens, after recoveries and costs. EAD is the amount owed at default. EL = PD × LGD × EAD.
-
-</details>
-
-<details>
-<summary>Expected versus unexpected loss — who covers what?</summary>
-
-Expected loss is the average and is covered by provisions and pricing. Unexpected loss is the loss above the average in a bad year, up to a confidence level (99.9% in Basel), and is covered by capital. Beyond that sits stress testing and resolution planning.
-
-</details>
-
-<details>
-<summary>What is a default?</summary>
-
-Under Basel, a material obligation more than 90 days past due, or the bank judging the borrower unlikely to pay without selling collateral. In India, the NPA definition: overdue more than 90 days, or a cash-credit account out of order for 90 days.
-
-</details>
-
-<details>
-<summary>PIT versus TTC PD?</summary>
-
-Point-in-time PD reflects today's economy and rises in a downturn; it is used for IFRS 9 and pricing. Through-the-cycle PD reflects an average year and stays stable; it is used for Basel capital. Most models are hybrids.
-
-</details>
-
-<details>
-<summary>What is a CCF? Give examples by product.</summary>
-
-The credit conversion factor turns an undrawn or off-balance-sheet amount into exposure: EAD = drawn + CCF × undrawn. Under Basel 3.1: unconditionally cancellable commitments 10%; other commitments 40%; short-term trade LCs 20%; performance guarantees and bid bonds 50%; financial guarantees and acceptances 100%.
-
-</details>
-
-<details>
-<summary>Financial guarantee versus performance guarantee?</summary>
-
-A financial guarantee covers a borrower's debt, so it pays out whenever the borrower doesn't: 100% CCF. A performance guarantee covers delivery on a contract, which fails less often and usually only in part: 50% CCF.
-
-</details>
-
-<details>
-<summary>What are DSCR, ICR and FOIR?</summary>
-
-DSCR (debt service coverage) is cash available for debt service divided by principal plus interest due. ICR (interest cover) is EBIT divided by interest. FOIR is all EMIs, including the new one, divided by net monthly income — the retail affordability test.
-
-</details>
-
-<details>
-<summary>What is drawing power?</summary>
-
-The amount a borrower may actually draw on a working-capital line at any moment: stock less unpaid creditors, and receivables under 90 days old, each after the bank's margin. The limit is the ceiling; drawing power is the ceiling this month.
-
-</details>
-
-<details>
-<summary>What happens when a covenant is breached?</summary>
-
-It is not automatically a default. The bank gains the right to act: waive (often for a fee), reset the covenant, reprice, take more security or, ultimately, call the loan.
-
-</details>
-
-### Provisions
-
-<details>
-<summary>What are the IFRS 9 stages?</summary>
-
-Stage 1: performing, 12-month ECL. Stage 2: significant increase in credit risk since origination, lifetime ECL. Stage 3: credit-impaired, lifetime ECL, with interest on the net amount. POCI assets carry lifetime ECL from day one.
-
-</details>
-
-<details>
-<summary>What is SICR, and what triggers it?</summary>
-
-A significant increase in credit risk since origination. Triggers: a relative and absolute rise in lifetime PD, watchlist or forbearance flags, and the 30-days-past-due backstop. Low-credit-risk (investment-grade) exposures may be exempt.
-
-</details>
-
-<details>
-<summary>Why use probability-weighted scenarios?</summary>
-
-Losses respond non-linearly to the economy — a downturn adds more loss than an upturn removes — so the base case alone understates expected loss. IFRS 9 requires an unbiased, probability-weighted estimate.
-
-</details>
-
-<details>
-<summary>What is a management overlay?</summary>
-
-An adjustment on top of modelled ECL for a risk the models can't see: a new shock, a data gap, a sector event. It must be specific, quantified, approved, documented and released when the risk passes.
-
-</details>
-
-<details>
-<summary>IFRS 9 versus CECL?</summary>
-
-IFRS 9 stages loans: 12-month ECL until risk rises significantly, lifetime after. CECL, in the US, books lifetime ECL from day one for every loan, with no stages.
-
-</details>
-
-### Capital and Basel
-
-<details>
-<summary>What are RWA, and how are they calculated under the standardised approach?</summary>
-
-Risk-weighted assets scale exposures by risk: RWA = EAD × risk weight, with weights from regulatory tables by exposure class, rating and — for property — LTV. Capital ratios divide capital by total RWA.
-
-</details>
-
-<details>
-<summary>SA versus IRB, and F-IRB versus A-IRB?</summary>
-
-Under the SA, risk weights come from tables. Under IRB, the bank's own models feed a regulatory formula. In F-IRB the bank estimates only PD; in A-IRB it also estimates LGD and EAD. Basel 3.1 bars A-IRB for large corporates and financial institutions.
-
-</details>
-
-<details>
-<summary>What goes into CET1, AT1 and Tier 2?</summary>
-
-CET1: ordinary shares, retained earnings and reserves, less deductions such as goodwill, certain deferred tax assets and any IRB provision shortfall. AT1: perpetual, subordinated instruments with discretionary coupons that convert or are written down at a trigger. Tier 2: subordinated debt of at least five years, plus limited general provisions.
-
-</details>
-
-<details>
-<summary>What are the capital buffers, and what happens if a bank dips into them?</summary>
-
-The conservation buffer (2.5%), the countercyclical buffer (0–2.5%) and systemic surcharges, all in CET1. Dipping in is not a breach, but it triggers automatic limits on dividends, bonuses and AT1 coupons until the bank rebuilds.
-
-</details>
-
-<details>
-<summary>Why were the AT1 bonds of Yes Bank and Credit Suisse written off?</summary>
-
-Both were rescues at the point of non-viability. AT1 is designed to absorb losses before depositors do. Yes Bank's ₹8,415 crore was written off in 2020; at Credit Suisse in 2023, about CHF 16 billion went to zero while shareholders still received something — which is why that case was so contentious.
-
-</details>
-
-<details>
-<summary>Basel 3 versus Basel 3.1 — what changed?</summary>
-
-Basel 3 fixed the numerator: more and better capital, buffers, leverage and liquidity. Basel 3.1 fixes the denominator: a 72.5% output floor, a more granular standardised approach, limits and floors on IRB, new CCFs, new CVA and operational risk approaches, and FRTB for market risk.
-
-</details>
-
-<details>
-<summary>What is the output floor? Give an example.</summary>
-
-IRB banks' total RWA cannot fall below 72.5% of what the standardised approach would give. If models give 5,000 and the SA gives 8,000, the floor is 5,800 and it binds.
-
-</details>
-
-<details>
-<summary>Why have a leverage ratio?</summary>
-
-It is Tier 1 capital divided by total exposure, ignoring risk weights — a backstop against model error and excessive balance-sheet growth. The Basel minimum is 3%.
-
-</details>
-
-<details>
-<summary>What is Pillar 2 and the ICAAP?</summary>
-
-Pillar 2 is supervisory review. In the ICAAP, the bank assesses capital for every material risk, including those Pillar 1 misses — concentration, interest rate risk in the banking book, strategic risk — and the supervisor can require more.
-
-</details>
-
-<details>
-<summary>What is the large exposures limit?</summary>
-
-Exposure to one counterparty, or a group of connected ones, capped at 25% of Tier 1 under Basel (15% between G-SIBs). India uses 20% for a single counterparty and 25% for a group.
-
-</details>
-
-### Counterparty risk
-
-<details>
-<summary>How does counterparty credit risk differ from loan risk?</summary>
-
-The exposure is uncertain and moves with markets, and either side can end up owed money. It is measured with simulated exposure profiles or SA-CCR, and reduced by netting and collateral.
-
-</details>
-
-<details>
-<summary>EE, PFE and EPE?</summary>
-
-Expected exposure is the average positive exposure at a future date. Potential future exposure is a high percentile of it, used for limits. Expected positive exposure is EE averaged over time.
-
-</details>
-
-<details>
-<summary>What is SA-CCR?</summary>
-
-The standardised approach for counterparty credit risk: EAD = 1.4 × (replacement cost + potential future exposure), with add-ons by asset class and proper recognition of netting and margin. It replaced the current exposure method.
-
-</details>
-
-<details>
-<summary>What is CVA, and why does it attract capital?</summary>
-
-The credit valuation adjustment is the market value of counterparty default risk — the markdown on a derivative for the chance the counterparty defaults. In 2008, about two-thirds of counterparty losses came from CVA moves rather than defaults, so Basel III added a CVA capital charge; Basel 3.1 replaced it with BA-CVA and SA-CVA.
-
-</details>
-
-<details>
-<summary>What is wrong-way risk?</summary>
-
-Exposure rising as the counterparty's credit quality falls — generally through market correlation, or specifically through a legal link, such as a counterparty posting its own shares as collateral.
-
-</details>
-
-<details>
-<summary>What do netting and a CSA do?</summary>
-
-Netting under an ISDA master agreement lets all trades with a counterparty be closed out as one net amount. A credit support annex adds collateral — variation margin for current value, initial margin for future moves.
-
-</details>
-
-### Models and validation
-
-<details>
-<summary>AUC, Gini and KS — how do they relate?</summary>
-
-AUC is the chance the model ranks a random defaulter as riskier than a random non-defaulter. Gini = 2 × AUC − 1, and equals the accuracy ratio from the CAP curve. KS is the widest gap between the cumulative score distributions of bads and goods.
-
-</details>
-
-<details>
-<summary>What is calibration, and how is it tested?</summary>
-
-Whether PD levels match observed default rates. Grade by grade with the binomial or Jeffreys test; across all grades with Hosmer–Lemeshow; overall with the Brier score — reported as traffic lights.
-
-</details>
-
-<details>
-<summary>Why is accuracy misleading for default models?</summary>
-
-Defaults are rare: with 5% defaults, predicting "no default" for everyone scores 95% accuracy and catches nothing. Use recall, the false positive rate and ranking measures, weighed by the cost of each error.
-
-</details>
-
-<details>
-<summary>What is PSI, and what are its thresholds?</summary>
-
-The population stability index measures how far the score distribution has moved from development. Below 0.1 stable; 0.1–0.25 investigate; above 0.25 significant — the model may no longer apply.
-
-</details>
-
-<details>
-<summary>What are WoE and IV?</summary>
-
-Weight of evidence is the log of a bin's share of goods over its share of bads. Information value sums the differences in shares, weighted by WoE, across bins: below 0.02 useless, 0.1–0.3 medium, 0.3–0.5 strong, above 0.5 suspicious.
-
-</details>
-
-### Portfolio, data and delivery
-
-<details>
-<summary>What is risk appetite? Trigger versus limit?</summary>
-
-The board's statement of how much risk the bank will take, turned into metrics and limits. A trigger means act and plan; a limit means escalate with a remediation plan.
-
-</details>
-
-<details>
-<summary>What are roll rates and vintage analysis?</summary>
-
-Roll rates are the monthly flows of accounts between delinquency buckets. Vintage analysis tracks each origination cohort by months on book, so newer cohorts can be compared with older ones at the same age.
-
-</details>
-
-<details>
-<summary>GNPA, NNPA and PCR?</summary>
-
-GNPA ratio = gross NPAs ÷ gross advances. NNPA ratio = (gross NPAs − provisions) ÷ (gross advances − provisions). PCR = provisions ÷ gross NPAs.
-
-</details>
-
-<details>
-<summary>What is BCBS 239?</summary>
-
-The Basel principles for risk data aggregation and reporting — fourteen principles in four groups: governance and infrastructure, data aggregation, risk reporting, supervisory review. In practice: lineage, a data dictionary, reconciliations, automation and adaptability.
-
-</details>
-
-<details>
-<summary>What is reference data, and why centralise it?</summary>
-
-The slow-moving lookups every calculation uses: hierarchies, sector codes, product mappings, risk weights, CCFs, master scales, scenarios. Centralised with effective dating and maker-checker control, it gives one truth, reproducible runs and an audit trail.
-
-</details>
-
-<details>
-<summary>BRD versus FSD?</summary>
-
-The BRD states what the business needs and why. The FSD states exactly how the system will behave: mappings, calculations, validations, interfaces.
-
-</details>
-
-<details>
-<summary>SIT, UAT, parallel run and PPV?</summary>
-
-SIT proves the systems work together. UAT proves the change meets business needs. A parallel run compares old and new over several cycles. PPV checks the first live runs.
-
-</details>
-
-<details>
-<summary>How do you estimate and plan sprints?</summary>
-
-Size stories in story points, measure velocity, and divide the backlog by velocity — 240 points at 30 a sprint is about 8 sprints — adjusted for leave and business-as-usual work. Against a fixed regulatory date, prioritise with MoSCoW and escalate gaps early.
-
-</details>
-
 ## The whole ecosystem on one screen
 
 | Part | Hold on to this |
 |---|---|
-| 1 Lending | Thin margins, fat tails: one default can erase years of profit |
-| 2 Making a loan | Eight stages everywhere; retail decided by models, SME by model plus analyst, corporate by people |
-| 3 Measuring | EL = PD × LGD × EAD; EAD = drawn + CCF × undrawn; unexpected loss, not expected loss, drives capital |
-| 4 Mitigation | Collateral cuts EAD or LGD after haircuts; guarantees swap in the guarantor's risk weight |
-| 5 IFRS 9 | Stage 1 is 12-month ECL, Stages 2–3 lifetime; SICR is judged against origination; scenarios are probability-weighted |
-| 6 Basel | Capital ÷ RWA; CET1 4.5% + AT1 1.5% + Tier 2 2% = 8%, plus buffers; IRB capital is unexpected loss at 99.9% |
+| 1 Lending | Thin margins, fat tails: one default can erase years of profit. Rules flow Basel → national rulebook → supervisor → returns; COREP is capital, FINREP is financials |
+| 2 Making a loan | Eight stages as Decide, Deliver, Defend (3-2-3); retail decided by models, SME by model plus analyst, corporate by people; the cash cycle is why working capital needs funding |
+| 3 Measuring | Default = 90 days or unlikely to pay; EL = PD × LGD × EAD; EAD = drawn + CCF × undrawn; SA uses tables, IRB uses the bank's PD; provisions for the average year, capital for the bad year |
+| 4 Mitigation | Two families: swap the risk weight (simple approach, guarantees) or shrink the number after haircuts (comprehensive approach) |
+| 5 IFRS 9 | Stage 1 is 12-month ECL, Stages 2–3 lifetime; SICR is judged against origination; ECL sums marginal PDs; scenarios are probability-weighted |
+| 6 Basel | Capital ÷ RWA; CET1 4.5% + AT1 1.5% + Tier 2 2% = 8%, plus buffers; IRB: stress the PD, take away the average, adjust for time, scale by 12.5 |
 | 7 Basel 3.1 | Fixes the denominator: a 72.5% output floor, a finer SA, IRB limits, new CCFs, new CVA and operational risk approaches |
-| 8 CCR and CVA | EAD = 1.4 × (RC + PFE); netting and collateral shrink it; CVA prices counterparty default |
-| 9 Models | Discrimination (AUC, Gini = 2 × AUC − 1, KS), calibration (binomial, HL), stability (PSI) |
+| 8 Derivatives, CCR and CVA | Exposure is replacement cost, not notional; EAD = 1.4 × (RC + PFE); netting and collateral shrink it; CVA prices the other side's default every day |
+| 9 Models | Discrimination (AUC, Gini = 2 × AUC − 1, KS), calibration (binomial per grade, HL overall — read both), stability (PSI); built soundly, works, still working |
 | 10 Portfolio | Appetite → limits → early warnings; roll rates and vintages; stress tests; RAROC |
 | 11 The machine | Grain; golden-source reference data; rules as decision tables; DQ; BCBS 239; reconciliations |
 | 12 BA toolkit | BRD → FSD → build → SIT → UAT → parallel run → PPV; boundaries catch defects |
@@ -3610,6 +3630,7 @@ Size stories in story points, measure velocity, and divide the backlog by veloci
 | Acronym | Meaning |
 |---|---|
 | A-IRB, F-IRB | Advanced and foundation internal ratings-based approaches |
+| ASRF | Asymptotic single risk factor model |
 | AT1 | Additional Tier 1 capital |
 | AUC, AUROC | Area under the ROC curve |
 | BA-CVA, SA-CVA | Basic and standardised approaches for CVA risk |
@@ -3619,15 +3640,18 @@ Size stories in story points, measure velocity, and divide the backlog by veloci
 | CAP | Cumulative accuracy profile |
 | CCB, CCyB | Capital conservation buffer; countercyclical capital buffer |
 | CCF | Credit conversion factor |
+| CCIL | Clearing Corporation of India |
 | CCP | Central counterparty |
 | CCR | Counterparty credit risk |
+| CDS | Credit default swap |
 | CECL | Current expected credit loss (US GAAP) |
 | CEM | Current exposure method |
 | CET1 | Common Equity Tier 1 capital |
 | CGTMSE | Credit Guarantee Fund Trust for Micro and Small Enterprises |
+| COREP, FINREP | Common reporting (capital) and financial reporting (accounts): the EU's standard templates |
 | CRILC | Central Repository of Information on Large Credits (RBI) |
 | CRM | Credit risk mitigation |
-| CRR | Capital Requirements Regulation (EU) |
+| CRR, CRD | Capital Requirements Regulation and Directive (EU); CRR3 and CRD6 carry Basel 3.1 |
 | CSA | Credit support annex |
 | CSI | Characteristic stability index |
 | CVA, DVA | Credit and debit valuation adjustments |
@@ -3637,17 +3661,23 @@ Size stories in story points, measure velocity, and divide the backlog by veloci
 | DQ | Data quality |
 | DSCR | Debt service coverage ratio |
 | EAD | Exposure at default |
+| EBA | European Banking Authority |
 | EBITDA | Earnings before interest, tax, depreciation and amortisation |
+| ECB | European Central Bank |
 | ECL | Expected credit loss |
 | EE, EPE, EEPE | Expected exposure; expected positive exposure; effective EPE |
 | EIR | Effective interest rate |
 | EL, UL | Expected loss; unexpected loss |
 | EMI | Equated monthly instalment |
+| FCA | Financial Conduct Authority (UK) |
+| FDIC | Federal Deposit Insurance Corporation (US) |
+| Fed | Federal Reserve (US) |
 | FOIR | Fixed obligation to income ratio |
 | FRTB | Fundamental review of the trading book |
 | GNPA, NNPA | Gross and net non-performing assets |
 | HHI | Herfindahl–Hirschman index |
 | HL | Hosmer–Lemeshow test |
+| IASB | International Accounting Standards Board |
 | IBC | Insolvency and Bankruptcy Code (India) |
 | ICAAP | Internal capital adequacy assessment process |
 | ICR | Interest coverage ratio |
@@ -3663,9 +3693,12 @@ Size stories in story points, measure velocity, and divide the backlog by veloci
 | LOS | Loan origination system |
 | LTV | Loan-to-value ratio |
 | MDA | Maximum distributable amount |
+| MPBF | Maximum permissible bank finance |
 | MPOR | Margin period of risk |
 | MSME, SME | Micro, small and medium enterprises; small and medium-sized enterprise |
+| MTA | Minimum transfer amount |
 | NPA | Non-performing asset |
+| OCC | Office of the Comptroller of the Currency (US) |
 | PCR | Provision coverage ratio |
 | PD | Probability of default |
 | PDO | Points to double the odds |
@@ -3687,3 +3720,6 @@ Size stories in story points, measure velocity, and divide the backlog by veloci
 | SMA | Special mention account (RBI) |
 | SREP | Supervisory review and evaluation process |
 | UTP | Unlikely to pay |
+| VaR | Value-at-risk |
+| VIF | Variance inflation factor |
+| XVA | The family of valuation adjustments: CVA, DVA, FVA, ColVA, KVA, MVA |

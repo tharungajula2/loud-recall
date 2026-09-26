@@ -197,7 +197,11 @@ const ResponsiveSvg = (props: React.ComponentPropsWithoutRef<'svg'>) => {
     return <svg {...props} />;
   }
 
-  return <DiagramFrame svgProps={props} />;
+  if (props.role === 'img') {
+    return <DiagramFrame svgProps={props} />;
+  }
+
+  return <svg {...props} />;
 };
 
 export function extractHeadings(content: string) {
