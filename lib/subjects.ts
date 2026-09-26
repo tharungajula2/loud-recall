@@ -16,7 +16,7 @@ export const SUBJECTS: SubjectConfig[] = [
   {
     id: 'health',
     name: 'Health',
-    description: 'Health, understood from the ground up.',
+    description: 'Practical health, from building Parents Health OS.',
   },
   {
     id: 'ai',
@@ -26,7 +26,7 @@ export const SUBJECTS: SubjectConfig[] = [
   {
     id: 'life',
     name: 'Life',
-    description: 'Now and then, the rest of it.',
+    description: 'Notes on everything else worth learning.',
   },
 ];
 

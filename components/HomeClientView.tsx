@@ -22,6 +22,7 @@ function formatDateDisplay(dateStr: string): string {
 }
 
 function formatTotalReadTime(docs: DocumentMeta[]): string {
+  if (docs.length === 0) return '';
   const totalWords = docs.reduce((sum, d) => sum + (d.wordCount || 0), 0);
   const totalMins = Math.max(1, Math.ceil(totalWords / 225));
   const hours = Math.floor(totalMins / 60);
@@ -32,6 +33,7 @@ function formatTotalReadTime(docs: DocumentMeta[]): string {
 }
 
 function formatSubjectStats(docs: DocumentMeta[]): string {
+  if (docs.length === 0) return '';
   const mcCount = docs.filter((d) => d.format === 'masterclass').length;
   const artCount = docs.filter((d) => d.format === 'article').length;
   const parts: string[] = [];
@@ -71,25 +73,18 @@ export function HomeClientView({ documents }: HomeClientViewProps) {
   const [selectedSubject, setSelectedSubject] = useState<'all' | SubjectId>('all');
   const searchInputRef = useRef<HTMLInputElement>(null);
 
-  // Active subjects that have at least one published note, in config order
-  const activeSubjects = useMemo(() => {
-    return SUBJECTS.filter((subjectConfig) =>
-      documents.some((doc) => doc.subject === subjectConfig.id)
-    );
-  }, [documents]);
-
-  const activeSubjectIds = useMemo(() => activeSubjects.map((s) => s.id), [activeSubjects]);
+  const allSubjectIds = useMemo(() => SUBJECTS.map((s) => s.id), []);
 
   // Sync selectedSubject with URL ?subject=<id> parameter on mount
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const params = new URLSearchParams(window.location.search);
       const urlSubj = params.get('subject');
-      if (urlSubj && activeSubjectIds.includes(urlSubj as SubjectId)) {
+      if (urlSubj && allSubjectIds.includes(urlSubj as SubjectId)) {
         setSelectedSubject(urlSubj as SubjectId);
       }
     }
-  }, [activeSubjectIds]);
+  }, [allSubjectIds]);
 
   // Handle filter chip click and sync URL query parameter
   const handleSelectSubject = (id: 'all' | SubjectId) => {
@@ -148,20 +143,15 @@ export function HomeClientView({ documents }: HomeClientViewProps) {
     });
   }, [documents, searchQuery, selectedSubject]);
 
-  const isFlatView = searchQuery.trim().length > 0 || selectedSubject !== 'all';
+  const isFlatView = searchQuery.trim().length > 0;
 
-  // Section view data
-  // Featured article for Start Here (newest article)
-  const featuredArticle = useMemo(() => {
-    const articles = documents
-      .filter((d) => d.format === 'article')
-      .sort((a, b) => b.updated.localeCompare(a.updated));
-    return articles[0] || null;
-  }, [documents]);
-
-  // Map each active subject to its published masterclasses and articles
+  // Map ALL 4 subjects to their published masterclasses and articles
   const subjectSections = useMemo(() => {
-    return activeSubjects.map((subjectConfig) => {
+    const visibleSubjects = selectedSubject === 'all'
+      ? SUBJECTS
+      : SUBJECTS.filter((s) => s.id === selectedSubject);
+
+    return visibleSubjects.map((subjectConfig) => {
       const subjectDocs = documents.filter((d) => d.subject === subjectConfig.id);
       
       const masterclasses = subjectDocs
@@ -172,20 +162,15 @@ export function HomeClientView({ documents }: HomeClientViewProps) {
         .filter((d) => d.format === 'article')
         .sort((a, b) => b.updated.localeCompare(a.updated));
 
-      // Filter out featured article from Section list if shown in Start Here
-      const remainingArticles = featuredArticle
-        ? articles.filter((a) => a.slug !== featuredArticle.slug)
-        : articles;
-
       return {
         config: subjectConfig,
         docs: subjectDocs,
         masterclasses,
-        articles: remainingArticles,
+        articles,
         statsText: formatSubjectStats(subjectDocs),
       };
-    }).filter((section) => section.docs.length > 0); // Empty subjects produce no section
-  }, [activeSubjects, documents, featuredArticle]);
+    });
+  }, [documents, selectedSubject]);
 
   return (
     <div className="space-y-10 min-w-0">
@@ -227,7 +212,7 @@ export function HomeClientView({ documents }: HomeClientViewProps) {
             >
               All
             </button>
-            {activeSubjects.map((subjectConfig) => {
+            {SUBJECTS.map((subjectConfig) => {
               const isActive = selectedSubject === subjectConfig.id;
               return (
                 <button
@@ -250,7 +235,7 @@ export function HomeClientView({ documents }: HomeClientViewProps) {
         </div>
       </section>
 
-      {/* Flat Filter / Search Result List */}
+      {/* Flat Search Result List */}
       {isFlatView ? (
         <section className="space-y-4" aria-label="Search results">
           <div className="text-xs text-muted font-medium">
@@ -301,42 +286,9 @@ export function HomeClientView({ documents }: HomeClientViewProps) {
       ) : (
         /* Structured Home Page Sections */
         <div className="space-y-12">
-          {/* Start here card */}
-          {featuredArticle && (
-            <section className="space-y-4" aria-label="Start here">
-              <h2 className="text-xs font-semibold uppercase tracking-wider text-foreground flex items-center">
-                <span className="inline-block w-[6px] h-[6px] bg-foreground mr-2.5" aria-hidden="true" />
-                Start here
-              </h2>
-
-              <Link
-                href={`/${featuredArticle.slug}`}
-                className="group block min-h-[44px] p-5 border border-foreground rounded-lg bg-background hover:bg-black/[0.02] transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-foreground focus-visible:outline-offset-2"
-              >
-                <div className="text-[11px] font-sans font-semibold tracking-wider text-muted uppercase mb-1.5">
-                  ARTICLE &middot; NEW
-                </div>
-                <h3 className="text-[17px] md:text-lg font-medium text-foreground leading-snug mb-2 group-hover:underline">
-                  {featuredArticle.title}
-                </h3>
-                <p className="text-sm text-muted line-clamp-2 leading-relaxed mb-3">
-                  {featuredArticle.description}
-                </p>
-                <div className="text-xs text-muted/80 font-medium flex items-center gap-2">
-                  <span>{featuredArticle.readTime}</span>
-                  {featuredArticle.updated && (
-                    <>
-                      <span>&middot;</span>
-                      <span>Updated {formatDateDisplay(featuredArticle.updated)}</span>
-                    </>
-                  )}
-                </div>
-              </Link>
-            </section>
-          )}
-
           {/* Subject Sections in Config Order */}
           {subjectSections.map((section) => {
+            const hasNotes = section.docs.length > 0;
             const isMultiVolume = section.masterclasses.length > 1;
 
             return (
@@ -347,108 +299,124 @@ export function HomeClientView({ documents }: HomeClientViewProps) {
                       <span className="inline-block w-[6px] h-[6px] bg-foreground mr-2.5" aria-hidden="true" />
                       {section.config.name}
                     </h2>
-                    <span className="text-xs text-muted font-medium">
-                      {section.statsText}
-                    </span>
+                    {hasNotes && (
+                      <span className="text-xs text-muted font-medium">
+                        {section.statsText}
+                      </span>
+                    )}
                   </div>
                   <p className="text-sm text-muted">
                     {section.config.description}
                   </p>
                 </div>
 
-                {/* Masterclasses on Numbered Learning Path */}
-                {section.masterclasses.length > 0 && (
-                  <div className="relative pl-10 space-y-6">
-                    {/* Connecting Vertical Line */}
-                    <div
-                      className="absolute top-4 bottom-4 left-[14px] w-[1px] bg-foreground z-0"
-                      aria-hidden="true"
-                    />
+                {!hasNotes ? (
+                  /* Coming Soon Card for Empty Subjects */
+                  <div className="p-4 md:p-5 border border-dashed border-border rounded-lg bg-background select-none">
+                    <div className="text-[11px] font-sans font-semibold tracking-wider text-muted uppercase mb-1.5">
+                      COMING SOON
+                    </div>
+                    <p className="text-sm text-muted leading-relaxed">
+                      {section.config.description}
+                    </p>
+                  </div>
+                ) : (
+                  <>
+                    {/* Masterclasses on Numbered Learning Path */}
+                    {section.masterclasses.length > 0 && (
+                      <div className="relative pl-10 space-y-6">
+                        {/* Connecting Vertical Line */}
+                        <div
+                          className="absolute top-4 bottom-4 left-[14px] w-[1px] bg-foreground z-0"
+                          aria-hidden="true"
+                        />
 
-                    {section.masterclasses.map((doc, idx) => {
-                      const volNum = (doc.order || idx + 1) < 10 ? `0${doc.order || idx + 1}` : `${doc.order || idx + 1}`;
-                      const titleClean = stripMasterclassTitlePrefix(doc.title);
-                      const barWidth = Math.min(
-                        100,
-                        Math.max(5, Math.round(((doc.wordCount || 1) / maxWordCount) * 100))
-                      );
-                      const cardLabel = isMultiVolume ? `VOLUME ${doc.order || idx + 1}` : 'MASTERCLASS';
+                        {section.masterclasses.map((doc, idx) => {
+                          const volNum = (doc.order || idx + 1) < 10 ? `0${doc.order || idx + 1}` : `${doc.order || idx + 1}`;
+                          const titleClean = stripMasterclassTitlePrefix(doc.title);
+                          const barWidth = Math.min(
+                            100,
+                            Math.max(5, Math.round(((doc.wordCount || 1) / maxWordCount) * 100))
+                          );
+                          const cardLabel = isMultiVolume ? `VOLUME ${doc.order || idx + 1}` : 'MASTERCLASS';
 
-                      return (
-                        <div key={doc.slug} className="relative z-10">
-                          {/* Rail Node */}
-                          <div
-                            className="absolute -left-10 top-3 w-[28px] h-[28px] bg-background border border-foreground font-mono text-[11px] font-semibold flex items-center justify-center text-foreground z-10"
-                            aria-hidden="true"
-                          >
-                            {volNum}
-                          </div>
+                          return (
+                            <div key={doc.slug} className="relative z-10">
+                              {/* Rail Node */}
+                              <div
+                                className="absolute -left-10 top-3 w-[28px] h-[28px] bg-background border border-foreground font-mono text-[11px] font-semibold flex items-center justify-center text-foreground z-10"
+                                aria-hidden="true"
+                              >
+                                {volNum}
+                              </div>
 
-                          {/* Volume Card */}
+                              {/* Volume Card */}
+                              <Link
+                                href={`/${doc.slug}`}
+                                className="group block min-h-[44px] p-4 md:p-5 border border-border rounded-lg bg-background hover:border-foreground transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-foreground focus-visible:outline-offset-2"
+                              >
+                                <div className="text-[11px] font-sans font-semibold tracking-wider text-muted uppercase mb-1">
+                                  {cardLabel}
+                                </div>
+                                <h3 className="text-[17px] md:text-lg font-medium text-foreground leading-snug mb-1.5 group-hover:underline">
+                                  {titleClean}
+                                </h3>
+                                <p className="text-sm text-muted line-clamp-2 leading-relaxed mb-3">
+                                  {doc.description}
+                                </p>
+                                <div className="text-xs text-muted/80 font-medium mb-3">
+                                  {doc.readTime}
+                                </div>
+
+                                {/* 2px Reading-Length Bar */}
+                                <div
+                                  className="w-full h-[2px] bg-border rounded-full overflow-hidden"
+                                  title={`Reading time relative to longest note on page: ${barWidth}%`}
+                                >
+                                  <div
+                                    className="h-full bg-foreground transition-all duration-300"
+                                    style={{ width: `${barWidth}%` }}
+                                  />
+                                </div>
+                              </Link>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
+
+                    {/* Articles in Subject */}
+                    {section.articles.length > 0 && (
+                      <div className="space-y-3 pt-1">
+                        {section.articles.map((doc) => (
                           <Link
+                            key={doc.slug}
                             href={`/${doc.slug}`}
                             className="group block min-h-[44px] p-4 md:p-5 border border-border rounded-lg bg-background hover:border-foreground transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-foreground focus-visible:outline-offset-2"
                           >
                             <div className="text-[11px] font-sans font-semibold tracking-wider text-muted uppercase mb-1">
-                              {cardLabel}
+                              ARTICLE
                             </div>
                             <h3 className="text-[17px] md:text-lg font-medium text-foreground leading-snug mb-1.5 group-hover:underline">
-                              {titleClean}
+                              {doc.title}
                             </h3>
                             <p className="text-sm text-muted line-clamp-2 leading-relaxed mb-3">
                               {doc.description}
                             </p>
-                            <div className="text-xs text-muted/80 font-medium mb-3">
-                              {doc.readTime}
-                            </div>
-
-                            {/* 2px Reading-Length Bar */}
-                            <div
-                              className="w-full h-[2px] bg-border rounded-full overflow-hidden"
-                              title={`Reading time relative to longest note on page: ${barWidth}%`}
-                            >
-                              <div
-                                className="h-full bg-foreground transition-all duration-300"
-                                style={{ width: `${barWidth}%` }}
-                              />
+                            <div className="text-xs text-muted/80 font-medium flex items-center gap-2">
+                              <span>{doc.readTime}</span>
+                              {doc.updated && (
+                                <>
+                                  <span>&middot;</span>
+                                  <span>{formatDateDisplay(doc.updated)}</span>
+                                </>
+                              )}
                             </div>
                           </Link>
-                        </div>
-                      );
-                    })}
-                  </div>
-                )}
-
-                {/* Articles in Subject */}
-                {section.articles.length > 0 && (
-                  <div className="space-y-3 pt-1">
-                    {section.articles.map((doc) => (
-                      <Link
-                        key={doc.slug}
-                        href={`/${doc.slug}`}
-                        className="group block min-h-[44px] p-4 md:p-5 border border-border rounded-lg bg-background hover:border-foreground transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-foreground focus-visible:outline-offset-2"
-                      >
-                        <div className="text-[11px] font-sans font-semibold tracking-wider text-muted uppercase mb-1">
-                          ARTICLE
-                        </div>
-                        <h3 className="text-[17px] md:text-lg font-medium text-foreground leading-snug mb-1.5 group-hover:underline">
-                          {doc.title}
-                        </h3>
-                        <p className="text-sm text-muted line-clamp-2 leading-relaxed mb-3">
-                          {doc.description}
-                        </p>
-                        <div className="text-xs text-muted/80 font-medium flex items-center gap-2">
-                          <span>{doc.readTime}</span>
-                          {doc.updated && (
-                            <>
-                              <span>&middot;</span>
-                              <span>{formatDateDisplay(doc.updated)}</span>
-                            </>
-                          )}
-                        </div>
-                      </Link>
-                    ))}
-                  </div>
+                        ))}
+                      </div>
+                    )}
+                  </>
                 )}
               </section>
             );
