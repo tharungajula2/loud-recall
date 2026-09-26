@@ -5,7 +5,7 @@ subject: ai
 format: masterclass
 order: 2
 status: live
-updated: 2026-09-25
+updated: 2026-09-26
 verified: false
 tags:
   - machine learning
@@ -22,7 +22,7 @@ tags:
   - scikit-learn
 ---
 
-## Part 0 — The project, and how to read this
+## Part 0 — The project, and the path through it
 
 One project runs through every page: a retail credit risk system built in Python on **466,285 public LendingClub loans** issued in the US between 2007 and 2014. It predicts which borrowers will default, turns that prediction into a scorecard, estimates what a default costs, and carries the results into IFRS 9 provisions, a US CECL comparison and Basel capital.
 
@@ -117,16 +117,20 @@ Every stage of a machine learning project happens somewhere inside it. Where the
 
 Every box in the map is explained in its own part — you do not need to follow it yet. OOT means the **out-of-time** sample: later loans kept back to test on (Part 4). The RAG assistant is a question-answering tool over the project's documents, outside the scope of this note.
 
-### How each part reads
+### The path through this note
 
-| Block | What it holds |
-|---|---|
-| **The cheatsheet** | The idea, compressed: tables, the one formula that defines it, and rules of thumb |
-| **In the project** | What the retail credit risk repository does at this step, with the numbers its code produces |
-| **Side-line** | A technique the project did not use, run on the same loans for this note. Not in the repository |
-| **In the churn project** | The bank churn neural network, wherever it teaches the step better |
+Twenty parts, six stages. Each stage answers one question and hands its result to the next:
 
-Every part ends with the decision it forces and two checks with worked answers. **New to credit risk, statistics or Python?** Read the starter kit that follows this part before Part 1 — it covers everything the note assumes.
+| Stage | Parts | The question | What it hands on |
+|---|---|---|---|
+| **Get the data right** | 1 Framing · 2 Cleaning · 3 Exploring · 4 Leakage and the split · 5 Features | What exactly are we predicting, and from what honest inputs? | A target, three clean samples, model-ready features |
+| **Build and compare models** | 6 Baselines and metrics · 7 Linear regression · 8 Logistic regression and the scorecard · 9 Trees and ensembles · 10 Other algorithms · 11 Unsupervised learning | Which model ranks the loans best — and against what bar? | A champion scorecard and its challengers |
+| **Push further** | 12 Class imbalance · 13 Neural networks · 14 Overfitting and tuning | Can the rare target, a deeper model or better settings add anything? | An honest ceiling on what the data allows |
+| **Make it trustworthy** | 15 Calibration and decisions · 16 Explaining · 17 Monitoring | Are the probabilities true, the reasons clear, the model still valid? | PDs a bank can use |
+| **Use it in credit** | 18 LGD, EAD, expected loss · 19 Lifetime PD, IFRS 9, CECL, Basel | What do those PDs cost, in provisions and capital? | Money numbers |
+| **Run it for real** | 20 From notebook to production | How does it survive outside a notebook? | A system |
+
+Every part closes with a **Decision** line: what the part settled, carried into the next.
 
 ### The two projects
 
@@ -138,9 +142,19 @@ Every part ends with the decision it forces and two checks with worked answers. 
 | Core models | Weight-of-evidence logistic regression and scorecard; two-stage LGD model; hazard curve for lifetime PD | Keras neural network, tuned, then trained on SMOTE-balanced data |
 | What the output feeds | Provisions (IFRS 9, CECL), capital (Basel), monitoring | A retention campaign |
 
-### What is real, what is demonstration, what is a proxy
+<details>
+<summary>About this note — how parts read, what is real, versions</summary>
 
-The project is honest about its own edges, and so is this note.
+**How each part reads.**
+
+| Block | What it holds |
+|---|---|
+| **The cheatsheet** | The idea, compressed: tables, the one formula that defines it, and rules of thumb |
+| **In the project** | What the retail credit risk repository does at this step, with the numbers its code produces |
+| **Side-line** | A technique the project did not use, run on the same loans for this note. Not in the repository |
+| **In the churn project** | The bank churn neural network, wherever it teaches the step better |
+
+**What is real, what is demonstration, what is a proxy.**
 
 | Status | Components |
 |---|---|
@@ -148,16 +162,29 @@ The project is honest about its own edges, and so is this note.
 | Synthetic demonstration | The credit conversion factor (CCF) model, on 5,000 simulated revolving accounts — term loans have no undrawn limit to convert |
 | Proxy | Roll rates and the transition matrix, built from one snapshot rather than monthly histories; origination PD approximated by the average PD of each grade |
 | Needs a manual step | The RAG assistant's live answers need an API key |
+| The churn notebook | Keras networks with SGD, Adam, dropout and a grid search; SMOTE-balanced final model |
+| Explored in this note only | The one-hot pipeline; the leakage demonstration; the interest-rate regression; single trees, random forest, LightGBM, XGBoost and the blend; cross-validated tuning; kNN, naive Bayes, SVM; clustering, PCA and anomaly detection; the network on the loan book; the imbalance comparison; calibrating the boosted model; SHAP |
 
-All of the project's numbers in this note were reproduced by re-running its pipeline end to end on the raw file. All side-line numbers come from the code shown beside them, with `random_state=42`.
+All of the project's numbers were reproduced by re-running its pipeline end to end on the raw file. All side-line numbers come from the code shown beside them, with `random_state=42`.
+
+**Library versions.** All code is ordinary Python; versions change, the ideas do not.
+
+| Where | Versions |
+|---|---|
+| The project's recorded runtime | Python 3.11+, pandas 3.0.5, NumPy 2.5.1, scikit-learn 1.9.0, statsmodels 0.14.6, SciPy 1.18.0 [verify] |
+| This note's re-run and side-lines | pandas 3.0.2, NumPy 2.4.4, scikit-learn 1.8.0, statsmodels 0.15.0, LightGBM 4.7.0, XGBoost 3.4.1, imbalanced-learn 0.14.2, SHAP 0.52.0 [verify] |
+| The churn notebook | TensorFlow 2.17.1, Keras 3.5.0, SciKeras 0.13.0 [verify] |
+
+</details>
 
 ---
 
 ## Before you start — the starter kit
 
-Everything in this note is built from four small toolkits: a little credit risk, a little statistics, a little Python, and the vocabulary of machine learning. If any of them is new, read this section first; every later part assumes only what is here.
+Everything in this note is built from four small toolkits: a little credit risk, a little statistics, a little Python, and the vocabulary of machine learning. Open whichever is new to you; every later part assumes only what is here.
 
-### Credit risk, from zero
+<details>
+<summary>Credit risk, from zero</summary>
 
 | Term | Plain meaning | In this project |
 |---|---|---|
@@ -166,18 +193,21 @@ Everything in this note is built from four small toolkits: a little credit risk,
 | Grade, sub-grade | LendingClub's own risk rating: A (safest) to G, each split 1 to 5, so A1 … G5. It set the interest rate | A strong input — and the bar to beat |
 | Default | The borrower stops paying | Charged off, or more than 30 days late and heading for charge-off (Part 1) |
 | **PD** — probability of default | How likely the borrower is to default within a period | The main model of this project |
-| **LGD** — loss given default | If they default, the share of the balance that is lost | About 93% here (Part 17) |
-| **EAD** — exposure at default | How much is owed at the moment of default | The unpaid balance (Part 17) |
-| **Expected loss** | PD × LGD × EAD — the loss to expect on average | Part 17 |
+| **LGD** — loss given default | If they default, the share of the balance that is lost | About 93% here (Part 18) |
+| **EAD** — exposure at default | How much is owed at the moment of default | The unpaid balance (Part 18) |
+| **Expected loss** | PD × LGD × EAD — the loss to expect on average | Part 18 |
 | Scorecard | A points table: each answer on the application earns points, the total is the score | Part 8 |
-| **Provision** | Money set aside in the accounts today for losses expected later | Worked out under IFRS 9 (international rules), where it is called **ECL**, expected credit loss, and compared with CECL (US rules), Part 18 |
-| **Capital** | The bank's own money, kept to absorb losses bigger than expected | Worked out under Basel rules, Part 18 |
+| **Provision** | Money set aside in the accounts today for losses expected later | Worked out under IFRS 9 (international rules), where it is called **ECL**, expected credit loss, and compared with CECL (US rules), Part 19 |
+| **Capital** | The bank's own money, kept to absorb losses bigger than expected | Worked out under Basel rules, Part 19 |
 | Vintage | All loans issued in the same period | Loans issued in 2014 are the 2014 vintage |
 | DTI | Debt-to-income: the borrower's monthly debt payments ÷ monthly income | `dti` |
 | Revolving utilisation | The share of the borrower's credit-card limits already in use | `revol_util` |
 | Inquiries | How many times lenders checked the borrower's credit recently — a sign of hunting for credit | `inq_last_6mths` |
 
-### Statistics, from zero
+</details>
+
+<details>
+<summary>Statistics, from zero</summary>
 
 Examples use annual income in the training sample of 184,525 loans.
 
@@ -190,7 +220,7 @@ Examples use annual income in the training sample of 184,525 loans.
 | Standard deviation | The typical distance of values from their mean | $56,231 |
 | Variance | The standard deviation squared | — |
 | Distribution | How the values are spread | Income is **skewed**: a long tail of high earners, which is why the mean sits above the median |
-| Normal distribution | The symmetric bell curve many measurements roughly follow | Used inside the Basel formula, Part 18 |
+| Normal distribution | The symmetric bell curve many measurements roughly follow | Used inside the Basel formula, Part 19 |
 | Correlation | How strongly two variables move together, from −1 to +1 | Income and loan amount: +0.48 |
 | Probability | A chance between 0 and 1 | A PD of 0.034 is 3.4% |
 | Odds, log-odds | Another way to state a chance — see below | Part 8 |
@@ -209,7 +239,10 @@ where
 
 A 20% chance is odds of 0.2 ÷ 0.8 = 0.25 — "one to four" — and log-odds of ln 0.25 = −1.39. A 50% chance is odds of 1 and log-odds of 0. Logistic regression (Part 8) works in log-odds because they run from minus to plus infinity, like a straight line.
 
-### Python, from zero
+</details>
+
+<details>
+<summary>Python, from zero</summary>
 
 | Idea | What it looks like | Meaning |
 |---|---|---|
@@ -244,7 +277,10 @@ model.predict_proba(X_test)[:, 1]           # the probability of the positive cl
 
 To run the code: install Python, run `pip install pandas pyarrow scikit-learn statsmodels lightgbm xgboost imbalanced-learn shap` once, and put the project's raw file, `loan_data_2007_2014.csv`, beside your notebook. Then run the blocks in a Jupyter notebook, in order. They build on each other: the loans loaded in Part 1 are split in Part 4 and prepared in Part 5, and every model after that uses them. Part 8's block needs the project's own fitted binner from its repository; every other block needs only the raw file.
 
-### Machine learning, from zero
+</details>
+
+<details>
+<summary>Machine learning, from zero</summary>
 
 | Term | Meaning | Here |
 |---|---|---|
@@ -255,9 +291,11 @@ To run the code: install Python, run `pip install pandas pyarrow scikit-learn st
 | Training, fitting | Learning the rule from labelled rows | `model.fit(...)` |
 | Prediction, scoring | Applying the rule to new rows | `model.predict_proba(...)` |
 | Parameters | What the model learns — coefficients, split points, weights | Found by `fit` |
-| Hyperparameters | Settings chosen before training — depth, learning rate, number of trees | Chosen by you, or by tuning (Part 13) |
+| Hyperparameters | Settings chosen before training — depth, learning rate, number of trees | Chosen by you, or by tuning (Part 14) |
 | Train, test | Rows to learn from, and rows kept back to judge on | Part 4 |
-| Overfitting | Learning the training rows' noise instead of the pattern | Part 13 |
+| Overfitting | Learning the training rows' noise instead of the pattern | Part 14 |
+
+</details>
 
 With these four toolkits, every part that follows can be read without leaving the page.
 
@@ -272,7 +310,7 @@ With these four toolkits, every part that follows can be read without leaving th
 | **Supervised: classification** | Examples with a known label | A class, or the probability of one | Default within 12 months; churn |
 | **Supervised: regression** | Examples with a known number | A number | LGD, the CCF, a loan's interest rate |
 | **Time-to-event (survival)** | When events happened, and who is still waiting | How the risk builds over time | The lifetime PD curve |
-| **Unsupervised** | Examples with no label | Structure: groups, directions, oddities | Borrower segments, anomalies (Part 19) |
+| **Unsupervised** | Examples with no label | Structure: groups, directions, oddities | Borrower segments, anomalies (Part 11) |
 | **Reinforcement** | Rewards from acting | A policy for acting | Not used here |
 
 Framing is five decisions, made before any code:
@@ -312,7 +350,7 @@ loans["vintage_year"] = issue.dt.year
 ```
 
 | | Loans | Share |
-|---|---:|---:|
+|---|---|---|
 | All loans | 466,285 | 100% |
 | Ever defaulted | 50,968 | 10.93% |
 | **Defaulted within 12 months — the target** | **16,018** | **3.44%** |
@@ -321,7 +359,7 @@ loans["vintage_year"] = issue.dt.year
 Why the window matters shows up the moment the book is cut by year of issue — the **vintage**:
 
 | Vintage | Loans | Ever defaulted | Within 12 months |
-|---:|---:|---:|---:|
+|---|---|---|---|
 | 2007 | 603 | 26.2% | 5.14% |
 | 2008 | 2,393 | 20.7% | 6.56% |
 | 2009 | 5,281 | 13.7% | 4.64% |
@@ -340,19 +378,6 @@ The 2014 loans look safest on "ever defaulted" only because they had barely a ye
 The target is `Exited`: whether the customer left. About one customer in five did, so the imbalance is milder than the loan book's one in thirty. The unit is a customer; the prediction point is the snapshot date of the data.
 
 **Decision:** one row per loan; the target is default within 12 months of issue, 3.44% of loans; everything the model sees must be known on the day the loan is issued.
-
-### Check yourself
-
-1. A loan issued in March 2013 has its last payment in May 2013 and is later charged off. Is it a 12-month default?
-2. Why would a model trained on "ever defaulted" rate 2014 loans as safer than they are?
-
-<details>
-<summary>Answers</summary>
-
-1. Yes. The estimated default date is May 2013 plus three months, August 2013 — five months after issue, inside the 12-month window.
-2. Because 2014 loans had only about a year of history when the data was taken, so far fewer of them had yet reached default. The label would be measuring age, not risk; a fixed window removes that.
-
-</details>
 
 ---
 
@@ -405,7 +430,7 @@ Cleaning decisions the code makes:
 What the missing values look like in the training sample:
 
 | Column | Missing | What missing means |
-|---|---:|---|
+|---|---|---|
 | `mths_since_last_record` | 90.8% | No public record, ever |
 | `mths_since_last_delinq` | 58.3% | Never delinquent |
 | `tot_cur_bal` | 30.5% | Not collected before later vintages — structural |
@@ -434,19 +459,6 @@ Nothing downstream used the wrong range — the samples themselves were split on
 The notebook removed outliers with the interquartile-range rule on four columns, dropping **374 customers**: 15 on credit score and **359 on age**. Older customers are exactly the group that churns most — the notebook's own exploratory analysis (EDA, Part 3) found age the strongest correlate of leaving. Removing them before the split also removed them from the test set, so the reported scores describe a bank without its older customers, and the model has never seen one. Outliers that are real customers should be kept and handled — capped, binned or transformed — not deleted.
 
 **Decision:** parse types first; keep missing values and give them meaning; drop structurally missing fields; never delete real customers to make a distribution look tidy.
-
-### Check yourself
-
-1. Without the century fix, what happens to a credit history length for a borrower whose first credit line was in December 1968 and whose loan was issued in 2012?
-2. Median imputation would fill `mths_since_last_delinq` for 58% of borrowers. Why is that wrong here, and what should replace it?
-
-<details>
-<summary>Answers</summary>
-
-1. The first credit line would read December 2068, so the history length — issue date minus first credit line — comes out at about minus 56 years instead of about 43.
-2. The value is missing because the borrower has never been delinquent. Filling in a median would give them a delinquency that never happened. Keep a "never delinquent" flag, and let the value itself be missing or sit in its own bin, as the project's binning does.
-
-</details>
 
 ---
 
@@ -487,7 +499,7 @@ rate_by(train, "annual_inc", bands=5)
 Default rates within 12 months, training sample (184,525 loans, 3.43% overall):
 
 | Grade | A | B | C | D | E | F | G |
-|---|---:|---:|---:|---:|---:|---:|---:|
+|---|---|---|---|---|---|---|---|
 | Loans | 31,018 | 59,958 | 46,953 | 27,311 | 12,422 | 5,551 | 1,312 |
 | Default rate | 1.22% | 2.32% | 3.71% | 5.34% | 6.21% | 8.39% | 9.22% |
 
@@ -513,19 +525,6 @@ The project's EDA lives in its reporting tables rather than in a notebook: the v
 
 **Decision:** every strong variable is monotonic in risk, so ordered bins will work; income needs taming; the delinquency gap is a flag, not noise; time must be part of the test.
 
-### Check yourself
-
-1. DTI moves the default rate from 2.92% to 4.41%; grade moves it from 1.22% to 9.22%. Which will carry more weight in a model, and why?
-2. Why is Spearman the safer default than Pearson for income against loan amount?
-
-<details>
-<summary>Answers</summary>
-
-1. Grade. Its bands separate defaulters from non-defaulters far more — a 7.6-fold spread against 1.5-fold for DTI — and Part 5 confirms it: information value 0.294 for grade against 0.023 for DTI.
-2. Income is heavily skewed, with a tail running to $7 million. Pearson is pulled by a few extreme values; Spearman uses ranks, so one very rich borrower counts as one rank, not as a lever on the whole line.
-
-</details>
-
 ---
 
 ## Part 4 — Leakage, and the split that tells the truth
@@ -548,7 +547,7 @@ The project's EDA lives in its reporting tables rather than in a notebook: the v
 | **Stratified** | The target is rare — it keeps the same event rate on every side |
 | **Out-of-time (OOT)** | The model will be used on later data. Always, in credit risk |
 | Group | Several rows belong to one entity |
-| k-fold cross-validation | Choosing settings without using up the test set (Part 13) |
+| k-fold cross-validation | Choosing settings without using up the test set (Part 14) |
 | Time-series cross-validation | Choosing settings on data ordered in time |
 
 The rule behind all of it: **fit on train, choose on validation, judge once on test.** Every learned step — scaling, imputing, encoding, binning — belongs to "fit".
@@ -568,7 +567,7 @@ train, test = train_test_split(dev, test_size=0.2, stratify=dev.default_12m, ran
 ```
 
 | Sample | Loans | Defaults | Default rate | Used for |
-|---|---:|---:|---:|---|
+|---|---|---|---|---|
 | Train | 184,525 | 6,329 | 3.4299% | Fitting bins and models |
 | Test | 46,132 | 1,582 | 3.4293% | Judging on unseen loans from the same years |
 | Out-of-time, 2014 | 235,628 | 8,107 | 3.4406% | Judging on the next year's loans |
@@ -580,7 +579,7 @@ Stratification is why train and test agree to the fourth decimal. And the WoE bi
 Add four post-origination fields — principal repaid, total paid, recoveries and last payment amount — to the same logistic regression:
 
 | Model | Test AUC |
-|---|---:|
+|---|---|
 | Application data only | 0.6872 |
 | Plus four payment fields | **0.9993** |
 
@@ -592,19 +591,6 @@ The notebook trained every network with `validation_data=(X_test, y_test)`, watc
 
 **Decision:** application-time fields only; development 2007–2013, stratified 80/20; 2014 untouched until the end; every learned transformation fitted on train.
 
-### Check yourself
-
-1. A colleague proposes a random 80/20 split of all 466,285 loans instead of holding out 2014. What does the test score stop measuring?
-2. Why must the WoE bins be fitted on the training sample only, when they are "just" a transformation?
-
-<details>
-<summary>Answers</summary>
-
-1. Whether the model survives the passage of time. With 2014 loans mixed into training, the model has already seen the year it will be judged on, so drift between years is invisible — exactly the failure that hurts in production.
-2. Because binning learns from the target: bin edges and WoE values come from default rates. Fitted on test data too, the test sample's own defaults would shape the rules used to score it, and the test score would be optimistic.
-
-</details>
-
 ---
 
 ## Part 5 — Features: preprocessing, engineering, selection
@@ -615,7 +601,7 @@ The notebook trained every network with `validation_data=(X_test, y_test)`, watc
 
 | Scaling | How | Needed by |
 |---|---|---|
-| Standardise | Subtract the mean, divide by the standard deviation | Regularised linear and logistic regression (Part 7), kNN and SVM (Part 10), neural networks (Part 12), PCA and k-means (Part 19) |
+| Standardise | Subtract the mean, divide by the standard deviation | Regularised linear and logistic regression (Part 7), kNN and SVM (Part 10), neural networks (Part 13), PCA and k-means (Part 11) |
 | Min–max | Squeeze into 0 to 1 | Some neural networks, bounded inputs |
 | Robust | Subtract the median, divide by the interquartile range | Columns with heavy outliers |
 | None | — | Trees, random forests, boosting — splits do not care about scale |
@@ -648,7 +634,7 @@ The notebook trained every network with `validation_data=(X_test, y_test)`, watc
 | Wrapper | Forward or backward selection, recursive elimination | Try subsets with the model |
 | Embedded | Lasso (L1, Part 7), tree importance | Selection happens while fitting |
 | Redundancy | Correlation matrix, variance inflation factor (VIF) | Drop near-copies |
-| Stability | CSI between samples (Part 16) | Drop features whose distribution moves |
+| Stability | CSI between samples (Part 17) | Drop features whose distribution moves |
 
 ### Weight of evidence and information value
 
@@ -683,7 +669,7 @@ WoE handles missing values (their own bin), outliers (they fall into the end bin
 The binner starts every numeric variable at 20 equal-count bins, then merges neighbours until **every bin holds at least 5% of loans and the WoE moves in one direction only**. Laplace smoothing — adding 0.5 to every count — keeps WoE finite when a bin has no defaults. Income, after binning:
 
 | Annual income | Loans | Default rate | WoE |
-|---|---:|---:|---:|
+|---|---|---|---|
 | Below $40,000 | 37,178 | 4.64% | −0.315 |
 | $40,000–50,000 | 27,926 | 3.94% | −0.144 |
 | $50,000–65,000 | 37,734 | 3.52% | −0.026 |
@@ -697,7 +683,7 @@ Monotonic, as Part 3 promised — and the $7 million income sits harmlessly in t
 Information value decides who enters:
 
 | Variable | IV | Fate |
-|---|---:|---|
+|---|---|---|
 | `grade` | 0.294 | Model B only |
 | `int_rate` | 0.277 | Model B only |
 | `inq_last_6mths` | 0.076 | Both models |
@@ -763,7 +749,7 @@ roc_auc_score(y_test, logit.predict_proba(X_test)[:, 1])     # 0.6872
 ```
 
 | Model | Inputs | Test AUC | OOT AUC |
-|---|---|---:|---:|
+|---|---|---|---|
 | Project Model A — WoE, 7 variables | Borrower facts only | 0.6485 | 0.6357 |
 | Project Model B — WoE, 10 variables | Plus LendingClub's pricing | 0.6817 | 0.6923 |
 | Side-line — one-hot, 24 variables | Everything known at application | 0.6872 | 0.6960 |
@@ -771,19 +757,6 @@ roc_auc_score(y_test, logit.predict_proba(X_test)[:, 1])     # 0.6872
 Twenty-four raw variables in 51 columns edge out ten binned ones by 0.004 on the out-of-time sample. The gap is small because most of the signal is in grade, income and inquiries, which both routes capture. The scorecard gives up almost nothing for being readable.
 
 **Decision:** bin into monotonic WoE for the scorecard, drop unstable and weak variables, keep missing values as their own bins — and remember that the one-hot pipeline is the benchmark any cleverer model must beat.
-
-### Check yourself
-
-1. The top income bin has 27,678 loans and 626 defaults; the training sample has 178,196 non-defaults and 6,329 defaults. Work out the bin's WoE.
-2. Why does a random forest not need the scaler in the pipeline, when the logistic regression does?
-
-<details>
-<summary>Answers</summary>
-
-1. %good = (27,678 − 626) ÷ 178,196 = 15.18%; %bad = 626 ÷ 6,329 = 9.89%. WoE = ln(15.18 ÷ 9.89) = ln(1.535) = **+0.428**: safer than average.
-2. A tree splits on thresholds — "income above $102,200?" — and a threshold works the same whatever the units. The logistic regression's penalty, and the speed at which it fits, depend on coefficient sizes, which depend on units.
-
-</details>
 
 ---
 
@@ -867,7 +840,7 @@ where
 On the test sample, 96.57% of loans did not default within 12 months.
 
 | Model | Accuracy | AUC |
-|---|---:|---:|
+|---|---|---|
 | Dummy — "nobody defaults" | **96.57%** | 0.5000 |
 | LendingClub sub-grade alone | — | 0.6517 test · 0.6886 OOT |
 | Project Model B at a 50% threshold | **96.57%** | 0.6817 |
@@ -875,7 +848,7 @@ On the test sample, 96.57% of loans did not default within 12 months.
 Model B's highest predicted PD on the whole test sample is 21.1%, so at the textbook 50% threshold it flags nobody and scores exactly the dummy's accuracy. Its value is in the **ranking**, which only threshold-free metrics see. At a 5% threshold — the matrix above — it flags one loan in five, catches 41.7% of the defaults, and is right 7.1% of the time it flags: twice the 3.43% base rate. Accuracy falls to 79.4%, and the model has become useful.
 
 | Model B, test sample | Value | Against |
-|---|---:|---|
+|---|---|---|
 | PR-AUC | 0.0675 | 0.0343 for random ranking |
 | Log loss | 0.1425 | — |
 | Brier score | 0.0326 | — |
@@ -888,7 +861,7 @@ And note the rule baseline: **LendingClub's sub-grade on its own scores 0.6886 o
 The validation battery runs every model on all three samples:
 
 | Model | Sample | AUC | Gini | KS | Brier | Hosmer–Lemeshow p |
-|---|---|---:|---:|---:|---:|---:|
+|---|---|---|---|---|---|---|
 | A | Train | 0.6507 | 0.3013 | 0.2193 | 0.0328 | 0.001 |
 | A | Test | 0.6484 | 0.2969 | 0.2233 | 0.0328 | 0.236 |
 | A | OOT 2014 | 0.6357 | 0.2715 | 0.1955 | 0.0330 | 0.0000003 |
@@ -896,33 +869,20 @@ The validation battery runs every model on all three samples:
 | B | Test | 0.6817 | 0.3634 | 0.2728 | 0.0326 | 0.494 |
 | B | OOT 2014 | 0.6923 | 0.3845 | 0.2843 | 0.0327 | 0.001 |
 
-A Gini of 0.30–0.38 is modest for a credit scorecard — typical application scorecards with bureau data reach 0.40–0.60 — because LendingClub had already screened these borrowers, so the book holds only approved applicants. The Hosmer–Lemeshow column is calibration, and Part 14 explains why it fails on 235,628 loans even when the model is close.
+A Gini of 0.30–0.38 is modest for a credit scorecard — typical application scorecards with bureau data reach 0.40–0.60 — because LendingClub had already screened these borrowers, so the book holds only approved applicants. The Hosmer–Lemeshow column is calibration, and Part 15 explains why it fails on 235,628 loans even when the model is close.
 
 ### In the churn project
 
-The notebook chose **recall** for churners as its metric, because a missed churner is a lost customer while a false alarm only costs a retention offer. The first network, trained with plain stochastic gradient descent (SGD — gradient descent on small random batches, Part 12):
+The notebook chose **recall** for churners as its metric, because a missed churner is a lost customer while a false alarm only costs a retention offer. The first network, trained with plain stochastic gradient descent (SGD — gradient descent on small random batches, Part 13):
 
 | | Predicted stay | Predicted leave |
-|---|---:|---:|
+|---|---|---|
 | Actually stayed | 1,486 | 50 |
 | Actually left | 204 | 186 |
 
-Recall 186 ÷ 390 = **0.48**; precision 186 ÷ 236 = 0.79; AUC 0.8533. Part 11 shows what SMOTE did to that recall — and what it cost.
+Recall 186 ÷ 390 = **0.48**; precision 186 ÷ 236 = 0.79; AUC 0.8533. Part 12 shows what SMOTE did to that recall — and what it cost.
 
 **Decision:** rank with AUC, Gini and KS; judge probabilities with log loss, Brier and calibration; pick thresholds by what an error costs; never report accuracy on a 3% event.
-
-### Check yourself
-
-1. Model B's out-of-time AUC is 0.6923. What is its Gini?
-2. Lowering the threshold from 5% to 3% will change recall and precision how, and AUC how?
-
-<details>
-<summary>Answers</summary>
-
-1. Gini = 2 × 0.6923 − 1 = **0.3846** — the table's 0.3845 before rounding.
-2. More loans are flagged, so recall rises and precision falls. AUC does not change at all: it measures the ranking across every threshold, not the choice of one.
-
-</details>
 
 ---
 
@@ -952,7 +912,7 @@ $$
 
 where **ȳ** is the average of the target, so R² compares the model's squared errors with those of simply predicting the average.
 
-For linear regression there is an exact formula for the best coefficients. Most other models have none, and learn by **gradient descent** instead: start with any coefficients, measure the error, nudge every coefficient a small step in the direction that lowers it, and repeat until it stops falling. The size of the step is the **learning rate**. Neural networks (Part 12) learn exactly this way.
+For linear regression there is an exact formula for the best coefficients. Most other models have none, and learn by **gradient descent** instead: start with any coefficients, measure the error, nudge every coefficient a small step in the direction that lowers it, and repeat until it stops falling. The size of the step is the **learning rate**. Neural networks (Part 13) learn exactly this way.
 
 | Assumption | Means | Check |
 |---|---|---|
@@ -987,7 +947,7 @@ r2_score(X_test.int_rate, pred)        # 0.926
 **Interest rate ≈ 6.34% + 0.646% × sub-grade number.** Each step down the grade ladder costs the borrower about two-thirds of a percentage point.
 
 | Sub-grade | Number | Predicted rate |
-|---|---:|---:|
+|---|---|---|
 | A1 | 1 | 6.99% |
 | B5 | 10 | 12.81% |
 | D5 | 20 | 19.27% |
@@ -996,7 +956,7 @@ r2_score(X_test.int_rate, pred)        # 0.926
 One input explains 92.6% of the variation in rates, with a typical miss of 0.87 points. Add the loan's term and the year it was issued:
 
 | Input | Coefficient | Reading |
-|---|---:|---|
+|---|---|---|
 | Intercept | 2.942 | — |
 | Sub-grade number | +0.647 | Two-thirds of a point per step, as before |
 | 60-month term | −0.117 | At the same sub-grade, longer loans were priced a touch lower |
@@ -1015,27 +975,14 @@ The one place the project uses a straight line on purpose is the **credit conver
 Try the same tool on **LGD** — the share of the balance lost after default — for the 50,965 defaulted loans with a positive balance:
 
 | | Value |
-|---|---:|
+|---|---|
 | Loans with LGD of exactly 100% | 52.2% |
 | R² of a linear regression on six loan features | **0.006** |
 | Range of its predictions | 0.87 to 0.99 |
 
-The target is a lump at 100% plus a spread of partial losses, and a line through that predicts almost the average for everyone. Part 17 shows the project's answer: split the question in two.
+The target is a lump at 100% plus a spread of partial losses, and a line through that predicts almost the average for everyone. Part 18 shows the project's answer: split the question in two.
 
 **Decision:** use linear regression where the target is a number with a roughly straight-line relationship — pricing, CCF; reach for other shapes when the target is bounded or lumped.
-
-### Check yourself
-
-1. Using the simple line, what rate would a C3 loan (sub-grade 13) carry?
-2. The years-since-2007 coefficient is +0.651. What did an identical B3 loan cost in 2013 compared with 2009?
-
-<details>
-<summary>Answers</summary>
-
-1. 6.342 + 0.6464 × 13 = **14.75%**.
-2. Four years later, so about 4 × 0.651 = **2.6 points more**, with sub-grade and term held fixed.
-
-</details>
 
 ---
 
@@ -1077,7 +1024,7 @@ That default penalty surprises people: scikit-learn's coefficients are shrunk un
 The PD models are `statsmodels` logistic regressions on WoE inputs. Because WoE here is ln(good ÷ bad) — higher is safer — every coefficient should be **negative** on the log-odds of default, and the code flags any that are not.
 
 | Model A | Coefficient | p-value |
-|---|---:|---:|
+|---|---|---|
 | Intercept | −3.338 | — |
 | `inq_last_6mths` | −1.084 | < 10⁻¹³⁰ |
 | `annual_inc` | −0.976 | < 10⁻⁶² |
@@ -1090,7 +1037,7 @@ The PD models are `statsmodels` logistic regressions on WoE inputs. Because WoE 
 All seven negative, all overwhelmingly significant. **Model B** adds grade, interest rate and sub-grade — and two variables stop earning their place:
 
 | Model B | Coefficient | p-value | Reading |
-|---|---:|---:|---|
+|---|---|---|---|
 | `grade` | −0.618 | < 10⁻²⁰ | Carries most of the pricing signal |
 | `int_rate` | −0.236 | 0.0007 | Adds a little |
 | `sub_grade` | −0.107 | **0.088** | Not significant: a finer copy of grade |
@@ -1116,7 +1063,7 @@ So Factor = 20 ÷ 0.693 = **28.85**, and Offset = 600 − 28.85 × ln 50 = **487
 Model A's scorecard, for two applicants:
 
 | Attribute | Applicant 1 | Points | Applicant 2 | Points |
-|---|---|---:|---|---:|
+|---|---|---|---|---|
 | Inquiries, last 6 months | 0 | 88 | 2 or more | 64 |
 | Annual income | $80,000 | 90 | $35,000 | 74 |
 | Purpose | Credit card | 92 | Other | 72 |
@@ -1127,10 +1074,10 @@ Model A's scorecard, for two applicants:
 | **Score** | | **617** | | **515** |
 | **PD** | | **1.08%** | | **26.8%** |
 
-Every point is traceable to a bin and every bin to its default rate — the explanation is the model itself (Part 15). Cutting Model B's scores into eight rating grades gives a clean ladder on the training sample:
+Every point is traceable to a bin and every bin to its default rate — the explanation is the model itself (Part 16). Cutting Model B's scores into eight rating grades gives a clean ladder on the training sample:
 
 | Rating grade | Scores | Loans | Observed default rate |
-|---:|---|---:|---:|
+|---|---|---|---|
 | 1 | 614–639 | 21,930 | 0.86% |
 | 2 | 604–613 | 23,998 | 1.34% |
 | 3 | 597–603 | 22,475 | 1.94% |
@@ -1157,19 +1104,6 @@ score = offset - factor * model.predict(sm.add_constant(woe_test), which="linear
 ```
 
 **Decision:** Model B ranks best; its two insignificant inputs should go; the scorecard makes every PD explainable in points.
-
-### Check yourself
-
-1. Applicant 2 scores 515. Using the factor and offset, confirm the PD is about 27%.
-2. Model B's `term` coefficient is insignificant, yet term had an IV of 0.025 and a clear default gap in Part 3. How can both be true?
-
-<details>
-<summary>Answers</summary>
-
-1. ln(odds of repaying) = (515 − 487.1) ÷ 28.85 = 0.967, so the odds are e^0.967 = 2.63 to 1. PD = 1 ÷ 3.63 = **27.5%** — the 26.8% in the table comes from the unrounded points (516.1).
-2. Term matters on its own, but LendingClub already priced it into the grade and rate. Once grade and interest rate are in the model, term adds no new information — the same signal counted twice.
-
-</details>
 
 ---
 
@@ -1218,7 +1152,7 @@ where **p<sub>k</sub>** is the share of class *k* in a node. A node with 3.43% d
 
 ### In the project
 
-Boosting appears once, inside the LGD model: a `GradientBoostingRegressor` with 100 trees of depth 3 and learning rate 0.05 predicts how much is recovered on defaulted loans that recover anything (Part 17). The PD model stays a logistic scorecard.
+Boosting appears once, inside the LGD model: a `GradientBoostingRegressor` with 100 trees of depth 3 and learning rate 0.05 predicts how much is recovered on defaulted loans that recover anything (Part 18). The PD model stays a logistic scorecard.
 
 ### Side-line: one tree, then many
 
@@ -1267,7 +1201,7 @@ The same 24 inputs from Part 5, one tree at a time, deeper and deeper:
 </svg>
 
 | Model | Train AUC | Test AUC | OOT AUC |
-|---|---:|---:|---:|
+|---|---|---|---|
 | Tree, depth 2 | 0.6397 | 0.6354 | 0.6691 |
 | Tree, depth 4 | 0.6693 | 0.6602 | 0.6822 |
 | Tree, depth 6 | 0.6846 | 0.6683 | 0.6850 |
@@ -1295,7 +1229,7 @@ roc_auc_score(y_oot, gbm.predict_proba(L_oot)[:, 1])     # 0.6956
 ```
 
 | Model | Train AUC | Test AUC | OOT AUC |
-|---|---:|---:|---:|
+|---|---|---|---|
 | **Project Model B — scorecard** | 0.6839 | 0.6817 | 0.6923 |
 | Random forest, 300 trees | 0.8380 | 0.6925 | **0.7035** |
 | LightGBM, 300 trees | 0.8357 | 0.6935 | 0.6956 |
@@ -1312,19 +1246,6 @@ Four lessons, all worth more than any single number:
 - **A big train–test gap is normal for ensembles** — 0.84 against 0.69 — and not by itself a problem: judge them on test and out-of-time only.
 
 **Decision:** for this book, a tuned boosted model is a credible challenger worth about 0.01 of AUC; the scorecard remains the champion unless that gain pays for its opacity (Part 10).
-
-### Check yourself
-
-1. A node holds 1,000 loans of which 100 defaulted. What is its Gini impurity?
-2. Why does early stopping at 155 trees give almost the same test AUC as 300 trees, but a much lower train AUC?
-
-<details>
-<summary>Answers</summary>
-
-1. 1 − (0.1² + 0.9²) = 1 − (0.01 + 0.81) = **0.18**.
-2. The trees after about 155 were fitting noise in the training data: they raised the training score without improving predictions on unseen loans. Early stopping watches a validation set and stops when it stops improving.
-
-</details>
 
 ---
 
@@ -1346,16 +1267,16 @@ Four lessons, all worth more than any single number:
 ### Side-line: the whole field on one book
 
 | Model | Test AUC | OOT AUC |
-|---|---:|---:|
+|---|---|---|
 | kNN, k = 15 (40,000-loan sample) | 0.5597 | 0.5724 |
 | kNN, k = 200 (40,000-loan sample) | 0.6460 | 0.6652 |
 | Gaussian naive Bayes | 0.6569 | 0.6743 |
 | Project Model B — WoE scorecard | 0.6817 | 0.6923 |
 | Linear SVM, calibrated | 0.6856 | 0.6955 |
 | Logistic regression, one-hot | 0.6872 | 0.6960 |
-| Neural network, one small layer (Part 12) | 0.6937 | 0.6969 |
+| Neural network, one small layer (Part 13) | 0.6937 | 0.6969 |
 | XGBoost | 0.6994 | 0.7025 |
-| LightGBM, tuned (Part 13) | 0.6985 | 0.7033 |
+| LightGBM, tuned (Part 14) | 0.6985 | 0.7033 |
 | Random forest | 0.6925 | 0.7035 |
 
 kNN with 15 neighbours is nearly useless: when only one loan in thirty defaults, 15 neighbours hold about half a defaulter, so the vote is mostly noise. With 200 neighbours it recovers — and it still took a minute to score what logistic regression scores in a second. Naive Bayes pays for pretending the grade, the rate and the sub-grade are independent. Everything else lands within 0.01 of AUC.
@@ -1365,11 +1286,11 @@ kNN with 15 neighbours is nearly useless: when only one loan in thirty defaults,
 | If the problem has… | Start with | Then try |
 |---|---|---|
 | A table of numbers and categories | Logistic regression | Gradient boosting |
-| A regulator, a customer or a court asking "why?" | Scorecard or logistic regression | Boosting with monotone constraints and SHAP (Part 15) |
+| A regulator, a customer or a court asking "why?" | Scorecard or logistic regression | Boosting with monotone constraints and SHAP (Part 16) |
 | Images, text, audio, long sequences | A neural network | — |
 | Very few rows | Regularised linear model | Random forest |
 | Millions of rows and a latency budget | LightGBM | A linear model if latency is tight |
-| No labels | Clustering or anomaly detection (Part 19) | — |
+| No labels | Clustering or anomaly detection (Part 11) | — |
 
 Why banks still run scorecards when boosting wins by 0.01:
 
@@ -1385,22 +1306,60 @@ Where the gain is bigger and the explanation burden lighter — fraud, collectio
 
 **Decision:** on a table like this one, choose between a logistic scorecard and gradient boosting; the others are reference points, not candidates.
 
-### Check yourself
+---
 
-1. Why does kNN improve so much going from 15 neighbours to 200 on this book?
-2. A random forest and a tuned LightGBM tie at about 0.703 out of time. Name two reasons to prefer LightGBM in production anyway.
+## Part 11 — Unsupervised learning, briefly
 
-<details>
-<summary>Answers</summary>
+### The cheatsheet
 
-1. With a 3.4% default rate, 15 neighbours contain about 0.5 defaulters on average, so most votes are zero and the estimate is almost random. With 200 neighbours each estimate rests on about seven defaulters — enough to separate risky neighbourhoods from safe ones.
-2. It is far smaller and faster to score (hundreds of shallow trees against hundreds of deep ones), and it handles missing values and categories natively, so production code has fewer preprocessing steps that could differ from training.
+| Task | Methods | Use in credit |
+|---|---|---|
+| **Clustering** — group similar rows | k-means, hierarchical, DBSCAN, Gaussian mixtures | Segments for strategy, or for separate models |
+| **Dimensionality reduction** — fewer columns, most of the information | PCA; t-SNE and UMAP for pictures only | Compressing correlated bureau variables |
+| **Anomaly detection** — rows unlike the rest | Isolation forest, local outlier factor | Fraud screens, data errors |
 
-</details>
+| Choice | Rule of thumb |
+|---|---|
+| Scaling | Always, for distance-based methods |
+| Number of clusters | Elbow of the within-cluster error, silhouette score — and whether the segments are useful |
+| Judging | No labels to score against: judge by stability and by what the segments do |
+
+### Side-line: segments, components and oddities
+
+k-means with four clusters on seven standardised borrower variables — log loan amount, log income, DTI, utilisation, interest rate, open accounts, credit history:
+
+| Segment | Loans | Default rate | Median income | Median loan | DTI | Utilisation | Rate |
+|---|---|---|---|---|---|---|---|
+| Prime, low utilisation | 43,944 | **1.9%** | $70,000 | $11,200 | 10.0 | 32% | 9.7% |
+| Stretched, high DTI | 40,708 | 3.0% | $69,000 | $15,000 | 22.6 | 56% | 13.7% |
+| Large loans, cards near the limit | 50,035 | 4.0% | $78,000 | $18,200 | 15.4 | 77% | 16.8% |
+| Lower income, small loans | 49,838 | **4.5%** | $39,500 | $6,625 | 17.6 | 63% | 14.1% |
+
+The clusters never saw the target, yet they separate default rates from 1.9% to 4.5% — segments a strategy team could name and act on. The elbow was soft (average within-cluster error 5.83, 5.14, 4.71, 4.40 and 4.15 for two to six clusters), so four was chosen for usefulness, not by formula.
+
+**PCA** on 16 numeric inputs: the first component explains 18.9% of the variance, five explain 56%, and 12 are needed for 90%. Little redundancy — these inputs are mostly different information, so compressing them would throw signal away.
+
+**Isolation forest**, flagging the most unusual 1% of borrowers: 1,846 loans defaulting at **5.63%**, against 3.41% for everyone else. Unusual is riskier — a cheap screen worth feeding into a review queue, or into a model as a flag.
+
+```python
+from sklearn.cluster import KMeans
+from sklearn.ensemble import IsolationForest
+from sklearn.preprocessing import StandardScaler
+
+borrowers = X_train[["loan_amnt", "annual_inc", "dti", "revol_util", "int_rate",
+                     "open_acc", "credit_history_yrs"]].copy()
+borrowers[["loan_amnt", "annual_inc"]] = np.log1p(borrowers[["loan_amnt", "annual_inc"]])
+borrowers = borrowers.fillna(borrowers.median())
+scaled = StandardScaler().fit_transform(borrowers)
+segments = KMeans(n_clusters=4, n_init=10, random_state=42).fit_predict(scaled)
+odd = IsolationForest(contamination=0.01, random_state=42).fit_predict(scaled) == -1
+```
+
+**Decision:** clustering for strategy segments, not for the PD itself; PCA not worth it here; anomaly flags as a cheap extra input.
 
 ---
 
-## Part 11 — Class imbalance
+## Part 12 — Class imbalance
 
 ### The cheatsheet
 
@@ -1432,14 +1391,14 @@ where
 
 ### In the project
 
-No resampling at all — deliberately. The 3.44% default rate is handled by a stratified split (Part 4), threshold-free metrics (Part 6) and calibration tests (Part 14). The reason is the rest of the pipeline: PDs feed expected credit loss and Basel capital as **probabilities**, so a PD of 2% must mean two defaults in a hundred.
+No resampling at all — deliberately. The 3.44% default rate is handled by a stratified split (Part 4), threshold-free metrics (Part 6) and calibration tests (Part 15). The reason is the rest of the pipeline: PDs feed expected credit loss and Basel capital as **probabilities**, so a PD of 2% must mean two defaults in a hundred.
 
 ### Side-line: every remedy on the same model
 
 The one-hot logistic regression of Part 5, trained five ways, judged on the untouched test sample:
 
 | Training | Test AUC | Mean PD | Flagged at 50% | Recall | Precision |
-|---|---:|---:|---:|---:|---:|
+|---|---|---|---|---|---|
 | As it is | 0.6872 | 0.0341 | 0.0% | 0.000 | — |
 | `class_weight="balanced"` | 0.6873 | **0.4459** | 37.3% | 0.640 | 0.059 |
 | Random undersampling to 1:1 | 0.6870 | 0.4473 | 38.0% | 0.649 | 0.059 |
@@ -1467,14 +1426,14 @@ odds = p / (1 - p) * (pi / (1 - pi)) / (pi_s / (1 - pi_s))
 p_corrected = odds / (1 + odds)                        # mean 0.0345
 ```
 
-What that would cost in the project: Stage 1 ECL is PD × LGD × EAD (Part 18). Feed it probabilities that average 0.45 instead of 0.034 and the $30.27 million Stage 1 provision becomes roughly **thirteen times larger** — an accounting error created by a modelling habit.
+What that would cost in the project: Stage 1 ECL is PD × LGD × EAD (Part 19). Feed it probabilities that average 0.45 instead of 0.034 and the $30.27 million Stage 1 provision becomes roughly **thirteen times larger** — an accounting error created by a modelling habit.
 
 ### In the churn project
 
-The notebook's final model is the SMOTE network, and the resume's recall improvement comes from it:
+The notebook's final model is the SMOTE network, and its headline recall improvement comes from it:
 
 | Network | Recall for churners | Precision | Accuracy | AUC |
-|---|---:|---:|---:|---:|
+|---|---|---|---|---|
 | First model, SGD | 0.48 | 0.79 | 0.87 | 0.8533 |
 | Tuned, no resampling | 0.54 | 0.71 | 0.86 | 0.8547 |
 | **SMOTE-balanced** | **0.75** | 0.51 | 0.80 | 0.8515 |
@@ -1483,22 +1442,9 @@ Recall rose from 0.48 to 0.75, as reported. The AUC column tells the rest: the r
 
 **Decision:** keep the data as it is; choose the threshold on cost; resample only when a model cannot learn otherwise — and then recalibrate.
 
-### Check yourself
-
-1. A SMOTE model gives a loan a probability of 0.40. Train default rate 3.43%, resampled rate 50%. What is the corrected PD?
-2. Why did the project's pipeline make resampling a bad idea even though the scorecard's ranking would hardly change?
-
-<details>
-<summary>Answers</summary>
-
-1. Model odds = 0.40 ÷ 0.60 = 0.667. Multiply by (0.0343 ÷ 0.9657) ÷ (0.5 ÷ 0.5) = 0.0355: corrected odds = 0.0237, so PD = 0.0237 ÷ 1.0237 = **2.3%**.
-2. Because the PDs are used as probabilities downstream: in ECL, in capital, in pricing. Resampling leaves the ranking alone but inflates every PD, and every provision and capital number built on them.
-
-</details>
-
 ---
 
-## Part 12 — Neural networks, the right amount
+## Part 13 — Neural networks, the right amount
 
 ### The cheatsheet
 
@@ -1666,7 +1612,7 @@ model.fit(X_train, y_train, validation_data=(X_val, y_val), epochs=50, batch_siz
 `X_val` is written where the notebook passed the test set — the one change Part 4 asks for. The notebook then tried five versions:
 
 | Network | What changed | Recall | Precision | AUC |
-|---|---|---:|---:|---:|
+|---|---|---|---|---|
 | 64-32, SGD | Starting point | 0.48 | 0.79 | 0.8533 |
 | 64-32, Adam | Faster optimiser | 0.54 | 0.66 | 0.8503 |
 | + Dropout 0.3 | Regularisation | 0.43 | 0.80 | 0.8544 |
@@ -1688,7 +1634,7 @@ net.fit(X_train, y_train)
 ```
 
 | Network | Train AUC | Test AUC | OOT AUC |
-|---|---:|---:|---:|
+|---|---|---|---|
 | 64-32, early stopping on its default score | — | 0.6774 | 0.6802 |
 | 64-32, 10 epochs | 0.7345 | 0.6919 | 0.6854 |
 | 32, 10 epochs, stronger L2 | 0.7151 | **0.6937** | **0.6969** |
@@ -1698,22 +1644,9 @@ Two traps, both real. scikit-learn's early stopping watches **accuracy**, which 
 
 **Decision:** a neural network is the right tool for unstructured data and the churn exercise taught the craft; for the loan book, it earns no place over logistic regression or boosting.
 
-### Check yourself
-
-1. How many weights and biases does the churn network have, with 11 inputs, layers of 64 and 32, and one output?
-2. Why is early stopping on accuracy useless for the loan book, and what should it watch instead?
-
-<details>
-<summary>Answers</summary>
-
-1. 11 × 64 + 64 = 768 into the first layer; 64 × 32 + 32 = 2,080 into the second; 32 × 1 + 1 = 33 into the output. Total **2,881**.
-2. Accuracy stays at 96.57% — the share of non-defaulters — whether the network ranks well or badly, so it cannot tell a better epoch from a worse one. Early stopping should watch validation log loss or AUC.
-
-</details>
-
 ---
 
-## Part 13 — Overfitting, cross-validation and tuning
+## Part 14 — Overfitting, cross-validation and tuning
 
 ### The cheatsheet
 
@@ -1753,7 +1686,7 @@ Tuning is itself a way to overfit: try enough settings and one will look good by
 Simple, binned models barely overfit — and the three samples show it:
 
 | Gini | Train | Test | OOT 2014 |
-|---|---:|---:|---:|
+|---|---|---|---|
 | Model A | 0.301 | 0.297 | 0.271 |
 | Model B | 0.368 | 0.363 | 0.385 |
 
@@ -1779,7 +1712,7 @@ search.best_score_, search.best_params_
 ```
 
 | | Cross-validated AUC |
-|---|---:|
+|---|---|
 | LightGBM, 300 trees, mostly default settings | 0.6898 |
 | Worst of the 15 candidates | 0.6699 |
 | Median candidate | 0.6917 |
@@ -1788,29 +1721,16 @@ search.best_score_, search.best_params_
 The winner: 463 trees at a learning rate of 0.012, up to 62 leaves but at least **612 loans in every leaf**, a strong L2 penalty of 8.9, and 79% of rows and 62% of columns sampled per tree. Heavy regularisation won — sensible on a noisy 3% target. On data it never saw during tuning:
 
 | Tuned LightGBM | Train | Test | OOT |
-|---|---:|---:|---:|
+|---|---|---|---|
 | AUC | 0.7951 | 0.6985 | **0.7033** |
 
 The search found +0.008 of AUC over sensible defaults, and the test and out-of-time scores confirm it was real rather than lucky. Compare that with Part 9, where adding fourteen variables mattered more than the choice of algorithm: **tuning is the last few percent, not the first.**
 
 **Decision:** stratified 3-fold cross-validation for choosing, the test sample for confirming, 2014 for the final word; tune after the features are right.
 
-### Check yourself
-
-1. Model B's Gini is 0.363 on test and 0.385 out of time. Is Model B overfitting?
-2. Why does the winning configuration's 612-loan minimum leaf matter more here than it would on a balanced target?
-
-<details>
-<summary>Answers</summary>
-
-1. No. Overfitting shows as train well above test, and here train (0.368) and test (0.363) are almost equal. The out-of-time rise reflects the 2014 population, not memorisation.
-2. With a 3.4% default rate, a leaf of 612 loans holds about 21 defaults — enough to estimate a rate. A leaf of 20 loans, the default minimum, would hold 0.7 of a default on average, so its predictions would be noise.
-
-</details>
-
 ---
 
-## Part 14 — Calibration, and turning a PD into a decision
+## Part 15 — Calibration, and turning a PD into a decision
 
 ### The cheatsheet
 
@@ -1850,7 +1770,7 @@ With a margin of 8% and this book's LGD of 93%, PD\* = 0.08 ÷ 1.01 = **7.9%** �
 Hosmer–Lemeshow compares predicted and actual defaults in ten bands and gives a p-value; below 0.05 means "detectably miscalibrated".
 
 | Hosmer–Lemeshow p | Test | OOT 2014 |
-|---|---:|---:|
+|---|---|---|
 | Model A | 0.236 — passes | 0.0000003 — fails |
 | Model A, intercept recalibrated | 0.239 | 0.0000009 — fails |
 | Model A, Platt scaled | 0.217 | 0.000018 — fails |
@@ -1859,7 +1779,7 @@ Hosmer–Lemeshow compares predicted and actual defaults in ten bands and gives 
 On the test sample both models pass; on 2014 both fail, and recalibration does not rescue Model A. But with 235,628 loans the test can detect gaps too small to matter. The decile table is the fairer judge:
 
 | Model B, OOT — PD decile | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 |
-|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+|---|---|---|---|---|---|---|---|---|---|---|
 | Mean predicted PD | 0.87% | 1.31% | 1.73% | 2.17% | 2.65% | 3.19% | 3.82% | 4.59% | 5.69% | 8.45% |
 | Actual default rate | 0.70% | 1.13% | 1.53% | 2.16% | 2.55% | 3.17% | 4.03% | 4.77% | 5.72% | 8.65% |
 
@@ -1870,7 +1790,7 @@ Every decile within about 0.2 points, in the right order. Statistically "failed"
 Boosted models trained on log loss usually come out reasonably calibrated. Fitting Platt and isotonic calibrators on the test sample and judging on 2014:
 
 | LightGBM, OOT | AUC | Brier | Mean PD (actual 3.44%) |
-|---|---:|---:|---:|
+|---|---|---|---|
 | As trained | 0.6956 | 0.03270 | 3.31% |
 | Platt scaled | 0.6956 | 0.03266 | 3.35% |
 | Isotonic | 0.6940 | 0.03267 | 3.34% |
@@ -1880,7 +1800,7 @@ Barely a change — this model did not need calibrating. Its decile table shows 
 The cut-off itself is a business choice. Ranking 2014's loans by Model B and approving the safest share:
 
 | Approve the best | Bad rate of approved loans | Share of all defaulters declined |
-|---:|---:|---:|
+|---|---|---|
 | 50% | 1.61% | 76.6% |
 | 70% | 2.18% | 55.6% |
 | 80% | 2.51% | 41.8% |
@@ -1891,22 +1811,9 @@ Declining the riskiest 20% removes 42% of the defaults. Where to stop depends on
 
 **Decision:** read calibration from the decile table; recalibrate the intercept when a new period's level drifts; choose the cut-off from the economics, not from 50%.
 
-### Check yourself
-
-1. Multiplying every PD by 2 changes which of these: AUC, Brier score, Hosmer–Lemeshow result?
-2. With a margin of 5% and an LGD of 93%, what is the break-even PD?
-
-<details>
-<summary>Answers</summary>
-
-1. AUC is unchanged, because the order of loans is the same. The Brier score and Hosmer–Lemeshow both get worse, because every predicted probability is now twice the observed rate.
-2. PD\* = 0.05 ÷ (0.05 + 0.93) = **5.1%**. A thinner margin means a stricter cut-off.
-
-</details>
-
 ---
 
-## Part 15 — Explaining a model
+## Part 16 — Explaining a model
 
 ### The cheatsheet
 
@@ -1935,7 +1842,7 @@ The explanation *is* the model. Applicant 2 of Part 8 scored 515, and each attri
 Permutation importance on 20,000 test loans, and SHAP on the same loans:
 
 | Rank | Permutation — drop in AUC | | SHAP — mean absolute contribution | |
-|---:|---|---:|---|---:|
+|---|---|---|---|---|
 | 1 | Sub-grade | 0.054 | Sub-grade | 0.337 |
 | 2 | Annual income | 0.039 | Annual income | 0.256 |
 | 3 | Inquiries, last 6 months | 0.016 | Inquiries, last 6 months | 0.164 |
@@ -1948,7 +1855,7 @@ The same top three as the scorecard's information values — the models agree on
 One applicant, the riskiest of the 20,000 — predicted PD **53.4%**, explained in log-odds from the book's average of −3.64:
 
 | Input | Value | SHAP contribution |
-|---|---|---:|
+|---|---|---|
 | Purpose | Small business | +0.747 |
 | Sub-grade | F4 | +0.741 |
 | Months since last public record | 94 | +0.410 |
@@ -1968,22 +1875,9 @@ values = explainer.shap_values(sample)           # one contribution per input pe
 
 **Decision:** keep the scorecard's built-in reasons; for any boosted challenger, add SHAP reason codes and monotone constraints before it goes near a decision.
 
-### Check yourself
-
-1. Applicant 1 of Part 8 scored 617. Which attribute costs them the most points relative to its best bin?
-2. Why can permutation importance rank interest rate low while SHAP ranks it fourth?
-
-<details>
-<summary>Answers</summary>
-
-1. Revolving utilisation of 35% gives 87 points against 89 for the best bin; DTI of 12 gives 85 against 87; income of $80,000 gives 90 against 95 — **income, 5 points short**, is the biggest shortfall.
-2. Sub-grade and interest rate carry nearly the same information. Shuffling the rate leaves the sub-grade intact, so the model barely loses accuracy; SHAP instead shares each prediction between the inputs the model actually used, and the rate gets its share.
-
-</details>
-
 ---
 
-## Part 16 — Stability and monitoring
+## Part 17 — Stability and monitoring
 
 ### The cheatsheet
 
@@ -2024,7 +1918,7 @@ def psi(expected, actual, bins=10):
 ### In the project
 
 | Stability, train against OOT 2014 | Value | Reading |
-|---|---:|---|
+|---|---|---|
 | Score PSI, Model A | 0.0046 | Stable |
 | Score PSI, Model B | 0.0071 | Stable |
 | CSI, `dti` — the largest | 0.0416 | Stable |
@@ -2038,7 +1932,7 @@ Run on Model B's PDs with the function above, PSI comes out at 0.0080 rather tha
 The project also tracks each vintage's cumulative default rate by **months on book** (MOB):
 
 | Vintage | MOB 6 | MOB 12 | MOB 18 | MOB 24 |
-|---:|---:|---:|---:|---:|
+|---|---|---|---|---|
 | 2010 | 0.89% | 3.45% | 6.17% | 8.32% |
 | 2011 | 0.90% | 3.55% | 6.51% | 8.97% |
 | 2012 | 0.82% | 3.73% | 7.17% | 10.19% |
@@ -2051,22 +1945,9 @@ What the snapshot cannot give is a **roll-rate matrix** — how many 30-day-late
 
 **Decision:** PSI and CSI every period, with fixed bands; vintage curves compared at equal age; AUC and calibration re-checked as each cohort's 12 months complete.
 
-### Check yourself
-
-1. A band holds 10% of the development sample and 15% of this month's applicants. What does it add to PSI?
-2. Why can the 2014 vintage look better than 2012 at MOB 24 without being better?
-
-<details>
-<summary>Answers</summary>
-
-1. (0.15 − 0.10) × ln(0.15 ÷ 0.10) = 0.05 × 0.405 = **0.020**.
-2. Many 2014 loans had not reached 24 months on book when the data was taken, so their later defaults are not yet recorded. The curve is truncated, not better.
-
-</details>
-
 ---
 
-## Part 17 — Beyond PD: LGD, EAD and expected loss
+## Part 18 — Beyond PD: LGD, EAD and expected loss
 
 ### The cheatsheet
 
@@ -2085,7 +1966,7 @@ where
 | Target shape | Model | Example |
 |---|---|---|
 | A number with a roughly straight-line link | Linear regression | CCF against utilisation |
-| A share between 0 and 1 | Fractional logit, beta regression | Recovery rate |
+| A share between 0 and 1 | Fractional logit or beta regression — models built to keep every prediction between 0 and 1 | Recovery rate |
 | A lump at one value plus a spread | **Two-stage (hurdle) model**: will it happen? then how much? | LGD with half the defaults at 100% |
 | Complex interactions | Boosted trees for the amount | Stage 2 of the project's LGD |
 
@@ -2157,7 +2038,7 @@ On 10,194 held-out defaulted loans the model predicts a mean LGD of 0.9302 again
 LendingClub loans are fully drawn on day one, so there is no undrawn limit to convert:
 
 | Exposure at default, 50,968 defaulted loans | Value |
-|---|---:|
+|---|---|
 | EAD = funded amount − principal repaid, floored at zero | — |
 | Mean | $10,781.56 |
 | Median | $9,141.37 |
@@ -2172,7 +2053,7 @@ Longer loans have repaid less of their principal when they default, so more is e
 Twelve-month expected loss on the 2014 book, using each loan's PD, LGD and EAD:
 
 | Grade | Loans | Mean PD | Expected loss ÷ EAD |
-|---|---:|---:|---:|
+|---|---|---|---|
 | A | 36,108 | 1.10% | 0.97% |
 | B | 61,935 | 2.05% | 1.74% |
 | C | 66,565 | 3.54% | 2.97% |
@@ -2186,22 +2067,9 @@ With LGD near 93% everywhere, expected loss tracks the PD almost one for one: in
 
 **Decision:** model LGD in two stages because of its shape; take EAD as the outstanding balance for term loans; combine all three into expected loss per loan.
 
-### Check yourself
-
-1. A defaulted loan was funded at $12,000 and had repaid $4,000 of principal; $600 was recovered after default. What are its EAD and LGD?
-2. Why does expected loss by grade follow the mean PD so closely here?
-
-<details>
-<summary>Answers</summary>
-
-1. EAD = 12,000 − 4,000 = **$8,000**. Loss = 8,000 − 600 = $7,400, so LGD = 7,400 ÷ 8,000 = **92.5%**.
-2. Because LGD barely varies — about 0.92 to 0.94 in every grade — so expected loss ≈ PD × 0.93 × EAD, and the PD does nearly all the sorting.
-
-</details>
-
 ---
 
-## Part 18 — Lifetime PD, IFRS 9, CECL and Basel capital
+## Part 19 — Lifetime PD, IFRS 9, CECL and Basel capital
 
 ### The cheatsheet
 
@@ -2225,20 +2093,44 @@ Two different questions sit behind this part. **Provisions** answer "how much sh
 | **US CECL** | Lifetime, for every loan from day one | No stages |
 | **Basel III IRB** — the internal ratings-based approach | 12-month expected loss; capital for the unexpected | The bank's own PD and LGD go into a regulatory formula |
 
+Basel's capital formula for these loans runs in two steps. The idea: capital covers the **unexpected** loss — how much worse than average a 1-in-1,000 bad year would be.
+
+**Step 1 — stress the PD.** What does this borrower's normal-year PD become in the worst year in a thousand?
+
 $$
-K = LGD \times \Phi\!\left(\frac{\Phi^{-1}(PD) + \sqrt{R}\,\Phi^{-1}(0.999)}{\sqrt{1 - R}}\right) - PD \times LGD
+\text{stressed PD} = \Phi\!\left(\frac{\Phi^{-1}(PD) + \sqrt{R} \times \Phi^{-1}(0.999)}{\sqrt{1 - R}}\right)
+$$
+
+**Step 2 — keep only the unexpected part, and turn it into risk-weighted assets.**
+
+$$
+K = LGD \times \text{stressed PD} - LGD \times PD
 \qquad
 RWA = 12.5 \times K \times EAD
 $$
 
 where
 
-- **K** is the capital required per unit of exposure
-- **Φ** is the standard normal distribution and **Φ<sup>−1</sup>** its inverse
-- **R** is the correlation of the borrower with the economy — for "other retail" loans it falls from 0.16 to 0.03 as PD rises
-- **RWA**, risk-weighted assets, is what the minimum capital ratios apply to
+- **Φ** is the standard normal distribution, which turns a score into a probability, and **Φ<sup>−1</sup>** its inverse, which turns a probability into a score
+- **Φ<sup>−1</sup>(0.999) = 3.09** is how far into the bad side of the economy a 1-in-1,000 year sits
+- **R** is how strongly the borrower moves with the economy. For **other retail** — Basel's class for personal loans like these, which are neither mortgages nor revolving cards — it falls from 0.16 to 0.03 as PD rises
+- **K** is the capital needed per dollar of exposure; the expected part, LGD × PD, is taken away because provisions already cover it
+- **12.5** is 1 ÷ 8%, which turns capital back into **RWA**, risk-weighted assets — what the minimum capital ratios apply to
+- Retail loans have no maturity adjustment
 
-For a loan with a PD of 2% and an LGD of 93%: R = 0.095, K = 0.096, a risk weight of **120%**.
+A loan with a PD of 2% and an LGD of 93%:
+
+| Step | Working | Result |
+|---|---|---|
+| Correlation | Regulator's formula at PD 2% | R = 0.095 |
+| PD as a score | Φ<sup>−1</sup>(2%) | −2.05 |
+| Push into the bad year | −2.05 + √0.095 × 3.09 = −2.05 + 0.95 | −1.10 |
+| Rescale | −1.10 ÷ √(1 − 0.095) = −1.10 ÷ 0.95 | −1.16 |
+| Back to a probability | Φ(−1.16) | **stressed PD = 12.3%** |
+| Bad-year loss minus the expected part | 93% × 12.3% − 93% × 2% | **K = 9.6%** |
+| Risk weight | 9.6% × 12.5 | **120%** |
+
+The memory line: **stress the PD, take away the average, scale by 12.5.**
 
 ### In the project: the lifetime curve
 
@@ -2275,7 +2167,7 @@ For a loan with a PD of 2% and an LGD of 93%: R = 0.095, K = 0.096, a risk weigh
 </svg>
 
 | Months since issue | 1 | 6 | 12 | 18 | 24 | 36 | 48 | 60 |
-|---|---:|---:|---:|---:|---:|---:|---:|---:|
+|---|---|---|---|---|---|---|---|---|
 | Cumulative PD | 0.08% | 0.70% | 3.44% | 6.70% | 8.82% | 10.64% | 10.88% | 10.93% |
 
 The monthly hazard peaks around month 15 at 0.61% and fades after month 30, when most loans have repaid or defaulted. Each loan's lifetime PD scales this portfolio curve by the ratio of its own 12-month PD to the portfolio's, read at the loan's remaining term.
@@ -2291,16 +2183,16 @@ The monthly hazard peaks around month 15 at 0.61% and fades after month 30, when
 The PD at origination is approximated by the average PD of the loan's grade, because the scores at issue were not kept — a documented proxy.
 
 | Stage | Loans | Share | EAD | Mean 12-month PD | ECL | Coverage |
-|---|---:|---:|---:|---:|---:|---:|
+|---|---|---|---|---|---|---|
 | 1 | 189,633 | 80.5% | $1,417.2M | 2.73% | $30.27M | 2.14% |
 | 2 | 26,554 | 11.3% | $169.4M | 7.64% | $24.40M | 14.41% |
 | 3 | 19,441 | 8.3% | $240.0M | 100% | $223.80M | 93.25% |
 | **Total** | **235,628** | | **$1,826.6M** | | **$278.48M** | **15.25%** |
 
-Stage 1 uses 12 months of loss, Stage 2 the lifetime PD, Stage 3 the LGD on a certain default; each is discounted at the loan's own interest rate — a simplified effective interest rate.
+Stage 1 uses 12 months of loss, Stage 2 the lifetime PD, Stage 3 the LGD on a certain default; each is discounted at the loan's own interest rate — a simplified version of the **effective interest rate** IFRS 9 asks for, the rate that turns future losses into today's money.
 
 | Comparison | Provision | Coverage |
-|---|---:|---:|
+|---|---|---|
 | IFRS 9, staged | $278.48M | 15.25% |
 | **US CECL** — lifetime for every loan | **$327.47M** | 17.93% |
 | Difference | +$48.99M | +2.68 points |
@@ -2311,7 +2203,7 @@ CECL books lifetime losses on the 189,633 Stage 1 loans that IFRS 9 covers for o
 **Scenarios.** IFRS 9 must be forward-looking, so the code re-runs ECL with PDs scaled for three economies and weights them:
 
 | Scenario | PD multiplier | Weight | ECL |
-|---|---:|---:|---:|
+|---|---|---|---|
 | Upside | 0.85 | 20% | $270.28M |
 | Baseline | 1.00 | 50% | $278.48M |
 | Downside | 1.50 | 30% | $305.82M |
@@ -2322,7 +2214,7 @@ The downside adds $27 million; weighted, the scenarios add $6.6 million to the b
 ### In the project: Basel capital
 
 | Basel III, 2014 book | Value |
-|---|---:|
+|---|---|
 | IRB risk-weighted assets | $2,294.7M — 125.6% of EAD |
 | Standardised risk-weighted assets | $1,369.9M — 75% of EAD |
 | Minimum total capital, 8% | $183.57M |
@@ -2331,88 +2223,13 @@ The downside adds $27 million; weighted, the scenarios add $6.6 million to the b
 | IRB risk weight, grade A → grade G | 94.2% → 145.7% |
 | Downturn LGD, +8 points | RWA $2,453.9M, 134.3%; capital **+$12.74M (+6.9%)** |
 
+Basel asks internal-model banks to use a **downturn LGD** — the loss rate in a bad economy, when recoveries are weakest. The project adds 8 points to every LGD and re-runs the capital.
+
 Capital comes in tiers, each with its own minimum as a share of RWA: **CET1**, common equity tier 1 — shares and retained profits, the highest quality; **Tier 1**, which adds certain bonds that can absorb losses; and **total capital**, which adds more.
 
 The internal-model capital is **higher** than the standardised approach here — the opposite of the usual story — because unsecured loans with a 93% LGD are expensive under the IRB formula, while the standardised approach applies a flat 75% to retail exposures.
 
-**Decision:** one PD model feeds four numbers — 12-month loss, lifetime loss, staged provisions and capital — so its calibration (Part 14) matters as much as its ranking.
-
-### Check yourself
-
-1. The hazard is 0.56% in month 12 for loans that have survived. Why is the cumulative PD at 12 months (3.44%) not simply 12 × 0.56%?
-2. Why is CECL's provision higher than IFRS 9's on the same loans and the same models?
-
-<details>
-<summary>Answers</summary>
-
-1. Because the hazard changes month by month — near zero in the first months, rising towards month 15 — and the cumulative PD compounds each month's survival: 1 − (1 − h₁)(1 − h₂)…(1 − h₁₂). It is not a constant rate times twelve.
-2. CECL requires lifetime expected loss on every loan from day one; IFRS 9 books only 12 months of loss for Stage 1 loans, which are 80% of this book. The difference, $49 million, is those loans' losses beyond their first year.
-
-</details>
-
----
-
-## Part 19 — Unsupervised learning, briefly
-
-### The cheatsheet
-
-| Task | Methods | Use in credit |
-|---|---|---|
-| **Clustering** — group similar rows | k-means, hierarchical, DBSCAN, Gaussian mixtures | Segments for strategy, or for separate models |
-| **Dimensionality reduction** — fewer columns, most of the information | PCA; t-SNE and UMAP for pictures only | Compressing correlated bureau variables |
-| **Anomaly detection** — rows unlike the rest | Isolation forest, local outlier factor | Fraud screens, data errors |
-
-| Choice | Rule of thumb |
-|---|---|
-| Scaling | Always, for distance-based methods |
-| Number of clusters | Elbow of the within-cluster error, silhouette score — and whether the segments are useful |
-| Judging | No labels to score against: judge by stability and by what the segments do |
-
-### Side-line: segments, components and oddities
-
-k-means with four clusters on seven standardised borrower variables — log loan amount, log income, DTI, utilisation, interest rate, open accounts, credit history:
-
-| Segment | Loans | Default rate | Median income | Median loan | DTI | Utilisation | Rate |
-|---|---:|---:|---:|---:|---:|---:|---:|
-| Prime, low utilisation | 43,944 | **1.9%** | $70,000 | $11,200 | 10.0 | 32% | 9.7% |
-| Stretched, high DTI | 40,708 | 3.0% | $69,000 | $15,000 | 22.6 | 56% | 13.7% |
-| Large loans, cards near the limit | 50,035 | 4.0% | $78,000 | $18,200 | 15.4 | 77% | 16.8% |
-| Lower income, small loans | 49,838 | **4.5%** | $39,500 | $6,625 | 17.6 | 63% | 14.1% |
-
-The clusters never saw the target, yet they separate default rates from 1.9% to 4.5% — segments a strategy team could name and act on. The elbow was soft (average within-cluster error 5.83, 5.14, 4.71, 4.40 and 4.15 for two to six clusters), so four was chosen for usefulness, not by formula.
-
-**PCA** on 16 numeric inputs: the first component explains 18.9% of the variance, five explain 56%, and 12 are needed for 90%. Little redundancy — these inputs are mostly different information, so compressing them would throw signal away.
-
-**Isolation forest**, flagging the most unusual 1% of borrowers: 1,846 loans defaulting at **5.63%**, against 3.41% for everyone else. Unusual is riskier — a cheap screen worth feeding into a review queue, or into a model as a flag.
-
-```python
-from sklearn.cluster import KMeans
-from sklearn.ensemble import IsolationForest
-from sklearn.preprocessing import StandardScaler
-
-borrowers = X_train[["loan_amnt", "annual_inc", "dti", "revol_util", "int_rate",
-                     "open_acc", "credit_history_yrs"]].copy()
-borrowers[["loan_amnt", "annual_inc"]] = np.log1p(borrowers[["loan_amnt", "annual_inc"]])
-borrowers = borrowers.fillna(borrowers.median())
-scaled = StandardScaler().fit_transform(borrowers)
-segments = KMeans(n_clusters=4, n_init=10, random_state=42).fit_predict(scaled)
-odd = IsolationForest(contamination=0.01, random_state=42).fit_predict(scaled) == -1
-```
-
-**Decision:** clustering for strategy segments, not for the PD itself; PCA not worth it here; anomaly flags as a cheap extra input.
-
-### Check yourself
-
-1. Why must the variables be scaled before k-means, when a tree model needs no scaling?
-2. The segments separate default rates without seeing the target. Does that make clustering a substitute for the PD model?
-
-<details>
-<summary>Answers</summary>
-
-1. k-means groups rows by distance, and unscaled, a difference of $10,000 in income would swamp a difference of 20 points in utilisation. Trees split one variable at a time, so units never meet.
-2. No. Four segments give four default rates; the PD model gives every loan its own, ranked with an out-of-time AUC of 0.69. Segments are a lens for strategy, not a replacement for a supervised model.
-
-</details>
+**Decision:** one PD model feeds four numbers — 12-month loss, lifetime loss, staged provisions and capital — so its calibration (Part 15) matters as much as its ranking.
 
 ---
 
@@ -2459,19 +2276,6 @@ The notebook would need five changes to become a service: a validation set separ
 
 **Decision:** configuration-driven, tested, reproducible, monitored — the project already is most of that; the remaining step is a scoring service and a retraining policy.
 
-### Check yourself
-
-1. The scaler is fitted in the notebook and the network saved separately. What goes wrong in production?
-2. Why keep variable lists and thresholds in configuration files rather than in code?
-
-<details>
-<summary>Answers</summary>
-
-1. Whoever serves the model must refit or rebuild the scaler, and any difference — a new mean, a column in a different order — silently changes every input. Saving scaler and model as one pipeline makes serving identical to training.
-2. Because they are decisions, not logic: they change with policy and must be reviewed, versioned and audited. In configuration, a change is visible and needs no code release.
-
-</details>
-
 ---
 
 ## The whole project on one page
@@ -2486,6 +2290,8 @@ The notebook would need five changes to become a service: a validation set separ
 | Model | Logistic regression | Models A and B, `statsmodels` | All Model A signs as expected |
 | Score | Points scaling | 600 at odds of 50:1, 20 points to double | Factor 28.85, offset 487.1 |
 | Evaluate | AUC, Gini, KS on three samples | Validation battery | Model B out-of-time AUC 0.6923, Gini 0.385 |
+| Challenge | Ensembles and tuning | Random forest, LightGBM, XGBoost — side-lines | Out-of-time AUC about 0.703, against the scorecard's 0.692 |
+| Segment | Clustering, anomaly detection | k-means on seven borrower variables — side-line | Segment default rates 1.9% to 4.5% |
 | Calibrate | Deciles, Hosmer–Lemeshow, recalibration | Intercept shift and Platt scaling | Deciles within about 0.2 points |
 | Monitor | PSI, CSI, vintages | Train against 2014 | Score PSI 0.0071 |
 | LGD | Two-stage hurdle model | Logistic, then gradient boosting | Mean LGD 0.930; 52% total loss |
@@ -2493,6 +2299,8 @@ The notebook would need five changes to become a service: a validation set separ
 | Lifetime PD | Survival analysis | Monthly hazard over 60 months | 10.93% cumulative |
 | Provisions | Staging rules, scenario weighting | IFRS 9, CECL comparison | ECL $278.48M; CECL $327.47M |
 | Capital | Basel IRB formula | Other retail, downturn LGD | RWA $2.295B; +$12.74M in a downturn |
+
+The scorecard at 0.69 and the boosted challenger at 0.70 are not the lesson. The lesson is that every number, from the first default flag to the last dollar of capital, can be traced, tested and defended.
 
 ---
 
@@ -2515,60 +2323,6 @@ The notebook would need five changes to become a service: a validation set separ
 | Explanation | Reasons available for any single decision |
 | Monitoring | PSI and CSI with fixed bands; performance re-checked as outcomes arrive |
 | Production | One saved pipeline; seeds, versions and data snapshot pinned; tests pass; limits documented |
-
----
-
-## Built, demonstrated, explored
-
-| Where it lives | What |
-|---|---|
-| **The repository — run on the full data** | 12-month target; development and out-of-time samples; WoE binning and IV; PD Models A and B; scorecard and rating grades; validation (AUC, Gini, KS, Brier, Hosmer–Lemeshow); intercept and Platt recalibration; PSI and CSI; two-stage LGD; EAD; lifetime PD; IFRS 9 staging and ECL; CECL comparison; macroeconomic scenarios; Basel IRB capital with downturn LGD; vintage curves; dashboard |
-| **The repository — demonstration or proxy** | Synthetic CCF; cross-sectional roll-rate and transition proxies; grade-level origination PD |
-| **The churn notebook** | Keras networks with SGD, Adam, dropout and a grid search; SMOTE-balanced final model |
-| **Explored in this note only** | The one-hot pipeline; the leakage demonstration; the interest-rate regression; single trees, random forest, LightGBM, XGBoost and the blend; cross-validated tuning; kNN, naive Bayes, SVM; the network on the loan book; the imbalance comparison; calibrating the boosted model; the approval-rate table; permutation importance and SHAP; clustering, PCA and isolation forest |
-
----
-
-## Reference numbers
-
-| Figure | Value | Part |
-|---|---:|---:|
-| Loans; columns | 466,285; 75 | 0 |
-| Ever defaulted | 50,968 — 10.93% | 1 |
-| Defaulted within 12 months | 16,018 — 3.44% | 1 |
-| Train · test · out-of-time loans | 184,525 · 46,132 · 235,628 | 4 |
-| Default rate, train · test · out-of-time | 3.4299% · 3.4293% · 3.4406% | 4 |
-| Leaky model's test AUC | 0.9993 | 4 |
-| Information value: grade · income · DTI | 0.294 · 0.060 · 0.023 | 5 |
-| One-hot logistic regression, test · OOT AUC | 0.6872 · 0.6960 | 5 |
-| Dummy accuracy | 96.57% | 6 |
-| LendingClub sub-grade alone, OOT AUC | 0.6886 | 6 |
-| Model B at a 5% threshold: flagged · recall · precision | 20.0% · 41.7% · 7.1% | 6 |
-| Model A AUC, train · test · OOT | 0.6507 · 0.6484 · 0.6357 | 6 |
-| Model B AUC, train · test · OOT | 0.6839 · 0.6817 · 0.6923 | 6 |
-| Interest rate line | 6.34% + 0.646% per sub-grade step; R² 0.926 | 7 |
-| Repricing per year, same sub-grade | +0.65 points | 7 |
-| Scorecard factor · offset | 28.85 · 487.1 | 8 |
-| Unlimited tree, train · test AUC | 1.000 · 0.512 | 9 |
-| Random forest · XGBoost · tuned LightGBM, OOT AUC | 0.7035 · 0.7025 · 0.7033 | 9, 13 |
-| LightGBM on Model B's 10 variables, OOT AUC | 0.6872 | 9 |
-| Mean PD after class weights · SMOTE (actual 3.43%) | 44.6% · 44.0% | 11 |
-| Churn recall: first model · SMOTE model | 0.48 · 0.75 (AUC 0.8533 · 0.8515) | 11 |
-| Best network on the loan book, OOT AUC | 0.6969 | 12 |
-| Tuning gain in cross-validated AUC | 0.6898 → 0.6982 | 13 |
-| Approve the best 80%: bad rate · defaulters declined | 2.51% · 41.8% | 14 |
-| Score PSI, Model A · Model B | 0.0046 · 0.0071 | 16 |
-| 2014 loans still current at the snapshot | 67.3% | 16 |
-| Mean LGD · share with total loss | 0.930 · 52.2% | 17 |
-| Mean EAD at default · share of loan still owed | $10,781.56 · 71.9% | 17 |
-| 12-month expected loss, 2014 book | $58.67M — 3.21% of EAD | 17 |
-| Cumulative PD at 12 · 24 · 36 · 60 months | 3.44% · 8.82% · 10.64% · 10.93% | 18 |
-| Stages 1 · 2 · 3, share of loans | 80.5% · 11.3% · 8.3% | 18 |
-| IFRS 9 ECL · CECL | $278.48M · $327.47M | 18 |
-| Probability-weighted ECL | $285.04M | 18 |
-| IRB RWA · standardised RWA | $2,294.7M · $1,369.9M | 18 |
-| Downturn LGD capital add-on | +$12.74M — 6.9% | 18 |
-| Segment default rates, k-means | 1.9% to 4.5% | 19 |
 
 ---
 
@@ -2633,21 +2387,3 @@ The notebook would need five changes to become a service: a validation set separ
 | YAML | A plain-text format for configuration files |
 
 ---
-
-## Library versions
-
-All code in this note is ordinary Python; versions change, the ideas do not.
-
-| Where | Versions |
-|---|---|
-| The project's recorded runtime | Python 3.11+, pandas 3.0.5, NumPy 2.5.1, scikit-learn 1.9.0, statsmodels 0.14.6, SciPy 1.18.0 [verify] |
-| This note's re-run and side-lines | pandas 3.0.2, NumPy 2.4.4, scikit-learn 1.8.0, statsmodels 0.15.0, LightGBM 4.7.0, XGBoost 3.4.1, imbalanced-learn 0.14.2, SHAP 0.52.0 [verify] |
-| The churn notebook | TensorFlow 2.17.1, Keras 3.5.0, SciKeras 0.13.0 [verify] |
-
----
-
-## The compression
-
-A machine learning project is a chain of honest decisions, and this one shows every link. Define the event so that old and young loans are comparable, and keep everything after the loan's first day out of the model. Let the data's own shapes choose the features — monotonic bins where risk rises steadily, flags where missing means something. Beat the baseline that matters, which here was LendingClub's own grade, not a coin. Remember that ranking and calibration are different jobs: the first decides who is approved, the second decides every provision and capital number downstream. Solve imbalance with the threshold, not by rewriting the data. Expect better features to beat better algorithms, and tuning to be the last few percent. Explain every decision in terms a borrower could follow. Watch the inputs drift while the outcomes are still on their way.
-
-The scorecard at 0.69 and the boosted challenger at 0.70 are not the lesson. The lesson is that every number from the first default flag to the last dollar of capital can be traced, tested and defended — and that is what machine learning looks like when it is done for a bank.

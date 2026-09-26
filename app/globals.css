@@ -336,7 +336,7 @@ html::-webkit-scrollbar, body::-webkit-scrollbar {
   border-bottom: 1px solid var(--border);
   border-right: 1px solid var(--border);
   padding: 0.625rem 0.875rem;
-  text-align: left;
+  text-align: left !important;
   vertical-align: top;
   white-space: nowrap; /* Mobile: Keep text on one line with scroll, no sentence squishing */
 }
