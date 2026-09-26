@@ -16,7 +16,7 @@ export const SUBJECTS: SubjectConfig[] = [
   {
     id: 'health',
     name: 'Health',
-    description: 'Practical health, from building Parents Health OS.',
+    description: 'Everyday health, explained simply: body, food, sleep and caring for family.',
   },
   {
     id: 'ai',

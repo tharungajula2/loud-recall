@@ -317,7 +317,7 @@ export function HomeClientView({ documents }: HomeClientViewProps) {
                       COMING SOON
                     </div>
                     <p className="text-sm text-muted leading-relaxed">
-                      {section.config.description}
+                      First notes are on the way.
                     </p>
                   </div>
                 ) : (
