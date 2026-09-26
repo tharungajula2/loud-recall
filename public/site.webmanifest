@@ -1,7 +1,7 @@
 {
   "name": "Loud Recall",
   "short_name": "Loud Recall",
-  "description": "Learning out loud. One subject at a time, explained badly until it isn't. Finance, risk, and AI — whatever I'm studying that week.",
+  "description": "Learning out loud. Finance, health and AI — and now and then, life. One subject at a time, explained badly until it isn't.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#FFFFFF",

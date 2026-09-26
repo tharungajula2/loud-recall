@@ -17,12 +17,12 @@ export const viewport: Viewport = {
 };
 
 const SITE_DESCRIPTION =
-  "Learning out loud. One subject at a time, explained badly until it isn't. Finance, risk, and AI — whatever I'm studying that week. Rough by design. Consistency over polish.";
+  "Learning out loud. Finance, health and AI — and now and then, life. One subject at a time, explained badly until it isn't.";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://loud-recall.vercel.app"),
   title: {
-    default: "Loud Recall",
+    default: "Loud Recall — Learning out loud",
     template: "%s — Loud Recall",
   },
   description: SITE_DESCRIPTION,
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
     siteName: "Loud Recall",
     locale: "en_IN",
     url: "/",
-    title: "Loud Recall",
+    title: "Loud Recall — Learning out loud",
     description: SITE_DESCRIPTION,
     images: [
       {
@@ -49,7 +49,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Loud Recall",
+    title: "Loud Recall — Learning out loud",
     description: SITE_DESCRIPTION,
     images: ["/og-image.png"],
   },

@@ -65,7 +65,7 @@ export function HomeViewContainer({ documents }: HomeViewContainerProps) {
             Learning out loud. One subject at a time, explained badly until it isn&apos;t.
           </p>
           <p className="text-sm text-foreground/80 leading-relaxed mb-4">
-            Finance, risk, and AI &mdash; whatever I&apos;m studying that week. Rough by design. Consistency over polish.
+            Finance, health and AI &mdash; and now and then, life. Rough by design. Consistency over polish.
           </p>
 
           <div className="space-y-0.5 mb-3.5">

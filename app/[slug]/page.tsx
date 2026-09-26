@@ -11,7 +11,7 @@ export async function generateStaticParams() {
   }));
 }
 
-const DEFAULT_DESCRIPTION = "Learning out loud. One subject at a time, explained badly until it isn't. Finance, risk, and AI — whatever I'm studying that week.";
+const DEFAULT_DESCRIPTION = "Learning out loud. Finance, health and AI — and now and then, life. One subject at a time, explained badly until it isn't.";
 
 function truncateDescription(desc: string, maxLen = 155): string {
   if (!desc || !desc.trim()) {
@@ -44,10 +44,18 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     },
     openGraph: {
       type: 'article',
+      siteName: 'Loud Recall',
       url: `/${resolvedParams.slug}`,
       title: doc.title,
       description,
-      images: ['/og-image.png'],
+      images: [
+        {
+          url: '/og-image.png',
+          width: 1200,
+          height: 630,
+          alt: 'Loud Recall — learning out loud',
+        },
+      ],
       ...(publishedTime && { publishedTime }),
       ...(modifiedTime && { modifiedTime }),
     },
