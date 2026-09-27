@@ -84,7 +84,6 @@ The home page is organised by **subject**, and **format** is a label inside each
 
 | Slug | Subject | Format | Order |
 |---|---|---|---|
-| credit-risk-end-to-end-cheatsheet | finance | masterclass | 1 |
 
 Health and Life have no notes yet. Parents Health OS, the author's live app for his parents, is the natural source for the first health note.
 
@@ -144,7 +143,7 @@ Four types are live. They differ on purpose. Type is how a note is built; subjec
 |---|---|---|---|
 | Practical masterclass | Doing the work, hands-on | One running example: the author's own app | building-with-ai-practical-masterclass — Parents Health OS |
 | Project masterclass | One real project, end to end, with code | One running example: the project itself, plus side-lines for techniques it did not use | shelved |
-| Context cheatsheet | A whole field for one kind of role, from zero | Examples fitted to each topic — retail, SME, corporate — with no single spine; per-part checks and a rapid-fire interview bank | credit-risk-end-to-end-cheatsheet |
+| Context cheatsheet | A whole field for one kind of role, from zero | Examples fitted to each topic — retail, SME, corporate — with no single spine; per-part checks and a rapid-fire interview bank | shelved |
 | Article | A beginner's way in, drawn from the masterclasses | Whatever carries the idea | ai-in-2026-what-everyone-should-know |
 
 Lessons that shaped the types:
@@ -338,7 +337,7 @@ Overlap across notes is expected; repetition within a note is the defect. Self-s
 
 ```yaml
 ---
-title: "Credit Risk, End to End — The Complete Cheatsheet"
+title: "Title — The Complete Cheatsheet"
 description: "One or two sentences on what the note covers. Always quoted."
 subject: finance
 format: masterclass
