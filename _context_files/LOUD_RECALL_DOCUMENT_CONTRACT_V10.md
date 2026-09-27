@@ -85,9 +85,6 @@ The home page is organised by **subject**, and **format** is a label inside each
 | Slug | Subject | Format | Order |
 |---|---|---|---|
 | credit-risk-end-to-end-cheatsheet | finance | masterclass | 1 |
-| building-with-ai-practical-masterclass | ai | masterclass | 1 |
-| machine-learning-end-to-end-credit-risk | ai | masterclass | 2 |
-| ai-in-2026-what-everyone-should-know | ai | article | — |
 
 Health and Life have no notes yet. Parents Health OS, the author's live app for his parents, is the natural source for the first health note.
 
@@ -146,7 +143,7 @@ Four types are live. They differ on purpose. Type is how a note is built; subjec
 | Type | Built for | Example strategy | Live example |
 |---|---|---|---|
 | Practical masterclass | Doing the work, hands-on | One running example: the author's own app | building-with-ai-practical-masterclass — Parents Health OS |
-| Project masterclass | One real project, end to end, with code | One running example: the project itself, plus side-lines for techniques it did not use | machine-learning-end-to-end-credit-risk — the author's retail credit risk project |
+| Project masterclass | One real project, end to end, with code | One running example: the project itself, plus side-lines for techniques it did not use | shelved |
 | Context cheatsheet | A whole field for one kind of role, from zero | Examples fitted to each topic — retail, SME, corporate — with no single spine; per-part checks and a rapid-fire interview bank | credit-risk-end-to-end-cheatsheet |
 | Article | A beginner's way in, drawn from the masterclasses | Whatever carries the idea | ai-in-2026-what-everyone-should-know |
 
