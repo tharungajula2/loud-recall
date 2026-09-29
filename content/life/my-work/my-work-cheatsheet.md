@@ -1,5 +1,5 @@
 ---
-title: "My Work in 20 Minutes — Projects, Roles and Skills"
+title: "My Work — Projects, Roles and Skills"
 description: "My six projects, Jana Small Finance Bank, Lentra AI and my technical skills, each explained from zero: what it is, how it works, the results and the terms behind it."
 subject: life
 format: masterclass

@@ -13,6 +13,11 @@ const nextConfig: NextConfig = {
         destination: '/credit-risk-cheatsheet',
         permanent: true,
       },
+      {
+        source: '/my-work-20-minute-cheatsheet',
+        destination: '/my-work-cheatsheet',
+        permanent: true,
+      },
     ];
   },
 };

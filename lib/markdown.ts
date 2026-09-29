@@ -12,6 +12,7 @@ export interface DocumentMeta {
   slug: string;
   title: string;
   subject: SubjectId;
+  topic?: string;
   format: ContentFormat;
   order?: number;
   status: ContentStatus;
@@ -79,25 +80,6 @@ function parseFrontmatter(fileContents: string) {
   return matter(fileContents);
 }
 
-function parseSubject(raw: unknown, fileName: string): SubjectId {
-  const clean = typeof raw === 'string' ? (raw.trim().toLowerCase() as SubjectId) : ('' as SubjectId);
-  if (clean in SUBJECT_MAP) {
-    return clean;
-  }
-  throw new Error(
-    `Unknown or missing subject "${raw}" in note "${fileName}". Allowed subjects: ${Object.keys(SUBJECT_MAP).join(', ')}.`
-  );
-}
-
-function parseFormat(raw: unknown, fileName: string): ContentFormat {
-  if (raw === 'masterclass' || raw === 'article') {
-    return raw as ContentFormat;
-  }
-  throw new Error(
-    `Unknown or missing format "${raw}" in note "${fileName}". Allowed formats: masterclass, article.`
-  );
-}
-
 function parseOrder(raw: unknown): number | undefined {
   if (typeof raw === 'number') return raw;
   if (typeof raw === 'string' && raw.trim()) {
@@ -122,96 +104,123 @@ function parseVerified(raw: unknown): string {
   return 'unverified';
 }
 
-export function getSortedDocumentsData(): DocumentMeta[] {
-  if (!fs.existsSync(contentDirectory)) {
-    return [];
+function extractTitleAndDescription(content: string, slug: string): { title: string; description: string } {
+  const h1Match = content.match(/^#\s+(.+)$/m);
+  let title = slug;
+  let description = '';
+
+  if (h1Match) {
+    title = h1Match[1].trim();
+    const afterH1 = content.slice((h1Match.index || 0) + h1Match[0].length);
+    const paragraphs = afterH1
+      .split(/\n\s*\n/)
+      .map((p) => p.trim())
+      .filter((p) => p && !p.startsWith('#') && !p.startsWith('<') && !p.startsWith('---'));
+
+    if (paragraphs.length > 0) {
+      description = paragraphs[0].replace(/[*_]/g, '').trim();
+    }
   }
 
-  const fileNames = fs.readdirSync(contentDirectory);
-  const allDocumentsData = fileNames
-    .filter((fileName) => (fileName.endsWith('.md') || fileName.endsWith('.html')) && !fileName.startsWith('_'))
-    .map((fileName) => {
-      const isHtml = fileName.endsWith('.html');
-      const slug = fileName.replace(/\.(md|html)$/, '');
-
-      const fullPath = path.join(contentDirectory, fileName);
-      const fileContents = fs.readFileSync(fullPath, 'utf8');
-
-      const matterResult = parseFrontmatter(fileContents);
-      const { readTime, wordCount } = calculateReadTime(matterResult.content);
-
-      const fileFormat: 'md' | 'html' = isHtml ? 'html' : 'md';
-      const subject = parseSubject(matterResult.data.subject, fileName);
-      const format = parseFormat(matterResult.data.format, fileName);
-      const order = parseOrder(matterResult.data.order);
-      const status = parseStatus(matterResult.data.status);
-      const verified = parseVerified(matterResult.data.verified);
-
-      return {
-        slug,
-        title: matterResult.data.title || slug,
-        description: matterResult.data.description || '',
-        verified,
-        fileFormat,
-        format,
-        subject,
-        order,
-        status,
-        tags: parseTags(matterResult.data.tags),
-        created: formatDateString(matterResult.data.created),
-        updated: formatDateString(matterResult.data.updated || matterResult.data.date),
-        readTime,
-        wordCount,
-      };
-    })
-    .filter((doc) => doc.status === 'live'); // ONLY live documents render on homepage / routes
-
-  return allDocumentsData.sort((a, b) => {
-    if (a.updated !== b.updated) {
-      return b.updated.localeCompare(a.updated);
-    }
-    return a.title.localeCompare(b.title);
-  });
+  return { title, description };
 }
 
-export function getDocumentData(slug: string): DocumentData | null {
-  let fullPath = path.join(contentDirectory, `${slug}.md`);
-  let isHtml = false;
+interface RawFileRecord {
+  fullPath: string;
+  slug: string;
+  subjectFolder: string;
+  topicFolder?: string;
+  isHtml: boolean;
+}
 
-  if (!fs.existsSync(fullPath)) {
-    fullPath = path.join(contentDirectory, `${slug}.html`);
-    isHtml = true;
+function getAllContentFiles(dir: string = contentDirectory): RawFileRecord[] {
+  if (!fs.existsSync(dir)) return [];
+  const records: RawFileRecord[] = [];
+
+  function walk(currentDir: string) {
+    const items = fs.readdirSync(currentDir);
+    for (const item of items) {
+      if (item.startsWith('_') || item.startsWith('.')) continue;
+      const fullPath = path.join(currentDir, item);
+      const stat = fs.statSync(fullPath);
+
+      if (stat.isDirectory()) {
+        walk(fullPath);
+      } else if (stat.isFile() && (item.endsWith('.md') || item.endsWith('.html'))) {
+        const relative = path.relative(contentDirectory, fullPath);
+        const parts = relative.split(path.sep);
+
+        let subjectFolder = '';
+        let topicFolder: string | undefined = undefined;
+
+        if (parts.length > 1) {
+          subjectFolder = parts[0];
+          if (parts.length > 2) {
+            topicFolder = parts[1];
+          }
+        }
+
+        const ext = path.extname(item);
+        const slug = path.basename(item, ext);
+        const isHtml = ext === '.html';
+
+        records.push({
+          fullPath,
+          slug,
+          subjectFolder,
+          topicFolder,
+          isHtml,
+        });
+      }
+    }
   }
 
-  if (!fs.existsSync(fullPath)) {
-    return null;
-  }
+  walk(dir);
+  return records;
+}
 
-  const fileContents = fs.readFileSync(fullPath, 'utf8');
+function loadDocumentRecord(fileRecord: RawFileRecord): DocumentData | null {
+  const fileContents = fs.readFileSync(fileRecord.fullPath, 'utf8');
   const matterResult = parseFrontmatter(fileContents);
 
   const status = parseStatus(matterResult.data.status);
-  // Only live documents are routable — draft returns null (404)
-  if (status !== 'live') {
-    return null;
+
+  // Subject: folder wins over frontmatter
+  let subject: SubjectId;
+  const folderSubj = fileRecord.subjectFolder ? fileRecord.subjectFolder.toLowerCase() : '';
+
+  if (folderSubj && folderSubj in SUBJECT_MAP) {
+    subject = folderSubj as SubjectId;
+  } else if (matterResult.data.subject && String(matterResult.data.subject).toLowerCase() in SUBJECT_MAP) {
+    subject = String(matterResult.data.subject).toLowerCase() as SubjectId;
+  } else {
+    throw new Error(
+      `Unknown or missing subject folder "${fileRecord.subjectFolder}" for note file "${fileRecord.fullPath}". Allowed subjects: ${Object.keys(SUBJECT_MAP).join(', ')}.`
+    );
   }
 
-  const { readTime, wordCount } = calculateReadTime(matterResult.content);
+  const format: ContentFormat =
+    matterResult.data.format === 'article' || matterResult.data.format === 'masterclass'
+      ? matterResult.data.format
+      : 'masterclass';
 
-  const fileFormat: 'md' | 'html' = isHtml ? 'html' : 'md';
-  const subject = parseSubject(matterResult.data.subject, `${slug}.${isHtml ? 'html' : 'md'}`);
-  const format = parseFormat(matterResult.data.format, `${slug}.${isHtml ? 'html' : 'md'}`);
   const order = parseOrder(matterResult.data.order);
   const verified = parseVerified(matterResult.data.verified);
+  const { readTime, wordCount } = calculateReadTime(matterResult.content);
+
+  const fallbacks = extractTitleAndDescription(matterResult.content, fileRecord.slug);
+  const title = matterResult.data.title || fallbacks.title;
+  const description = matterResult.data.description || fallbacks.description;
 
   return {
-    slug,
-    title: matterResult.data.title || slug,
-    description: matterResult.data.description || '',
+    slug: fileRecord.slug,
+    title,
+    description,
     verified,
-    fileFormat,
+    fileFormat: fileRecord.isHtml ? 'html' : 'md',
     format,
     subject,
+    topic: fileRecord.topicFolder,
     order,
     status,
     tags: parseTags(matterResult.data.tags),
@@ -221,4 +230,68 @@ export function getDocumentData(slug: string): DocumentData | null {
     wordCount,
     content: matterResult.content,
   };
+}
+
+export function getSortedDocumentsData(): DocumentMeta[] {
+  const files = getAllContentFiles();
+
+  // Slug uniqueness check
+  const slugMap = new Map<string, string>();
+  for (const f of files) {
+    if (slugMap.has(f.slug)) {
+      throw new Error(`Duplicate note slug "${f.slug}" found in "${f.fullPath}" and "${slugMap.get(f.slug)}".`);
+    }
+    slugMap.set(f.slug, f.fullPath);
+  }
+
+  const allDocumentsData = files
+    .map(loadDocumentRecord)
+    .filter((doc): doc is DocumentData => doc !== null && doc.status === 'live');
+
+  return allDocumentsData.sort((a, b) => {
+    // Ordered notes first, sorted by order
+    if (a.order !== undefined && b.order !== undefined) {
+      if (a.order !== b.order) return a.order - b.order;
+    } else if (a.order !== undefined && b.order === undefined) {
+      return -1;
+    } else if (a.order === undefined && b.order !== undefined) {
+      return 1;
+    }
+
+    // Secondary sort: updated date descending
+    if (a.updated !== b.updated) {
+      return b.updated.localeCompare(a.updated);
+    }
+    // Tertiary sort: title alphabetically
+    return a.title.localeCompare(b.title);
+  });
+}
+
+export function getDocumentData(slug: string): DocumentData | null {
+  const files = getAllContentFiles();
+
+  // Check duplicate slug
+  const slugMap = new Map<string, string>();
+  let targetFile: RawFileRecord | null = null;
+
+  for (const f of files) {
+    if (slugMap.has(f.slug)) {
+      throw new Error(`Duplicate note slug "${f.slug}" found in "${f.fullPath}" and "${slugMap.get(f.slug)}".`);
+    }
+    slugMap.set(f.slug, f.fullPath);
+    if (f.slug === slug) {
+      targetFile = f;
+    }
+  }
+
+  if (!targetFile) {
+    return null;
+  }
+
+  const doc = loadDocumentRecord(targetFile);
+  if (!doc || doc.status !== 'live') {
+    return null;
+  }
+
+  return doc;
 }

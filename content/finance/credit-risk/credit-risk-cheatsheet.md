@@ -1,6 +1,6 @@
 ---
 title: "Credit Risk — The Cheatsheet"
-description: "Credit risk end to end in one sheet: default, PD, LGD and EAD, drawing power, the life of a loan, IFRS 9, Basel capital and 3.1, liquidity, ALM, model checks, portfolio metrics, reports, key numbers, a glossary, and a map of counterparty risk."
+description: "Credit risk end to end: default, PD, LGD and EAD, drawing power, derivatives, CCR and CVA, IFRS 9, Basel capital, liquidity, ALM and model risk."
 subject: finance
 format: masterclass
 order: 1
