@@ -1,5 +1,5 @@
 ---
-title: "Credit Risk in 20 Minutes — The Pareto Cheatsheet"
+title: "Credit Risk Cheatsheet"
 description: "The 20% of credit risk that handles 80% of the work: default, PD, LGD and EAD, drawing power, derivatives, CCR and CVA, IFRS 9, Basel capital and 3.1, liquidity, ALM, model checks, portfolio metrics, reports and the data flow."
 subject: finance
 format: masterclass
