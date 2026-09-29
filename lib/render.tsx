@@ -192,16 +192,61 @@ const ResponsivePre = (props: React.ComponentPropsWithoutRef<'pre'> & { 'data-la
   );
 };
 
+function parseViewBoxWidth(viewBox?: string | number): number | null {
+  if (!viewBox) return null;
+  const parts = String(viewBox).trim().split(/[\s,]+/);
+  if (parts.length >= 4) {
+    const w = parseFloat(parts[2]);
+    if (!isNaN(w) && w > 0) return w;
+  }
+  return null;
+}
+
+function rehypeInlineSvgSize() {
+  return (tree: unknown) => {
+    visit(tree as never, 'element', (node: any) => {
+      if (node.tagName === 'svg') {
+        if (node.properties?.['data-diagram-inner'] || node.properties?.['data-mermaid']) {
+          return;
+        }
+
+        delete node.properties.width;
+        delete node.properties.height;
+
+        let vbWidth: number | null = null;
+        if (node.properties.viewBox) {
+          const parts = String(node.properties.viewBox).trim().split(/[\s,]+/);
+          if (parts.length >= 4) {
+            const w = parseFloat(parts[2]);
+            if (!isNaN(w) && w > 0) vbWidth = w;
+          }
+        }
+
+        const maxWidthPx = vbWidth ? Math.round(vbWidth * 1.5) : 560;
+        node.properties.style = `width: 100%; max-width: ${maxWidthPx}px; height: auto; display: block; margin: 1.5rem auto;`;
+      }
+    });
+  };
+}
+
 const ResponsiveSvg = (props: React.ComponentPropsWithoutRef<'svg'>) => {
-  if (props['data-diagram-inner' as keyof typeof props]) {
+  if (props['data-diagram-inner' as keyof typeof props] || props['data-mermaid' as keyof typeof props]) {
     return <svg {...props} />;
   }
 
-  if (props.role === 'img') {
-    return <DiagramFrame svgProps={props} />;
-  }
+  const { width, height, style, viewBox, ...restProps } = props;
+  const vbWidth = parseViewBoxWidth(viewBox);
+  const maxWidthPx = vbWidth ? Math.round(vbWidth * 1.5) : 560;
 
-  return <svg {...props} />;
+  const svgStyle: React.CSSProperties = {
+    width: '100%',
+    maxWidth: `${maxWidthPx}px`,
+    height: 'auto',
+    display: 'block',
+    margin: '1.5rem auto',
+  };
+
+  return <svg viewBox={viewBox} style={svgStyle} {...restProps} />;
 };
 
 export function extractHeadings(content: string) {
@@ -241,6 +286,7 @@ export async function renderMarkdown(content: string) {
     .use(remarkDirectiveTransform)
     .use(remarkRehype, { allowDangerousHtml: true })
     .use(rehypeRaw)
+    .use(rehypeInlineSvgSize)
     .use(rehypeSlug)
     .use(rehypeKatex)
     .use(rehypePrettyCode, {
