@@ -8,6 +8,11 @@ const nextConfig: NextConfig = {
         destination: '/credit-risk-volume-1',
         permanent: true,
       },
+      {
+        source: '/credit-risk-20-minute-cheatsheet',
+        destination: '/credit-risk-cheatsheet',
+        permanent: true,
+      },
     ];
   },
 };

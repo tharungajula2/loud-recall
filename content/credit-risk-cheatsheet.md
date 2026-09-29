@@ -1,6 +1,6 @@
 ---
-title: "Credit Risk Cheatsheet"
-description: "The 20% of credit risk that handles 80% of the work: default, PD, LGD and EAD, drawing power, derivatives, CCR and CVA, IFRS 9, Basel capital and 3.1, liquidity, ALM, model checks, portfolio metrics, reports and the data flow."
+title: "Credit Risk — The Cheatsheet"
+description: "Credit risk end to end in one sheet: default, PD, LGD and EAD, drawing power, the life of a loan, IFRS 9, Basel capital and 3.1, liquidity, ALM, model checks, portfolio metrics, reports, key numbers, a glossary, and a map of counterparty risk."
 subject: finance
 format: masterclass
 order: 1
@@ -20,18 +20,70 @@ tags:
   - regulatory reporting
 ---
 
+**Credit risk on one page**
+
+<svg viewBox="0 0 400 602" width="400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Credit risk on one page: the rules, measuring risk, lending and protecting, then provisions under IFRS 9 beside capital under Basel, staying liquid, watching and proving, and data and reports; derivatives add counterparty risk" style="width:100%;max-width:400px;height:auto;display:block;margin:1rem auto">
+<g font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="15" fill="#1f2937">
+<text x="200" y="24" text-anchor="middle" font-size="16" font-weight="700">Credit risk on one page</text>
+<rect x="12" y="40" width="376" height="52" rx="8" fill="#f8fafc" stroke="#64748b" stroke-width="1.5"/>
+<text x="26" y="62" font-weight="700" fill="#334155">The rules</text>
+<text x="26" y="83" fill="#374151">BCBS, IASB → RBI, PRA, EU, US · 2</text>
+<line x1="200" y1="92" x2="200" y2="100" stroke="#6b7280" stroke-width="1.6"/>
+<polygon points="200,108 204,100 196,100" fill="#6b7280"/>
+<rect x="12" y="108" width="376" height="52" rx="8" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5"/>
+<text x="26" y="130" font-weight="700" fill="#1d4ed8">Measure the risk</text>
+<text x="26" y="151" fill="#374151">Default · PD × LGD × EAD · 3–4</text>
+<line x1="200" y1="160" x2="200" y2="168" stroke="#6b7280" stroke-width="1.6"/>
+<polygon points="200,176 204,168 196,168" fill="#6b7280"/>
+<rect x="12" y="176" width="376" height="52" rx="8" fill="#ecfdf5" stroke="#10b981" stroke-width="1.5"/>
+<text x="26" y="198" font-weight="700" fill="#047857">Lend and protect</text>
+<text x="26" y="219" fill="#374151">Limit, DP, collateral, loan life · 5–7</text>
+<line x1="103" y1="228" x2="103" y2="236" stroke="#6b7280" stroke-width="1.6"/>
+<polygon points="103,244 107,236 99,236" fill="#6b7280"/>
+<line x1="297" y1="228" x2="297" y2="236" stroke="#6b7280" stroke-width="1.6"/>
+<polygon points="297,244 301,236 293,236" fill="#6b7280"/>
+<rect x="12" y="244" width="182" height="52" rx="8" fill="#fffbeb" stroke="#f59e0b" stroke-width="1.5"/>
+<text x="26" y="266" font-weight="700" fill="#b45309">Provisions</text>
+<text x="26" y="287" fill="#374151">EL · IFRS 9 · 10–12</text>
+<rect x="206" y="244" width="182" height="52" rx="8" fill="#f5f3ff" stroke="#8b5cf6" stroke-width="1.5"/>
+<text x="220" y="266" font-weight="700" fill="#6d28d9">Capital</text>
+<text x="220" y="287" fill="#374151">UL · Basel · 13–17</text>
+<line x1="103" y1="296" x2="103" y2="304" stroke="#6b7280" stroke-width="1.6"/>
+<polygon points="103,312 107,304 99,304" fill="#6b7280"/>
+<line x1="297" y1="296" x2="297" y2="304" stroke="#6b7280" stroke-width="1.6"/>
+<polygon points="297,312 301,304 293,304" fill="#6b7280"/>
+<rect x="12" y="312" width="376" height="52" rx="8" fill="#f0fdfa" stroke="#14b8a6" stroke-width="1.5"/>
+<text x="26" y="334" font-weight="700" fill="#0f766e">Stay liquid</text>
+<text x="26" y="355" fill="#374151">LCR, NSFR, ALM, treasury · 18–19</text>
+<line x1="200" y1="364" x2="200" y2="372" stroke="#6b7280" stroke-width="1.6"/>
+<polygon points="200,380 204,372 196,372" fill="#6b7280"/>
+<rect x="12" y="380" width="376" height="52" rx="8" fill="#fff1f2" stroke="#f43f5e" stroke-width="1.5"/>
+<text x="26" y="402" font-weight="700" fill="#be123c">Watch and prove</text>
+<text x="26" y="423" fill="#374151">Model checks, portfolio metrics · 20–21</text>
+<line x1="200" y1="432" x2="200" y2="440" stroke="#6b7280" stroke-width="1.6"/>
+<polygon points="200,448 204,440 196,440" fill="#6b7280"/>
+<rect x="12" y="448" width="376" height="52" rx="8" fill="#f3f4f6" stroke="#9ca3af" stroke-width="1.5"/>
+<text x="26" y="470" font-weight="700" fill="#374151">Data and reports</text>
+<text x="26" y="491" fill="#374151">Month-end machine, returns, MIS · 22–23</text>
+<rect x="12" y="516" width="376" height="52" rx="8" fill="#ffffff" stroke="#6b7280" stroke-width="1.5" stroke-dasharray="6 4"/>
+<text x="26" y="538" font-weight="700" fill="#374151">Side branch: derivatives</text>
+<text x="26" y="559" fill="#374151">Counterparty risk, its own map · 8–9</text>
+<text x="200" y="590" text-anchor="middle" fill="#4b5563">Numbers = sections of this note</text>
+</g>
+</svg>
+
 **How this note is laid out**
 
 | Part | Sections | Covers |
 |---|---|---|
 | 1. Foundations | 1–4 | The one idea, who sets the rules, default, PD × LGD × EAD |
-| 2. Lending risk | 5–6 | SME cash credit, reducing loan risk |
-| 3. Derivatives and counterparty risk | 7–13 | Derivatives, CCR, exposure, wrong-way risk, netting and collateral, CVA |
-| 4. IFRS 9: the accounting view | 14–16 | Classification, ECL, derivatives and hedging |
-| 5. Basel: the capital view | 17–23 | Capital, SA-CCR, CCR and CVA capital, Basel 3.1, the two books, where provisions meet capital |
-| 6. Liquidity and the balance sheet | 24–25 | LCR, NSFR, ALM, treasury |
-| 7. Running the machine | 26–29 | Model checks, portfolio metrics, the data flow, reports |
-| 8. Holding it together | 30–32 | Distinctions, edge topics, the whole thing on one screen |
+| 2. Lending risk | 5–7 | SME cash credit, reducing loan risk, the life of a loan |
+| 3. Counterparty risk: overview | 8–9 | Derivatives, CCR side by side with lending, the map of CCR |
+| 4. IFRS 9: the accounting view | 10–12 | Classification, ECL, derivatives and hedging |
+| 5. Basel: the capital view | 13–17 | Capital, capital for counterparty risk, Basel 3.1, the two books, where provisions meet capital |
+| 6. Liquidity and the balance sheet | 18–19 | LCR, NSFR, ALM, treasury |
+| 7. Running the machine | 20–23 | Model checks, portfolio metrics, the data flow, reports |
+| 8. Holding it together | 24–28 | Distinctions, edge topics, key numbers, glossary, the whole thing on one screen |
 
 ## 1 — The one idea behind everything
 
@@ -117,6 +169,15 @@ $$
 | Through-the-cycle (TTC) | Average over a whole cycle; stable | Basel capital |
 | 12-month vs lifetime | Default in the next year, or before the loan ends | IFRS 9 Stage 1 vs Stages 2 and 3 |
 
+**The same three numbers do four jobs**
+
+| Job | How PD, LGD and EAD are used | Section |
+|---|---|---|
+| Decide | PD cut-offs approve, decline or refer an application; limits scale with risk | 5, 7 |
+| Price | EL is charged in the interest rate, alongside the cost of capital | 7 |
+| Provide | IFRS 9 turns them into ECL: 12-month or lifetime | 11 |
+| Hold capital | Basel turns them into RWA and capital for UL | 13 |
+
 ## 5 — SME cash credit: limit and drawing power
 
 **The limit is the yearly ceiling; drawing power (DP) is what this month's stock and bills support. The borrower can draw the lower of the two.**
@@ -148,20 +209,81 @@ $$
 
 **Collateral counts only if it is legally enforceable, registered and recently valued.**
 
-## 7 — Derivatives in four lines
+## 7 — The life of a loan, end to end
 
-**The short version. Sections 8–13 go deep.**
+**One loan from start to finish, and where each part of this note fits.**
 
-| Idea | Meaning |
-|---|---|
-| Counterparty risk | The other side defaults while the contract is worth money to you |
-| Exposure | Today's value if positive, plus a buffer for how it could grow; never the notional |
-| SA-CCR | Regulatory EAD = 1.4 × (replacement cost + potential future exposure) |
-| CVA | The price of the counterparty's default risk; it rises as their credit spread widens, so a loss can come before any default |
+<svg viewBox="0 0 400 520" width="400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Life of a loan: application, sanction, disbursement in Stage 1, monitoring, deterioration to Stage 2, default to Stage 3, recovery, write-off; a loan can cure back after probation" style="width:100%;max-width:400px;height:auto;display:block;margin:1rem auto">
+<g font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="15" fill="#1f2937">
+<text x="200" y="24" text-anchor="middle" font-size="16" font-weight="700">The life of a loan</text>
+<rect x="12" y="40" width="330" height="46" rx="8" fill="#ecfdf5" stroke="#10b981" stroke-width="1.5"/>
+<text x="26" y="59" font-weight="700" fill="#047857">Application</text>
+<text x="26" y="78" font-size="13.5" fill="#374151">scored: PD from scorecard and bureau</text>
+<line x1="40" y1="86" x2="40" y2="92" stroke="#6b7280" stroke-width="1.6"/>
+<polygon points="40,100 44,92 36,92" fill="#6b7280"/>
+<rect x="12" y="100" width="330" height="46" rx="8" fill="#ecfdf5" stroke="#10b981" stroke-width="1.5"/>
+<text x="26" y="119" font-weight="700" fill="#047857">Sanction</text>
+<text x="26" y="138" font-size="13.5" fill="#374151">limit, collateral, price</text>
+<line x1="40" y1="146" x2="40" y2="152" stroke="#6b7280" stroke-width="1.6"/>
+<polygon points="40,160 44,152 36,152" fill="#6b7280"/>
+<rect x="12" y="160" width="330" height="46" rx="8" fill="#ecfdf5" stroke="#10b981" stroke-width="1.5"/>
+<text x="26" y="179" font-weight="700" fill="#047857">Disbursement</text>
+<text x="26" y="198" font-size="13.5" fill="#374151">Stage 1 · 12-month ECL · capital</text>
+<line x1="40" y1="206" x2="40" y2="212" stroke="#6b7280" stroke-width="1.6"/>
+<polygon points="40,220 44,212 36,212" fill="#6b7280"/>
+<rect x="12" y="220" width="330" height="46" rx="8" fill="#ecfdf5" stroke="#10b981" stroke-width="1.5"/>
+<text x="26" y="239" font-weight="700" fill="#047857">Monitoring</text>
+<text x="26" y="258" font-size="13.5" fill="#374151">DPD, SMA, early warnings, DP</text>
+<line x1="40" y1="266" x2="40" y2="272" stroke="#6b7280" stroke-width="1.6"/>
+<polygon points="40,280 44,272 36,272" fill="#6b7280"/>
+<rect x="12" y="280" width="330" height="46" rx="8" fill="#fffbeb" stroke="#f59e0b" stroke-width="1.5"/>
+<text x="26" y="299" font-weight="700" fill="#b45309">Deterioration</text>
+<text x="26" y="318" font-size="13.5" fill="#374151">SICR · Stage 2 · lifetime ECL</text>
+<line x1="40" y1="326" x2="40" y2="332" stroke="#6b7280" stroke-width="1.6"/>
+<polygon points="40,340 44,332 36,332" fill="#6b7280"/>
+<rect x="12" y="340" width="330" height="46" rx="8" fill="#fff1f2" stroke="#f43f5e" stroke-width="1.5"/>
+<text x="26" y="359" font-weight="700" fill="#be123c">Default</text>
+<text x="26" y="378" font-size="13.5" fill="#374151">over 90 DPD or UTP · NPA · Stage 3</text>
+<line x1="40" y1="386" x2="40" y2="392" stroke="#6b7280" stroke-width="1.6"/>
+<polygon points="40,400 44,392 36,392" fill="#6b7280"/>
+<rect x="12" y="400" width="330" height="46" rx="8" fill="#f3f4f6" stroke="#9ca3af" stroke-width="1.5"/>
+<text x="26" y="419" font-weight="700" fill="#374151">Recovery</text>
+<text x="26" y="438" font-size="13.5" fill="#374151">collateral, guarantees, restructuring</text>
+<line x1="40" y1="446" x2="40" y2="452" stroke="#6b7280" stroke-width="1.6"/>
+<polygon points="40,460 44,452 36,452" fill="#6b7280"/>
+<rect x="12" y="460" width="330" height="46" rx="8" fill="#f3f4f6" stroke="#9ca3af" stroke-width="1.5"/>
+<text x="26" y="479" font-weight="700" fill="#374151">Write-off</text>
+<text x="26" y="498" font-size="13.5" fill="#374151">no recovery expected · provision used</text>
+<path d="M 342 423.0 L 372 423.0 L 372 243.0 L 350 243.0" fill="none" stroke="#6b7280" stroke-width="1.6" stroke-dasharray="5 4"/>
+<polygon points="342,243.0 350,239.0 350,247.0" fill="#6b7280"/>
+<text x="386" y="333.0" text-anchor="middle" fill="#4b5563" transform="rotate(-90 386 333.0)">cure, after probation</text>
+</g>
+</svg>
 
-## 8 — Derivatives: what they are
 
-**A derivative is a contract whose value comes from something else, called the underlying: a rate, a currency, a price or a credit.**
+| Step | What happens | Sections |
+|---|---|---|
+| Application | The borrower is scored; the scorecard and the bureau give a PD | 4, 20 |
+| Sanction | Limit set, collateral taken, loan priced | 5, 6 |
+| Disbursement | EAD starts. A 12-month ECL provision (Stage 1) is booked on day one. Capital is held against its RWA | 11, 13 |
+| Monitoring | DPD tracked, SMA labels, early warning signals; for cash credit, DP recomputed monthly | 3, 5, 21 |
+| Deterioration | Risk rises significantly since origination: Stage 2, lifetime ECL | 11 |
+| Default | Over 90 DPD or unlikely to pay: NPA, Stage 3, a higher risk weight (up to 150%) | 3, 11, 13 |
+| Recovery | Collateral sold, guarantees called, restructuring; or the loan cures after probation | 6, 11 |
+| Write-off | Once no reasonable recovery is expected, the loan leaves the books and the provision absorbs it | 21 |
+| Every month-end | The data machine recomputes ECL and RWA, and the reports go out | 22, 23 |
+
+$$
+	ext{Loan rate} pprox 	ext{funding cost} + 	ext{EL} + 	ext{cost of capital for UL} + 	ext{operating cost} + 	ext{margin}
+$$
+
+**Read it as:** price is where section 1 comes alive. The expected loss is charged to the borrower as a cost, and the capital held for the bad year has a cost too. A riskier borrower pays more on both.
+
+## 8 — Counterparty credit risk: the overview
+
+**This note gives counterparty risk as a map only. It gets its own masterclass separately.**
+
+A derivative is a contract whose value comes from something else, called the underlying: a rate, a currency, a price or a credit.
 
 | Building block | Meaning |
 |---|---|
@@ -170,162 +292,71 @@ $$
 | Swap | Exchange one stream of payments for another, such as fixed for floating interest |
 | Option | The right, but not the obligation, to buy or sell |
 
-| How it trades | Meaning |
-|---|---|
-| Exchange-traded | Standard contracts, cleared by a central counterparty |
-| OTC, over the counter | A private bilateral contract with custom terms |
-
-**Why banks use them:** to hedge their own risk, to serve clients, and to trade.
-
 | Number | Meaning |
 |---|---|
 | Notional | The reference amount payments are calculated on; not what is at risk |
 | MtM, mark-to-market | Today's value: what it would cost to replace the contract now. Positive means the counterparty owes you; negative means you owe them |
 
-## 9 — Counterparty credit risk: the core idea
-
 **Counterparty credit risk (CCR) is the risk that the other side defaults before the contract's final cash flows are settled.**
 
-| How CCR differs from loan risk | Meaning |
+**The four lines:**
+
+| Idea | Meaning |
 |---|---|
-| Two-way | Either side can be the one exposed |
-| Uncertain | Exposure moves with markets, not with a repayment schedule |
-| Market-driven | Market risk creates the exposure; credit risk turns it into a loss |
+| Counterparty risk | The other side defaults while the contract is worth money to you |
+| Exposure | Today's value if positive, plus a buffer for how it could grow; never the notional |
+| SA-CCR | Regulatory EAD = 1.4 × (replacement cost + potential future exposure) |
+| CVA | The price of the counterparty's default risk; it rises as their credit spread widens, so a loss can come before any default |
 
-**You lose only if two things happen together:** the counterparty defaults, and the contract is worth money to you at that moment.
+**Normal lending and counterparty risk, side by side**
 
-| Risk | Meaning |
-|---|---|
-| Pre-settlement risk | Default before the settlement date. This is CCR |
-| Settlement risk | You pay your leg and do not receive theirs on the settlement day. The classic case is Herstatt risk in FX, reduced by payment-versus-payment systems such as CLS |
-
-## 10 — Measuring exposure
-
-$$
-\text{Current exposure} = \max(\text{MtM},\ 0)
-$$
-
-**Read it as:** if the contract is worth nothing to you, you have nothing to lose today. Future exposure is simulated: markets are projected forward and the contract is revalued at each date.
-
-| Measure | Meaning | Used for |
+| | Normal lending | Counterparty risk (derivatives) |
 |---|---|---|
-| EE, expected exposure | Average positive exposure at a future date | CVA |
-| PFE, potential future exposure | A high percentile of exposure, usually 95% or 97.5% | Credit limits |
-| EPE, expected positive exposure | EE averaged over time | Exposure summaries |
-| Effective EE | EE that is not allowed to fall, capturing rollover of short trades | Regulatory models |
-| EEPE, effective EPE | Effective EE averaged over the first year | The regulatory model measure |
-| ENE, expected negative exposure | What the counterparty is exposed to you | DVA |
+| What creates exposure | Money lent | The contract's value moving with markets |
+| Direction | One-way: the bank is always the one exposed | Two-way: either side can be exposed |
+| Size of exposure | Known: drawn + CCF × undrawn | Unknown: today's MtM plus a buffer for how it could grow |
+| Loss happens when | The borrower defaults | The counterparty defaults while the contract is worth money to you |
+| Main protection | Collateral, guarantees | Netting, margin, central clearing |
+| Regulatory EAD | Drawn + CCF × undrawn | SA-CCR: 1.4 × (RC + PFE) |
+| Accounting | Amortised cost; IFRS 9 ECL with stages | Fair value (FVTPL); CVA inside the value; no ECL |
+| Capital | Credit RWA | Default charge + CVA charge |
+| Loss before any default? | Only through provisions as stages move | Yes: CVA loss when the counterparty's spread widens |
+| Liquidity effect | Funding the loan | Collateral calls when markets move |
 
-| Profile shape | Why |
+## 9 — The counterparty risk map
+
+**The pieces of CCR, one line each. The masterclass takes each in depth.**
+
+| Piece | In one line |
 |---|---|
-| Interest rate swap: hump-shaped, peaking about a third of the way through its life | Rate uncertainty grows over time while the remaining payments shrink |
-| FX forward or cross-currency swap: rises until maturity | The principal is exchanged at the end |
+| Exposure measures | EE, expected exposure: the average future exposure. PFE, potential future exposure: a high-percentile exposure, used for limits |
+| Wrong-way risk | Exposure rises exactly when the counterparty's credit worsens |
+| Netting | Under an ISDA Master Agreement, all trades with one counterparty collapse into one net amount on default |
+| Collateral | Under a CSA, credit support annex: VM, variation margin, covers today's value; IM, initial margin, covers the move while a default is closed out |
+| Central clearing | A CCP, central counterparty, stands between buyer and seller; standardised OTC derivatives must be cleared |
+| Settlement risk | You pay your leg and do not receive theirs on the day; separate from CCR, which is default before settlement |
+| SA-CCR | The regulator's formula for derivative EAD: 1.4 × (replacement cost + potential future exposure) |
+| CVA | Credit valuation adjustment: the market price of the counterparty's default risk, taken off the derivative's value |
+| DVA | Debit valuation adjustment: the mirror image, your own default risk; its gains are removed from CET1 |
+| XVA | The wider family of pricing adjustments: FVA for funding, MVA for margin, KVA for capital |
 
-**Exposure is measured per netting set, not per trade.**
-
-## 11 — Wrong-way risk
-
-**Wrong-way risk: exposure rises exactly when the counterparty's credit worsens.**
-
-| Type | Source | Case |
-|---|---|---|
-| General wrong-way risk | Macro correlation | Exposure to an emerging-market bank through a trade that gains when its currency collapses |
-| Specific wrong-way risk | A legal or structural link | Collateral issued by the counterparty itself, or protection bought from someone on themselves |
-| Right-way risk | The reverse | Exposure falls as credit worsens |
-
-Regulators require specific wrong-way risk to be identified and capitalised separately.
-
-## 12 — Reducing counterparty risk
-
-| Netting | Meaning |
+| Where CCR shows up in this note | Section |
 |---|---|
-| ISDA Master Agreement | Governs the OTC trades between two parties |
-| Close-out netting | On default, all trades under the agreement collapse into one net amount |
-| Legal opinion | Netting counts only if a legal opinion confirms it is enforceable in the counterparty's jurisdiction |
+| Accounting: fair value with CVA, no ECL | 12 |
+| Capital: two charges, SA-CCR and CVA capital | 14 |
+| Basel 3.1: no internal models for CVA | 15 |
+| The books: CCR and CVA in both | 16 |
+| Liquidity: collateral calls, derivative funding | 18, 19 |
+| Reports: CCR and CVA templates, CCR limits, CVA P&L | 23 |
+| Distinctions: loan vs CCR, CVA vs DVA and more | 24 |
 
-| Collateral term | Meaning |
-|---|---|
-| CSA, credit support annex | Sets the collateral terms |
-| VM, variation margin | Covers today's MtM; exchanged daily |
-| IM, initial margin | Covers how far the MtM could move before a defaulted position is closed out; posted by both sides, segregated, not reused |
-| Threshold | Exposure allowed before collateral is called |
-| MTA, minimum transfer amount | The smallest amount worth calling |
-| Independent amount | Extra collateral agreed up front |
-
-**MPOR, margin period of risk:** the time from the last good margin call to closing out the position.
-
-| MPOR floor | Business days |
-|---|---|
-| Repos and securities financing | 5 |
-| Bilateral OTC derivatives | 10 |
-| Netting sets above 5,000 trades, or with illiquid collateral or hard-to-replace trades | 20 |
-| After repeated margin disputes | Doubled |
-
-**Central clearing:** a CCP, central counterparty, stands between buyer and seller. It becomes the buyer to every seller and the seller to every buyer. Standardised OTC derivatives must be cleared.
-
-| CCP default waterfall, in order | Who pays |
-|---|---|
-| 1 | The defaulter's margin |
-| 2 | The defaulter's default fund contribution |
-| 3 | The CCP's own capital ("skin in the game") |
-| 4 | The surviving members' default fund |
-| 5 | Further calls on members |
-
-| Uncleared margin rules (UMR) | Rule |
-|---|---|
-| Scope | Non-cleared OTC derivatives between covered firms |
-| VM | Mandatory since 2017 |
-| IM | Phased in through 2022 by size of derivatives book; calibrated to a 99%, 10-day move; usually computed with ISDA SIMM or a regulatory schedule |
-
-## 13 — CVA: the price of counterparty risk
-
-**CVA, credit valuation adjustment, is the market price of the counterparty's default risk.**
-
-$$
-\text{True value} = \text{risk-free value} - \text{CVA}
-$$
-
-$$
-\text{CVA} = \text{LGD} \times \sum_{t} \text{EE}_t \times \text{DF}_t \times \text{PD}_{t-1,\,t}
-$$
-
-**Read it as:** for each future period, the expected exposure, discounted to today, times the chance the counterparty defaults in that period, all times the share lost.
-
-| Input | Source |
-|---|---|
-| LGD | The market LGD, often 60%, meaning a 40% recovery |
-| EE | The exposure simulation |
-| PD | Implied from the counterparty's market credit spread, not from a rating model. Rule of thumb: PD ≈ spread ÷ LGD |
-
-| What moves CVA | Effect |
-|---|---|
-| Counterparty's spread widens | Implied PD rises, CVA rises, the bank books a loss |
-| Market rates or FX move | EE changes, so CVA changes |
-
-So CVA carries both credit risk and market risk.
-
-| Topic | Meaning |
-|---|---|
-| Accounting | IFRS 13 fair value is an exit price and must include counterparty risk, so CVA sits inside the fair value of every derivative and runs through P&L (section 16) |
-| The CVA desk | Charges each trading desk a CVA price at inception and manages the book; hedges with CDS on the counterparty or on indices, plus market hedges on exposure drivers |
-| Hedging problems | Many counterparties have no liquid CDS; hedging only exposure drivers creates P&L noise |
-| DVA, debit valuation adjustment | The mirror image: your own default risk, as your counterparty sees it. When your credit worsens, DVA rises and you book a gain. Basel III removes all DVA gains and losses from CET1, so a bank cannot grow capital by becoming riskier |
-
-| XVA family | Meaning |
-|---|---|
-| FVA, funding valuation adjustment | Cost of funding uncollateralised positions |
-| MVA, margin valuation adjustment | Cost of funding initial margin |
-| KVA, capital valuation adjustment | Cost of the capital the trade consumes |
-
-These go into pricing, and some into accounting. CVA and DVA are the core accounting ones.
-
-## 14 — IFRS 9: three parts and classification
+## 10 — IFRS 9: three parts and classification
 
 | Part of IFRS 9 | Covers |
 |---|---|
 | Classification and measurement | Which bucket each asset sits in, and how it is valued |
-| Impairment | ECL, expected credit loss (section 15) |
-| Hedge accounting | Matching the P&L of a hedge with what it hedges (section 16) |
+| Impairment | ECL, expected credit loss (section 11) |
+| Hedge accounting | Matching the P&L of a hedge with what it hedges (section 12) |
 
 **Two tests decide the bucket.** The business model: hold to collect, hold to collect and sell, or other. And SPPI: are the cash flows solely payments of principal and interest?
 
@@ -335,7 +366,7 @@ These go into pricing, and some into accounting. CVA and DVA are the core accoun
 | Hold to collect and sell | Yes | FVOCI, fair value through other comprehensive income |
 | Anything else, including all derivatives not in hedges | — | FVTPL, fair value through profit or loss |
 
-## 15 — IFRS 9: provisions for expected loss
+## 11 — IFRS 9: provisions for expected loss
 
 **Scope:** ECL applies to amortised cost and FVOCI debt, loan commitments, financial guarantees, lease receivables and trade receivables. It does not apply to FVTPL items.
 
@@ -392,9 +423,9 @@ $$
 | Scenarios | Base, upside and downside, weighted by probability; the downside hurts more than the upside helps |
 | Overlay | A management adjustment for what the models miss; approved, documented and reversed later |
 
-## 16 — IFRS 9 for derivatives and hedging
+## 12 — IFRS 9 for derivatives and hedging
 
-**Derivatives sit at FVTPL, so they have no ECL and no stages.** Their counterparty risk is captured through CVA inside fair value. IFRS 13 fair value includes CVA and DVA (section 13).
+**Derivatives sit at FVTPL, so they have no ECL and no stages.** Their counterparty risk is captured through CVA inside fair value. IFRS 13 fair value includes CVA and DVA (section 8).
 
 **Hedge accounting** aligns the timing of P&L between a hedge and what it hedges.
 
@@ -406,13 +437,13 @@ $$
 
 Banks may keep IAS 39 hedge accounting, and portfolio or macro hedging is still largely under IAS 39.
 
-## 17 — Basel: capital for unexpected loss
+## 13 — Basel: capital for unexpected loss
 
 $$
 \text{Capital ratio} = \frac{\text{capital}}{\text{RWA}}, \qquad \text{RWA} = \text{EAD} \times \text{risk weight}
 $$
 
-**Read it as:** risk-weighted assets (RWA) scale each exposure by how risky it is. Credit, market and operational risk all add to the RWA. Counterparty risk and CVA get their own charges (sections 19 and 20).
+**Read it as:** risk-weighted assets (RWA) scale each exposure by how risky it is. Credit, market and operational risk all add to the RWA. Counterparty risk and CVA get their own charges (section 14).
 
 | Approach | Who picks the risk weight | Where used |
 |---|---|---|
@@ -481,60 +512,22 @@ $$
 | NSFR | Stable funding must cover one year's needs |
 | Large exposure | One group at most 25% of Tier 1 |
 
-LCR and NSFR in detail: section 24.
+LCR and NSFR in detail: section 18.
 
-## 18 — Regulatory EAD for derivatives: SA-CCR
+## 14 — Capital for counterparty risk: overview
 
-**SA-CCR, the standardised approach for counterparty credit risk, replaced the older CEM (current exposure method) and SM (standardised method).**
-
-$$
-\text{EAD} = \alpha \times (\text{RC} + \text{PFE}), \qquad \alpha = 1.4
-$$
-
-**Read it as:** replacement cost today plus potential future exposure, times a supervisory alpha of 1.4 that covers model error and concentration.
+**SA-CCR gives the EAD. That EAD then carries two separate capital charges.**
 
 $$
-\text{RC}_{\text{unmargined}} = \max(V - C,\ 0)
+\text{EAD}_{\text{derivatives}} = 1.4 \times (\text{RC} + \text{PFE})
 $$
 
-$$
-\text{RC}_{\text{margined}} = \max(V - C,\ \text{TH} + \text{MTA} - \text{NICA},\ 0)
-$$
-
-**Read it as:** V is the MtM of the netting set; C is the net collateral held, after haircuts; TH is the threshold; NICA is the net independent collateral amount. So margined RC is at least the exposure the bank could reach without triggering a call.
-
-$$
-\text{PFE} = \text{multiplier} \times \text{aggregate add-on}
-$$
-
-**Read it as:** the multiplier recognises over-collateralisation and negative MtM, floored at 5%. Add-ons are built by asset class (interest rate, FX, credit, equity, commodity). Within each class, trades go into hedging sets where offsets are allowed. Each trade's add-on = adjusted notional × supervisory delta × maturity factor × supervisory factor.
-
-| Supervisory factor | Value |
-|---|---|
-| Interest rate | 0.5% |
-| FX | 4% |
-| Equity | 32% single name; 20% index |
-| Commodity | 40% electricity; 18% others |
-| Credit | Rises with rating: 0.38% for AAA up to 6% for CCC |
-
-| Maturity factor | Formula |
-|---|---|
-| Unmargined | √(min(M, 1 year) ÷ 1 year) |
-| Margined | 1.5 × √(MPOR ÷ 1 year) |
-
-A margined netting set's EAD is capped at its unmargined EAD.
-
-| Approach | Rule |
-|---|---|
-| IMM, internal model method | The bank simulates exposure itself. EAD = α × EEPE, α = 1.4; supervisors may allow lower, never below 1.2. Needs approval; large banks only |
-| India | CEM still in use; move to SA-CCR [verify] |
-
-## 19 — Capital for counterparty risk: two separate charges
+**Read it as:** RC, replacement cost, is what it would cost to replace the contracts today, after collateral. PFE, potential future exposure, is a buffer for how that could grow. The 1.4 is a safety multiplier.
 
 | Charge | Covers | How |
 |---|---|---|
 | 1. Default risk | The counterparty actually defaulting | RWA = SA-CCR or IMM EAD × the counterparty's risk weight, under SA or IRB |
-| 2. CVA risk | Losses as the counterparty's credit spread widens, before any default | CVA capital (section 20). Added in Basel III because in 2008 about two-thirds of counterparty losses came from CVA moves, not defaults |
+| 2. CVA risk | Losses as the counterparty's credit spread widens, before any default | CVA capital, below. Added in Basel III because in 2008 about two-thirds of counterparty losses came from CVA moves, not defaults |
 
 | Special case | Rule |
 |---|---|
@@ -543,18 +536,14 @@ A margined netting set's EAD is capped at its unmargined EAD.
 | Cleared trades | No CVA charge |
 | IRB for CCR | Effective maturity uses the netting set's cash flows, with a 1-year floor for most derivatives |
 
-## 20 — CVA capital under Basel 3.1
-
-**Internal models for CVA capital are removed. Two approaches remain, plus a small-bank option.**
-
-| Approach | How it works |
+| CVA capital under Basel 3.1 | In short |
 |---|---|
-| BA-CVA, basic approach | Formula-based, using the counterparty's EAD, maturity and a supervisory risk weight by sector and rating. The reduced version recognises no hedges; the full version recognises eligible CDS and index hedges |
-| SA-CVA, standardised approach | Sensitivity-based: to counterparty credit spreads and to the market drivers of exposure. Needs supervisory approval and a proper regulatory CVA model. Recognises both credit and market hedges |
-| Materiality option | A bank with non-centrally cleared derivatives notional of €100 billion or less may set CVA capital = 100% of its CCR default capital |
-| Out of scope | Trades with QCCPs. The EU also exempts some counterparties, such as non-financial corporates, pension funds and sovereigns [verify] |
+| BA-CVA, basic approach | Formula-based: counterparty EAD, maturity and a supervisory risk weight by sector and rating |
+| SA-CVA, standardised approach | Sensitivity-based, needs supervisory approval, recognises more hedges |
+| Materiality option | A small derivatives user (€100 billion notional or less, non-cleared) may set CVA capital = 100% of its CCR default capital |
+| Internal models | Removed |
 
-## 21 — Basel 3.1 in six changes
+## 15 — Basel 3.1 in six changes
 
 **Basel III fixed the quality of capital; Basel 3.1 fixes RWA, which banks' own models had pushed too low.**
 
@@ -578,7 +567,7 @@ $$
 | India | Revised SA from 1 April 2027; no output floor, since India has no IRB banks |
 | US | Re-proposed March 2026; still pending |
 
-## 22 — Banking book and trading book
+## 16 — Banking book and trading book
 
 **Every position sits in one of two books, and the book decides the capital rules.**
 
@@ -607,7 +596,7 @@ $$
 
 **India:** from 1 April 2024, investments are classified as HTM, AFS and FVTPL, with HFT (held for trading) inside FVTPL as the trading book.
 
-## 23 — How IFRS 9 and Basel connect
+## 17 — How IFRS 9 and Basel connect
 
 | Point | IFRS 9 | Basel |
 |---|---|---|
@@ -625,7 +614,7 @@ $$
 | Under IRB: excess | Provisions above regulatory EL: counts in Tier 2, up to 0.6% of credit RWA |
 | Transition | Regulators allow the day-one ECL hit to capital to be phased in over a few years; India's approach for April 2027 is [verify] |
 
-## 24 — LCR and NSFR
+## 18 — LCR and NSFR
 
 **Liquidity is the ability to pay when due. It is separate from solvency.**
 
@@ -670,7 +659,7 @@ $$
 | Collateral calls on downgrades or market moves | LCR outflows |
 | Net derivative liabilities | Add to required stable funding in the NSFR |
 
-## 25 — ALM, treasury and their risks
+## 19 — ALM, treasury and their risks
 
 **ALM, asset-liability management, manages the mismatches between what a bank owns and what it owes. It is owned by ALCO, the asset-liability committee.**
 
@@ -700,7 +689,7 @@ $$
 
 **How it connects:** treasury hedges rate risk with swaps → swaps create CCR and CVA → collateral on those swaps drains liquidity → liquidity is tested by LCR and NSFR.
 
-## 26 — Proving a model works
+## 20 — Proving a model works
 
 | Question | Measure | Rule of thumb |
 |---|---|---|
@@ -716,7 +705,7 @@ $$
 
 **Read it as:** D defaults seen in a grade of N borrowers, compared with the N × PD expected, measured in units of normal random wobble.
 
-## 27 — Watching the portfolio
+## 21 — Watching the portfolio
 
 | Metric | Formula | Tells you |
 |---|---|---|
@@ -730,7 +719,7 @@ $$
 |---|---|---|---|
 | Top signals | Bureau score drops, bounced payments | Line stuck at its limit, GST filings missed | Downgrade, covenant breach, late accounts |
 
-## 28 — The data machine and the analyst's job
+## 22 — The data machine and the analyst's job
 
 **Month-end:** source systems → staging → data-quality checks → warehouse → ECL and RWA engines → reconcile to the general ledger → reports → sign-off.
 
@@ -752,7 +741,7 @@ $$
 
 **Boundary rule:** test both sides of every threshold. Under "more than 90 DPD", 90 days is performing and 91 is default.
 
-## 29 — Reports: what gets produced
+## 23 — Reports: what gets produced
 
 | Pillar | Meaning |
 |---|---|
@@ -793,7 +782,7 @@ $$
 | Early warning | Early warning list and watchlist |
 | Model monitoring | Gini, PSI, backtesting, overrides |
 
-## 30 — Distinctions worth holding
+## 24 — Distinctions worth holding
 
 | Losses and capital | Difference |
 |---|---|
@@ -828,7 +817,7 @@ $$
 | ICAAP vs ILAAP | Capital adequacy vs liquidity adequacy |
 | COREP vs FINREP | Capital view vs accounting view |
 
-## 31 — Also worth knowing
+## 25 — Also worth knowing
 
 | Topic | In short |
 |---|---|
@@ -841,8 +830,137 @@ $$
 | TLAC and MREL | The largest banks hold debt that can be written down in resolution, so failure does not need a bailout |
 | Recovery and resolution | Recovery plan: the bank's own playbook to survive stress. Resolution plan: the authority's playbook to wind it down safely |
 | Climate risk | Physical and transition risks feeding into PD, LGD and collateral values; mostly Pillar 2 and disclosure for now |
+| Ratings and the master scale | Scorecards or rating models give a score or grade; the master scale maps each grade to a PD band, so every model speaks the same PD language |
+| Forbearance and restructuring | Easing terms for a borrower in difficulty; flags higher risk, often moves the loan to Stage 2 or 3, and needs probation before a cure |
+| Provision vs write-off | A provision sets money aside while the loan is still on the books; a write-off removes the loan once no reasonable recovery is expected, using that provision |
+| Collections | The team and process that chase overdue accounts, from reminders at early DPD to legal recovery after default |
 
-## 32 — The whole thing on one screen
+## 26 — Key numbers to remember
+
+| Number | What it is | Section |
+|---|---|---|
+| 99.9% | The 1-in-1,000 year that capital is sized for | 1 |
+| 90 DPD | Default, NPA, Stage 3 | 3 |
+| 30 DPD | IFRS 9 backstop for Stage 2 | 11 |
+| 1–30 / 31–60 / 61–90 | SMA-0, SMA-1, SMA-2 | 3 |
+| 75% | MPBF share of current assets | 5 |
+| 20% | Turnover method limit | 5 |
+| 25% | Common stock and receivables margin | 5 |
+| 90 days | Maximum age of receivables in DP | 5 |
+| 1 April 2027 | India: ECL and revised SA start | 2 |
+| 4.5% / 6% / 8% | Basel minimum CET1 / Tier 1 / total | 13 |
+| 5.5% / 7% / 9% | India minimum CET1 / Tier 1 / total | 13 |
+| 2.5% | Conservation buffer; also the CCyB ceiling | 13 |
+| 10.5% / 11.5% | Full stack: Basel / India | 13 |
+| 3% / 3.5% / 4% | Leverage ratio: Basel / India / India systemically important | 13 |
+| 25% of Tier 1 | Large exposure limit for one group | 13 |
+| 100% / 85% / 75% / 150% | Risk weights: unrated corporate / unrated SME / regulatory retail / defaulted | 13 |
+| 72.5% | Output floor | 15 |
+| 0.05% | Minimum PD under Basel 3.1 | 15 |
+| 10% | CCF on cancellable limits under Basel 3.1 | 15 |
+| 1.4 | SA-CCR alpha | 8, 14 |
+| 100% | LCR and NSFR minimum | 18 |
+| 15% of Tier 1 | IRRBB outlier test on EVE | 19 |
+| 40–60% / 60–80% | Gini: application / behavioural scorecards | 20 |
+| 0.10 / 0.25 | PSI: watch / act | 20 |
+| About 2 | Binomial z beyond which the PD is wrong | 20 |
+
+## 27 — Glossary: every short form in this note
+
+| Short form | Stands for |
+|---|---|
+| AFS | Available for sale (India investment category) |
+| ALCO | Asset-liability committee |
+| ALM | Asset-liability management |
+| AT1 | Additional tier 1 capital |
+| AUC | Area under the curve |
+| BCBS | Basel Committee on Banking Supervision |
+| BRD | Business requirements document |
+| CA | Current assets |
+| CCF | Credit conversion factor |
+| CCP | Central counterparty |
+| CCR | Counterparty credit risk |
+| CCyB | Countercyclical capital buffer |
+| CECL | Current expected credit loss (US) |
+| CET1 | Common equity tier 1 |
+| CRILC | Central Repository of Information on Large Credits |
+| CRR | Cash reserve ratio (India); Capital Requirements Regulation (EU) |
+| CSA | Credit support annex |
+| CVA | Credit valuation adjustment |
+| D-SIB | Domestic systemically important bank |
+| DF | Discount factor |
+| DP | Drawing power |
+| DPD | Days past due |
+| DVA | Debit valuation adjustment |
+| EAD | Exposure at default |
+| EBA | European Banking Authority |
+| ECB | European Central Bank |
+| ECL | Expected credit loss |
+| EE | Expected exposure |
+| EL | Expected loss |
+| EVE | Economic value of equity |
+| FRTB | Fundamental Review of the Trading Book |
+| FSD | Functional specification document |
+| FTP | Funds transfer pricing |
+| FVOCI | Fair value through other comprehensive income |
+| FVTPL | Fair value through profit or loss |
+| G-SIB | Global systemically important bank |
+| GNPA | Gross non-performing assets |
+| HFT | Held for trading |
+| HQLA | High-quality liquid assets |
+| HTM | Held to maturity |
+| IASB | International Accounting Standards Board |
+| ICAAP | Internal capital adequacy assessment process |
+| IFRS | International Financial Reporting Standards |
+| ILAAP | Internal liquidity adequacy assessment process |
+| IM | Initial margin |
+| IMM | Internal model method |
+| IRAC | Income recognition, asset classification and provisioning |
+| IRB | Internal ratings-based approach |
+| IRRBB | Interest rate risk in the banking book |
+| KS | Kolmogorov–Smirnov statistic |
+| LCR | Liquidity coverage ratio |
+| LGD | Loss given default |
+| LTV | Loan-to-value |
+| MIS | Management information system |
+| MPBF | Maximum permissible bank finance |
+| MPOR | Margin period of risk |
+| MtM | Mark-to-market |
+| NDTL | Net demand and time liabilities |
+| NII | Net interest income |
+| NNPA | Net non-performing assets |
+| NPA | Non-performing asset |
+| NSFR | Net stable funding ratio |
+| OCI | Other comprehensive income |
+| OCL | Other current liabilities |
+| OTC | Over the counter |
+| PCR | Provision coverage ratio |
+| PD | Probability of default |
+| PFE | Potential future exposure |
+| PIT | Point-in-time |
+| POCI | Purchased or originated credit-impaired |
+| PPV | Post-production validation |
+| PRA | Prudential Regulation Authority (UK) |
+| PSI | Population stability index |
+| QCCP | Qualifying central counterparty |
+| RBI | Reserve Bank of India |
+| RC | Replacement cost |
+| RWA | Risk-weighted assets |
+| SA | Standardised approach |
+| SA-CCR | Standardised approach for counterparty credit risk |
+| SICR | Significant increase in credit risk |
+| SIT | System integration testing |
+| SLR | Statutory liquidity ratio |
+| SMA | Special mention account |
+| SPPI | Solely payments of principal and interest |
+| SREP | Supervisory review and evaluation process |
+| TTC | Through-the-cycle |
+| UAT | User acceptance testing |
+| UL | Unexpected loss |
+| UTP | Unlikely to pay |
+| VM | Variation margin |
+
+## 28 — The whole thing on one screen
 
 | Idea | In one line |
 |---|---|
