@@ -274,7 +274,7 @@ $$
 | Every month-end | The data machine recomputes ECL and RWA, and the reports go out | 22, 23 |
 
 $$
-	ext{Loan rate} pprox 	ext{funding cost} + 	ext{EL} + 	ext{cost of capital for UL} + 	ext{operating cost} + 	ext{margin}
+\text{Loan rate} \approx \text{funding cost} + \text{EL} + \text{cost of capital for UL} + \text{operating cost} + \text{margin}
 $$
 
 **Read it as:** price is where section 1 comes alive. The expected loss is charged to the borrower as a cost, and the capital held for the bad year has a cost too. A riskier borrower pays more on both.
