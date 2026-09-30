@@ -9,6 +9,11 @@ interface MermaidDiagramProps {
 
 let mermaidInitialized = false;
 
+// One explicit font stack for all Mermaid diagrams.
+// Using SVG text (htmlLabels: false) so page/prose CSS cannot restyle label text
+// into a wider font after Mermaid has already measured the box widths.
+const DIAGRAM_FONT = "system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif";
+
 export function MermaidDiagram({ chart }: MermaidDiagramProps) {
   const [svgContent, setSvgContent] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
@@ -25,9 +30,16 @@ export function MermaidDiagram({ chart }: MermaidDiagramProps) {
           mermaid.initialize({
             startOnLoad: false,
             theme: 'neutral',
-            themeVariables: { fontSize: '15px', fontFamily: 'inherit' },
+            // Top-level fontFamily: Mermaid uses this for SVG text measurement
+            fontFamily: DIAGRAM_FONT,
+            // htmlLabels: false → SVG <text> elements only; prose CSS cannot reach inside
+            htmlLabels: false,
+            themeVariables: {
+              fontSize: '14px',
+              fontFamily: DIAGRAM_FONT,
+            },
             securityLevel: 'strict',
-            flowchart: { useMaxWidth: false, htmlLabels: true },
+            flowchart: { useMaxWidth: true, htmlLabels: false, padding: 16 },
             sequence: { useMaxWidth: false },
             gantt: { useMaxWidth: false },
             journey: { useMaxWidth: false },
@@ -42,6 +54,12 @@ export function MermaidDiagram({ chart }: MermaidDiagramProps) {
             timeline: { useMaxWidth: false },
           });
           mermaidInitialized = true;
+        }
+
+        // Await web font loading before rendering so Mermaid measures label widths
+        // with the fonts that will actually be displayed (prevents clipped labels).
+        if (typeof document !== 'undefined' && document.fonts) {
+          await document.fonts.ready;
         }
 
         const id = `mermaid-${uniqueId}-${Math.random().toString(36).substring(2, 9)}`;

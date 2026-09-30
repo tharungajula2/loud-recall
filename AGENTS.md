@@ -17,6 +17,8 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 - Every `$$` display equation sits on its own lines with a blank line after it, before any "where:" list.
 - Never copy frontmatter values (title, description) into the note body.
 - Mermaid diagrams go in ```mermaid fences, rendered by MermaidDiagram.tsx.
+- **Mermaid labels**: labels use SVG text (`htmlLabels: false`) with one explicit font stack (`system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif`), rendered after `document.fonts.ready`. Prose CSS must never style inside diagrams (scoped isolation CSS in `globals.css`). Never fix clipped labels by editing note text.
+- **TOC**: headings inside fenced code blocks (``` or ~~~, any language tag) are content, never TOC entries. `extractHeadings` in `lib/render.tsx` tracks fence open/close state and skips any `##` line while inside a fence.
 
 ## Workflow rules
 - Work directly on main. No new branches.

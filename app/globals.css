@@ -409,3 +409,35 @@ html::-webkit-scrollbar, body::-webkit-scrollbar {
   background: rgba(0, 0, 0, 0.25);
 }
 
+/* ── Mermaid diagram isolation ─────────────────────────────────────────────
+   Prose CSS (font-family, font-size, line-height, margin) must never reach
+   inside Mermaid SVG elements. These rules are scoped to .mermaid-diagram
+   (the wrapper class on the DiagramFrame container) and to the raw SVG that
+   MermaidDiagram renders via dangerouslySetInnerHTML.
+   Do NOT remove or widen these selectors.
+   ────────────────────────────────────────────────────────────────────────── */
+.mermaid-diagram svg text,
+.mermaid-diagram svg tspan,
+.mermaid-diagram svg [class*="label"],
+/* DiagramFrame renders the SVG inside a div with dangerouslySetInnerHTML;
+   target the SVG and its text descendants directly via the frame border wrapper */
+.my-6.rounded-lg.border svg text,
+.my-6.rounded-lg.border svg tspan {
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif !important;
+  font-size: inherit;
+  line-height: 1.4;
+  margin: 0;
+}
+
+.mermaid-diagram svg foreignObject,
+.my-6.rounded-lg.border svg foreignObject {
+  overflow: visible;
+}
+
+.mermaid-diagram svg foreignObject *,
+.my-6.rounded-lg.border svg foreignObject * {
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif !important;
+  line-height: 1.4;
+  margin: 0;
+}
+

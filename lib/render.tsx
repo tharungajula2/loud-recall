@@ -249,20 +249,62 @@ const ResponsiveSvg = (props: React.ComponentPropsWithoutRef<'svg'>) => {
   return <svg viewBox={viewBox} style={svgStyle} {...restProps} />;
 };
 
+/**
+ * Extract ## headings from markdown content for the Table of Contents.
+ *
+ * IMPORTANT: Lines inside fenced code blocks (``` or ~~~, any language tag)
+ * are content, not headings. A `## Heading` inside a code fence must not
+ * become a TOC entry. This function tracks fence open/close state and skips
+ * any heading-like line found while inside a fence.
+ */
 export function extractHeadings(content: string) {
   const headings: { id: string; text: string }[] = [];
   const slugger = new Slugger();
 
-  // Match markdown headers: ## Title
-  const mdRegex = /^##\s+(.+)$/gm;
-  let match;
-  while ((match = mdRegex.exec(content)) !== null) {
-    const text = match[1].trim();
-    const id = slugger.slug(text);
-    headings.push({ id, text });
+  // Process line by line, tracking fenced code block state.
+  // A fence is opened/closed by a line that starts (after optional spaces) with
+  // ``` or ~~~ (optionally followed by a language tag on the same line).
+  const lines = content.split('\n');
+  let insideFence = false;
+  let fenceChar = '';   // '`' or '~' — the character that opened the current fence
+  let fenceLen = 0;     // length of the opening fence marker (≥ 3)
+
+  for (const line of lines) {
+    // Detect fence open/close: a line starting with ≥3 identical ` or ~ characters
+    const fenceMatch = line.match(/^(\s{0,3})(`{3,}|~{3,})/);
+    if (fenceMatch) {
+      const marker = fenceMatch[2];
+      const ch = marker[0];
+      const len = marker.length;
+
+      if (!insideFence) {
+        // Opening a new fence
+        insideFence = true;
+        fenceChar = ch;
+        fenceLen = len;
+        continue;
+      } else if (ch === fenceChar && len >= fenceLen) {
+        // Closing the current fence (same character, same or greater length)
+        insideFence = false;
+        fenceChar = '';
+        fenceLen = 0;
+        continue;
+      }
+      // Otherwise it's a fence-like line inside the fence — treat as content
+    }
+
+    if (insideFence) continue;
+
+    // Match ## headings outside of fences
+    const mdMatch = line.match(/^##\s+(.+)$/);
+    if (mdMatch) {
+      const text = mdMatch[1].trim();
+      const id = slugger.slug(text);
+      headings.push({ id, text });
+    }
   }
 
-  // Match HTML headers: <h2 ...>Text</h2>
+  // Fallback: HTML h2 headings (for HTML notes that have no markdown headings)
   if (headings.length === 0) {
     const htmlRegex = /<h2(?:\s+id=["']([^"']+)["'])?[^>]*>(.*?)<\/h2>/gi;
     let htmlMatch;
