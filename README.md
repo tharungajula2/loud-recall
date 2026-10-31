@@ -1,36 +1,40 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Loud Recall
 
-## Getting Started
+**A personal learning library built for explaining ideas in public.** Loud Recall turns long-form notes into a browsable reading experience, with subject shelves, search, structured masterclasses, a responsive reader, and diagrams that can be explored at full size.
 
-First, run the development server:
+> **Project status:** a content-led web prototype with a working reader and three published notes. The content metadata currently marks each note as unverified. No accounts, database, or editorial workflow are implemented.
+
+## What is here
+
+- A four-subject shelf for Finance, Health, AI, and Life, with live notes grouped by subject and format.
+- Search across note titles, descriptions, tags, and subject names; subject filters are shareable through the `?subject=` URL parameter.
+- A reading view with estimated reading time, a scroll progress indicator, desktop/mobile table of contents, and responsive Markdown features including math, code, callouts, tables, SVG, and Mermaid diagrams.
+- File-based publishing: live `.md` and `.html` notes under `content/` become slug routes and sitemap entries.
+
+## Built with
+
+Next.js 16 App Router, React 19, TypeScript, Tailwind CSS 4, and a Unified/Remark/Rehype Markdown pipeline. Content metadata is parsed from frontmatter with `gray-matter`; note files are the source of truth. There is no application database or browser-backed persistence in the inspected source.
+
+## Explore and run locally
 
 ```bash
+npm ci
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open `http://localhost:3000`. Use a Node.js version supported by the Next.js version in `package.json`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+To add a note, create a uniquely named `.md` or `.html` file below `content/<subject>/`, give it valid frontmatter, and set `status: live` when it should appear. See [PROJECT_BLUEPRINT.md](PROJECT_BLUEPRINT.md) for the content contract, rendering flow, architecture, algorithms, troubleshooting, and limitations.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Project guide
 
-## Learn More
+- [Technical blueprint](PROJECT_BLUEPRINT.md)
+- [Application route](app/page.tsx)
+- [Document route and metadata](app/%5Bslug%5D/page.tsx)
+- [Content loading and frontmatter](lib/markdown.ts)
+- [Markdown renderer](lib/render.tsx)
+- [Subject catalogue](lib/subjects.ts)
 
-To learn more about Next.js, take a look at the following resources:
+## Maturity and boundaries
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+The repository contains a functioning implementation of its reading and browsing surfaces, but its content catalogue is small and its metadata defaults missing verification values to “unverified.” The project has no tests or deployment checks documented here; this documentation task inspected source only and did not install dependencies, build the app, or verify a hosted instance. Read the blueprint for details on HTML trust boundaries and other implementation limits.
