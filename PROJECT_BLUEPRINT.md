@@ -218,7 +218,7 @@ Reasonable next steps, if product scope expands:
 - Add accessible keyboard focus management and automated/browser checks for the expanded diagram dialog.
 - If collaborative authoring becomes a requirement, design a trusted content ingestion pipeline before accepting user-authored HTML.
 
-The learning content structure—long-form explainer, topic shelves, worked examples, reusable callout patterns, and visible verification status—could inform a future Trelis Student knowledge or family-learning experience. That is a product idea; this repository contains no student, family, progress, or learning-outcome feature.
+The learning content structure—long-form explainer, topic shelves, worked examples, reusable callout patterns, and visible verification status—could inform a future learning experience. That is a product idea; this repository contains no student, family, progress, or learning-outcome feature.
 
 ## 12. Source reference index
 

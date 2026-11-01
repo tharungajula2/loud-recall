@@ -30,7 +30,7 @@ Two kinds of numbers appear, and they are always labelled:
 |---|---|
 | The thread | How everything connects into one story |
 | Part A — The lending chain | Lentra AI, Jana Small Finance Bank, and Project 1: a loan from application to capital |
-| Part B — AI under control | Project 2 (Trelis Family) and Project 3 (the evidence-grounded agent) |
+| Part B — AI under control | Project 2 (a private family-care prototype) and Project 3 (the evidence-grounded agent) |
 | Part C — Machine learning, the map | Every stage and every common algorithm, big picture, for a complete beginner |
 | Part D — Skills | Every skill on my resume, in plain words, with where I used it |
 | Reference | Key numbers, glossary, one-screen summary |
@@ -1351,29 +1351,28 @@ Grades C and D hold under half the EAD but most of the expected loss.
 | AI suggests, something checks | A caregiver approves every AI-read document; safety alerts use fixed rules, never AI | A verifier removes any unsupported claim |
 | Proven, not assumed | A scheduler that cannot double-send; sent history that cannot be edited | A 22-case test harness |
 
-## Project 2 — Trelis Family
+## Project 2 — Private family-care prototype
 
 **In one line:** a private family-care operating system — medicines, routines, activities and health records for the people you care for — run from one console, with reminders and replies on WhatsApp and AI kept behind human review.
 
 | Question | Answer |
 |---|---|
 | Brand thought | *Steady care for the people you love.* |
-| Name history | Parents Health OS → Trelis Sr → **Trelis Family** (spelled with one L, on purpose) |
 | Who it is for | Any family: a care profile can be a parent, the family admin themself, a spouse or another family member |
-| Where it lives | trelis-family.vercel.app, installable on a phone as an app |
+| Where it lives | Private deployment, installable on a phone as an app |
 | Built on | Next.js 16 and React 19 (the app), Supabase (database, sign-in, file storage), WhatsApp Cloud API (messages), Google Gemini 3.5 Flash-Lite (document reading) |
 | Scale of the build | 25 database tables across five areas, 14 database migrations, 7 main API routes |
 | Status | Work in progress: medicines, routines and records are live; activities are built and deployed but switched off until launch |
 
 ### How it grew — the rebrand
 
-It started as **Parents Health OS**, built for my own parents. It became **Trelis Sr**, and is now **Trelis Family**, because the same console works for anyone in a family, not only parents.
+It started as a care console for my own parents and broadened to support other family members.
 
 A rebrand touches two kinds of names, and the project treats them differently:
 
 | Kind of name | Examples | Renamed? |
 |---|---|---|
-| What people see | Product name, website address, repository, logo, app name on the phone | Yes: all Trelis Family |
+| What people see | Product name, website address, repository, logo, app name on the phone | Yes: public labels are aligned |
 | What the machinery depends on | Database table names, API paths, the WhatsApp webhook address, environment variable names, the internal package name | **No**, on purpose |
 
 **Why not rename everything:** the database, WhatsApp's settings and the live scheduler all point at those internal names. Renaming them for looks could break reminders in production. An old internal name is not a branding mistake; it is a stable address.
@@ -1412,10 +1411,10 @@ Plus a public landing page, a privacy policy at `/privacy` (for India's DPDP Act
 
 ### How it works — the architecture
 
-<svg viewBox="0 0 400 560" width="400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Trelis Family architecture: phone and WhatsApp, the Next.js app on Vercel, Supabase database and storage, Gemini, and the one-minute scheduler" style="width:100%;max-width:400px;height:auto;display:block;margin:1rem auto">
+<svg viewBox="0 0 400 560" width="400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Family-care prototype architecture: phone and WhatsApp, the Next.js app on Vercel, Supabase database and storage, Gemini, and the one-minute scheduler" style="width:100%;max-width:400px;height:auto;display:block;margin:1rem auto">
 <defs><marker id="ar3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker></defs>
 <g font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="13" fill="#1f2937">
-<text x="200" y="24" text-anchor="middle" font-size="16" font-weight="700">Trelis Family, end to end</text>
+<text x="200" y="24" text-anchor="middle" font-size="16" font-weight="700">Family care, end to end</text>
 <rect x="12" y="40" width="180" height="70" rx="10" fill="#ecfdf5" stroke="#10b981" stroke-width="1.5"/>
 <text x="102" y="64" text-anchor="middle" font-weight="700" fill="#047857">Caregiver's phone</text>
 <text x="102" y="84" text-anchor="middle">The app (PWA)</text>
@@ -1645,7 +1644,7 @@ Most apps check permissions in their screens; if one screen forgets, data leaks.
 
 | Done | Deliberately off | Still to do before activities launch |
 |---|---|---|
-| Rebrand to Trelis Family | Activity WhatsApp sending | Meta template approval |
+| Public naming alignment | Activity WhatsApp sending | Meta template approval |
 | Four-tab app, onboarding, PWA, offline page | The real 100-day programme run | Caregiver WhatsApp number |
 | Medications and routines, live on WhatsApp | | A controlled test |
 | Records: upload, AI extraction, review, purge | | Turn the switch on |
@@ -2529,9 +2528,9 @@ Only now, once, score the chosen model on the untouched **test set**, and on an 
 | USD 58.7 million, 3.2% | Basel 12-month expected loss |
 | 125.6% vs 75% | IRB vs standardised risk weight |
 | USD 183.6 million | Minimum total capital; +12.7 million under downturn LGD |
-| 25 tables, 14 migrations | Trelis Family database |
-| 1 minute | Trelis Family scheduler cycle |
-| 100 days, 127 activities | Trelis Family programme and activity library |
+| 25 tables, 14 migrations | Family-care database |
+| 1 minute | Family-care scheduler cycle |
+| 100 days, 127 activities | Family-care programme and activity library |
 | 15 records, 22 tests | Project 3 evidence and test harness, all tests passed |
 | 10 a minute | Project 3 rate limit per visitor |
 
@@ -2610,7 +2609,7 @@ Machine learning terms have their own dictionary at the end of Part C.
 | Lentra AI | Lending policy → exact specifications → test packs with answers written first → tested system |
 | Jana | Portfolio analytics on personal and SME loans — DPD, PAR, vintages, roll rates, geography — from Oracle through KNIME and Excel to the credit committee twice a month; reporting turnaround down 30% |
 | Project 1 | 466,285 loans through a 12-month default target, WoE, logistic regression, a 600-point scorecard, validation, two-stage LGD, EAD, lifetime PD, IFRS 9 (USD 278.5 million), CECL and IRB capital (125.6% risk weight); every shortcut named |
-| Project 2 | Trelis Family: a private family-care console; medicines and routines live on WhatsApp, a 100-day activity programme built and switched off until launch; RLS on every table, no double-sends, AI behind human review |
+| Project 2 | Private family-care console; medicines and routines live on WhatsApp, a 100-day activity programme built and switched off until launch; RLS on every table, no double-sends, AI behind human review |
 | Project 3 | An AI agent that answers only from verified evidence, cites it, refuses otherwise; 22 of 22 tests passed |
 | Machine learning map | Frame → data → features → model → evaluate → ship, with every algorithm and term in one place |
 | The common skill | Turn a rule into something built, then prove it works |
