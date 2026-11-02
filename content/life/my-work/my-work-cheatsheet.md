@@ -38,7 +38,7 @@ Three kinds of evidence appear:
 
 ## The thread — how it all connects
 
-**In one line:** my work follows one loan through its whole life — how it is approved, how it is watched in the book, how its risk is measured — and around that chain sit the AI systems I build and the machine learning that powers the models.
+**In one line:** my work follows a loan from approval through portfolio monitoring; Project 1 demonstrates the credit-risk pipeline in code, but its historical saved results remain unverified. The AI and machine-learning sections explain the supporting methods.
 
 <svg viewBox="0 0 400 470" width="400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="How my work connects: a loan is approved at Lentra, watched at Jana, and measured in Project 1; AI projects and the machine learning map support the chain" style="width:100%;max-width:400px;height:auto;display:block;margin:1rem auto">
 <defs><marker id="ar1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker></defs>
@@ -2218,7 +2218,7 @@ Credit-risk figures in this table are **historical saved outputs, unverified**. 
 | USD 327.5 million | CECL provision, USD 49.0 million more than IFRS 9 |
 | USD 58.7 million, 3.2% | Basel 12-month expected loss |
 | 125.6% vs 75% | IRB vs standardised risk weight |
-| USD 183.6 million | Minimum total capital; +12.7 million under downturn LGD |
+| USD 183.6 million | Historical, unverified 8%-of-RWA arithmetic, not a validated regulatory capital requirement; the saved downturn-LGD scenario adds USD 12.7 million |
 
 
 
