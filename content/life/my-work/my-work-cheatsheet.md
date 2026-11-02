@@ -1,11 +1,11 @@
 ---
 title: "My Work — The Cheatsheet"
-description: "My two roles, three projects and a full machine learning map, each taught from zero for a beginner: what it is, how it works underneath, what I actually did, worked examples with real numbers, and what the results mean."
+description: "My two roles, three projects and a full machine learning map, taught from zero with worked examples and clearly labelled evidence limits."
 subject: life
 format: masterclass
 order: 1
 status: live
-updated: 2026-09-30
+updated: 2026-11-02
 verified: false
 tags:
   - portfolio
@@ -17,27 +17,28 @@ tags:
 
 ## How to read this note
 
-Every section opens with one line and a summary table. That is the cheatsheet layer. Under it, "How it works" teaches the idea properly, in the order things actually happen. The harder ideas get a worked example with real numbers. Every term is explained the first time it appears, so you never need to leave the page.
+Every section opens with one line and a summary table. Under it, "How it works" teaches the idea in sequence. Worked examples use historical saved outputs or illustrative numbers as labelled. Every term is explained the first time it appears.
 
-Two kinds of numbers appear, and they are always labelled:
+Three kinds of evidence appear:
 
 | Label | What it means |
 |---|---|
-| **Real** | Taken from the actual project's code and output tables |
-| **Illustrative** | Made-up numbers that teach a method; not from any real system, bank or client |
+| **Source-backed implementation** | A calculation or safeguard exists in the public code; this alone does not verify model performance |
+| **Historical saved output, unverified** | A result preserved by the older project pipeline; the original loan data and fitted artifacts are absent, so it has not been reproduced under the corrected evidence contracts |
+| **Illustrative** | Numbers chosen to teach a method; not an observed bank, client or regulatory result |
 
 | Part | What it covers |
 |---|---|
 | The thread | How everything connects into one story |
 | Part A — The lending chain | Lentra AI, Jana Small Finance Bank, and Project 1: a loan from application to capital |
-| Part B — AI under control | Project 2 (Trelis Family) and Project 3 (the evidence-grounded agent) |
+| Part B — AI under control | Project 2 (a private family-care prototype) and Project 3 (the evidence-grounded agent) |
 | Part C — Machine learning, the map | Every stage and every common algorithm, big picture, for a complete beginner |
 | Part D — Skills | Every skill on my resume, in plain words, with where I used it |
 | Reference | Key numbers, glossary, one-screen summary |
 
 ## The thread — how it all connects
 
-**In one line:** my work follows one loan through its whole life — how it is approved, how it is watched in the book, how its risk is measured — and around that chain sit the AI systems I build and the machine learning that powers the models.
+**In one line:** my work follows a loan from approval through portfolio monitoring; Project 1 demonstrates the credit-risk pipeline in code, but its historical saved results remain unverified. The AI and machine-learning sections explain the supporting methods.
 
 <svg viewBox="0 0 400 470" width="400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="How my work connects: a loan is approved at Lentra, watched at Jana, and measured in Project 1; AI projects and the machine learning map support the chain" style="width:100%;max-width:400px;height:auto;display:block;margin:1rem auto">
 <defs><marker id="ar1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker></defs>
@@ -74,7 +75,7 @@ Two kinds of numbers appear, and they are always labelled:
 |---|---|---|
 | Lentra AI | The loan is born: application to decision | Turning lending policy into exact specifications and testing them |
 | Jana Small Finance Bank | The loan lives in the book: watched every month | Portfolio analytics, from the Oracle database to the risk committee |
-| Project 1 | The loan's risk is measured | The whole credit risk chain, built end to end on real data |
+| Project 1 | The loan's risk is measured | Credit-risk code and historical output tables; real-data performance and regulatory totals remain unverified |
 | Projects 2 and 3 | Around the chain: building with AI | AI kept secure, grounded in evidence and under human control |
 | Machine learning map | Underneath the models | How any model is built, from a problem statement to a final choice |
 
@@ -562,17 +563,19 @@ The fix is not to pick one number. It is to agree the definition and make both s
 **Why it matters:** in a bank of many small loans, risk shows up as a pattern before it shows up as a loss. Portfolio analytics finds the pattern early, and puts it in front of the people who can act on it.
 
 ---
-## Project 1 — Retail credit risk system
+## Project 1 — Retail Credit Risk
 
-**In one line:** I built, in Python, the whole chain a bank runs on a loan book — who will default, what a default costs, how much to set aside, how much capital to hold, and how to watch the book — on 466,285 real loans, with every shortcut stated openly.
+**In one line:** the Python project implements the credit-risk chain from PD through loss and capital illustrations, but its saved loan-level performance and financial totals are historical, unverified outputs.
+
+> **Evidence boundary:** The original LendingClub CSV, dated earliest-default ledger, reporting-date account panel and fitted artifacts are absent from the public checkout. The corrected PD, LGD/EAD and reporting-date safeguards are synthetic-tested; no authenticated real-loan rerun has been completed. The saved tables below teach the older pipeline, not verified model performance, accounting allowances or regulatory capital. See the current [Retail Credit Risk README](https://github.com/tharungajula2/retail-credit-risk) and [blueprint](https://github.com/tharungajula2/retail-credit-risk/blob/main/PROJECT_BLUEPRINT.md) for the evidence contract and limitations.
 
 | Question | Answer |
 |---|---|
-| Data | 466,285 personal loans from LendingClub, a US lending platform that made its loan records public; issued 2007 to 2014; 75 columns per loan |
+| Historical data claim | Saved outputs describe 466,285 LendingClub loans issued 2007–2014; the source CSV is absent here |
 | Question the main model answers | Will this loan default within 12 months of being issued? |
 | Built | Default definition, sample split, WoE binning, two PD models, a 600-point scorecard, an 8-grade rating scale, validation, stability checks, a two-stage LGD model, EAD, lifetime PD, IFRS 9 staging and ECL, a CECL comparison, Basel IRB capital, portfolio monitoring, a dashboard and a small AI analyst |
-| Built with | Python: pandas, scikit-learn, statsmodels, scipy; 25 automated test files |
-| Status | Live; every number below is **real**, from the project's output tables, unless marked illustrative |
+| Built with | Python: pandas, scikit-learn, statsmodels and scipy; the current repository also contains synthetic foundation tests |
+| Status | Code and static report are available; saved metrics and financial totals below are **historical and unverified**, unless a worked example is explicitly illustrative |
 
 ### The project in one picture
 
@@ -595,7 +598,7 @@ flowchart TD
     O --> P["16 Dashboard and AI analyst"]
 ```
 
-The chain has three blocks. Steps 1–9 build and prove the **PD** model: the chance of default. Steps 10–11 build **LGD** and **EAD**: how much is lost and on how much. Steps 12–16 use all three: provisions, capital and monitoring.
+The chain has three blocks. Steps 1–9 describe the legacy **PD** pipeline. Steps 10–11 describe **LGD** and **EAD** proxies. Steps 12–16 use them for illustrative provisions, capital and monitoring. The corrected evidence gates have not been used for a verified real-data rerun.
 
 | Term | Plain meaning |
 |---|---|
@@ -620,7 +623,7 @@ Each row is one loan. The columns fall into two very different groups, and keepi
 | **Known only later** | Loan status, payments received, recoveries, last payment date, outstanding principal | **No** — only for defining default, LGD and EAD |
 | Identifiers and free text | Loan ID, URL, job title, description | No |
 
-**Why the "known later" columns are banned from the PD model:** the model will be used on the day of application, when none of that exists. If a model learns from "total payments received", it looks brilliant in testing and is useless in real life. This mistake is called **leakage**. The project writes the variable groups into a configuration file and the code **refuses to run** if a banned column reaches the PD model.
+**Why the "known later" columns are banned from an application-time PD model:** payments and recoveries do not exist when a loan is first assessed. Training on them creates **leakage**: a misleadingly strong backtest. The code separates variable groups, while the corrected evidence gate adds synthetic-tested checks for available-at-decision fields. Neither proves a corrected real-loan model fit.
 
 | Term | Plain meaning |
 |---|---|
@@ -642,9 +645,9 @@ The data has no "default date", only a status and a last payment date. So the pr
 | 2 When did they default? | Estimated default date = last payment date + 3 months (roughly when 90 days overdue is reached); if there is no payment date, the issue date |
 | 3 Within 12 months? | Default within 0–12 months of issue → `default_12m = 1`; otherwise 0 |
 
-**Why 12 months:** both IFRS 9 Stage 1 and Basel work with a one-year PD. The model answers exactly the question those rules ask.
+**Why 12 months:** a one-year horizon is relevant to Stage 1 ECL and some capital calculations. The legacy target approximated default dates from status and payment fields; it does **not** establish a validated, dated 12-month outcome. The current repository adds a synthetic-tested target contract, but has no corrected real-data fit.
 
-**Real result:**
+**Historical saved output (unverified):**
 
 | Item | Loans | Share |
 |---|---|---|
@@ -654,7 +657,7 @@ The data has no "default date", only a status and a last payment date. So the pr
 | … within 12 months (the target) | **16,018** | **3.44%** |
 | … after 12 months | 34,950 | 7.50% |
 
-By year of issue (called the **vintage**), the 12-month default rate fell from 6.56% (2008) to 3.18% (2013), then 3.44% for 2014: the early book was small and risky, and LendingClub tightened as it grew.
+The saved table reports a lower apparent 12-month default rate in later issue years. Without source records and a corrected dated target, this does not establish a real change in LendingClub underwriting.
 
 ### Step 3 — Split the data
 
@@ -702,7 +705,7 @@ $$
 | Zero | The band tells you nothing |
 | Negative | The band holds more than its share of bad loans: riskier than average |
 
-**Real example — annual income, as the project binned it:**
+**Historical saved binning example (unverified) — annual income:**
 
 | Income band (USD) | WoE | Reading |
 |---|---|---|
@@ -748,7 +751,7 @@ That is a **medium** input. The rule-of-thumb scale the project uses:
 | 0.3 – 0.5 | Strong |
 | Above 0.5 | Suspicious: too good, check for leakage |
 
-**Real IV ranking (top of 48 inputs tested):**
+**Historical saved IV ranking (unverified; top of 48 reported inputs):**
 
 | Input | IV | Strength |
 |---|---|---|
@@ -813,9 +816,9 @@ $$
 
 This S-shaped curve (the **sigmoid**) turns any z into a number between 0 and 1.
 
-**How the weights are learned.** The model tries weights, computes a PD for every one of the 184,525 training loans, and checks how well those PDs match what actually happened. It keeps adjusting until the match is as good as it can get. That method is called **maximum likelihood**: choose the weights that make the real outcomes most likely.
+**How weights are learned.** Logistic regression adjusts weights to make observed training outcomes more likely; this is **maximum likelihood**. The historical table reports 184,525 training loans, but the original records and fitted weights have not been reproduced under the corrected target.
 
-**Real Model B weights:**
+**Historical saved Model B weights (unverified):**
 
 | Input | Coefficient | p-value | Significant? |
 |---|---|---|---|
@@ -837,7 +840,7 @@ This S-shaped curve (the **sigmoid**) turns any z into a number between 0 and 1.
 - **The intercept −3.338** is the log-odds of an average borrower: 1 ÷ (1 + e<sup>3.338</sup>) = **3.43%**, exactly the training default rate.
 - **p-value:** the chance of seeing a weight this far from zero if the input truly had no effect. Below 0.05 is called significant. Sub-grade and term are not significant *once grade and interest rate are in*, because they repeat the same information. They were kept in Model B as built; in a production model they would be candidates to drop.
 
-**Worked example (real weights) — two borrowers:**
+**Worked example using historical saved weights (unverified) — two borrowers:**
 
 | Input | Safe borrower | Push on z | Risky borrower | Push on z |
 |---|---|---|---|---|
@@ -904,9 +907,9 @@ $$
 - The first part is a fixed **base** of 58.34 points per input (the offset and intercept shared evenly across the 10 inputs)
 - The second part adds or removes points according to how safe the band is
 
-**Worked example (real):** grade A has WoE +1.054 and the grade weight is −0.618. Points = 58.34 + 28.85 × 0.618 × 1.054 = 58.34 + 18.8 = **77**. Grade E: 58.34 + 28.85 × 0.618 × (−0.622) = **47**.
+**Worked scorecard arithmetic using historical saved inputs (unverified):** grade A has WoE +1.054 and the grade weight is −0.618. Points = 58.34 + 28.85 × 0.618 × 1.054 = 58.34 + 18.8 = **77**. Grade E: 58.34 + 28.85 × 0.618 × (−0.622) = **47**. These teach the points conversion; they are not validated borrower scores.
 
-**Real grade points in the scorecard:**
+**Historical saved grade points (unverified):**
 
 | Grade | A | B | C | D | E | OTHER (F, G) |
 |---|---|---|---|---|---|---|
@@ -918,7 +921,7 @@ $$
 
 **In one line:** the scores are cut into eight equal-sized grades, and the default rate must rise steadily from grade 1 to grade 8.
 
-**Real master scale (training loans):**
+**Historical saved master scale (unverified; legacy training split):**
 
 | Grade | Score range | Loans | Defaults | Default rate |
 |---|---|---|---|---|
@@ -931,7 +934,7 @@ $$
 | 7 | 568–576 | 23,203 | 1,204 | 5.19% |
 | 8 (riskiest) | 522–567 | 24,928 | 1,924 | 7.72% |
 
-The default rate rises at every step, 0.86% to 7.72%, a nine-fold spread. That is called **rank ordering**, and the code checks it holds. A bank uses a scale like this to set policy by grade: approve grades 1–5 automatically, refer 6–7, price 8 higher or decline.
+The historical table shows default rates rising from 0.86% to 7.72% across eight grades. That illustrates **rank ordering**; it has not been rechecked against a corrected dated target. A bank could use a validated scale to set policy by grade, but these old bands are not such a policy.
 
 ### Step 9 — Validate the model: does it work?
 
@@ -957,7 +960,7 @@ $$
 \text{Gini} = 2 \times \text{AUC} - 1
 $$
 
-**Real results:**
+**Historical saved metrics (unverified):**
 
 | Model | Sample | AUC | Gini |
 |---|---|---|---|
@@ -970,16 +973,16 @@ $$
 
 **How to read it:**
 
-- **Test ≈ train** for both models: the model has not memorised its training loans. A big drop from train to test would be **overfitting**.
-- **Model B beats Model A** by about 0.07 of Gini: LendingClub's own grade and rate carry real extra signal.
-- **Model B holds up in 2014**, even slightly higher than in training. The project's explanation: the 2014 loans have had less time to default, so the defaults seen so far are concentrated in the riskiest loans, which makes ranking look sharper. It is a good sign, not proof of a better model.
-- **Why ~0.38 is modest, and honest:** every loan here was already *approved* by LendingClub. The riskiest applicants were turned away and never appear in the data, so there is less to separate. Consumer scorecards on approved-only data typically land in this range.
+- **Train/test similarity** in the saved table illustrates how a split is read; it does not prove generalisation under a corrected target.
+- **Model B's higher saved Gini** suggests grade and interest rate contributed signal in the legacy run. The input data and fitted artifacts needed to verify that gap are absent.
+- **The 2014 saved metric** is an out-of-time illustration, not evidence of validated future-loan performance. Outcome timing and coverage require correction before drawing that conclusion.
+- **Selection matters:** only approved LendingClub loans appear in the historical sample, so its metrics cannot be extrapolated to all applicants.
 
 #### Ranking — KS
 
 **KS, Kolmogorov–Smirnov:** sort loans from riskiest to safest, walk down the list, and at each point compare the share of all defaulters you have passed with the share of all good loans you have passed. KS is the widest gap.
 
-**Worked example (real, using the eight grades on the training loans):**
+**Worked example using historical saved grades (unverified):**
 
 | Walking down to grade | % of all bads passed | % of all goods passed | Gap |
 |---|---|---|---|
@@ -990,7 +993,7 @@ $$
 | 4 | 85.0% | 62.1% | 22.9 |
 | 1 | 100% | 100% | 0 |
 
-The three riskiest grades hold 37% of all loans but 65% of all defaults. The widest gap, 27.4 points, sits there. The exact loan-by-loan KS on training is **0.274**; on 2014 it is **0.284**.
+In the saved table, the three riskiest grades hold 37% of reported loans and 65% of reported defaults; the historical KS values are **0.274** for training and **0.284** for 2014. These are unverified legacy outputs, not corrected-model validation.
 
 #### Calibration — Brier score and Hosmer–Lemeshow
 
@@ -1024,13 +1027,13 @@ $$
 
 **CSI, characteristic stability index,** is the same calculation on one input at a time, to find *which* input moved.
 
-**Real results (train vs 2014):** score PSI **0.005** (Model A) and **0.007** (Model B), both stable. The input that moved most was DTI, with CSI **0.042**, still well inside "stable".
+**Historical saved stability outputs (unverified):** score PSI **0.005** (Model A) and **0.007** (Model B), with DTI CSI **0.042**. These illustrate PSI/CSI arithmetic; they do not establish stability of an authenticated later book.
 
 ### Step 10 — LGD: how much is lost when a loan defaults?
 
 **In one line:** for every defaulted loan, measure how much of the balance was never recovered; then model it in two stages, because most loans recover nothing at all.
 
-**How LGD is measured from the data (real, exactly as coded):**
+**How the legacy code approximates LGD:** the historical balance and recovery fields are proxies; they do not establish dated default balances or discounted economic LGD.
 
 $$
 \text{LGD} = \frac{\text{balance at default} - \text{recoveries after charge-off}}{\text{balance at default}}
@@ -1040,7 +1043,7 @@ $$
 - **Recoveries:** money collected after the loan was charged off
 - Clipped between 0 and 1
 
-**Real LGD picture, 50,968 defaulted loans:**
+**Historical saved LGD summary (unverified; 50,968 reported defaults):**
 
 | Measure | Value |
 |---|---|
@@ -1050,7 +1053,7 @@ $$
 | Loans with some recovery | 47.8% |
 | Mean recovery rate | 7.0% |
 
-These are unsecured loans: no house or car to sell. Once charged off, little comes back.
+The saved recovery table suggests high losses on this unsecured-loan sample. It does not establish economic LGD without dated balances and workout cash flows.
 
 **Why two stages.** Half the loans sit exactly at 100% loss; the rest are spread a little below it. A single straight-line model fitted through that lump would predict almost the same number for everyone. So the project splits the question in two, a design called a **hurdle model**:
 
@@ -1074,11 +1077,11 @@ flowchart LR
 
 **Worked example (illustrative, the combining rule):** Stage 1 says a 50% chance of any recovery; Stage 2 says that, if there is recovery, 14% comes back. Expected recovery = 0.50 × 0.14 = 7%, so LGD = 93%.
 
-**Real result:** across ten groups of test loans sorted by predicted LGD, predicted and actual LGD differ by at most **0.8 percentage points** (for example 90.7% predicted vs 91.5% actual in the lowest group). The Stage 1 classifier's AUC was about 0.64.
+**Historical saved LGD comparison (unverified):** the old table reports a maximum 0.8-point predicted/observed gap across ten groups and a Stage 1 classifier AUC near 0.64. These are not corrected-model validation results.
 
 ### Step 11 — EAD: how much is owed at default?
 
-**In one line:** for a term loan, EAD is simply the principal still unpaid at default.
+**In one line:** the legacy term-loan EAD code uses remaining principal as a proxy. A measured EAD needs a dated balance at default and an exposure contract.
 
 LendingClub loans are **term loans**: a fixed amount, repaid in instalments, with no extra limit to draw. So:
 
@@ -1087,7 +1090,7 @@ LendingClub loans are **term loans**: a fixed amount, repaid in instalments, wit
 | Defaulted | Amount lent − principal repaid |
 | Still performing | Outstanding principal today |
 
-**Real results on defaulted loans:**
+**Historical saved EAD outputs (unverified):**
 
 | Segment | Mean EAD (USD) | Mean EAD ratio (EAD ÷ amount lent) |
 |---|---|---|
@@ -1099,7 +1102,7 @@ LendingClub loans are **term loans**: a fixed amount, repaid in instalments, wit
 
 Riskier and longer loans default earlier in their life, while more of the balance is still owed.
 
-**The synthetic CCF demonstration.** Credit cards and overdrafts *do* have an undrawn limit, and borrowers usually draw more of it as they head into trouble. The share of the unused limit drawn before default is the **CCF, credit conversion factor**. LendingClub has no such products, so the project simulated 5,000 revolving accounts to show the method: a straight-line model found CCF ≈ 0.198 + 0.475 × utilisation. It is labelled **synthetic** everywhere, and no number from it feeds the real results.
+**The synthetic CCF demonstration.** Credit cards and overdrafts can have an undrawn limit. The share drawn before default is the **CCF, credit conversion factor**. The project simulated 5,000 revolving accounts to teach the method: its example produced CCF ≈ 0.198 + 0.475 × utilisation. This fabricated example does not validate the historical loan-book outputs.
 
 ### Step 12 — Lifetime PD: default over the whole life of the loan
 
@@ -1113,7 +1116,7 @@ $$
 
 - **∏:** multiply together, month after month
 
-**Real portfolio curve (all 466,285 loans):**
+**Historical saved portfolio curve (unverified; legacy loan count 466,285):**
 
 | Months since issue | Cumulative PD |
 |---|---|
@@ -1135,9 +1138,9 @@ A loan twice as risky as average gets twice the curve, capped at 100%. **Remaini
 
 **Assumptions to know:** one curve for the whole book, with no link to the economy; and loans still running are counted as survivors, so later months may look safer than they will turn out.
 
-### Step 13 — IFRS 9: stages and provisions, on the 2014 book
+### Step 13 — IFRS 9 staging and ECL illustrations from the historical 2014 table
 
-**In one line:** each 2014 loan is put in Stage 1, 2 or 3 by clear rules, then gets 12 months, a lifetime, or its full loss provided for.
+**In one line:** the legacy code assigns stages and applies simplified loss formulas to its saved 2014 table. The results are not validated accounting provisions.
 
 IFRS 9 is the accounting rule that says how much to set aside for expected losses. India's version is **Ind AS 109**.
 
@@ -1146,13 +1149,13 @@ IFRS 9 is the accounting rule that says how much to set aside for expected losse
 | Stage | Rule |
 |---|---|
 | **Stage 3** (credit-impaired) | The loan has a default status |
-| **Stage 2** (significant increase in credit risk) | Not Stage 3, and any of: current PD is at least **2×** its PD at origination; current PD above **6%**; status is Late (the 30+ days backstop) |
+| **Stage 2** (significant increase in credit risk) | Legacy rule: not Stage 3, and any of current PD at least **2×** an origination-PD proxy, current PD above **6%**, or a status containing Late. That string check can include 16–30 days late; it is not a validated 30-day backstop. |
 | **Stage 1** (performing) | Everything else |
 
 - **SICR, significant increase in credit risk:** the trigger for Stage 2
 - **Origination PD, a proxy:** the PD each loan had when issued was never stored, so the project uses the average PD of the loan's LendingClub grade as a stand-in
 
-**Real staging of the 2014 book (235,628 loans, snapshot January 2016):**
+**Historical staging output (unverified; reported 2014 book):**
 
 | Stage | Loans | Share | EAD (USD) | Mean 12-month PD |
 |---|---|---|---|---|
@@ -1169,10 +1172,12 @@ IFRS 9 is the accounting rule that says how much to set aside for expected losse
 | Stage 2 | Lifetime PD × LGD × EAD × discount factor |
 | Stage 3 | LGD × EAD (the default has happened) |
 
-- **Discount factor:** money lost in the future is worth less today. The project discounts at each loan's own interest rate (its **EIR, effective interest rate**), over half the remaining term as a simple stand-in for when default would happen
+- **Discount factor:** the old engine uses a midpoint approximation and may substitute a configured rate. It does not establish each loan's effective interest rate or dated expected cash shortfalls.
 - **LGD** comes from the two-stage model; **EAD** from step 11
 
-**Real result:**
+The simplified product below is useful for learning the moving parts. Correct 12-month ECL concerns **lifetime shortfalls from defaults possible within the next 12 months**; a lifetime PD series, dated EAD, post-default cash shortfalls and discounting must be aligned to a reporting date. The old engine and its saved totals have not passed that evidence review.
+
+**Historical saved output (unverified):**
 
 | Stage | Provision (USD) | Coverage (provision ÷ EAD) |
 |---|---|---|
@@ -1181,9 +1186,9 @@ IFRS 9 is the accounting rule that says how much to set aside for expected losse
 | Stage 3 | 223.8 million | 93.2% |
 | **Total** | **278.5 million** | **15.2%** |
 
-**The cliff effect, in real numbers:** a loan moving from Stage 1 to Stage 2 jumps from about 2% to about 14% coverage, nearly seven times more, because the provision switches from one year of loss to a whole lifetime. That jump is why the Stage 2 rules are watched so closely.
+**The cliff effect in the historical illustration:** the saved table jumps from roughly 2% Stage 1 coverage to 14% Stage 2 coverage. Those are not validated allowance estimates.
 
-**Three comparisons the project makes (real):**
+**Historical comparison outputs (unverified):**
 
 | Measure | What it covers | Amount (USD) | Share of EAD |
 |---|---|---|---|
@@ -1191,15 +1196,15 @@ IFRS 9 is the accounting rule that says how much to set aside for expected losse
 | IFRS 9 staged ECL | Stages as above | 278.5 million | 15.2% |
 | US CECL | Lifetime loss on **every** performing loan from day one | 327.5 million | 17.9% |
 
-**CECL** is the US rule: no stages, lifetime loss for everyone. It needs **USD 49.0 million** more than IFRS 9, all of it from Stage 1 loans getting lifetime rather than 12-month cover.
+**CECL** is a US lifetime-loss framework. The historical table shows USD 49.0 million more than its IFRS 9 illustration, chiefly from lifetime cover on Stage 1 loans; this is not a validated allowance comparison.
 
 **Scenario weighting, as a demonstration only.** IFRS 9 asks banks to weigh several economic futures. The project shows the method on a three-loan test example: baseline, upside and downside scenarios (PDs × 1.0, 0.85 and 1.5) weighted 50%, 20% and 30%. It is not run on the full book.
 
 ### Step 14 — Basel capital: what to hold for a bad year
 
-**In one line:** each loan's PD and LGD go into the Basel IRB formula, which asks how bad defaults could get in a 1-in-1,000 bad year; the bank holds capital for the gap between that and the average.
+**In one line:** the legacy code illustrates an IRB-style formula using its historical PD/LGD proxies. It does not calculate an actual bank's required capital.
 
-Under the **IRB, internal ratings-based approach**, a bank puts its own PD and LGD into the regulator's formula. The project uses the formula for **"other retail"** loans, which fits unsecured instalment loans:
+Under the **IRB, internal ratings-based approach**, eligible banks use approved risk parameters under an applicable rulebook. The project illustrates an **"other retail"** formula, but has not established supervisory permission, exposure eligibility, jurisdictional rules, floors or defaulted-exposure treatment for this historical US loan sample:
 
 $$
 K = \text{LGD} \times \left[ N\!\left( \frac{G(\text{PD}) + \sqrt{R}\; G(0.999)}{\sqrt{1-R}} \right) - \text{PD} \right]
@@ -1219,44 +1224,44 @@ $$
 | N(…) | Turns it back into a probability: the **PD in a very bad year** |
 | − PD | Removes the average loss, which provisions already cover |
 | × LGD | The share lost |
-| K | Capital needed per dollar of exposure |
+| K | Illustrative capital fraction per dollar of exposure under the selected formula and assumptions |
 | × 12.5 | Converts K into **RWA, risk-weighted assets** (12.5 = 1 ÷ 8%) |
 
-The project floors PD at 0.03%, as Basel requires, and caps LGD at 100%.
+The legacy code floors PD at 0.03% and caps LGD at 100%. That floor is not evidence of current Basel compliance; the audited Retail blueprint identifies a 0.05% non-sovereign floor in the cited 2023-in-force framework.
 
-**Worked example (real inputs, grade C averages):** PD 3.54%, LGD 93.7%. The formula gives R = 0.068, a bad-year PD of 14.9%, and K = 93.7% × (14.9% − 3.54%) = 10.7%. Risk weight = 10.7% × 12.5 = **134%**. (The table below shows 130% for grade C because it averages each loan's own result rather than plugging in the average PD.)
+**Worked capital arithmetic using historical saved grade C averages (unverified):** PD 3.54% and LGD 93.7% yield the legacy illustration's 134% risk weight when plugged into its formula. This is not an eligible or calibrated regulatory capital result.
 
-**Real results, 2014 book:**
+**Historical saved capital arithmetic (unverified; not a bank requirement):**
 
 | Measure | Value |
 |---|---|
 | Total EAD | USD 1.83 billion |
 | IRB risk-weighted assets | USD 2.29 billion |
 | **Average IRB risk weight** | **125.6%** |
-| Standardised approach (flat 75% for retail) | USD 1.37 billion RWA |
-| Minimum total capital (8% of IRB RWA) | USD 183.6 million |
-| Minimum Tier 1 capital (6%) | USD 137.7 million |
-| Minimum CET1 capital (4.5%) | USD 103.3 million |
+| Flat 75% comparison assumption (not an eligibility finding) | USD 1.37 billion illustrative RWA |
+| 8% of historical IRB-style RWA | USD 183.6 million |
+| 6% of historical IRB-style RWA | USD 137.7 million |
+| 4.5% of historical IRB-style RWA | USD 103.3 million |
 
 | LendingClub grade | A | B | C | D | E | F | G |
 |---|---|---|---|---|---|---|---|
 | IRB risk weight | 94% | 115% | 130% | 136% | 139% | 145% | 146% |
 
-**Why IRB demands more than the standardised 75%:** the standardised weight assumes an ordinary retail book. This book loses about 93% of what defaults, far more than ordinary. The IRB formula sees that LGD and charges for it. For a high-loss book, the bank's own numbers are *stricter* than the regulator's default.
+**How to read the historical comparison:** the old calculation produces a higher illustrative weight than a flat 75% benchmark. Retail standardised treatment depends on eligibility and jurisdiction, and the historical IRB assumptions have not been validated. This comparison does not establish a bank's required capital.
 
-**Downturn stress (real):** Basel expects LGD to reflect a downturn. The project adds 8 percentage points to every LGD (capped at 100%). RWA rises to USD 2.45 billion (134% average risk weight), and minimum capital rises by **USD 12.7 million**.
+**Historical downturn sensitivity (unverified):** adding eight points to the legacy LGD raises its saved RWA to USD 2.45 billion and its simple 8%-of-RWA amount by USD 12.7 million. The increment is an illustrative assumption, not an approved downturn calibration.
 
 - **CET1, Tier 1, total capital:** layers of capital from highest quality (shareholders' equity) outwards; Basel sets a minimum for each as a share of RWA
 
-**Assumption to know:** the formula is applied to all 235,628 loans in the 2014 book, each with its model PD, including loans already in default. A bank would treat defaulted loans separately. It is a simplification, and the note says so.
+**Assumption to know:** the old formula was applied across all 235,628 reported 2014 loans, including defaulted accounts. Defaulted exposures need different treatment. The comparison omits bank-wide capital, buffers and other eligibility rules; its totals cannot be used for regulatory reporting.
 
 ### Step 15 — Portfolio monitoring
 
 **In one line:** watch the book the way a risk committee would — by vintage, by delinquency status and by grade — to see how loans age and where losses come from.
 
-This is portfolio analytics on real data: the same toolkit as the Jana section, applied to LendingClub.
+This section illustrates portfolio monitoring through historical saved tables. The underlying loan records are absent from the current checkout.
 
-**Vintage curves (real).** Loans are grouped by year of issue and followed month by month since issue (**MOB, months on book**). Cumulative default rate at fixed ages:
+**Historical saved vintage curves (unverified).** Loans are grouped by issue year and followed by months on book (MOB). The values below teach the curve shape, not a reproduced cohort result.
 
 | Vintage | Loans | MOB 12 | MOB 18 | MOB 24 |
 |---|---|---|---|---|
@@ -1269,9 +1274,9 @@ This is portfolio analytics on real data: the same toolkit as the Jana section, 
 | 2013 | 134,755 | 3.2% | 6.3% | 9.3% |
 | 2014 | 235,628 | 3.4% | 6.8% | 8.1% |
 
-**How to read it:** compare vintages at the same age. The crisis-era 2007 and 2008 loans were far worse at every age. From 2010 the book settled at about 3.5% by MOB 12. The 2014 figure at MOB 24 is lower partly because those loans had barely reached two years by the snapshot.
+**How to read it:** compare vintages at the same age. The saved table places 2007 and 2008 above later cohorts and shows lower apparent MOB-12 rates after 2010. Source and outcome timing need verification before treating that as a real trend; 2014 also had less follow-up by the historical snapshot.
 
-**Delinquency status by vintage (real, a snapshot proxy):**
+**Historical saved delinquency-by-vintage table (unverified; snapshot proxy):**
 
 | Vintage | Current | Late 31–120 days | Charged off or default | Fully paid |
 |---|---|---|---|---|
@@ -1281,7 +1286,7 @@ This is portfolio analytics on real data: the same toolkit as the Jana section, 
 
 Older vintages have mostly finished (paid or charged off); 2014 is still mostly running.
 
-**LendingClub grade to outcome (real, selected grades):**
+**Historical saved grade-to-outcome table (unverified; selected grades):**
 
 | Grade | Loans | Fully paid | Still current | Late | Defaulted |
 |---|---|---|---|---|---|
@@ -1290,7 +1295,7 @@ Older vintages have mostly finished (paid or charged off); 2014 is still mostly 
 | E | 35,221 | 30.0% | 48.9% | 4.5% | 16.6% |
 | G | 3,128 | 29.4% | 41.2% | 5.7% | 23.8% |
 
-**Expected loss by grade (real, 2014 book):**
+**Historical saved expected-loss-by-grade table (unverified; 2014 illustration):**
 
 | Grade | EAD (USD m) | Mean PD | 12-month EL (USD m) | EL as % of EAD |
 |---|---|---|---|---|
@@ -1302,7 +1307,7 @@ Older vintages have mostly finished (paid or charged off); 2014 is still mostly 
 | F | 66 | 8.4% | 4.6 | 6.9% |
 | G | 22 | 8.2% | 1.6 | 7.1% |
 
-Grades C and D hold under half the EAD but most of the expected loss.
+In the historical illustration, grades C and D contribute a large share of calculated expected loss relative to their EAD. That allocation is not a validated provision.
 
 **An honest limit:** LendingClub gives one snapshot of each loan, not a month-by-month history. So true roll rates (how many loans move from one bucket to the next each month) cannot be calculated; the status table above is a stand-in, and the grade table tracks origination grade to final outcome rather than month-to-month migration.
 
@@ -1310,383 +1315,66 @@ Grades C and D hold under half the EAD but most of the expected loss.
 
 **The dashboard:** one self-contained web page bringing together the headline numbers, the pipeline map, validation, the master scale, staging, ECL, capital, vintages and stability, each panel with a short explainer.
 
-**The AI analyst:** a small command-line assistant that answers questions about the project's own results. It finds the relevant passages in the project's documents using **local embeddings** (text turned into numbers on the machine, with no outside service) and passes them to Google's Gemini model to write the answer. It needs an API key to run live.
+**The optional AI analyst:** source code wires a command-line assistant to a local document index and Gemini. It needs a user-provided API key and built index; no live answer or regulatory citation was verified in this review.
 
-### What is real, what is a proxy, what is a demonstration
+### What the current evidence supports
 
 | Status | Components |
 |---|---|
-| **Real, on the full data** | Target, samples, WoE binning, PD Models A and B, scorecard, master scale, validation, stability, two-stage LGD, EAD, lifetime PD curve, IFRS 9 staging and ECL, CECL comparison, Basel capital and downturn, vintage curves, dashboard |
+| **Source-backed code; historical outputs unverified** | PD/scorecard, LGD/EAD, monitoring and illustrative ECL/capital modules exist. Their old saved performance and financial totals have not been reproduced with the missing source data and corrected evidence contracts. |
 | **Proxy** | Origination PD (grade average); delinquency status by vintage and grade-to-outcome tables instead of monthly roll rates |
 | **Demonstration only** | CCF on 5,000 synthetic revolving accounts; scenario weighting on a three-loan example |
 | **Needs a manual step** | The AI analyst needs an API key |
 
-### The results — and what they mean
+### Historical saved outputs — how to read them
 
 | Result | Value | What it means |
 |---|---|---|
-| Loans | 466,285, issued 2007–2014 | A real, public book |
-| 12-month default rate | 3.44% | The target the PD model predicts |
-| Model B out-of-time AUC / Gini / KS | 0.692 / 0.385 / 0.284 | Ranks 2014 borrowers well, on a book already screened by LendingClub |
-| Model A out-of-time Gini | 0.271 | Fundamentals alone rank less well; grade and rate add signal |
-| Score PSI, train vs 2014 | 0.007 | The population stayed stable |
-| Scorecard | 600 points at 50 : 1, PDO 20; scores 522–639 | Every 20 points doubles the odds |
-| Master scale | 8 grades, 0.86% → 7.72% default rate | Rank ordering holds at every step |
-| Mean LGD | 93.0%; 52.2% of defaults lose everything | Unsecured loans recover little |
-| IFRS 9 provision, 2014 book | USD 278.5 million, 15.2% of EAD | Stage 2 coverage 14.4% vs Stage 1 2.1% |
-| CECL vs IFRS 9 | USD 49.0 million more | Lifetime cover on Stage 1 loans |
-| IRB risk weight | 125.6% vs 75% standardised | High LGD makes IRB stricter |
-| Minimum total capital | USD 183.6 million; +12.7 million under downturn LGD | What the bank would hold for a bad year |
+| Loans | 466,285, issued 2007–2014 | Historical row count; original CSV absent here |
+| 12-month default rate | 3.44% | Legacy target output; dated 12-month outcome unverified |
+| Model B out-of-time AUC / Gini / KS | 0.692 / 0.385 / 0.284 | Saved discrimination figures, not corrected real-data validation |
+| Model A out-of-time Gini | 0.271 | Historical model comparison, not reproduced |
+| Score PSI, train vs 2014 | 0.007 | Saved stability illustration; source distribution unverified |
+| Scorecard | 600 points at 50 : 1, PDO 20; scores 522–639 | Historical points conversion, not validated borrower decisions |
+| Master scale | 8 grades, 0.86% → 7.72% default rate | Historical grade table; rank ordering not rechecked |
+| Mean LGD | 93.0%; 52.2% of reported defaults lose everything | Legacy recovery proxy, not economic LGD |
+| IFRS 9 provision, 2014 book | USD 278.5 million, 15.2% of EAD | Historical ECL illustration, not a validated allowance |
+| CECL vs IFRS 9 | USD 49.0 million more | Historical sensitivity, not a reporting comparison |
+| IRB risk weight | 125.6% vs 75% flat benchmark | Historical arithmetic; regulatory eligibility unproven |
+| Illustrative 8% of old IRB RWA | USD 183.6 million; +12.7 million under an eight-point LGD sensitivity | Not a bank capital requirement |
 
-**Why it matters:** it shows the full credit risk chain, end to end, on real data: every step built, every number traceable to code, and every shortcut named rather than hidden.
+**Why it matters:** the source-backed modules and saved tables teach the credit-risk workflow while showing exactly where evidence is missing. They do not prove real-loan performance, a valid accounting provision or regulatory capital.
 
 ---
 ## Part B — AI under control
 
-**In one line:** two systems that use AI the way a bank would need it — secure by design, grounded in evidence, and never trusted blindly.
+**In one line:** two project examples illustrate access control, evidence grounding and human review; the private prototype's operation was not verified in this public review.
 
 | Principle | Project 2 shows it by | Project 3 shows it by |
 |---|---|---|
-| Security built in, not added later | The database itself enforces who sees what, on every table | Rate limits and fixed rules on what it may answer |
-| AI suggests, something checks | A caregiver approves every AI-read document; safety alerts use fixed rules, never AI | A verifier removes any unsupported claim |
-| Proven, not assumed | A scheduler that cannot double-send; sent history that cannot be edited | A 22-case test harness |
+| Security by design | Scope access to each family in a private design; implementation was not reviewed here | Rate limits and fixed rules on what the agent may answer |
+| AI suggests, something checks | Human review before an AI suggestion becomes a record | A verifier removes any unsupported claim |
+| Test the control | Idempotent reminders are the design goal, not a verified operational claim here | A 22-case test harness |
 
-## Project 2 — Trelis Family
+## Project 2 — Private family-care prototype
 
-**In one line:** a private family-care operating system — medicines, routines, activities and health records for the people you care for — run from one console, with reminders and replies on WhatsApp and AI kept behind human review.
+This separate private prototype is included only as a design example. Its source, deployment and operational claims were outside the public portfolio review. The description here does not establish a live service, clinical safety or measured reliability.
 
-| Question | Answer |
+| General design principle | Why it matters |
 |---|---|
-| Brand thought | *Steady care for the people you love.* |
-| Name history | Parents Health OS → Trelis Sr → **Trelis Family** (spelled with one L, on purpose) |
-| Who it is for | Any family: a care profile can be a parent, the family admin themself, a spouse or another family member |
-| Where it lives | trelis-family.vercel.app, installable on a phone as an app |
-| Built on | Next.js 16 and React 19 (the app), Supabase (database, sign-in, file storage), WhatsApp Cloud API (messages), Google Gemini 3.5 Flash-Lite (document reading) |
-| Scale of the build | 25 database tables across five areas, 14 database migrations, 7 main API routes |
-| Status | Work in progress: medicines, routines and records are live; activities are built and deployed but switched off until launch |
+| Keep each family's records within its access boundary | A screen-level check alone is not enough if another route can read the same data. |
+| Treat reminders as state transitions | A worker should claim a due task once, record the outcome and tolerate retries without duplicate sends. |
+| Verify incoming messages | An external callback needs an authenticity check before it can change a care record. |
+| Keep AI suggestions behind human review | A document-reading model can extract candidates; a person should confirm them before they become part of a record. |
+| Roll out sensitive features deliberately | A built feature can remain disabled until the necessary operational review is complete. |
 
-### How it grew — the rebrand
+### Worked design example — two workers, one reminder
 
-It started as **Parents Health OS**, built for my own parents. It became **Trelis Sr**, and is now **Trelis Family**, because the same console works for anyone in a family, not only parents.
+Suppose two workers see the same due reminder. Both may read it, but only one should change its state from “due” to “claimed.” The other sees that the state has changed and stops. If sending fails, a retry uses the recorded state to decide whether another attempt is safe. This is the general **compare-and-swap** and **idempotency** pattern; it is an illustrative explanation, not a verified test result from the private prototype.
 
-A rebrand touches two kinds of names, and the project treats them differently:
+### The lesson for AI-assisted records
 
-| Kind of name | Examples | Renamed? |
-|---|---|---|
-| What people see | Product name, website address, repository, logo, app name on the phone | Yes: all Trelis Family |
-| What the machinery depends on | Database table names, API paths, the WhatsApp webhook address, environment variable names, the internal package name | **No**, on purpose |
-
-**Why not rename everything:** the database, WhatsApp's settings and the live scheduler all point at those internal names. Renaming them for looks could break reminders in production. An old internal name is not a branding mistake; it is a stable address.
-
-### The family model
-
-```mermaid
-flowchart TD
-    F["Family: one care network"] --> A["Family admin"]
-    F --> C["Caregivers"]
-    F --> V["Viewers"]
-    F --> P1["Care profile: Amma"]
-    F --> P2["Care profile: Nanna"]
-    F --> P3["Care profile: Self or spouse"]
-```
-
-| In the database | What people see | What they can do |
-|---|---|---|
-| `family_members` with role `owner` | **Family admin** | Everything, including managing the family |
-| role `caregiver` | Caregiver | Look after care profiles day to day |
-| role `viewer` | Viewer | See, not change |
-| `care_recipients` | **Care profile** | The person being cared for |
-
-A care profile is not only for parents. The admin can add one for themselves using the "Self" relationship.
-
-### What the app looks like
-
-| Tab | What it holds |
-|---|---|
-| **Today** | A greeting, today's reminder timeline (medicines, routines), a vitals summary, recent documents |
-| **Care** | Three care tracks: Medications, Routines, Activities |
-| **Records** | Vitals and health observations; health documents with AI extraction |
-| **Family** | Care profiles, family members, profile management |
-
-Plus a public landing page, a privacy policy at `/privacy` (for India's DPDP Act 2023), and an **offline** page: the app installs on a phone as a **PWA**, so it opens like an app and shows a friendly page without internet.
-
-### How it works — the architecture
-
-<svg viewBox="0 0 400 560" width="400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Trelis Family architecture: phone and WhatsApp, the Next.js app on Vercel, Supabase database and storage, Gemini, and the one-minute scheduler" style="width:100%;max-width:400px;height:auto;display:block;margin:1rem auto">
-<defs><marker id="ar3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker></defs>
-<g font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="13" fill="#1f2937">
-<text x="200" y="24" text-anchor="middle" font-size="16" font-weight="700">Trelis Family, end to end</text>
-<rect x="12" y="40" width="180" height="70" rx="10" fill="#ecfdf5" stroke="#10b981" stroke-width="1.5"/>
-<text x="102" y="64" text-anchor="middle" font-weight="700" fill="#047857">Caregiver's phone</text>
-<text x="102" y="84" text-anchor="middle">The app (PWA)</text>
-<text x="102" y="100" text-anchor="middle" font-size="12">Today · Care · Records · Family</text>
-<rect x="208" y="40" width="180" height="70" rx="10" fill="#ecfdf5" stroke="#10b981" stroke-width="1.5"/>
-<text x="298" y="64" text-anchor="middle" font-weight="700" fill="#047857">Parent's WhatsApp</text>
-<text x="298" y="84" text-anchor="middle">Reminders with buttons</text>
-<text x="298" y="100" text-anchor="middle" font-size="12">Taken · Skipped · Snooze</text>
-<line x1="102" y1="110" x2="150" y2="150" stroke="#6b7280" stroke-width="1.5" marker-end="url(#ar3)"/>
-<line x1="298" y1="110" x2="250" y2="150" stroke="#6b7280" stroke-width="1.5" marker-end="url(#ar3)"/>
-<text x="330" y="136" font-size="11" fill="#6b7280">Meta webhook</text>
-<rect x="12" y="152" width="376" height="120" rx="10" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5"/>
-<text x="200" y="176" text-anchor="middle" font-weight="700" fill="#1d4ed8">Next.js app on Vercel</text>
-<text x="200" y="198" text-anchor="middle">Screens + API routes (server only)</text>
-<text x="200" y="220" text-anchor="middle" font-size="12">/api/analyze · /api/documents/remove</text>
-<text x="200" y="238" text-anchor="middle" font-size="12">/api/whatsapp/send · /reminders/run · /webhook</text>
-<text x="200" y="256" text-anchor="middle" font-size="12">/api/activities/programme/start · /schedules/materialize</text>
-<line x1="100" y1="272" x2="100" y2="306" stroke="#6b7280" stroke-width="1.5" marker-end="url(#ar3)"/>
-<line x1="300" y1="272" x2="300" y2="306" stroke="#6b7280" stroke-width="1.5" marker-end="url(#ar3)"/>
-<rect x="12" y="308" width="200" height="130" rx="10" fill="#f5f3ff" stroke="#8b5cf6" stroke-width="1.5"/>
-<text x="112" y="332" text-anchor="middle" font-weight="700" fill="#6d28d9">Supabase</text>
-<text x="112" y="354" text-anchor="middle">PostgreSQL, 25 tables</text>
-<text x="112" y="374" text-anchor="middle">Row-level security on all</text>
-<text x="112" y="394" text-anchor="middle">Sign-in (Auth)</text>
-<text x="112" y="414" text-anchor="middle">Private file storage</text>
-<text x="112" y="430" text-anchor="middle" font-size="12">pg_cron: every minute</text>
-<rect x="228" y="308" width="160" height="130" rx="10" fill="#fffbeb" stroke="#f59e0b" stroke-width="1.5"/>
-<text x="308" y="332" text-anchor="middle" font-weight="700" fill="#b45309">Outside services</text>
-<text x="308" y="356" text-anchor="middle">WhatsApp Cloud API</text>
-<text x="308" y="374" text-anchor="middle" font-size="12">sends reminders</text>
-<text x="308" y="400" text-anchor="middle">Google Gemini</text>
-<text x="308" y="418" text-anchor="middle" font-size="12">reads documents</text>
-<rect x="12" y="456" width="376" height="90" rx="10" fill="#f3f4f6" stroke="#6b7280" stroke-width="1.5"/>
-<text x="200" y="480" text-anchor="middle" font-weight="700" fill="#374151">The rules that keep it safe</text>
-<text x="200" y="502" text-anchor="middle" font-size="12">AI extractions wait for a caregiver's approval</text>
-<text x="200" y="520" text-anchor="middle" font-size="12">No reminder is ever sent twice (compare-and-swap)</text>
-<text x="200" y="538" text-anchor="middle" font-size="12">Safety alerts use fixed rules, never AI</text>
-</g>
-</svg>
-
-| Part | Job |
-|---|---|
-| **Next.js** | The framework for the app: the screens people see, plus **API routes**, small server programs the app and outside services call |
-| **Vercel** | Where the app is hosted; runs the API routes on demand (**serverless**) |
-| **Supabase** | A hosted PostgreSQL database with sign-in and file storage built in |
-| **pg_cron** | A clock inside the database that calls the scheduler every minute |
-| **WhatsApp Cloud API** | Meta's official way for an app to send and receive WhatsApp messages |
-| **Gemini** | Google's AI model, used only to read health documents |
-
-### The data model — 25 tables in five areas
-
-| Area | Tables | What they hold |
-|---|---|---|
-| Core family and care | 7 | Caregiver profiles, families, family members and roles, care profiles, consent records, health conditions, health observations (vitals) |
-| Medications | 3 | The medicine, its schedule, and each dose event |
-| Routines | 3 | The routine, its schedule, and each occurrence |
-| Documents and AI | 2 | Uploaded documents, and the AI's extraction of each |
-| Activities | 10 | The activity library, the programme, its days and variants, the programme clock, schedules, events, sent messages, replies, caregiver alerts |
-
-**The pattern used three times: definition → schedule → event.** A medicine is defined once (its name and dose). Its schedule says when ("8 am and 8 pm daily"). Each actual dose is an **event** with its own status. Keeping these apart means history is never lost: changing tomorrow's schedule does not rewrite yesterday's doses.
-
-The database changes were made through **14 migrations**: numbered scripts that each change the database one step, applied in order, so the database can be rebuilt exactly and every change is on record.
-
-### Track 1 — Medications (live)
-
-```mermaid
-sequenceDiagram
-    participant C as pg_cron (every minute)
-    participant S as Scheduler route
-    participant D as Database
-    participant W as WhatsApp
-    participant P as Parent
-    C->>S: Call /reminders/run with secret
-    S->>D: Find doses due now, claim each with compare-and-swap
-    S->>W: Send reminder with three buttons
-    W->>P: "Time for your 8 am medicine"
-    P->>W: Taps "Taken"
-    W->>S: Webhook, signed
-    S->>D: Mark the dose event "taken"
-```
-
-| Status of a dose | Meaning |
-|---|---|
-| pending | Due, not yet answered |
-| taken | The parent tapped Taken |
-| skipped | The parent tapped Skipped |
-| snoozed | Remind again later (the event stores when) |
-| missed | No answer in time |
-
-Each button carries a small code, such as `med:<dose ID>:taken`, so when the tap comes back the app knows exactly which dose it belongs to, without guessing. Phone numbers are stored in international format (+91…).
-
-### Track 2 — Routines (live)
-
-The same machinery as medications, for daily care routines: exercise, physiotherapy, hydration, diet, breathing exercises, sleep and hygiene. Statuses are pending, completed, skipped, snoozed and missed; buttons carry `routine:<ID>:completed` and so on.
-
-### Track 3 — Activities and the 100-day programme (built, switched off)
-
-**In one line:** a 100-day programme of gentle daily activities for Amma and Nanna, delivered on WhatsApp, fully built and deployed, and deliberately switched off until launch.
-
-| Programme fact | Value |
-|---|---|
-| Length | 100 days, in four 25-day phases: Start → Strength → Step Up → It's Yours |
-| Rest days / activity days | 14 / 86 |
-| New / revisit activities | 60 / 26 |
-| Together / parallel / independent | 15 / 30 / 55 |
-| Checkpoints | Days 1, 30, 60 and 100 |
-| Daily extra | Amma gets a daily **Thought** (a reflective prompt); Nanna gets a daily **Puzzle**, with the answer sent the next morning |
-| Loaded so far | 127 activities in the library; 100 days; 200 day variants (one per parent per day) |
-
-**How a day would run:**
-
-```mermaid
-flowchart TD
-    A["Programme clock: day N for both parents"] --> B["Materialise today's activities"]
-    B --> C["Morning: WhatsApp reminder with Done / Easier / Skip"]
-    C --> D{"Reply"}
-    D -->|"Button tap"| E["Record the reply"]
-    D -->|"Typed 1, 2 or 3 for a quiz"| F["Match it safely to the open question"]
-    D -->|"Can't tell which question"| G["Leave it unresolved, never guess"]
-    D -->|"Words that suggest a problem"| H["Safety rule fires: alert the caregiver"]
-    E --> I["Evening follow-up"]
-    F --> I
-```
-
-**The design choices, and why:**
-
-| Choice | Why |
-|---|---|
-| One shared **programme clock** for both parents | They move through the programme together, day by day |
-| Ad-hoc activities do **not** move the clock | An extra activity on Tuesday doesn't shift the programme's day numbers |
-| **Materialise** each day's schedule | The day's activities are created as real rows only when needed, from the programme definition |
-| Sent messages are stored as **immutable snapshots** | What was sent can never be edited afterwards; the record is trustworthy |
-| Replies are **append-only** | New replies are added, never overwritten |
-| Ambiguous replies stay **unresolved** | A wrong guess is worse than no answer |
-| Safety detection uses **fixed keyword rules, no AI** | A safety alert must be predictable and explainable every time |
-| Caregiver alerts are **idempotent** | The same problem never triggers a flood of alerts |
-| One **switch** controls all activity sending | Nothing goes out until the switch is deliberately turned on |
-
-**Where it stands:** the switch (`WHATSAPP_ACTIVITY_DELIVERY_ENABLED`) is **off** in production, and no programme run has started. Before launch: Meta must approve three message templates (morning reminder, evening follow-up, caregiver alert), the caregiver's WhatsApp number must be set, a controlled test must pass, then the switch goes on and a Season 1 start date is chosen. The programme starts only by a deliberate action, never automatically.
-
-- **Message template:** WhatsApp only lets businesses start a conversation with a message format Meta has approved in advance
-
-### Records — the documents AI pipeline (live)
-
-```mermaid
-flowchart LR
-    A["Caregiver uploads a document"] --> B["Private storage bucket"]
-    B --> C["/api/analyze sends it to Gemini"]
-    C --> D["Structured extraction saved as pending review"]
-    D --> E{"Caregiver reviews"}
-    E -->|"Approve"| F["Accepted into the records"]
-    E -->|"Reject"| G["Discarded"]
-```
-
-| Safeguard | What it does |
-|---|---|
-| Private bucket | Files are never publicly reachable |
-| Structured output | Gemini must answer in a fixed format the code can check, not free text |
-| Factual, non-alarmist instruction | The AI extracts what the document says; it does not diagnose or alarm |
-| Review status | Every extraction starts as `pending_review`; only a person moves it to approved or rejected |
-| Immutability trigger | A database rule stops the core fields of an extraction being quietly changed later |
-| Purge | Removing a document deletes the file and everything linked to it |
-
-**Activities are not health records.** A parent tapping "Done" on a walk is engagement, not a clinical observation, so the two live in separate parts of the database.
-
-### The scheduler — one clock, no double-sends
-
-**In one line:** every minute, the database's clock calls one scheduler route, which safely claims whatever is due and sends it exactly once.
-
-| Detail | How it works |
-|---|---|
-| Trigger | Supabase `pg_cron` calls `/api/whatsapp/reminders/run` every minute |
-| Who may call it | Only a caller holding a secret token (a **bearer secret**) |
-| Order | Medications, then routines, then activities (only if the switch is on) |
-| No double-sends | **Compare-and-swap lease**: a reminder is claimed only if nobody else has claimed it |
-| Crash recovery | A claim older than 5 minutes is treated as abandoned and reclaimed |
-
-**Compare-and-swap, step by step.** Two runs of the scheduler overlap and both see the same due reminder.
-
-| Moment | Run 1 | Run 2 |
-|---|---|---|
-| Both look | Sees "unclaimed" | Sees "unclaimed" |
-| Run 1 claims | "Claim it if still unclaimed" → succeeds | — |
-| Run 2 claims | — | "Claim it if still unclaimed" → fails: already claimed |
-| Result | Sends once | Does nothing |
-
-This property, that doing something twice has the same effect as doing it once, is called **idempotency**.
-
-### The webhook — proving a message is really from WhatsApp
-
-A **webhook** is a message one system pushes to another when something happens. WhatsApp calls the app's webhook when a parent taps a button, and when a message is delivered or read. Anyone on the internet could send a fake one, so there are two checks:
-
-| Check | When | How |
-|---|---|---|
-| Handshake | Once, when the webhook is set up | Meta sends a challenge with a verify token; the app answers only if the token matches its own |
-| Signature | On every message | Meta attaches an **HMAC SHA-256 signature**: a code calculated from the message and a secret only Meta and the app know. The app recalculates it; if the codes differ, the message is rejected |
-
-Delivery statuses only move forward, sent → delivered → read, never backwards, even if WhatsApp's updates arrive out of order.
-
-### Security, end to end
-
-| Layer | What protects it |
-|---|---|
-| Sign-in | Supabase Auth, with the session kept in secure cookies |
-| Every table | **Row-level security**: the database itself checks, row by row, that the person asking belongs to that family |
-| Server-only powers | A few server jobs (webhook, scheduler, document reading) need to bypass family rules; they use a separate **service-role** key that never reaches the browser, and a guard stops it being bundled into browser code by mistake |
-| Logs | Phone numbers are masked |
-| Consent | A consent log for India's DPDP Act 2023, and a public privacy policy |
-| Private content | The programme's raw content notebooks are kept out of the code repository entirely |
-
-**Row-level security, illustrated** (a simplified example of the kind of rule, not the exact policy):
-
-```sql
--- Illustrative: a caregiver may read a care profile only in their own family
-CREATE POLICY family_can_read ON care_recipients
-FOR SELECT
-USING (
-    family_id IN (
-        SELECT family_id FROM family_members WHERE user_id = auth.uid()
-    )
-);
-```
-
-Most apps check permissions in their screens; if one screen forgets, data leaks. Here the database refuses, whatever the screen does.
-
-### Where it stands
-
-| Done | Deliberately off | Still to do before activities launch |
-|---|---|---|
-| Rebrand to Trelis Family | Activity WhatsApp sending | Meta template approval |
-| Four-tab app, onboarding, PWA, offline page | The real 100-day programme run | Caregiver WhatsApp number |
-| Medications and routines, live on WhatsApp | | A controlled test |
-| Records: upload, AI extraction, review, purge | | Turn the switch on |
-| Vitals logging | | Choose the Season 1 start date |
-| Activities: schema, library, programme import, caregiver UI, scheduling, WhatsApp sending code, replies and safety, deployed | | |
-| Privacy policy | | |
-
-### The tech stack
-
-| Layer | Technology |
-|---|---|
-| App | Next.js 16 (App Router), React 19, TypeScript |
-| Look and feel | Tailwind CSS 4, Framer Motion, Lucide icons; fonts Fraunces and Atkinson Hyperlegible |
-| Database, sign-in, files | Supabase (PostgreSQL) |
-| AI | Google Gemini 3.5 Flash-Lite, through the Google GenAI SDK |
-| Messaging | WhatsApp Cloud API |
-| Hosting | Vercel |
-| Phone app | PWA: web manifest and service worker |
-
-| Term | Plain meaning |
-|---|---|
-| PWA, progressive web app | A website that installs on a phone and behaves like an app |
-| API route | A small server program the app or an outside service can call |
-| Serverless | Code that runs on demand in the cloud, without a server you manage |
-| PostgreSQL | A widely used database |
-| Migration | A numbered script that changes the database one step, in order |
-| Row-level security (RLS) | The database itself checks, row by row, who may see each record |
-| Service role | A special key for trusted server jobs that may bypass row-level security |
-| pg_cron | A scheduler inside the database that runs jobs on a timetable |
-| Webhook | A message one system pushes to another when something happens |
-| HMAC SHA-256 signature | A code proving a message came from someone holding the shared secret |
-| Compare-and-swap (CAS) | Update a record only if nobody changed it in between |
-| Lease | A time-limited claim on a job, so a crashed job can be taken over |
-| Idempotency | Doing something twice has the same effect as doing it once |
-| Immutable | Can never be changed after it is written |
-| Append-only | New records are added; old ones are never overwritten |
-| Feature flag (switch) | A setting that turns a feature on or off without changing code |
-| Human review | AI suggests; a person decides |
-| DPDP Act 2023 | India's Digital Personal Data Protection Act |
-
-**Why it matters:** it is a real product running in production, built end to end, where every risky part — messaging, health data, AI — has a named safeguard, and the unfinished part is switched off rather than half-live.
+Keep the original document, the model's proposed extraction and the human-approved record distinguishable. Show uncertainty to the reviewer, and do not turn a generated summary into an unquestioned fact. The same separation of proposal and evidence appears in the public agent example below.
 
 ---
 
@@ -2507,6 +2195,8 @@ Only now, once, score the chosen model on the untouched **test set**, and on an 
 
 ## Key numbers
 
+Credit-risk figures in this table are **historical saved outputs, unverified**. They are retained to explain the legacy calculations, not to claim reproduced performance, accounting allowances or regulatory capital.
+
 | Number | What it is |
 |---|---|
 | 30% | Faster reporting turnaround at Jana |
@@ -2528,10 +2218,10 @@ Only now, once, score the chosen model on the untouched **test set**, and on an 
 | USD 327.5 million | CECL provision, USD 49.0 million more than IFRS 9 |
 | USD 58.7 million, 3.2% | Basel 12-month expected loss |
 | 125.6% vs 75% | IRB vs standardised risk weight |
-| USD 183.6 million | Minimum total capital; +12.7 million under downturn LGD |
-| 25 tables, 14 migrations | Trelis Family database |
-| 1 minute | Trelis Family scheduler cycle |
-| 100 days, 127 activities | Trelis Family programme and activity library |
+| USD 183.6 million | Historical, unverified 8%-of-RWA arithmetic, not a validated regulatory capital requirement; the saved downturn-LGD scenario adds USD 12.7 million |
+
+
+
 | 15 records, 22 tests | Project 3 evidence and test harness, all tests passed |
 | 10 a minute | Project 3 rate limit per visitor |
 
@@ -2609,8 +2299,8 @@ Machine learning terms have their own dictionary at the end of Part C.
 | The thread | One loan's life — approved, watched, measured — plus the AI systems and machine learning around it |
 | Lentra AI | Lending policy → exact specifications → test packs with answers written first → tested system |
 | Jana | Portfolio analytics on personal and SME loans — DPD, PAR, vintages, roll rates, geography — from Oracle through KNIME and Excel to the credit committee twice a month; reporting turnaround down 30% |
-| Project 1 | 466,285 loans through a 12-month default target, WoE, logistic regression, a 600-point scorecard, validation, two-stage LGD, EAD, lifetime PD, IFRS 9 (USD 278.5 million), CECL and IRB capital (125.6% risk weight); every shortcut named |
-| Project 2 | Trelis Family: a private family-care console; medicines and routines live on WhatsApp, a 100-day activity programme built and switched off until launch; RLS on every table, no double-sends, AI behind human review |
+| Project 1 | Source-backed credit-risk modules and historical saved metrics teach PD, scorecards, LGD/EAD, ECL and capital arithmetic; real-loan performance and regulatory totals remain unverified |
+| Project 2 | Private family-care design example: scoped access, idempotent reminders and human review of AI suggestions; operational claims were not reviewed here |
 | Project 3 | An AI agent that answers only from verified evidence, cites it, refuses otherwise; 22 of 22 tests passed |
 | Machine learning map | Frame → data → features → model → evaluate → ship, with every algorithm and term in one place |
 | The common skill | Turn a rule into something built, then prove it works |
